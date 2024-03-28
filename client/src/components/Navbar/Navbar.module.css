@@ -1,6 +1,21 @@
-.logo_none {
-    display: none;
-    }
+#navbar {
+    background: transparent;
+    color: blueviolet;
+    box-shadow: 0px 0px 0px;
+    position: relative;
+    
+}
+.logo {
+    width: 200px;
+}
+
+.box_navbar {
+    display: flex;
+    justify-content: center;
+    gap: 5em;
+}
+
+
 .btn_login {
     color: #ffffff !important;
     background-color: #500075 !important;
@@ -12,27 +27,5 @@
     width: 5em;
     text-align: center;
 }
-    .logo {
-       max-width: 100%;
-       width: 7em;
-       height: auto;
-    }
-.menu_link {
-    font-family: "League Spartan", sans-serif;
-    letter-spacing: -0.02em;
-    color: #500075 !important;
-    font-size: 15px;
-    font-weight: 600;
-    text-align: center;
-}
+ 
 
-@media (max-width: 768px) {
-.btn_login {
-  display: none;
-}
-.logo {
-    max-width: 100%;
-    width: 4em;
-    height: auto;
- }
-}

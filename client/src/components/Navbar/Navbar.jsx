@@ -1,106 +1,120 @@
-import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import styles from './Navbar.module.css';
-import {Link} from "react-router-dom";
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-]
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import styles from "./Navbar.module.css";
+import { Link } from 'react-router-dom';
 
-export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+const drawerWidth = 240;
+const navItems = ['Home', 'About', 'Contact'];
+
+function DrawerAppBar(props) {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        MUI
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <div className="bg-white">
-      <header className="absolute inset-x-0 top-0 z-50">
-        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-          <div className="flex">
-            <a href="#" >
-              <span className="sr-only">Your Company</span>
-              <img
-                className={styles.logo}
-                src={require("../../Images/Logo.png")}
-                alt=""
-              />
-            </a>
-          </div>
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-              onClick={() => setMobileMenuOpen(true)}
-            >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="hidden lg:flex lg:gap-x-12 items-center justify-center">
-              <Link  className={ styles.menu_link}>
-               Buscar
-              </Link>
-              <Link  className={ styles.menu_link}>
-               Contacto
-              </Link>
-          </div>
-          <div className={styles.btn_login}>
-              Log in 
-          </div>
-        </nav>
-        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-          <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className={styles.logo}
-                  src={require("../../Images/Logo.png")}
-                  alt=""
-                />
-              </a>
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-2 py-6">
-                    <a
-                     
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      Buscar
-                    </a>
-                    <a
-                     
-                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                   >
-                     Contacto
-                   </a>
-                </div>
-                <div className="py-6">
-                  <a
-                    href="#"
-                    className={"-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"}
-                >
-                    Log in
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Dialog.Panel>
-        </Dialog>
-      </header>
+    <Box sx={{ display: 'flex',  }}>
+      <CssBaseline />
+      <AppBar component="nav" id={styles.navbar}>
+        <Toolbar className={styles.box_navbar}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{  display: { xs: 'none', sm: 'block' } }}
+          >
+          <img src={require("../../Images/Logo.png")} alt=""  className={styles.logo}/>
+          </Typography>
+          <Box sx={{ display: { xs: 'none', sm: 'block' }, }}>
+              <Button  sx={{ color: "#500075 ", fontFamily: "League Spartan", fontWeight: "bold"  }}>
+                Buscar
+              </Button>
+              <Button  sx={{ color: "#500075 ", fontFamily: "League Spartan", fontWeight: "bold"  }}>
+                Contacto
+              </Button>
+          </Box>
 
-
-    </div>
-  )
+          <Box sx={{ display: { xs: 'none', sm: 'block' }, }}>
+            <Link to="/auth/login">
+              <Button  className={styles.btn_login}>
+               Login
+              </Button>
+            </Link>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <nav>
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </nav>
+   
+    </Box>
+  );
 }
+
+DrawerAppBar.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
+
+export default DrawerAppBar;

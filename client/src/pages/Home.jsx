@@ -1,13 +1,13 @@
-import Navbar from '../components/Navbar/Navbar';
-
+import Cards from "../components/Card/Card";
+import Navbar from "../components/Navbar/Navbar";
 
 export default function Home() {
-    return (
-        <div >
-            <Navbar/>
-         <div>
-
-         </div>
-        </div>
-    )
+  return (
+    <div>
+        <Navbar/>
+      <div>
+        <Cards />
+      </div>
+    </div>
+  );
 }

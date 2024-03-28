@@ -1,0 +1,27 @@
+.login_container {
+    background-color: #edf4fb;
+    width: 100vw; /* Usa el 100% del ancho de la ventana del navegador */
+    height: 100vh; /* Usa el 100% del alto de la ventana del navegador */
+    overflow: hidden;
+}
+
+.input_container {
+    margin: auto;
+}
+.btn_success {
+    color: #ffffff !important;
+    background-color: #c501e2 !important;
+    border: 2px solid #c501e2;
+    border-radius: 0;
+    -webkit-box-shadow: 3px 3px #daa0ed;
+    box-shadow: 3px 3px #daa0ed;
+}
+
+.text {
+    color: #500075
+}
+
+.logo_login {
+    width: 150px;
+    margin: auto;
+}
