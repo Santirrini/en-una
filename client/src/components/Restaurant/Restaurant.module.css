@@ -1,0 +1,15 @@
+.cards_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+      background-color: #edf4fb;
+  }
+  @media (max-width: 768px) {
+    .cards_container {
+      padding-top: 5em;
+    }
+  }
+  
