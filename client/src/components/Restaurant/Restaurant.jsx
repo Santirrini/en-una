@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styles from "./Restaurant.module.css";
+import { Link } from 'react-router-dom'
 
 
 const ExpandMore = styled((props) => {
@@ -30,160 +31,102 @@ export default function Restaurant() {
   };
 
   return (
-    <div className={styles.cards_container}>
-  
-      <Card sx={{ maxWidth: 345,}}>
-        <CardMedia
-          component="img"
-          height="194"
-          image="https://www.peru.travel/contenido/uploads/foto-interna-maido_638368811062361263.jpg"
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "center" }}
-          >
-            Maido
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Caracteristicas:</Typography>
-            <Typography paragraph>
-              Logo de diariocorreo El restaurante peruano Maido es elegido
-              nuevamente como el mejor de América Latina : El restaurante
-              peruano Maido es elegido el mejor de América Latina | CORREO
-              AREQUIPA AYACUCHO CHIMBOTE CUSCO HUANCAVELICA HUANCAYO HUÁNUCO ICA
-              LA LIBERTAD LAMBAYEQUE LIMA PIURA PUNO TACNA TUMBES freestar PERÚ
-              El restaurante peruano Maido es elegido nuevamente como el mejor
-              de América Latina La cocina peruana sigue reinando en América
-              Latina por segundo año consecutivo El restaurante peruano Maido es
-              elegido nuevamente como el mejor de América Latina El restaurante
-              peruano Maido es elegido nuevamente como el mejor de América
-              Latina MICHAEL CARRIÓN Actualizado el 31/10/2018, 10:35 a. m. La
-              cocina peruana volvió a ocupar los dos primeros lugares en la
-              lista de los "50 Mejores Restaurantes de América Latina" con Maido
-              y Central, establecimientos que repitieron este 2018 las
-              posiciones de cabecera obtenidas el año pasado y que fueron
-              anunciadas este martes en Bogotá. Maido, del chef Mitsuharu
-              "Micha" Tsumura, fue elegido como el número uno por "fusionar
-              perfectamente la gastronomía de Perú y la japonesa", a juicio de
-              la publicación "50 Best Restaurants", que organiza los premios.
-              Con sede en Lima, Maido ostenta el título nuevamente debido a que
-              es "un espacio donde los visitantes pueden degustar platos basados
-              en la cocina Nikkei que fusiona sorprendentemente los sabores
-              peruanos y japoneses", agregaron los organizadores. El ganador
-              prometió "seguir trabajando como hasta ahora, especialmente en
-              lograr una cocina con sustentabilidad" y para "dar a conocer
-              productos diferentes, poco conocidos, pero que resultan
-              maravillosos".
-            </Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardMedia
-          component="img"
-          height="194"
-          image="https://www.peru.travel/Contenido/Uploads/foto-interna-astrid-y-gaston_638368811230078278.jpg"
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary"
-            sx={{ textAlign: "center" }}
-          
-          >
-          Astrid y Gastón
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Caracteristicas:</Typography>
-            <Typography paragraph>
-            Este es uno de los restaurantes más emblemáticos de la ciudad de Lima. Fundado por el chef Gastón Acurio y su esposa la chef Astrid Gutsche. Este restaurante ofrece una interpretación moderna de la cocina tradicional peruana, ha sido un referente en la promoción de la misma y ha contribuido a su éxito a nivel mundial. Se caracteriza por ofrecer una experiencia gastronómica de alta calidad, con platos innovadores que resaltan los ingredientes locales y la diversidad de la cocina peruana.
-            </Typography>
-            
-          </CardContent>
-        </Collapse>
-      </Card>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardMedia
-          component="img"
-          height="194"
-          image="https://www.peru.travel/Contenido/Uploads/foto-interna-kjolle_638368811472604588.jpg"
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary" sx={{textAlign: "center"}}>
-          Kjolle
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Caracteristicas:</Typography>
-            <Typography paragraph>
-           
+    <div>
 
-Es dirigido por la reconocida chef Pía León, quien tiene como objetivo destacar los ingredientes peruanos en su máxima expresión, utilizando técnicas modernas y creativas. En la carta de Kjolle, el producto de estación es la estrella y todo puede cambiar muy rápido dependiendo de la disponibilidad de los productos.
-            </Typography>
-            <Typography paragraph>
-              Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-              over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-              stirring occasionally until lightly browned, 6 to 8 minutes.
-              Transfer shrimp to a large plate and set aside, leaving chicken
-              and chorizo in the pan. Add pimentón, bay leaves, garlic,
-              tomatoes, onion, salt and pepper, and cook, stirring often until
-              thickened and fragrant, about 10 minutes. Add saffron broth and
-              remaining 4 1/2 cups chicken broth; bring to a boil.
-            </Typography>
-            <Typography paragraph>
-              Add rice and stir very gently to distribute. Top with artichokes
-              and peppers, and cook without stirring, until most of the liquid
-              is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add
-              reserved shrimp and mussels, tucking them down into the rice, and
-              cook again without stirring, until mussels have opened and rice is
-              just tender, 5 to 7 minutes more. (Discard any mussels that
-              don&apos;t open.)
-            </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then
-              serve.
-            </Typography>
-          </CardContent>
-        </Collapse>
+         <h1 className={styles.text}>
+    Restaurantes con esos productos
+   </h1>
+    <div className={styles.cards_container}>
+   <Link to= "/comida">
+
+
+      <Card sx={{ maxWidth: 345,height: 400}}>
+        <CardMedia
+          component="img"
+          height="194"
+          image="https://www.comedera.com/wp-content/uploads/2022/06/jalea-mixta.jpg"
+          alt="Paella dish"
+        />
+        <CardContent>
+          <Typography sx={{ textAlign: "center" }}>Peruana</Typography>
+        </CardContent>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", paddingBottom: "2em" }}
+        >
+          Criollas y mariscos
+        </Typography>
       </Card>
+      </Link>
+      <Link to= "/comida">
+
+      <Card sx={{ maxWidth: 345, height: 400 }}>
+        <CardMedia
+          component="img"
+          height="194"
+          image="https://i0.wp.com/foodandpleasure.com/wp-content/uploads/2022/10/comida-nikkei-yakumanka-4.jpg?fit=1280%2C853&ssl=1"
+          alt="Paella dish"
+        />
+        <CardContent>
+          <Typography sx={{ textAlign: "center" }}>Nikkei</Typography>
+        </CardContent>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", paddingBottom: "2em" }}
+        >
+          Comida Nikkei
+        </Typography>
+      </Card>
+
+      </Link>
+      <Link to= "/comida">
+
+      <Card sx={{ maxWidth: 345, height: 400 }}>
+        <CardMedia
+          component="img"
+          height="194"
+          image="https://centrosantafe.com.mx/cdn/shop/articles/comida_italiana.jpg?v=1538518314"
+          alt="Paella dish"
+        />
+        <CardContent>
+          <Typography sx={{ textAlign: "center" }}>Italiana</Typography>
+        </CardContent>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", paddingBottom: "2em" }}
+        >
+          Comida Italiana
+        </Typography>
+      </Card>
+      </Link>
+
+      <Link to= "/comida">
+
+      <Card sx={{ maxWidth: 345, height: 400 }}>
+        <CardMedia
+          component="img"
+          height="194"
+          image="https://www.shutterstock.com/image-photo/international-fast-food-pizza-pasta-600nw-1861340713.jpg"
+          alt="Paella dish"
+        />
+        <CardContent>
+          <Typography sx={{ textAlign: "center" }}>Internacional</Typography>
+        </CardContent>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center" }}
+        >
+          Comida Internacional
+        </Typography>
+      </Card>
+      </Link>
+
     </div>
+    </div>
+
   );
 }

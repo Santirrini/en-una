@@ -1,0 +1,53 @@
+.food_container {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.food_box {
+    display: flex;
+    padding-left: 2em;
+    gap: 1em;
+    margin-bottom: 2em;
+
+}
+
+.img_container {
+    width: 600px;
+}
+
+.text_container {
+    font-weight: bold;
+    font-size: 25px;
+}
+.text_box {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 1em;
+}
+
+.text_p {
+    width: 80%;
+}
+
+.select_container {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+.btn_login {
+    color: #ffffff !important;
+    background-color: #500075 !important;
+    border: 2px solid #500075;
+    border-radius: 0;
+    -webkit-box-shadow: 3px 3px #a994ba;
+    box-shadow: 3px 3px #a994ba;
+    padding: 0.5em;
+    width: 10em;
+    text-align: center;
+}
+
+.btn_container {
+   display: flex;
+   justify-content: center;
+
+}

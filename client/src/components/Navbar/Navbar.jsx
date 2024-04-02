@@ -15,7 +15,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import styles from "./Navbar.module.css";
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
@@ -62,13 +62,16 @@ function DrawerAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
+          <Link to= "/">
+
           <Typography
             variant="h6"
             component="div"
             sx={{  display: { xs: 'none', sm: 'block' } }}
-          >
+            >
           <img src={require("../../Images/Logo.png")} alt=""  className={styles.logo}/>
           </Typography>
+            </Link>
           <Box sx={{ display: { xs: 'none', sm: 'block' }, }}>
               <Button  sx={{ color: "#500075 ", fontFamily: "League Spartan", fontWeight: "bold"  }}>
                 Buscar

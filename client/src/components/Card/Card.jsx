@@ -31,6 +31,11 @@ export default function Cards() {
   };
 
   return (
+    <div>
+
+         <h1 className={styles.text}>
+    Todos los productos
+   </h1>
     <div className={styles.cards_container}>
    <Link to= "/restaurantes">
 
@@ -121,5 +126,7 @@ export default function Cards() {
       </Link>
 
     </div>
+    </div>
+
   );
 }
