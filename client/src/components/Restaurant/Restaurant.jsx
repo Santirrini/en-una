@@ -37,7 +37,7 @@ export default function Restaurant() {
     Restaurantes con esos productos
    </h1>
     <div className={styles.cards_container}>
-   <Link to= "/comida">
+   <Link to= "/menu/restaurante">
 
 
       <Card sx={{ maxWidth: 345,height: 400}}>
@@ -59,7 +59,7 @@ export default function Restaurant() {
         </Typography>
       </Card>
       </Link>
-      <Link to= "/comida">
+      <Link to= "/menu/restaurante">
 
       <Card sx={{ maxWidth: 345, height: 400 }}>
         <CardMedia
@@ -81,7 +81,7 @@ export default function Restaurant() {
       </Card>
 
       </Link>
-      <Link to= "/comida">
+      <Link to= "/menu/restaurante">
 
       <Card sx={{ maxWidth: 345, height: 400 }}>
         <CardMedia
@@ -103,7 +103,7 @@ export default function Restaurant() {
       </Card>
       </Link>
 
-      <Link to= "/comida">
+      <Link to= "/menu/restaurante">
 
       <Card sx={{ maxWidth: 345, height: 400 }}>
         <CardMedia

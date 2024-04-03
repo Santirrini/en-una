@@ -1,7 +1,7 @@
-import styles from "./Food.module.css";
-import Button from '@mui/material/Button';
+import styles from "./DetailsRestaurant.module.css";
+import Button from "@mui/material/Button";
 
-export default function Food() {
+export default function DetailsRestaurant() {
   return (
     <div className={styles.food_container}>
       <div className={styles.food_box}>
@@ -19,22 +19,21 @@ export default function Food() {
             asdasdasd asdasd asdasd
           </p>
         </div>
-        
       </div>
       <div className={styles.select_container}>
-         <label htmlFor="">Fecha</label>
-         <input type="date"
+        <label htmlFor="">Fecha</label>
+        <input
+          type="date"
           className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-         
-         />
-       
+        />
+
         <label htmlFor="">Hora</label>
 
         <select
           name=""
           id=""
           className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-          >
+        >
           <option value=""></option>
           <option value=""></option>
           <option value=""></option>
@@ -42,22 +41,19 @@ export default function Food() {
         </select>
         <label htmlFor="">Personas</label>
 
-<select
-  name=""
-  id=""
-  className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-  >
-  <option value=""></option>
-  <option value=""></option>
-  <option value=""></option>
-  <option value=""></option>
-</select>
+        <select
+          name=""
+          id=""
+          className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+        >
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+        </select>
       </div>
       <div className={styles.btn_container}>
-
-      <Button  className={styles.btn_login}>
-               Continuar
-              </Button>
+        <Button className={styles.btn_login}>Continuar</Button>
       </div>
     </div>
   );
