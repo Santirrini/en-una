@@ -6,12 +6,20 @@ const {
   DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT
 } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`, {
+
+/* postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE} */
+const sequelize = new Sequelize(`postgres://postgres_enuna:AOCPHF9sRO4cROtFFlpGGChZJLt691my@dpg-co7hmt7sc6pc73c7kjf0-a.oregon-postgres.render.com/dbenuna`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // Para evitar errores de "self signed certificate"
+    }
+  }
 
 });
 const basename = path.basename(__filename);
