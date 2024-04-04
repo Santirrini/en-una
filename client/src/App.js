@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Restaurant from "./pages/Restaurant";
 import DetailsRestaurant from "./pages/DetailsRestaurant";
+import CarsFood from "./pages/CarsFood";
 import MenuFood from "./pages/MenuFood";
 
 
@@ -25,7 +26,9 @@ function App() {
             <Route path="/auth/register" element={<Register />} />
             <Route path="/restaurantes" element={<Restaurant />} />
             <Route path="/detalles/restaurante" element={<DetailsRestaurant />} />
+            <Route path="/carrito" element={<CarsFood />} />
             <Route path="/menu/restaurante" element={<MenuFood />} />
+            
           </Routes>
         </BrowserRouter>
     </div>
