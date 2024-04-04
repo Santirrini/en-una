@@ -13,7 +13,7 @@ import axios from 'axios'
  export const RegisterUser = (payload) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/register', payload);
+      const response = await axios.post('https://en-una.onrender.com/api/register', payload);
 
       // Aquí podrías despachar una acción indicando que el registro fue exitoso
       dispatch({ type: 'REGISTER_SUCCESS', payload: response.data });
@@ -34,7 +34,7 @@ import axios from 'axios'
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("http://localhost:3001/api/login", {
+      const response = await axios.post("https://en-una.onrender.com/api/login", {
         email,
         password,
       });
@@ -73,7 +73,7 @@ return {
 export const AllCompany = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/api/companys', payload);
+      const res = await axios.get('https://en-una.onrender.com/api/companys', payload);
       const data = res.data;
 
       dispatch({
@@ -94,7 +94,7 @@ export const dataPersonal = (token) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(
-        "http://localhost:3001/api/datapersonal",
+        "https://en-una.onrender.com/api/datapersonal",
         {
           method: "GET",
           headers: {
@@ -117,7 +117,7 @@ export const dataPersonal = (token) => {
 // En tu archivo de acciones (por ejemplo, actions.js)
 export const DeleteAccount = (token) => async (dispatch) => {
   try {
-    const response = await fetch('http://localhost:3001/api/deleteaccount', {
+    const response = await fetch('https://en-una.onrender.com/api/deleteaccount', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export const DeleteAccount = (token) => async (dispatch) => {
 export const postProduct = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('http://localhost:3001/post', payload);
+      const res = await axios.post('https://en-una.onrender.com/post', payload);
       const data = res.data;
 
       dispatch({
@@ -183,7 +183,7 @@ export const postProduct = (payload) => {
 export const deleteProduct= (productId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.delete(`http://localhost:3001/delete/${productId}`);
+      const res = await axios.delete(`https://en-una.onrender.com/delete/${productId}`);
       const data = res.data;
       dispatch({
         type: "DELETE_PRODUCT",
@@ -199,7 +199,7 @@ export const deleteProduct= (productId) => {
 export const AllUsers= (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/users', payload);
+      const res = await axios.get('https://en-una.onrender.com/users', payload);
       const data = res.data;
 
       dispatch({
@@ -217,7 +217,7 @@ export const AllUsers= (payload) => {
 export const ProductDetail= (productId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/product/${productId}`);
+      const res = await axios.get(`https://en-una.onrender.com/product/${productId}`);
       const data = res.data;
 
       dispatch({
@@ -233,7 +233,7 @@ export const ProductDetail= (productId) => {
 export const PaymentPaypal= (productId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/create-payment/${productId}`);
+      const res = await axios.post(`https://en-una.onrender.com/create-payment/${productId}`);
       const data = res.data;
 window.location.href = data.links[1].href
       dispatch({
@@ -249,7 +249,7 @@ window.location.href = data.links[1].href
 export const Order= (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/order`, payload);
+      const res = await axios.post(`https://en-una.onrender.com/order`, payload);
       const data = res.data;
       dispatch({
         type: "ORDER",
@@ -264,7 +264,7 @@ export const Order= (payload) => {
 export const AllOrder= () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/orders`);
+      const res = await axios.get(`https://en-una.onrender.com/orders`);
       const data = res.data;
       dispatch({
         type: "ALL_ORDER",
@@ -279,7 +279,7 @@ export const AllOrder= () => {
 export const OneOrder= (orderId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/order/${orderId}`);
+      const res = await axios.get(`https://en-una.onrender.com/order/${orderId}`);
       const data = res.data;
       dispatch({
         type: "DETAILS_ORDER",
@@ -293,7 +293,7 @@ export const OneOrder= (orderId) => {
 export const deleteOrder= (orderId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.delete(`http://localhost:3001/order/delete/${orderId}`);
+      const res = await axios.delete(`https://en-una.onrender.com/order/delete/${orderId}`);
       const data = res.data;
       dispatch({
         type: "DELETE_ORDER",
@@ -309,7 +309,7 @@ export const deleteOrder= (orderId) => {
 export const updateProduct= (productId, payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put(`http://localhost:3001/productupdate/${productId}`, payload);
+      const res = await axios.put(`https://en-una.onrender.com/productupdate/${productId}`, payload);
       const data = res.data;
       dispatch({
         type: "UPDATE_PRODUCT",
