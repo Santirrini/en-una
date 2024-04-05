@@ -25,17 +25,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { dataPersonal } from "../../redux/action";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
+import { useNavigate } from "react-router-dom";
 import Logout from "@mui/icons-material/Logout";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
 
 function DrawerAppBar(props) {
   const { window } = props;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const role = useSelector((state) => state.role);
   const token = useSelector((state) => state.token);
   const datapersonal = useSelector((state) => state.datapersonal);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,13 +51,17 @@ function DrawerAppBar(props) {
     dispatch(dataPersonal(token));
   }, [dispatch]);
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleLogout = () => {
+    setTimeout(async () => {
+      try {
+        localStorage.removeItem("token");
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    }, 3000);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -171,7 +176,15 @@ function DrawerAppBar(props) {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                   >
-                    <Avatar sx={{ width: 50, height: 50, backgroundColor: datapersonal.backgroundColor }} >{datapersonal.name && datapersonal.name[0]}</Avatar>
+                    <Avatar
+                      sx={{
+                        width: 50,
+                        height: 50,
+                        backgroundColor: datapersonal.backgroundColor,
+                      }}
+                    >
+                      {datapersonal.name && datapersonal.name[0]}
+                    </Avatar>
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -210,14 +223,30 @@ function DrawerAppBar(props) {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <MenuItem onClick={handleClose}>
-                <Avatar sx={{  backgroundColor: datapersonal.backgroundColor }} >{datapersonal.name && datapersonal.name[0]}</Avatar>
-                  Perfil
-                </MenuItem>
+                <Link to="/perfil">
+                  <MenuItem onClick={handleClose}>
+                    <Avatar
+                      sx={{ backgroundColor: datapersonal.backgroundColor }}
+                    >
+                      {datapersonal.name && datapersonal.name[0]}
+                    </Avatar>
+                    Perfil
+                  </MenuItem>
+                </Link>
 
+                {datapersonal.role && datapersonal.role === "restaurante" ? (
+                 <Link to= "/administrar">
+                 <MenuItem onClick={handleClose}>
+                    <SupervisorAccountIcon>
+                      {datapersonal.name && datapersonal.name[0]}
+                    </SupervisorAccountIcon>
+                    Administrar
+                  </MenuItem>
+                 </Link>
+                ) : null}
                 <Divider />
 
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>

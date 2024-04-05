@@ -15,8 +15,6 @@ export default function Login() {
   const [auth, setAuth] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
 
-
-  
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState(false);
   const error = () => {
@@ -41,7 +39,7 @@ export default function Login() {
           setAuth(authResult);
 
           if (authResult) {
-              navigate("/");
+            navigate("/");
           } else {
             error();
           }
@@ -53,7 +51,6 @@ export default function Login() {
       }
     }, 3000);
   };
-
 
   return (
     <>

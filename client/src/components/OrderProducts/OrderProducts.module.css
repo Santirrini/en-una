@@ -1,0 +1,61 @@
+
+.OrderProducts_container {
+    margin-top: 5em;
+}
+.InputContainer {
+    display: grid;
+    justify-content: center;
+    gap: 2em;
+ 
+}
+.postInput {
+    display: grid;
+}
+.GridInputs {
+  display: flex;
+  gap: 4em;
+
+}
+.boletin_container {
+    margin: 20px;
+    overflow: scroll;
+    max-height: 60vh;
+    margin-top: 5em;
+
+  }
+  .boletin_container_pdf{
+    margin: 20px;
+
+  }
+  
+  .boletin_table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .boletin_table th, .boletin_table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .boletin_table th {
+    background-color: #f2f2f2;
+  }
+  
+  .boletin_table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .boletin_table tbody tr:hover {
+    background-color: #e6e6e6;
+  }
+  .decoration_Link {
+    text-decoration: none;
+    color: black;
+  }
+
+  .search{
+    display: flex;
+    justify-content: center;
+   }

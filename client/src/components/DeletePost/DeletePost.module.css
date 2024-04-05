@@ -1,0 +1,45 @@
+.Catalogo_container {
+    margin-top: 2em;
+}
+
+
+.card {
+margin-bottom: 15em;
+}
+
+.bg_logo {
+   background-color: white;
+    
+}
+.bg_black {
+    background-color: black;
+}
+.text_destacado {
+    color: #ffc400;
+    font-weight: 800;
+    text-align: center;
+    font-size: 4em;
+}
+
+.text_title {
+    color: black;
+    font-weight: 800;
+    text-align: center;
+    font-size: 1em;
+}
+
+.select_category {
+width: 20%;
+margin-bottom: 2em;
+}
+.select_border {
+
+}
+@media only screen and (max-width: 768px) {
+    .text_destacado {
+        font-size: 2em;
+    }
+    .select_category {
+        width: 100%;
+        }
+  }
