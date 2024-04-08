@@ -6,9 +6,9 @@ import axios from 'axios'
 
 
 
+/* https://en-una.onrender.com/ */
 
-
-
+/* https://en-una.onrender.com */
  export const RegisterUser = (payload) => {
   return async (dispatch) => {
     try {
@@ -113,7 +113,22 @@ export const dataPersonal = (token) => {
   };
 };
 
-// En tu archivo de acciones (por ejemplo, actions.js)
+export const postRestaurant = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post('https://en-una.onrender.com/api/post-restaurant', payload);
+      const data = res.data;
+  console.log(data)
+      dispatch({
+        type: "POST_RESTAURANT",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al crear una publicación:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
 export const DeleteAccount = (token) => async (dispatch) => {
   try {
     const response = await fetch('https://en-una.onrender.com/api/deleteaccount', {
@@ -163,22 +178,7 @@ export const DeleteAccount = (token) => async (dispatch) => {
 
 
 
-export const postProduct = (payload) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.post('https://en-una.onrender.com/api/post', payload);
-      const data = res.data;
 
-      dispatch({
-        type: "POST_PRODUCT",
-        payload: data
-      });
-    } catch (error) {
-      console.error('Error al crear una publicación:', error);
-      // Puedes dispatchar una acción de error si es necesario.
-    }
-  };
-};
 export const deleteProduct= (productId) => {
   return async (dispatch) => {
     try {

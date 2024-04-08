@@ -69,7 +69,7 @@ export const rootReducer = (state = initialState, action) => {
         };
 
       
-    case 'POST_PRODUCT':
+    case 'POST_RESTAURANT':
       return {
         ...state,
       };

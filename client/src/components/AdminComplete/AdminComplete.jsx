@@ -21,7 +21,7 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import SignpostIcon from '@mui/icons-material/Signpost';
 import GroupIcon from '@mui/icons-material/Group';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 function AdminComplete(props) {
   const { window } = props;
@@ -60,19 +60,53 @@ function AdminComplete(props) {
           </ListItem>
         </Link>
       <Divider />
-      < Link to= 'publicar'>
+      < Link to= 'publicar-mi-restaurante'>
 
           <ListItem  disablePadding>
             <ListItemButton>
               <ListItemIcon>
                  <SignpostIcon />
               </ListItemIcon>
-              <ListItemText primary={'Publicar'} />
+              <ListItemText primary={'Publicar mi restaurante'} />
             </ListItemButton>
           </ListItem>
         </Link>
+        < Link to= 'mi-restaurante'>
+
+<ListItem  disablePadding>
+  <ListItemButton>
+    <ListItemIcon>
+       <SignpostIcon />
+    </ListItemIcon>
+    <ListItemText primary={'mi restaurante'} />
+  </ListItemButton>
+</ListItem>
+</Link>
+
+        < Link to= 'publicar'>
+
+
+</Link>
 
       <Divider />
+      < Link to= 'publicar-mi-menu'>
+
+<ListItem  disablePadding>
+  <ListItemButton>
+    <ListItemIcon>
+       <SignpostIcon />
+    </ListItemIcon>
+    <ListItemText primary={'Publicar mi menu'} />
+  </ListItemButton>
+</ListItem>
+</Link>
+< Link to= 'publicar'>
+
+
+</Link>
+
+<Divider />
+    
       < Link to= 'publicaciones'>
       <ListItem  disablePadding>
             <ListItemButton>
@@ -114,7 +148,7 @@ function AdminComplete(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            VIP MON NOAL
+           En-una
           </Typography>
         </Toolbar>
       </AppBar>
@@ -123,7 +157,6 @@ function AdminComplete(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"

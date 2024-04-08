@@ -12,6 +12,7 @@ import Admin from './pages/Admin';
 import PostProducts from './components/PostProducts/PostProducts';
 import Order from './pages/Order';
 import DeletePostPage from './pages/DeletePostPage';
+import Myrestaurant from "./pages/MyRestaurant";
 
 
 
@@ -26,9 +27,11 @@ function App() {
           <Routes>
           <Route path='/administrar' element={<Admin/>}>
             <Route index element={<PostProducts/>}/>
-            <Route path='publicar' element={<PostProducts/>}/>
+            <Route path='publicar-mi-restaurante' element={<PostProducts/>}/>
             <Route path='pedidos' element={<Order/>}/>
             <Route path='publicaciones' element={<DeletePostPage/>}/>
+            <Route path='mi-restaurante' element={<Myrestaurant/>}/>
+
           </Route>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
