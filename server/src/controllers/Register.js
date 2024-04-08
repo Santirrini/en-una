@@ -14,7 +14,7 @@ function getRandomColor() {
 
 module.exports = {
   Register: async (req, res) => {
-    const { name, password, email, phone, role } = req.body;
+    const { name, password, email, phone, role, restaurantId } = req.body;
 
     try {
       const existingUser = await User.findOne({ where: { email } });
@@ -27,12 +27,8 @@ module.exports = {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-
-   
-
-      const backgroundColor = getRandomColor(); // Genera un color aleatorio
+      const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-
 
       const newUser = await User.create({
         name: capitalizedName,
@@ -40,15 +36,21 @@ module.exports = {
         password: hashedPassword,
         phone,
         role,
-        backgroundColor: backgroundColor, // Asigna el color aleatorio al usuario
+        backgroundColor,
+        restaurantId, // Asigna el restaurante al usuario
+      });
+
+      // Obtener los detalles del restaurante relacionado
+      const userWithRestaurant = await User.findByPk(newUser.id, {
+        include: [Restaurant],
       });
 
       const tokenPayload = { id: newUser.id, role: newUser.role };
-      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN );
+      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
       console.log('Usuario creado correctamente');
 
-      return res.json({ token });
+      return res.json({ token, user: userWithRestaurant }); // Devuelve el usuario con los detalles del restaurante
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error en el servidor' });

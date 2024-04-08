@@ -19,7 +19,7 @@ const sequelize = new Sequelize(`postgres://postgres_enuna:AOCPHF9sRO4cROtFFlpGG
       require: true,
       rejectUnauthorized: false // Para evitar errores de "self signed certificate"
     }
-  }
+  } 
 
 });
 const basename = path.basename(__filename);
@@ -42,12 +42,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Inventario, Leads, User } = sequelize.models;
+const { Restaurant, User } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 /* Inventario.belongsToMany(Leads,{ through: 'pokemons_type'});
 Leads.belongsToMany(Inventario,{ through: 'pokemons_type'}); */
+Restaurant.hasOne(User);
+User.belongsTo(Restaurant, { foreignKey: 'restaurantId' });
 
 
 module.exports = {

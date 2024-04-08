@@ -2,11 +2,11 @@
 const { Router }= require('express');
 const router = Router();
 const {DeletePost} = require('../controllers/DeletePosts')
-const {PostProduct} = require('../controllers/PostProduct');
+const {PostRestaurant} = require('../controllers/PostRestaurant');
 const {AllProducts} = require('../controllers/AllProducts');
 const {Register} = require('../controllers/Register');
 const {Payment, handleWebhook} = require('../controllers/Payment');
-const {DetailsProducts} = require('../controllers/DetailsProducts');
+const {DetailsRestaurant} = require('../controllers/DetailsRestaurant');
 const {Order} = require('../controllers/Order');
 const {AllOrder} = require('../controllers/AllOrder');
 const {detailsOrder} = require('../controllers/detailsOrder');
@@ -35,12 +35,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.post('/post', upload.array('imageFile', 1000), PostProduct)
+router.post('/post-restaurant', upload.array('imageFile', 1000), PostRestaurant)
+router.get('/restaurant/:restaurantId', DetailsRestaurant);
 router.get('/products', AllProducts );
 router.post('/register', Register );
 router.post('/payment/:productId', Payment )
 router.post('/webhook', handleWebhook);
-router.get('/product/:productId', DetailsProducts);
 router.post('/order', Order);
 router.get('/orders', AllOrder);
 router.get('/order/:orderId', detailsOrder);
