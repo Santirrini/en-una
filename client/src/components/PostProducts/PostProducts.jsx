@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { postRestaurant } from "../../redux/action";
 import { useDropzone } from "react-dropzone";
 import styles from "./PostProducts.module.css";
@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function PostProducts() {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
-
+const token = useSelector(state => state.token);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     imageFile: [],
@@ -45,7 +45,7 @@ export default function PostProducts() {
         formData.append("imageFile", image);
       });
 
-      await dispatch(postRestaurant(formData));
+      await dispatch(postRestaurant(token, formData));
       success();
       
     } catch (error) {

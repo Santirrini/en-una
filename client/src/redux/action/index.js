@@ -113,12 +113,15 @@ export const dataPersonal = (token) => {
   };
 };
 
-export const postRestaurant = (payload) => {
+export const postRestaurant = (token, payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('https://en-una.onrender.com/api/post-restaurant', payload);
+      const res = await axios.post('https://en-una.onrender.com/api/post-restaurant', payload,  {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
       const data = res.data;
-  console.log(data)
       dispatch({
         type: "POST_RESTAURANT",
         payload: data

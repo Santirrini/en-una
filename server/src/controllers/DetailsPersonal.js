@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { User } = require('../db');
+const { User, Restaurant } = require('../db');
 
 module.exports = {
   DetailsPersonal: async (req, res) => {
@@ -17,6 +17,9 @@ module.exports = {
 
       const user = await User.findOne({ 
         where: { id: payload.id },
+        include: [{
+          model: Restaurant
+        }]
        });
 
       if (!user) {

@@ -8,10 +8,11 @@ const {Register} = require('../controllers/Register');
 const {Payment, handleWebhook} = require('../controllers/Payment');
 const {DetailsRestaurant} = require('../controllers/DetailsRestaurant');
 const {Order} = require('../controllers/Order');
-const {AllOrder} = require('../controllers/AllOrder');
+const {AllRestaurant} = require('../controllers/AllRestaurants');
 const {detailsOrder} = require('../controllers/detailsOrder');
 const {DeleteOrder} = require('../controllers/DeleteOrder');
 const {UpdateProduct} = require('../controllers/UpdateProduct');
+
 
 
 
@@ -35,14 +36,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.post('/post-restaurant', upload.array('imageFile', 1000), PostRestaurant)
+router.post('/post-restaurant', upload.array('imageFile', 1000), PostRestaurant);
+
+router.get('/restaurants', AllRestaurant);
 router.get('/restaurant/:restaurantId', DetailsRestaurant);
 router.get('/products', AllProducts );
 router.post('/register', Register );
 router.post('/payment/:productId', Payment )
 router.post('/webhook', handleWebhook);
 router.post('/order', Order);
-router.get('/orders', AllOrder);
 router.get('/order/:orderId', detailsOrder);
 router.delete('/delete/:productId', DeletePost);
 router.delete('/order/delete/:orderId', DeleteOrder);

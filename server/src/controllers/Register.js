@@ -1,4 +1,4 @@
-const { User } = require('../db');
+const { User, Restaurant } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();

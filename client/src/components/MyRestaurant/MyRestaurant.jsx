@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styles from "./Myrestaurant.module.css";
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { dataPersonal } from "../../redux/action";
 
 
 const ExpandMore = styled((props) => {
@@ -25,10 +27,17 @@ const ExpandMore = styled((props) => {
 
 export default function Cards() {
   const [expanded, setExpanded] = React.useState(false);
+  const dispatch = useDispatch();
+  const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
+  console.log(datapersonal)
 
+  const token = useSelector((state) => state.token);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  React.useEffect(() => {
+    dispatch(dataPersonal(token));
+  }, [dispatch]);
 
   return (
     <div>
@@ -42,13 +51,14 @@ export default function Cards() {
 
       <Card sx={{ maxWidth: 345,height: 400}}>
         <CardMedia
+        sx={{ position: "relative"}}
           component="img"
           height="194"
-          image="https://www.comedera.com/wp-content/uploads/2022/06/jalea-mixta.jpg"
+          image={datapersonal && datapersonal.imageFile[0]}
           alt="Paella dish"
         />
         <CardContent>
-          <Typography sx={{ textAlign: "center" }}>Peruana</Typography>
+          <Typography sx={{ textAlign: "center" }}>{datapersonal && datapersonal.name}</Typography>
         </CardContent>
         <Typography
           variant="body2"
@@ -59,71 +69,7 @@ export default function Cards() {
         </Typography>
       </Card>
       </Link>
-      <Link to= "/restaurantes">
-
-      <Card sx={{ maxWidth: 345, height: 400 }}>
-        <CardMedia
-          component="img"
-          height="194"
-          image="https://i0.wp.com/foodandpleasure.com/wp-content/uploads/2022/10/comida-nikkei-yakumanka-4.jpg?fit=1280%2C853&ssl=1"
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography sx={{ textAlign: "center" }}>Nikkei</Typography>
-        </CardContent>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center", paddingBottom: "2em" }}
-        >
-          Comida Nikkei
-        </Typography>
-      </Card>
-
-      </Link>
-      <Link to= "/restaurantes">
-
-      <Card sx={{ maxWidth: 345, height: 400 }}>
-        <CardMedia
-          component="img"
-          height="194"
-          image="https://centrosantafe.com.mx/cdn/shop/articles/comida_italiana.jpg?v=1538518314"
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography sx={{ textAlign: "center" }}>Italiana</Typography>
-        </CardContent>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center", paddingBottom: "2em" }}
-        >
-          Comida Italiana
-        </Typography>
-      </Card>
-      </Link>
-
-      <Link to= "/restaurantes">
-
-      <Card sx={{ maxWidth: 345, height: 400 }}>
-        <CardMedia
-          component="img"
-          height="194"
-          image="https://www.shutterstock.com/image-photo/international-fast-food-pizza-pasta-600nw-1861340713.jpg"
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography sx={{ textAlign: "center" }}>Internacional</Typography>
-        </CardContent>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center" }}
-        >
-          Comida Internacional
-        </Typography>
-      </Card>
-      </Link>
+     
 
     </div>
     </div>

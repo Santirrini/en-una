@@ -156,6 +156,20 @@ function DrawerAppBar(props) {
                 Carrito
               </Button>
             </Link>
+
+            {datapersonal.role && datapersonal.role === "restaurante" ? (
+                      <Link to="/administrar">
+                      <Button
+                        sx={{
+                          color: "#500075 ",
+                          fontFamily: "League Spartan",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        administrar
+                      </Button>
+                    </Link>
+                ) : null}
           </Box>
 
           {token ? (
@@ -234,16 +248,7 @@ function DrawerAppBar(props) {
                   </MenuItem>
                 </Link>
 
-                {datapersonal.role && datapersonal.role === "restaurante" ? (
-                 <Link to= "/administrar">
-                 <MenuItem onClick={handleClose}>
-                    <SupervisorAccountIcon>
-                      {datapersonal.name && datapersonal.name[0]}
-                    </SupervisorAccountIcon>
-                    Administrar
-                  </MenuItem>
-                 </Link>
-                ) : null}
+      
                 <Divider />
 
                 <MenuItem onClick={handleLogout}>

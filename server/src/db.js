@@ -8,7 +8,7 @@ const {
 
 
 /* postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE} */
-const sequelize = new Sequelize(`postgres://postgres_enuna:AOCPHF9sRO4cROtFFlpGGChZJLt691my@dpg-co7hmt7sc6pc73c7kjf0-a.oregon-postgres.render.com/dbenuna`, {
+const sequelize = new Sequelize(`postgres://postgres.wmlfpriogikwnqgmaxgf:3TqimSvNqkjo7Ddx@aws-0-us-west-1.pooler.supabase.com:5432/postgres`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   host: process.env.DB_HOST,
@@ -19,7 +19,7 @@ const sequelize = new Sequelize(`postgres://postgres_enuna:AOCPHF9sRO4cROtFFlpGG
       require: true,
       rejectUnauthorized: false // Para evitar errores de "self signed certificate"
     }
-  } 
+  }  
 
 });
 const basename = path.basename(__filename);
@@ -48,8 +48,9 @@ const { Restaurant, User } = sequelize.models;
 // Product.hasMany(Reviews);
 /* Inventario.belongsToMany(Leads,{ through: 'pokemons_type'});
 Leads.belongsToMany(Inventario,{ through: 'pokemons_type'}); */
-Restaurant.hasOne(User);
-User.belongsTo(Restaurant, { foreignKey: 'restaurantId' });
+// Aca vendrian las relaciones
+Restaurant.belongsTo(User, { foreignKey: 'userId', allowNull: false });
+User.hasOne(Restaurant, { foreignKey: 'userId' });
 
 
 module.exports = {
