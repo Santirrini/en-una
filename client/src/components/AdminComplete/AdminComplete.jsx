@@ -78,7 +78,7 @@ function AdminComplete(props) {
     <ListItemIcon>
        <SignpostIcon />
     </ListItemIcon>
-    <ListItemText primary={'mi restaurante'} />
+    <ListItemText primary={'Mi restaurante'} />
   </ListItemButton>
 </ListItem>
 </Link>

@@ -9,7 +9,7 @@ import axios from 'axios'
 /* https://en-una.onrender.com/ */
 
 /* https://en-una.onrender.com */
- export const RegisterUser = (payload) => {
+export const RegisterUser = (payload) => {
   return async (dispatch) => {
     try {
       const response = await axios.post('https://en-una.onrender.com/api/register', payload);
@@ -64,19 +64,19 @@ export const login = (email, password) => {
 // actions/authActions.js
 
 export const logout = () => {
-return {
-  type: 'LOGOUT',
-};
+  return {
+    type: 'LOGOUT',
+  };
 };
 
-export const AllCompany = (payload) => {
+export const AllRestaurant = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('https://en-una.onrender.com/api/companys', payload);
+      const res = await axios.get('https://en-una.onrender.com/api/restaurants',);
       const data = res.data;
 
       dispatch({
-        type: "ALL_COMPANY",
+        type: "ALL_RESTAURANTS",
         payload: data
       });
     } catch (error) {
@@ -85,7 +85,22 @@ export const AllCompany = (payload) => {
     }
   };
 };
+export const DetailRestaurant = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(`https://en-una.onrender.com/api/restaurant/${restaurantId}`);
+      const data = res.data;
 
+      dispatch({
+        type: "DETAIL_RESTAURANT",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar las compañias:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
 
 
 
@@ -116,7 +131,7 @@ export const dataPersonal = (token) => {
 export const postRestaurant = (token, payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('https://en-una.onrender.com/api/post-restaurant', payload,  {
+      const res = await axios.post('https://en-una.onrender.com/api/post-restaurant', payload, {
         headers: {
           Authorization: `${token}`,
         },
@@ -132,6 +147,28 @@ export const postRestaurant = (token, payload) => {
     }
   };
 };
+
+export const PostMenu = (token, payload, restaurantId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`https://en-una.onrender.com/api/post-menu/${restaurantId}`, payload, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const data = res.data;
+      dispatch({
+        type: "POST_MENU",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al crear una publicación:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
+
+
 export const DeleteAccount = (token) => async (dispatch) => {
   try {
     const response = await fetch('https://en-una.onrender.com/api/deleteaccount', {
@@ -182,7 +219,7 @@ export const DeleteAccount = (token) => async (dispatch) => {
 
 
 
-export const deleteProduct= (productId) => {
+export const deleteProduct = (productId) => {
   return async (dispatch) => {
     try {
       const res = await axios.delete(`https://en-una.onrender.com/api/delete/${productId}`);
@@ -198,7 +235,7 @@ export const deleteProduct= (productId) => {
 };
 
 
-export const AllUsers= (payload) => {
+export const AllUsers = (payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.get('https://en-una.onrender.com/api/users', payload);
@@ -216,7 +253,7 @@ export const AllUsers= (payload) => {
 };
 
 
-export const ProductDetail= (productId) => {
+export const ProductDetail = (productId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`https://en-una.onrender.com/api/product/${productId}`);
@@ -232,12 +269,12 @@ export const ProductDetail= (productId) => {
   };
 };
 
-export const PaymentPaypal= (productId) => {
+export const PaymentPaypal = (productId) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`https://en-una.onrender.com/api/create-payment/${productId}`);
       const data = res.data;
-window.location.href = data.links[1].href
+      window.location.href = data.links[1].href
       dispatch({
         type: "PAYMENT_PAYPAL",
         payload: data
@@ -248,7 +285,7 @@ window.location.href = data.links[1].href
   };
 };
 
-export const Order= (payload) => {
+export const Order = (payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`https://en-una.onrender.com/api/order`, payload);
@@ -263,7 +300,7 @@ export const Order= (payload) => {
   };
 };
 
-export const AllOrder= () => {
+export const AllOrder = () => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`https://en-una.onrender.com/api/orders`);
@@ -278,7 +315,7 @@ export const AllOrder= () => {
   };
 };
 
-export const OneOrder= (orderId) => {
+export const OneOrder = (orderId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`https://en-una.onrender.com/api/order/${orderId}`);
@@ -292,7 +329,7 @@ export const OneOrder= (orderId) => {
     }
   };
 };
-export const deleteOrder= (orderId) => {
+export const deleteOrder = (orderId) => {
   return async (dispatch) => {
     try {
       const res = await axios.delete(`https://en-una.onrender.com/api/order/delete/${orderId}`);
@@ -305,10 +342,10 @@ export const deleteOrder= (orderId) => {
       console.error('Error al borrar la orden:', error);
     }
   };
-}; 
+};
 
 
-export const updateProduct= (productId, payload) => {
+export const updateProduct = (productId, payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.put(`https://en-una.onrender.com/api/productupdate/${productId}`, payload);
@@ -321,7 +358,7 @@ export const updateProduct= (productId, payload) => {
       console.error('Error al actualizar publicación:', error);
     }
   };
-};   
+};
 
 export const AllProducts = (payload) => {
   return async (dispatch) => {

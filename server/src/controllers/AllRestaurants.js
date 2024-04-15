@@ -1,9 +1,13 @@
-const { Restaurant } = require('../db');
+const { Restaurant, User, Menu } = require('../db');
 module.exports = {
   AllRestaurant: async (req, res) => {
     try {
   
-        const restaurants = await Restaurant.findAll();
+        const restaurants = await Restaurant.findAll({
+          include: [
+            { model: Menu }
+          ]
+        });
 
         console.log('Todos los restaurantes');
 

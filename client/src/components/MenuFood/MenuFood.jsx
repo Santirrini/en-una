@@ -4,14 +4,27 @@ import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
+import {useSelector, useDispatch } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { DetailRestaurant } from '../../redux/action';
+import React, {useEffect} from 'react'
+
 
 export default function MenuFood() {
+  const { restaurantId } = useParams();
+  const dispatch = useDispatch();
+const restaurantdetails = useSelector(state => state.restaurantdetails.data);
+console.log(restaurantdetails?.Menus);
+useEffect(() => {
+  dispatch(DetailRestaurant(restaurantId))
+}, [dispatch, restaurantId]);
   return (
     <>
       <h1 className={styles.text}>Menu</h1>
       <div className={styles.menufood_container}>
+        {restaurantdetails?.Menus.map((data) => (
+
         <Card className={styles.menufood_box}>
           <CardMedia
             component="img"
@@ -22,14 +35,14 @@ export default function MenuFood() {
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
               <Typography component="div" variant="h5">
-                Live From Spaceas
+                {data.name}
               </Typography>
               <Typography
                 variant="subtitle1"
                 color="text.secondary"
                 component="div"
               >
-                Mac Miller
+                ${data.price}
               </Typography>
             </CardContent>
             <Box
@@ -48,6 +61,8 @@ export default function MenuFood() {
             </Box>
           </Box>
         </Card>
+        ))}
+
       </div>
     </>
   );

@@ -1,22 +1,41 @@
+import {useEffect} from 'react';
 import styles from "./DetailsRestaurant.module.css";
 import Button from "@mui/material/Button";
+import {useSelector, useDispatch } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { DetailRestaurant } from '../../redux/action';
+
 
 export default function DetailsRestaurant() {
+  const { restaurantId } = useParams();
+  const dispatch = useDispatch();
+const restaurantdetails = useSelector(state => state.restaurantdetails.data);
+
+useEffect(() => {
+  dispatch(DetailRestaurant(restaurantId))
+}, [dispatch, restaurantId]);
+  
   return (
     <div className={styles.food_container}>
       <div className={styles.food_box}>
         <div className={styles.img_container}>
           <img
-            src="https://www.comedera.com/wp-content/uploads/2022/06/jalea-mixta.jpg"
-            alt=""
+            src={restaurantdetails && restaurantdetails.imageFile[0]}
+            alt="Foto del restaurante"
           />
         </div>
         <div>
-          <h1 className={styles.text_container}>Comida</h1>
-          <h1 className={styles.text_box}>Dirección</h1>
+          <h1 className={styles.text_container}> {restaurantdetails && restaurantdetails.name}</h1>
+          <h1 className={styles.text_box}>{restaurantdetails && restaurantdetails.address}, { restaurantdetails &&  restaurantdetails.address_optional ? restaurantdetails.address_optional : null} </h1>
+          
+           <span><strong>Correo electrónico: </strong>{restaurantdetails && restaurantdetails.email}</span>
+          <br />
+           <span><strong>Telefóno: </strong>{restaurantdetails && restaurantdetails.phone}</span>
+
+           <br />
+         
           <p className={styles.text_p}>
-            asdasdasdasdasdsasdasdasdawdasd asd asdasdasd asdasd asdasdsad
-            asdasdasd asdasd asdasd
+        {restaurantdetails && restaurantdetails.details}
           </p>
         </div>
       </div>
@@ -53,7 +72,10 @@ export default function DetailsRestaurant() {
         </select>
       </div>
       <div className={styles.btn_container}>
+      <Link to={`/menu/restaurante/${restaurantId}`}>
+
         <Button className={styles.btn_login}>Continuar</Button>
+      </Link>
       </div>
     </div>
   );

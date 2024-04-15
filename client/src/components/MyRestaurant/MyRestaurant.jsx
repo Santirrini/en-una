@@ -9,10 +9,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styles from "./Myrestaurant.module.css";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { dataPersonal } from "../../redux/action";
-
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -29,7 +28,7 @@ export default function Cards() {
   const [expanded, setExpanded] = React.useState(false);
   const dispatch = useDispatch();
   const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
-  console.log(datapersonal)
+
 
   const token = useSelector((state) => state.token);
   const handleExpandClick = () => {
@@ -41,36 +40,35 @@ export default function Cards() {
 
   return (
     <div>
+      <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
 
-         <h1 className={styles.text}>
-    Todos los productos
-   </h1>
-    <div className={styles.cards_container}>
-   <Link to= "/restaurantes">
-
-
-      <Card sx={{ maxWidth: 345,height: 400}}>
-        <CardMedia
-        sx={{ position: "relative"}}
-          component="img"
-          height="194"
-          image={datapersonal && datapersonal.imageFile[0]}
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography sx={{ textAlign: "center" }}>{datapersonal && datapersonal.name}</Typography>
-        </CardContent>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center", paddingBottom: "2em" }}
-        >
-          Criollas y mariscos
-        </Typography>
-      </Card>
-      </Link>
-     
-
+      <h1 className={styles.text}>Mi restaurante</h1>
+      <div className={styles.cards_container}>
+        <Link to="/restaurantes">
+          <Card sx={{ maxWidth: 345 }}>
+            <CardMedia
+              sx={{ position: "relative" }}
+              component="img"
+              height="194"
+              image={datapersonal && datapersonal.imageFile[0]}
+              alt="Paella dish"
+            />
+            <CardContent>
+              <Typography sx={{ textAlign: "center" }}>
+                {datapersonal && datapersonal.name}
+              </Typography>
+            </CardContent>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ textAlign: "center", paddingBottom: "2em" }}
+            >
+              
+              {datapersonal && datapersonal.address}
+            </Typography>
+          </Card>
+        </Link>
+      </div>
     </div>
     </div>
 

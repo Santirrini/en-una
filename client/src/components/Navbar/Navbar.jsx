@@ -158,17 +158,18 @@ function DrawerAppBar(props) {
             </Link>
 
             {datapersonal.role && datapersonal.role === "restaurante" ? (
-                      <Link to="/administrar">
+              <a href="/administrar"  target="_blank">
+
                       <Button
                         sx={{
                           color: "#500075 ",
                           fontFamily: "League Spartan",
                           fontWeight: "bold",
                         }}
-                      >
+                        >
                         administrar
                       </Button>
-                    </Link>
+                </a>
                 ) : null}
           </Box>
 

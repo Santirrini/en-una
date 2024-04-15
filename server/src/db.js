@@ -6,20 +6,20 @@ const {
   DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT
 } = process.env;
 
-
+/*postgres://postgres.iezghlwlrowytktmdzqi:CALkTdzg9plV0IZI@aws-0-us-west-1.pooler.supabase.com:5432/postgres*/
 /* postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE} */
-const sequelize = new Sequelize(`postgres://postgres.wmlfpriogikwnqgmaxgf:3TqimSvNqkjo7Ddx@aws-0-us-west-1.pooler.supabase.com:5432/postgres`, {
+const sequelize = new Sequelize(`postgres://postgres.iezghlwlrowytktmdzqi:CALkTdzg9plV0IZI@aws-0-us-west-1.pooler.supabase.com:5432/postgres`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   dialect: 'postgres',
-  dialectOptions: {
+ dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false // Para evitar errores de "self signed certificate"
     }
-  }  
+  }   
 
 });
 const basename = path.basename(__filename);
@@ -42,15 +42,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Restaurant, User } = sequelize.models;
+const { Restaurant, User, Menu } = sequelize.models;
 
-// Aca vendrian las relaciones
-// Product.hasMany(Reviews);
-/* Inventario.belongsToMany(Leads,{ through: 'pokemons_type'});
-Leads.belongsToMany(Inventario,{ through: 'pokemons_type'}); */
-// Aca vendrian las relaciones
-Restaurant.belongsTo(User, { foreignKey: 'userId', allowNull: false });
+// Relaciones
 User.hasOne(Restaurant, { foreignKey: 'userId' });
+Restaurant.belongsTo(User, { foreignKey: 'userId' });
+
+Restaurant.hasMany(Menu, { foreignKey: 'restaurantId' });
+Menu.belongsTo(Restaurant, { foreignKey: 'restaurantId' });
 
 
 module.exports = {

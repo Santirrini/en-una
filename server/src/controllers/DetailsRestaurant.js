@@ -1,13 +1,14 @@
-const { Restaurant, User } = require('../db');
+const { Restaurant, User, Menu } = require('../db');
 
 module.exports = {
   DetailsRestaurant: async (req, res) => {
     const { restaurantId } = req.params;
     try {
       const restaurant = await Restaurant.findByPk(restaurantId, {
-        include: [{
-          model: User
-        }]
+        include: [
+          { model: User },
+          { model: Menu }
+        ]
       });
       if (!restaurant) {
         console.log('El restaurante no existe');

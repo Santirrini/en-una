@@ -3,17 +3,17 @@ const initialState = {
   role: [],
   loginUser: {},
   loginError: null,
-  allcompany: [],
+  allrestaurant: [],
   allUsers: [],
   registrationSuccess: false,
   registrationError: null,
   datapersonal: [],
-  productDetails: [],
+  restaurantdetails: [],
   allOrders: [],
   oneOrder: [],
   allCart: [],
 
-  
+
 }
 
 
@@ -39,7 +39,7 @@ export const rootReducer = (state = initialState, action) => {
         role: action.payload.role,
       };
 
- 
+
 
     case 'LOGIN_ERROR':
       return {
@@ -62,21 +62,26 @@ export const rootReducer = (state = initialState, action) => {
         datapersonal: action.payload,
         role: action.payload.role
       };
-      case 'DELETE_ACCOUNT':
-        return {
-          ...state,
-     
-        };
+    case 'DELETE_ACCOUNT':
+      return {
+        ...state,
 
-      
+      };
+
+
     case 'POST_RESTAURANT':
       return {
         ...state,
       };
-    case 'ALL_COMPANY':
+
+    case 'POST_MENU':
       return {
         ...state,
-        allcompany: action.payload
+      };
+    case 'ALL_RESTAURANTS':
+      return {
+        ...state,
+        allrestaurant: action.payload
       };
     case 'ALL_USERS':
       return {
@@ -84,10 +89,10 @@ export const rootReducer = (state = initialState, action) => {
         allUsers: action.payload
       };
 
-    case 'PRODUCT_DETAILS':
+    case 'DETAIL_RESTAURANT':
       return {
         ...state,
-        productDetails: action.payload
+        restaurantdetails: action.payload
       };
     case 'PAYMENT_PAYPAL':
       return {
@@ -103,33 +108,33 @@ export const rootReducer = (state = initialState, action) => {
         ...state,
         allOrders: action.payload
       };
-      case 'DETAILS_ORDER':
-        return {
-          ...state,
-          oneOrder: action.payload
-        };
-        case 'PRODUCT_CART':
-          return {
-            ...state,
-         
-          };
+    case 'DETAILS_ORDER':
+      return {
+        ...state,
+        oneOrder: action.payload
+      };
+    case 'PRODUCT_CART':
+      return {
+        ...state,
 
-          case 'ALL_CART':
-            return {
-              ...state,
-           
-              allCart: action.payload
-            };
+      };
 
-            case 'UPDATE_PRODUCT':
-            return {
-              ...state,
-           
-            };
+    case 'ALL_CART':
+      return {
+        ...state,
 
-        
-          
-            
+        allCart: action.payload
+      };
+
+    case 'UPDATE_PRODUCT':
+      return {
+        ...state,
+
+      };
+
+
+
+
 
 
     default: return { ...state }

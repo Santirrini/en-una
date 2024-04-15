@@ -9,10 +9,11 @@ import CarsFood from "./pages/CarsFood";
 import MenuFood from "./pages/MenuFood";
 import Perfil from "./pages/Perfil";
 import Admin from './pages/Admin';
-import PostProducts from './components/PostProducts/PostProducts';
+import PostProducts from './components/PostProducts/PostRestaurant';
 import Order from './pages/Order';
 import DeletePostPage from './pages/DeletePostPage';
 import Myrestaurant from "./pages/MyRestaurant";
+import PostMenus from "./pages/PostMenus";
 
 
 
@@ -28,6 +29,8 @@ function App() {
           <Route path='/administrar' element={<Admin/>}>
             <Route index element={<PostProducts/>}/>
             <Route path='publicar-mi-restaurante' element={<PostProducts/>}/>
+
+            <Route path='publicar-mi-menu' element={<PostMenus/>}/>
             <Route path='pedidos' element={<Order/>}/>
             <Route path='publicaciones' element={<DeletePostPage/>}/>
             <Route path='mi-restaurante' element={<Myrestaurant/>}/>
@@ -38,9 +41,9 @@ function App() {
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/restaurantes" element={<Restaurant />} />
-            <Route path="/detalles/restaurante" element={<DetailsRestaurant />} />
+            <Route path="/detalles/restaurante/:restaurantId" element={<DetailsRestaurant />} />
             <Route path="/carrito" element={<CarsFood />} />
-            <Route path="/menu/restaurante" element={<MenuFood />} />
+            <Route path="/menu/restaurante/:restaurantId" element={<MenuFood />} />
             <Route path="/perfil" element={<Perfil />} />
             
           </Routes>
