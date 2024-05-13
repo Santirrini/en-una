@@ -1,69 +1,43 @@
-const { Products, Transaccion } = require('../db');
-const Stripe = require('stripe');
-const stripe = new Stripe('sk_test_51OgZlTD6FRAUxT8Mk23Qrm1JByYZ6PLQ6Y3RlWfRGvX2qKCJLb1Euk276KadWvh2ffY1KbfpcK4A6ZcswJqkJuXU00iznVJrUz');
+require('dotenv').config();
+
+const { OPENPAY_API_KEY, OPENPAY_MERCHANT_ID } = process.env;
+const OpenPay = require('openpay');
+const openpay = new OpenPay(OPENPAY_MERCHANT_ID, OPENPAY_API_KEY, {
+  language: 'es_PE',
+  country: 'pe',
+  sandbox: true
+});
 
 module.exports = {
   Payment: async (req, res) => {
-    const { productId } = req.params;
-
     try {
-      const post = await Products.findByPk(productId);
-      if (!post) {
-        return res.status(404).json({ message: 'Publicación no encontrada' });
+      const { sourceId, amount, description, orderId } = req.body;
+      if (!sourceId || !amount || !description || !orderId) {
+        return res.status(400).send('Missing required fields');
       }
 
-      const session = await stripe.checkout.sessions.create({
-        billing_address_collection: 'required',
-        line_items: [
-          {
-            price_data: {
-              product_data: {
-                name: post.product,
-                description: post.details,
-              },
-              currency: 'eur',
-              unit_amount: post.price * 100,
-            },
-            quantity: 1,
-          },
-        ],
-        mode: 'payment',
-        success_url: 'https://placee-inc.vercel.app/success',
-        cancel_url: 'https://placee-inc.vercel.app/cancel',
+      const chargeData = {
+        method: 'card',
+        source_id: sourceId,
+        amount,
+        description,
+        order_id: orderId
+      };
+
+      const charge = await new Promise((resolve, reject) => {
+        openpay.charges.create(chargeData, (error, charge) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(charge);
+          }
+        });
       });
 
-      console.log('Pago exitoso');
-      res.redirect(session.url);
+      res.status(200).send(charge.redirect_url);
     } catch (error) {
-      console.error('Error al crear la sesión:', error);
-      return res.status(500).json({ message: 'Error del servidor' });
+      console.error('Error al procesar el pago:', error);
+      res.status(500).send('Error al procesar el pago');
     }
-  },
-
-  handleWebhook: async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    let event;
-
-    try {
-      // Asegúrate de que req.body esté disponible y sea un objeto parseado
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_ENDPOINT_SECRET);
-    } catch (err) {
-      console.error('Fallo en la construcción del evento webhook:', err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    // Handle the event
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object;
-        console.log('Pago exitoso:', paymentIntent.id);
-        break;
-      // Agrega más casos según sea necesario para manejar otros eventos
-      default:
-        console.log('Evento no manejado:', event.type);
-    }
-
-    // Envía una respuesta exitosa al webhook de Stripe
-    res.json({ received: true });
   }
 };

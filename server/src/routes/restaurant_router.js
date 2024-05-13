@@ -5,7 +5,7 @@ const {DeletePost} = require('../controllers/DeletePosts')
 const {PostRestaurant} = require('../controllers/PostRestaurant');
 const {AllProducts} = require('../controllers/AllProducts');
 const {Register} = require('../controllers/Register');
-const {Payment, handleWebhook} = require('../controllers/Payment');
+const {Payment, } = require('../controllers/Payment');
 const {DetailsRestaurant} = require('../controllers/DetailsRestaurant');
 const {Order} = require('../controllers/Order');
 const {AllRestaurant} = require('../controllers/AllRestaurants');
@@ -42,8 +42,7 @@ router.get('/restaurants', AllRestaurant);
 router.get('/restaurant/:restaurantId', DetailsRestaurant);
 router.get('/products', AllProducts );
 router.post('/register', Register );
-router.post('/payment/:productId', Payment )
-router.post('/webhook', handleWebhook);
+router.post('/payment', Payment )
 router.post('/order', Order);
 router.get('/order/:orderId', detailsOrder);
 router.delete('/delete/:productId', DeletePost);

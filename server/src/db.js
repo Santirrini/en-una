@@ -8,18 +8,18 @@ const {
 
 /*postgres://postgres.iezghlwlrowytktmdzqi:CALkTdzg9plV0IZI@aws-0-us-west-1.pooler.supabase.com:5432/postgres*/
 /* postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE} */
-const sequelize = new Sequelize(`postgres://postgres.iezghlwlrowytktmdzqi:CALkTdzg9plV0IZI@aws-0-us-west-1.pooler.supabase.com:5432/postgres`, {
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   dialect: 'postgres',
- dialectOptions: {
+/*  dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false // Para evitar errores de "self signed certificate"
     }
-  }   
+  }    */
 
 });
 const basename = path.basename(__filename);
