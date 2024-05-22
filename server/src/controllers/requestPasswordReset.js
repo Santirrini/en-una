@@ -30,7 +30,7 @@ module.exports = {
       }
 
       const token = jwt.sign({ id: user.id }, process.env.RESET_PASSWORD_SECRET, { expiresIn: '1h' });
-      const resetLink = `http://localhost:3000/restablacer-contraseña/${token}`;
+      const resetLink = `https://elarisneakers.com/restablacer-contraseña/${token}`;
       
       const emailContent = `
         <html>
