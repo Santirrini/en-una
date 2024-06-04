@@ -46,7 +46,7 @@ module.exports = (sequelize) => {
           
 
         details: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(3000),
 
         }
 

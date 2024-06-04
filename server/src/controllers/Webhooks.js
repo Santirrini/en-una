@@ -8,7 +8,7 @@ module.exports = {
 
 
     try {
-      openpay.webhooks.get("wwdomqrml2qek0v0jjza", function(error, webhook) {
+      openpay.webhooks.get("wsafts2reayqkfdgn9hj", function(error, webhook) {
         if (error) {
           console.error('Error al obtener el webhook:', error);
           return res.status(500).send(error);
