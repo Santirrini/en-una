@@ -54,7 +54,49 @@
     margin-bottom: 1em;
   }
 
+  /* Horarios.module.css */
+
+.container {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.label {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.inputTime {
+  width: 80px;
+  margin-right: 5px;
+}
+
+.button {
+  background-color: #000;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+.cerradoText{
+  margin-right: 10px;
+}
+
+
+
+
   @media (max-width: 768px) {
+    .container {
+      width: 90%;
+   
+    }
     .title {
       text-align: center;
       font-weight: bold;

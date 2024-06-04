@@ -1,3 +1,8 @@
+.carsfood_container {
+    margin-bottom: 2em;
+    
+}
+
 .menufood_container {
     display: flex;
     justify-content: center;
@@ -13,8 +18,58 @@
 
 .menufood_box {
     display: flex;
+    margin-bottom: 2em;
 }
 
 .btn_quantity{
     display: flex;
+}
+
+.modal_img {
+    z-index: 9000;
+    height: 50vh;
+}
+.btn_container {
+    display: flex;
+    justify-content: center;
+ 
+ }
+.form_container {
+    margin: auto;
+    background-color: white;
+    width: 30%;
+    max-width: 100%;
+    padding: 1em;
+    display: grid;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+ .select_container {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+.btn_login {
+    color: #ffffff !important;
+    background-color: #500075 !important;
+    border: 2px solid #500075;
+    border-radius: 0;
+    -webkit-box-shadow: 3px 3px #a994ba;
+    box-shadow: 3px 3px #a994ba;
+    padding: 0.5em;
+    width: 10em;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .form_container {
+        margin: auto;
+        background-color: white;
+        width: 90%;
+        max-width: 100%;
+        padding: 1em;
+        display: grid;
+        justify-content: center;
+        margin-bottom: 1em;
+    }
 }

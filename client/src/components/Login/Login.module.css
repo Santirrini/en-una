@@ -1,7 +1,6 @@
 .login_container {
     background-color: #edf4fb;
     width: 100vw; /* Usa el 100% del ancho de la ventana del navegador */
-    height: 100vh; /* Usa el 100% del alto de la ventana del navegador */
     overflow: hidden;
 }
 

@@ -32,7 +32,8 @@ export default function DeletePost() {
   const productsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const allProducts = useSelector((state) => state.allProducts);
+  const allProducts = useSelector((state) => state.allProducts) || [];
+console.log(allProducts)
   const location = useLocation();
   const [open, setOpen] = React.useState(false);
   const productDetails = useSelector((state) => state.productDetails);
@@ -41,11 +42,12 @@ export default function DeletePost() {
 useEffect(() => {
   setData((prevOrder) => ({
     ...prevOrder,
-    product: productDetails.product,
-    details: productDetails.details,
-    price: productDetails.price,
-    price_send: productDetails.price_send,
-  }));
+    product: productDetails?.product || "",
+    details: productDetails?.details || "",
+    price: productDetails?.price || "",
+    price_send: productDetails?.price_send || "",
+}));
+
 }, [productDetails]);
 
 // Dentro de handleOpen, solo necesitas abrir el modal, 
@@ -83,14 +85,16 @@ const handleOpen = (productId) => {
 
   const offset = (currentPage - 1) * productsPerPage;
 
-  const filteredProducts = selectedCategory
-    ? allProducts.filter((product) => product.category === selectedCategory)
-    : allProducts;
+ 
 
-  const sortedProducts = allProducts.sort((a, b) => {
+    const filteredProducts = selectedCategory
+    ? allProducts.filter((product) => product.category === selectedCategory)
+    : [];
+
+  const sortedProducts = filteredProducts.sort((a, b) => {
     return new Date(a.createdAt) - new Date(b.createdAt);
   });
-
+  
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = sortedProducts.slice(

@@ -1,15 +1,39 @@
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import MenuFoodComponent from "../components/MenuFood/MenuFood";
-
-
+import Footer from "../components/Footer/Footer";
+import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function MenuFood() {
-    return (
-        <div>
-            <Navbar/>
-            <div>
-<MenuFoodComponent/>
-            </div>
-        </div>
-    )
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setOpen(false);
+    }, 1000);
+  }, []);
+  return (
+    <div>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <div>
+        <Navbar />
+      </div>
+      <div>
+        <MenuFoodComponent />
+      </div>
+      <div>
+        <ButtonWhatsapp />
+      </div>
+      <div>
+        <Footer />
+      </div>
+    </div>
+  );
 }

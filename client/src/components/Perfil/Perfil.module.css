@@ -1,0 +1,21 @@
+.perfil_container {
+    padding: 10vh;
+    background-color: white;
+    border-radius: 2em;
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 10em;
+  }
+
+  @media (max-width: 768px) {
+    .perfil_container {
+        padding: 20px;
+        background-color: white;
+        border-radius: 2em;
+        width: 90%;
+        margin: 0 auto;
+        padding-bottom: 3em;
+        margin-top: 2em;
+    
+      }
+  }

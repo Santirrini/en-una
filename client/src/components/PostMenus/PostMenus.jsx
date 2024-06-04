@@ -11,7 +11,6 @@ export default function PostMenus() {
   const [messageApi, contextHolder] = message.useMessage();
 const token = useSelector(state => state.token);
 const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
-console.log(datapersonal)
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     imageFile: [],
@@ -27,7 +26,7 @@ console.log(datapersonal)
   };
   React.useEffect(() => {
     dispatch(dataPersonal(token));
-  }, [dispatch]);
+  }, [dispatch, token]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,8 +35,8 @@ console.log(datapersonal)
     try {
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("details", data.address);
-      formData.append("price", data.address_optional);
+      formData.append("details", data.details);
+      formData.append("price", data.price);
 
 
 
@@ -55,9 +54,8 @@ console.log(datapersonal)
       setData({
         imageFile: [],
         name: "",
-        phone: "",
-        email: "",
         details: "",
+        price: "",
       });
       setLoading(false);
     }

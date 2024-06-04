@@ -9,8 +9,20 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function PostProducts() {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
-const token = useSelector(state => state.token);
+  const token = useSelector((state) => state.token);
   const [loading, setLoading] = useState(false);
+  const [horarios, setHorarios] = useState([
+    { dia: "Lunes", inicio: "", fin: "", cerrado: false },
+    { dia: "Martes", inicio: "", fin: "", cerrado: false },
+    { dia: "Miércoles", inicio: "", fin: "", cerrado: false },
+    { dia: "Jueves", inicio: "", fin: "", cerrado: false },
+    { dia: "Viernes", inicio: "", fin: "", cerrado: false },
+    { dia: "Sábado", inicio: "", fin: "", cerrado: false },
+    { dia: "Domingo", inicio: "", fin: "", cerrado: false },
+  ]);
+
+  console.log(horarios);
+
   const [data, setData] = useState({
     imageFile: [],
     name: "",
@@ -20,54 +32,74 @@ const token = useSelector(state => state.token);
     email: "",
     details: "",
   });
+
+  const handleInputChange = (index, campo, valor) => {
+    const nuevosHorarios = [...horarios];
+    nuevosHorarios[index][campo] = valor;
+    setHorarios(nuevosHorarios);
+  };
+
+  const toggleCerrado = (index) => {
+    const nuevosHorarios = [...horarios];
+    nuevosHorarios[index].cerrado = !nuevosHorarios[index].cerrado;
+    setHorarios(nuevosHorarios);
+  };
+
   const success = () => {
     messageApi.open({
       type: "success",
       content: "Publicación creada correctamente",
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setTimeout(async () => {
+      try {
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("address", data.address);
+        formData.append("address_optional", data.address_optional);
+        formData.append("phone", data.phone);
+        formData.append("email", data.email);
+        formData.append("details", data.details);
+        
+        // Convertir el array de horarios a una cadena JSON
+        formData.append("horarios", JSON.stringify(horarios));
+        
+        data.imageFile.forEach((image) => {
+          formData.append("imageFile", image);
+        });
 
-    try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("address", data.address);
-      formData.append("address_optional", data.address_optional);
-
-      formData.append("phone", data.phone);
-      formData.append("email", data.email);
-      formData.append("details", data.details);
-
-      data.imageFile.forEach((image, index) => {
-        formData.append("imageFile", image);
-      });
-
-      await dispatch(postRestaurant(token, formData));
-      success();
-      
-    } catch (error) {
-      console.error("Error al crear el post:", error);
-      // Manejo de error, muestra un mensaje de error, etc.
-    } finally {
-      setData({
-        imageFile: [],
-        name: "",
-        address: "",
-        address_optional: "",
-        phone: "",
-        email: "",
-        details: "",
-      });
-      setLoading(false);
-    }
-  }, 2000);
-
+        await dispatch(postRestaurant(token, formData));
+        success();
+      } catch (error) {
+        console.error("Error al crear el post:", error);
+        // Manejo de error, muestra un mensaje de error, etc.
+      } finally {
+        setData({
+          imageFile: [],
+          name: "",
+          address: "",
+          address_optional: "",
+          phone: "",
+          email: "",
+          details: "",
+        });
+        setHorarios([
+          { dia: "Lunes", inicio: "", fin: "", cerrado: false },
+          { dia: "Martes", inicio: "", fin: "", cerrado: false },
+          { dia: "Miércoles", inicio: "", fin: "", cerrado: false },
+          { dia: "Jueves", inicio: "", fin: "", cerrado: false },
+          { dia: "Viernes", inicio: "", fin: "", cerrado: false },
+          { dia: "Sábado", inicio: "", fin: "", cerrado: false },
+          { dia: "Domingo", inicio: "", fin: "", cerrado: false },
+        ]);
+        setLoading(false);
+      }
+    }, 2000);
   };
-
-
 
   const handleImage = useCallback((acceptedFiles) => {
     setData((prevState) => ({
@@ -94,7 +126,6 @@ const token = useSelector(state => state.token);
       imageFile: newFilesArray,
     }));
   };
-
 
   return (
     <form onSubmit={handleSubmit}>
@@ -141,6 +172,7 @@ const token = useSelector(state => state.token);
           </div>
         </div>
         <div className="mx-auto mt-16 max-w-xl sm:mt-20">
+          
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
               <label
@@ -248,6 +280,45 @@ const token = useSelector(state => state.token);
               </div>
             </div>
 
+            <div className={styles.container}>
+      <h3>Horarios</h3>
+        {horarios.map((horario, index) => (
+          <div key={index} className={styles.formGroup} >
+            <label className={styles.label}>{horario.dia}</label>
+            {horario.cerrado ? (
+              <span className={styles.cerradoText}>Cerrado</span>
+            ) : (
+              <>
+                <input
+                  type="time"
+                  value={horario.inicio}
+                  onChange={(e) =>
+                    handleInputChange(index, "inicio", e.target.value)
+                  }
+                  className={styles.inputTime}
+                />
+                <span>-</span>
+                <input
+                  type="time"
+                  value={horario.fin}
+                  onChange={(e) =>
+                    handleInputChange(index, "fin", e.target.value)
+                  }
+                  className={styles.inputTime}
+                />
+              </>
+            )}
+            <input
+              type="checkbox"
+              checked={horario.cerrado}
+              onChange={() => toggleCerrado(index)}
+            />
+          </div>
+        ))}
+  
+    </div>
+   
+
         
             <div className="sm:col-span-2">
               <label
@@ -290,6 +361,7 @@ const token = useSelector(state => state.token);
             {contextHolder}
           </div>
         </div>
+ 
       </div>
     </form>
   );

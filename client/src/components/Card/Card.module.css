@@ -4,7 +4,7 @@
   justify-content: center;
   gap: 1em;
   padding-top: 2em;
-  padding-bottom: 2em;
+  padding-bottom: 10em;
 }
 
 .text {
@@ -12,6 +12,10 @@
   font-size: 20px;
   padding-left: 2em;
   text-align: center;
+}
+.decoretion_text {
+  text-decoration: none;
+
 }
 @media (max-width: 768px) {
   .cards_container {

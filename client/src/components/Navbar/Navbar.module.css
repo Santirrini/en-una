@@ -15,7 +15,14 @@
     gap: 5em;
 }
 
-
+.logo_mobile {
+    width: 50%;
+    margin: auto;
+}
+.avatar {
+        width: 60px !important;
+        height: 60px !important;
+}
 .btn_login {
     color: #ffffff !important;
     background-color: #500075 !important;
@@ -25,7 +32,24 @@
     box-shadow: 3px 3px #a994ba;
     padding: 0.5em;
     width: 10em;
-    text-align: center;
+    text-align: center ;
 }
- 
+.search {
+    width: 100%;
+    border: "1px solid #500075";
+    outline: none;
+    border-radius: 10px;
+    height: 2.5em;
+    padding-left: 3em;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .avatar {
+        display: none !important;
+    }
+}
+  
 

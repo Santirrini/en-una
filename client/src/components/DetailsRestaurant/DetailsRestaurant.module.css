@@ -5,21 +5,14 @@
 
 .food_box {
     display: flex;
-    padding-left: 2em;
+    flex-wrap: wrap;
     gap: 1em;
-    margin-bottom: 2em;
+    width: 90%;
+    margin: auto;
 
 }
 
-.img_container {
-    width: 600px;
-}
 
-.img_container img {
-    width: 600px;
-    height: 400px;
-    object-fit: cover;
-}
 
 .text_container {
     font-weight: bold;
@@ -37,6 +30,8 @@
 
 .select_container {
     display: flex;
+    width: 90%;
+    margin: auto;
     gap: 1em;
     margin-bottom: 2em;
 }
@@ -56,4 +51,19 @@
    display: flex;
    justify-content: center;
 
+}
+
+@media (max-width: 768px) {
+    .text_container {
+        font-size: 20px;
+    }
+    .text_box {
+        font-size: 15px;
+
+    }
+
+    .select_container {
+        display: grid;
+       
+    }
 }

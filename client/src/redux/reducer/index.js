@@ -12,8 +12,11 @@ const initialState = {
   allOrders: [],
   oneOrder: [],
   allCart: [],
-
-
+  emailSent: false,
+  error: null,
+  message: '',
+  paymentData: null,
+  orderDetails: []
 }
 
 
@@ -50,7 +53,7 @@ export const rootReducer = (state = initialState, action) => {
     case 'LOGOUT':
       return {
         ...state,
-        token: null,
+        token: localStorage.removeItem("token"),
         role: null,
 
       };
@@ -131,10 +134,49 @@ export const rootReducer = (state = initialState, action) => {
         ...state,
 
       };
+      case 'SEND_EMAIL_SUCCESS':
+      return {
+        ...state,
+        emailSent: true,
+        error: null,
+      };
+    case 'SEND_EMAIL_FAILURE':
+      return {
+        ...state,
+        emailSent: false,
+        error: action.payload,
+      };
+  // En tu reducer
+case "RESET_SUCCESS":
+  return {
+    ...state,
+    message: 'Contraseña restablecida correctamente',
+    error: null,
+  };
+case "RESET_FAILURE":
+  return {
+    ...state,
+    message: null,
+    error: 'Error al restablecer la contraseña',
+  };
+  case "PAYMENT_RESERVE":
+    return {
+      ...state,
+      paymentData: action.payload,
+      paymentError: null,
+    };
+  case "PAYMENT_ERROR":
+    return {
+      ...state,
+      paymentError: action.payload,
+    };
+    case "ORDER_DETAIL":
+    return {
+      ...state,
+      orderDetails: action.payload,
+    };
 
-
-
-
+    
 
 
     default: return { ...state }

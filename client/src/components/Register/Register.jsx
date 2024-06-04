@@ -36,16 +36,15 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoadingSuccess(true);
-    setTimeout(async () => {
       try {
         const registers = await dispatch(RegisterUser(data));
         if (registers) {
           Success();
           setTimeout(async () => {
-            navigate("/auth/login");
+            navigate("/iniciar-sesión");
           }, 2000);
         }
       } catch (error) {
@@ -54,7 +53,6 @@ export default function Register() {
       } finally {
         setLoadingSuccess(false);
       }
-    }, 3000);
   };
 
   const handleChange = (e) => {
@@ -68,13 +66,7 @@ export default function Register() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <Link to="/">
-            <img
-              className={styles.logo_login}
-              src={require("../../Images/Logo.png")}
-              alt="Your Company"
-            />
-          </Link>
+      
           <h2
             className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
           >
@@ -235,7 +227,7 @@ export default function Register() {
           <p className="mt-10 text-center text-sm text-gray-500">
             Si tiene una cuenta, haga click{" "}
             <Link
-              to="/auth/login"
+              to="/iniciar-sesión"
               className={`font-semibold leading-6 text-indigo-600 hover:text-indigo-500 `}
             >
               aquí
