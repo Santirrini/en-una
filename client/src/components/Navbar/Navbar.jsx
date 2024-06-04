@@ -77,10 +77,12 @@ export default function PrimarySearchAppBar() {
   const open = Boolean(anchorEl);
   const inputRef = React.useRef(null);
   const [items, setItems] = React.useState([]);
+  const [cartItemCount, setCartItemCount] = React.useState(0);
   React.useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     setItems(cartItems);
-  }, []);
+    setCartItemCount(cartItems.length)
+  }, [cartItemCount]);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -108,6 +110,7 @@ export default function PrimarySearchAppBar() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleLogout = async () => {
     try {
       await dispatch(logout());
@@ -305,7 +308,7 @@ export default function PrimarySearchAppBar() {
                   textAlign: "center",
                   maxHeight: "400px",
                   overflow: "auto",
-                  zIndex: 2000
+                  zIndex: 2000,
                 }}
               >
                 {allrestaurant &&
@@ -323,8 +326,7 @@ export default function PrimarySearchAppBar() {
                             <ListItemIcon>
                               <Avatar
                                 src={row.imageFile[0]}
-                                className= {styles.avatar}
-                           
+                                className={styles.avatar}
                               ></Avatar>
                             </ListItemIcon>
                             <ListItemText>
@@ -469,8 +471,8 @@ export default function PrimarySearchAppBar() {
                   </Link>
                 ) : null}
 
-{datapersonal.role && datapersonal.role === "personal" ? (
-                  <Link to="/mis-reservaciones" >
+                {datapersonal.role && datapersonal.role === "personal" ? (
+                  <Link to="/mis-reservaciones">
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>
                         <AdminPanelSettingsIcon fontSize="small" />
@@ -503,7 +505,7 @@ export default function PrimarySearchAppBar() {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={token ? items.length : null} color="error">
+              <Badge badgeContent={token ? cartItemCount : null} color="error">
                 <ShoppingCartIcon
                   sx={{
                     color: "#500075 ",

@@ -51,7 +51,7 @@ module.exports = {
         }));
 
         // Crear el restaurante
-        const { name, address, address_optional, phone, email, details, horarios } = req.body;
+        const { name, address, address_optional, phone, email, details, horarios, local } = req.body;
 
         // Asegúrate de convertir horarios a un array si es un string
         let parsedHorarios;
@@ -69,6 +69,7 @@ module.exports = {
           address_optional,
           phone,
           email,
+          local,
           horarios: parsedHorarios, // Usar el array parseado
           details,
           userId // Asignar el ID del usuario al restaurante

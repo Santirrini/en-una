@@ -19,6 +19,8 @@
 .menufood_box {
     display: flex;
     margin-bottom: 2em;
+    max-width: 90%;
+
 }
 
 .btn_quantity{

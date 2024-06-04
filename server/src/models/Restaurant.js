@@ -33,7 +33,11 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
-      
+        local: {
+            type: DataTypes.STRING,
+
+        },
+        
 
         horarios: {
             type: DataTypes.ARRAY(DataTypes.JSON),

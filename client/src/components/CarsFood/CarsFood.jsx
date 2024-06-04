@@ -21,7 +21,7 @@ export default function CarsFood() {
   const [formData, setFormData] = React.useState({});
   const [quantity, setQuantity] = React.useState({});
   const [reserve, setReserve] = React.useState({
-    location: "",
+    local: "",
     date: "",
     hours: "",
     peoples: "",
@@ -49,9 +49,8 @@ export default function CarsFood() {
 
     const form = JSON.parse(localStorage.getItem("form")) || {};
     setFormData(form);
-    console.log(form);
     setReserve({
-      location: form[0]?.formData.location || "",
+      local: form[0]?.formData.local || "",
       date: form[0]?.formData.date || "",
       hours: form[0]?.formData.hours || "",
       peoples: form[0]?.formData.peoples || "",
@@ -232,7 +231,6 @@ export default function CarsFood() {
                       pl: 1,
                       pb: 1,
                       justifyContent: "center",
-                      gap: "1em",
                     }}
                   >
                     <ButtonGroup sx={{ display: "flex", gap: "1em" }}>
@@ -275,8 +273,8 @@ export default function CarsFood() {
           <div className={styles.form_container}>
             <h2>Resumen de la reserva:</h2>
             <p>
-              <strong>Localidad:</strong>{" "}
-              {formData[0].formData && formData[0].formData.location}
+              <strong>Local:</strong>{" "}
+              {formData[0].formData && formData[0].formData.local}
             </p>
             <p>
               <strong>Fecha:</strong> {formData[0]?.formData.date}

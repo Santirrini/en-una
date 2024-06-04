@@ -21,6 +21,8 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import SignpostIcon from "@mui/icons-material/Signpost";
 import GroupIcon from "@mui/icons-material/Group";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 const drawerWidth = 300;
 
 function AdminComplete(props) {
@@ -48,7 +50,7 @@ function AdminComplete(props) {
       <Toolbar />
       <Divider />
       <List>
-        <Link to="pedidos">
+    {/*     <Link to="pedidos">
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -57,13 +59,13 @@ function AdminComplete(props) {
               <ListItemText primary={"Pedidos"} />
             </ListItemButton>
           </ListItem>
-        </Link>
-        <Divider />
+        </Link> */}
+    {/*   <Divider /> */}
         <Link to="publicar-mi-restaurante">
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <SignpostIcon />
+                <StorefrontIcon />
               </ListItemIcon>
               <ListItemText primary={"Publicar mi restaurante"} />
             </ListItemButton>
@@ -71,7 +73,7 @@ function AdminComplete(props) {
         </Link>
         <Divider />
 
-        < Link to= 'mi-restaurante'>
+ {/*        < Link to= 'mi-restaurante'>
 
 <ListItem  disablePadding>
   <ListItemButton>
@@ -81,14 +83,14 @@ function AdminComplete(props) {
     <ListItemText primary={'Mi restaurante'} />
   </ListItemButton>
 </ListItem>
-</Link>
+</Link> */}
 
         <Divider />
         <Link to="publicar-mi-menu">
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <SignpostIcon />
+                <RestaurantIcon />
               </ListItemIcon>
               <ListItemText primary={"Publicar mi menu"} />
             </ListItemButton>
@@ -97,7 +99,7 @@ function AdminComplete(props) {
        
 
         <Divider />
-
+{/* 
         <Link to="publicaciones">
           <ListItem disablePadding>
             <ListItemButton>
@@ -107,7 +109,7 @@ function AdminComplete(props) {
               <ListItemText primary={"Publicaciones"} />
             </ListItemButton>
           </ListItem>
-        </Link>
+        </Link> */}
       </List>
     </div>
   );

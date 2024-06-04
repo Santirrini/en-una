@@ -16,7 +16,6 @@ export default function MenuFood() {
   const dispatch = useDispatch();
   const restaurantdetails = useSelector((state) => state.restaurantdetails.data);
   const [cartItems, setCartItems] = useState([]);
-
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -35,9 +34,12 @@ export default function MenuFood() {
     }
 
     const updatedCart = [...cart, { name: product.name, price: product.price, quantity: 1, imageFile: product.imageFile, restaurantId: product.restaurantId }];
-    setCartItems(updatedCart);
+    setCartItems([...updatedCart]);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
+
+ 
+  
 
   return (
     <div>

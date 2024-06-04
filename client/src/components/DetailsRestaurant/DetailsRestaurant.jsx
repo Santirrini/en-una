@@ -13,14 +13,12 @@ export default function DetailsRestaurant() {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
-  console.log(restaurantdetails);
 
   const [formData, setFormData] = useState({
     date: "",
     hours: "",
     peoples: "",
-    location: "",
-    open: "",
+    local: "",
   });
   const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
@@ -43,7 +41,7 @@ export default function DetailsRestaurant() {
       formData.date &&
       formData.hours &&
       formData.peoples &&
-      formData.location
+      formData.local
     ) {
       const updatedCart = [...items, { formData }];
       localStorage.setItem("form", JSON.stringify(updatedCart));
@@ -104,19 +102,17 @@ export default function DetailsRestaurant() {
       <br />
 
       <form className={styles.select_container}>
-        <label htmlFor="location">Local</label>
+        <label htmlFor="local">Local</label>
         <select
-          name="location"
-          value={formData.location}
+          name="local"
+          value={formData.local}
           onChange={handleChange}
           className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
           required
         >
-          <option value="">Seleccionar la local</option>
-          <option value="80">80</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="300">300</option>
+          <option value="">Seleccionar local</option>
+          <option value={restaurantdetails && restaurantdetails.local }>{restaurantdetails && restaurantdetails.local }</option>
+         
         </select>
 
         <label htmlFor="date">Fecha</label>
@@ -191,46 +187,20 @@ export default function DetailsRestaurant() {
 
         <label htmlFor="peoples">Personas</label>
         <select
-          name="peoples"
-          value={formData.peoples}
-          onChange={handleChange}
-          className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-          required
-        >
-          <option value="">Seleccionar la cantidad de personas</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">1</option>
-          <option value="10">2</option>
-          <option value="11">3</option>
-          <option value="12">4</option>
-          <option value="13">5</option>
-          <option value="14">6</option>
-          <option value="15">7</option>
-          <option value="16">8</option>
-          <option value="17">1</option>
-          <option value="18">2</option>
-          <option value="19">3</option>
-          <option value="20">4</option>
-          <option value="21">5</option>
-          <option value="22">6</option>
-          <option value="23">7</option>
-          <option value="24">8</option>
-          <option value="25">1</option>
-          <option value="26">2</option>
-          <option value="27">3</option>
-          <option value="28">4</option>
-          <option value="29">5</option>
-          <option value="30">6</option>
-          <option value="31">7</option>
-          <option value="32">8</option>
-        </select>
+  name="peoples"
+  value={formData.peoples}
+  onChange={handleChange}
+  className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+  required
+>
+  <option value="">Seleccionar la cantidad de personas</option>
+  {[...Array(100).keys()].map((num) => (
+    <option key={num + 1} value={num + 1}>
+      {num + 1}
+    </option>
+  ))}
+</select>
+
       </form>
       {error ? (
         <p

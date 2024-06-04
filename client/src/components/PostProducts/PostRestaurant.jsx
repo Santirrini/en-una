@@ -31,6 +31,8 @@ export default function PostProducts() {
     phone: "",
     email: "",
     details: "",
+    local: "",
+
   });
 
   const handleInputChange = (index, campo, valor) => {
@@ -55,7 +57,6 @@ export default function PostProducts() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(async () => {
       try {
         const formData = new FormData();
         formData.append("name", data.name);
@@ -64,6 +65,8 @@ export default function PostProducts() {
         formData.append("phone", data.phone);
         formData.append("email", data.email);
         formData.append("details", data.details);
+        formData.append("local", data.local);
+
         
         // Convertir el array de horarios a una cadena JSON
         formData.append("horarios", JSON.stringify(horarios));
@@ -86,6 +89,8 @@ export default function PostProducts() {
           phone: "",
           email: "",
           details: "",
+          local: "",
+
         });
         setHorarios([
           { dia: "Lunes", inicio: "", fin: "", cerrado: false },
@@ -98,7 +103,6 @@ export default function PostProducts() {
         ]);
         setLoading(false);
       }
-    }, 2000);
   };
 
   const handleImage = useCallback((acceptedFiles) => {
@@ -188,6 +192,25 @@ export default function PostProducts() {
                   id="name"
                   onChange={(e) => setData({ ...data, name: e.target.value })}
                   value={data.name}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="local"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Local
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="text"
+                  name="local"
+                  id="local"
+                  onChange={(e) => setData({ ...data, local: e.target.value })}
+                  value={data.local}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                 />
