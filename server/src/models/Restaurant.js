@@ -33,6 +33,13 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
+      
+
+        horarios: {
+            type: DataTypes.ARRAY(DataTypes.JSON),
+            defaultValue: []
+          },
+          
 
         details: {
             type: DataTypes.STRING,

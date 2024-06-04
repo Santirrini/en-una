@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User, Restaurant, Menu } = require('../db');
+const { User, Restaurant, Menu, SuccessPayment, Order } = require('../db');
 
 module.exports = {
   DetailsPersonal: async (req, res) => {
@@ -15,11 +15,28 @@ module.exports = {
 
       const user = await User.findOne({ 
         where: { id: payload.id },
-        include: [{
-          model: Restaurant,
-          include: Menu // Incluye los menús asociados al restaurante
-        }]
+        include: [
+          {
+            model: Restaurant,
+            include: [
+              {
+                model: Menu // Incluye los menús asociados al restaurante
+              }
+            ]
+          },
+          {
+            model: SuccessPayment,
+            as: 'successPayments', // Usa el alias correcto definido en la asociación
+            include: [
+              {
+                model: Order,
+                as: 'orders' // Usa el alias correcto definido en la asociación
+              }
+            ]
+          }
+        ]
       });
+      
 
       if (!user) {
         console.log('Usuario no encontrado');

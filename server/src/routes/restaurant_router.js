@@ -7,11 +7,14 @@ const {AllProducts} = require('../controllers/AllProducts');
 const {Register} = require('../controllers/Register');
 const {Payment, } = require('../controllers/Payment');
 const {DetailsRestaurant} = require('../controllers/DetailsRestaurant');
-const {Order} = require('../controllers/Order');
+const {AllOrder} = require('../controllers/AllOrder');
 const {AllRestaurant} = require('../controllers/AllRestaurants');
-const {detailsOrder} = require('../controllers/detailsOrder');
 const {DeleteOrder} = require('../controllers/DeleteOrder');
 const {UpdateProduct} = require('../controllers/UpdateProduct');
+
+const {OrderDratails} = require('../controllers/OrderDratails');
+const {Webhooks} = require('../controllers/Webhooks');
+const {WebHooksEvent} = require('../controllers/WebHooksEvent');
 
 
 
@@ -43,8 +46,11 @@ router.get('/restaurant/:restaurantId', DetailsRestaurant);
 router.get('/products', AllProducts );
 router.post('/register', Register );
 router.post('/payment', Payment )
-router.post('/order', Order);
-router.get('/order/:orderId', detailsOrder);
+router.get('/obtener-webhook', Webhooks )
+router.post('/webhooks', WebHooksEvent )
+
+router.get('/orders', AllOrder);
+router.get('/order/:orderId', OrderDratails);
 router.delete('/delete/:productId', DeletePost);
 router.delete('/order/delete/:orderId', DeleteOrder);
 router.put('/productupdate/:productId', UpdateProduct);

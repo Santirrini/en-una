@@ -10,7 +10,7 @@ module.exports = {
     try {
       const user = await User.findOne({
         where: { email },
-        attributes: ['id', 'email', 'password', 'phone', 'role'],
+        attributes: ['id', 'name', 'email', 'password', 'phone', 'role'],
       });
 
       if (!user) {
@@ -27,6 +27,7 @@ module.exports = {
 
       const tokenPayload = {
         id: user.id,
+        name: user.name,
         email: user.email,
         password: user.password,
         phone: user.phone,

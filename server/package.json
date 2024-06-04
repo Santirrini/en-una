@@ -7,7 +7,7 @@
     "start": "nodemon -L",
     "test": "mocha -w ./tests/**/*.spec.js"
   },
-  "author": "Henry",
+  "author": "ELARITECH",
   "license": "ISC",
   "engines": {
     "node": ">=12.18.3",
@@ -28,14 +28,14 @@
     "multer": "^1.4.5-lts.1",
     "node-binance-api": "^0.13.1",
     "nodemailer": "^6.9.13",
-    "openpay": "^1.0.5",
     "passport": "^0.7.0",
     "pg": "^8.5.1",
     "postgres": "^3.3.2",
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
     "stripe": "^14.15.0",
-    "urllib": "^3.25.0"
+    "underscore": "1.13.6",
+    "urllib": "^2.36.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",

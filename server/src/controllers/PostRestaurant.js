@@ -51,7 +51,17 @@ module.exports = {
         }));
 
         // Crear el restaurante
-        const { name, address, address_optional, phone, email, details } = req.body;
+        const { name, address, address_optional, phone, email, details, horarios } = req.body;
+
+        // Asegúrate de convertir horarios a un array si es un string
+        let parsedHorarios;
+        try {
+          parsedHorarios = JSON.parse(horarios);
+        } catch (error) {
+          console.error('Error al parsear los horarios:', error);
+          return res.status(400).send('El formato de los horarios no es válido');
+        }
+
         const newRestaurant = await Restaurant.create({
           imageFile: imageUrls,
           name,
@@ -59,6 +69,7 @@ module.exports = {
           address_optional,
           phone,
           email,
+          horarios: parsedHorarios, // Usar el array parseado
           details,
           userId // Asignar el ID del usuario al restaurante
         });

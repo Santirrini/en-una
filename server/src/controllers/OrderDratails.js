@@ -1,0 +1,29 @@
+const { Order } = require('../db');
+
+module.exports = {
+  OrderDratails: async (req, res) => {
+        const {orderId} = req.params;
+    try {
+  
+        const order = await Order.findByPk(orderId);
+
+        if (!order) {
+          
+        console.log('No hay ordenes');
+
+        res.status(404).send( {success: false, message: "No hay ordenes"})
+        } else {
+          console.log('Una orden');
+
+          res.status(200).send( {success: false, data: order})
+        }
+
+   
+
+
+    } catch (error) {
+      console.error('error al obtener una orden:', error);
+      res.status(500).json({ error: 'error al obtener una orden' });
+    }
+  }
+};

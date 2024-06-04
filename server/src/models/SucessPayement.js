@@ -1,0 +1,39 @@
+// models/SuccessPayment.js
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+  const SuccessPayment = sequelize.define('SuccessPayment', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
+    order_id: {
+      type: DataTypes.STRING,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    phone: {
+      type: DataTypes.STRING,
+    },
+    orderId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Orders',
+        key: 'id',
+      },
+    },
+    userId: {
+      type: DataTypes.UUID,
+    }
+
+
+  });
+
+  return SuccessPayment;
+};
