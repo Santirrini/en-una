@@ -39,7 +39,7 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-/*       const emailContent = `
+   const emailContent = `
       <html>
       <body    style="
       background-color: #f3f3f3;
@@ -90,7 +90,6 @@ module.exports = {
         subject: '¡Bienvenido a nuestra plataforma!',
         html: emailContent,
       });
- */
 
       const newUser = await User.create({
         name: capitalizedName,
