@@ -23,6 +23,7 @@ import PolicityPrivacity from "./pages/PolicityPrivacity";
 import TermsConditions from "./pages/TermsConditions";
 import ConfirmUpdatePassword from "./pages/ConfirmUpdatePassword";
 import MyReservations from "./pages/MyReservations";
+import FrequentQuestions from "./pages/FrequentQuestions";
 
 
 
@@ -30,7 +31,7 @@ import MyReservations from "./pages/MyReservations";
 
 function App() {
 
-
+ 
   return (
     <div >
       <BrowserRouter>
@@ -64,6 +65,8 @@ function App() {
           <Route path="/restablacer-contraseña/:token" element={<UpdatePassword />} />
           <Route path="/términos-y-condiciones" element={<TermsConditions />} />
           <Route path="/mis-reservaciones" element={<MyReservations />} />
+          <Route path="/preguntas-frecuentes" element={<FrequentQuestions />} />
+
 
 
 

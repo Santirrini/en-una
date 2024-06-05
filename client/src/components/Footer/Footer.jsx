@@ -38,6 +38,8 @@ const Footer = () => {
           <Link to="/politica-de-privacidad" className={styles.footer_link}>Política de Privacidad</Link>
           <Link to="/contactanos" className={styles.footer_link_mobile}>Contacto</Link>
           <Link to="/sobre-nosotros" className={styles.footer_link_mobile}>Acerca de Nosotros</Link>
+          <Link to="/preguntas-frecuentes" className={styles.footer_link_mobile}>Preguntas frecuentes</Link>
+
         </div>
       </div>
     </footer>

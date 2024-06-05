@@ -360,7 +360,7 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Link to="/contactanos">
+       {/*      <Link to="/contactanos">
               <Button
                 sx={{
                   color: "#500075 ",
@@ -370,7 +370,7 @@ export default function PrimarySearchAppBar() {
               >
                 Contacto
               </Button>
-            </Link>
+            </Link> */}
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Link to="/sobre-nosotros">
