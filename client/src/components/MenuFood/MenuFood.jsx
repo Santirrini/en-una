@@ -11,6 +11,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import styles from "./MenuFood.module.css";
 import { Result } from "antd";
+import { Link } from "react-router-dom";
+
 
 export default function MenuFood() {
   const { restaurantId } = useParams();
@@ -19,7 +21,7 @@ export default function MenuFood() {
     (state) => state.restaurantdetails.data
   );
   const [cartItems, setCartItems] = useState([]);
-  const [quantity, setQuantity] = useState(1); // Estado para la cantidad seleccionada
+  const [quantities, setQuantities] = useState({}); // Estado para las cantidades de cada ítem
 
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
@@ -30,6 +32,13 @@ export default function MenuFood() {
     setCartItems(cart);
   }, []);
 
+  const handleQuantityChange = (id, amount) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [id]: Math.max(1, (prevQuantities[id] || 1) + amount),
+    }));
+  };
+
   const addToCart = (product) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -38,11 +47,13 @@ export default function MenuFood() {
       return;
     }
 
+    const quantity = quantities[product.id] || 1; // Usar la cantidad específica para este producto
+
     let updatedCart = [...cart];
     let found = false;
     updatedCart.forEach((item) => {
       if (item.name === product.name) {
-        item.quantity += quantity; // Incrementar la cantidad seleccionada
+        item.quantity += quantity;
         found = true;
       }
     });
@@ -51,7 +62,7 @@ export default function MenuFood() {
       updatedCart.push({
         name: product.name,
         price: product.price,
-        quantity: quantity, // Usar la cantidad seleccionada
+        quantity: quantity,
         imageFile: product.imageFile,
         restaurantId: product.restaurantId,
       });
@@ -75,7 +86,7 @@ export default function MenuFood() {
               <Card className={styles.menufood_box} key={data.id}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 151 }}
+                  sx={{ maxWidth: "100%", width: 300, height: 151 }}
                   image={data.imageFile[0]}
                   alt="Live from space album cover"
                 />
@@ -103,38 +114,60 @@ export default function MenuFood() {
                     }}
                   >
                     <Button
-                      sx={{ display: "flex", flex: 1 }}
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    >
+                             sx={{
+                              color: "#500075",
+                              border: "1px solid #500075",
+                              ":hover": { border: "1px solid #500075" },
+                              
+                            }}
+                      onClick={() => handleQuantityChange(data.id, -1)}
+                   
+                   >
                       -
                     </Button>
                     <TextField
                       type="number"
-                      value={quantity}
+                      value={quantities[data.id] || 1}
                       onChange={(e) =>
-                        setQuantity(Math.max(1, parseInt(e.target.value)))
+                        setQuantities((prevQuantities) => ({
+                          ...prevQuantities,
+                          [data.id]: Math.max(1, parseInt(e.target.value)),
+                        }))
                       }
                       inputProps={{ min: 1 }}
                       variant="outlined"
                       size="small"
-                      sx={{ width: 50, textAlign: "center" }}
+                      sx={{ width: 50, textAlign: "center",  color: "#500075",
+                        outline: "none",   }}
+                        disabled
                     />
                     <Button
-                      sx={{ display: "flex", flex: 1 }}
-                      onClick={() => setQuantity(quantity + 1)}
+                            sx={{
+                              color: "#500075",
+                              border: "1px solid #500075",
+                              ":hover": { border: "1px solid #500075" },
+                            }}
+                      onClick={() => handleQuantityChange(data.id, 1)}
                     >
                       +
                     </Button>
+                  </Box>
                     <Button
-                      sx={{ display: "flex", flex: 2 }}
+                      sx={{ display: "flex", flex: 2, backgroundColor: "#500075", color: "white", ":hover": {backgroundColor: "#500075"} }}
                       onClick={() => addToCart(data)}
                     >
                       AGREGAR AL CARRITO
                     </Button>
-                  </Box>
                 </Box>
               </Card>
             ))}
+          </div>
+          <div className={styles.btn_container}>
+            <Link to= "/carrito">
+            <Button className={styles.btn_login} >
+            IR AL CARRITO
+            </Button>
+            </Link>
           </div>
         </>
       )}
