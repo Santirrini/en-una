@@ -1,9 +1,10 @@
 .login_container {
-    background-color: #edf4fb;
-    width: 100vw; /* Usa el 100% del ancho de la ventana del navegador */
-    overflow: hidden;
+ 
 }
-
+.logo {
+    width: 150px;
+    margin: auto;
+}
 .input_container {
     margin: auto;
 }
@@ -23,4 +24,11 @@
 .logo_login {
     width: 150px;
     margin: auto;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 100px;
+        margin: auto;
+    }
 }

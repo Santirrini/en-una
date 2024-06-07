@@ -5,6 +5,7 @@
   gap: 1em;
   padding-top: 2em;
   padding-bottom: 10em;
+  
 }
 
 .text {
@@ -16,6 +17,19 @@
 .decoretion_text {
   text-decoration: none;
 
+}
+
+.logo_card {
+  width: 50px;
+  position: absolute;
+}
+
+.logo_title {
+display: flex;
+}
+
+.title_subtitle {
+ text-align: center;
 }
 @media (max-width: 768px) {
   .cards_container {

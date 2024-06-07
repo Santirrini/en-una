@@ -3,21 +3,24 @@ import { Result } from "antd";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import styles from "./Card.module.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AllRestaurant } from "../../redux/action";
+import { AllRestaurant, dataPersonal } from "../../redux/action";
+import Avatar from "@mui/material/Avatar";
 
 export default function Cards() {
   const dispatch = useDispatch();
   const allrestaurant = useSelector((state) => state.allrestaurant.data);
-
+  const token = useSelector((state) => state.token);
+  const datapersonal = useSelector((state) => state.datapersonal);
   React.useEffect(() => {
     dispatch(AllRestaurant());
   }, [dispatch]);
-
+  React.useEffect(() => {
+    dispatch(dataPersonal(token));
+  }, [dispatch, token]);
   return (
     <>
     {allrestaurant?.length === 0 ? (
@@ -34,32 +37,34 @@ export default function Cards() {
       <div className={styles.cards_container}>
         {allrestaurant?.map((data) => (
           <Link to={`/detalles/restaurante/${data.id}`}>
-            <Card sx={{ maxWidth: 345, width: 500 }}>
+            <Card sx={{ maxWidth: 345, width: 500, ":hover":{ boxShadow: "3px 5px 5px #cacaca"} }}>
               <CardMedia
                 component="img"
                 image={data.imageFile[0]}
                 alt={data.imageFile[0]}
-                sx={{ height: 300 }}
+                sx={{ height: 200 }}
                 />
+           
               <CardContent>
                 <Typography
                   sx={{ textAlign: "center", textDecoration: "none" }}
                   >
+                <img src={require("../../Images/Logo.png")} alt="Logo" className={styles.logo_card} />
                   {data.name}
                 </Typography>
-              </CardContent>
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{
                   textAlign: "center",
-                  paddingBottom: "2em",
                   textDecoration: "none",
                 }}
               >
                 {data.address},{" "}
                 {data.address_optional ? data.address_optional : null}
               </Typography>
+              </CardContent>
+
             </Card>
           </Link>
         ))}

@@ -35,6 +35,12 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuList from "@mui/material/MenuList";
 import Paper from "@mui/material/Paper";
 import { AllRestaurant } from "../../redux/action";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import LoginIcon from '@mui/icons-material/Login';
+
 
 const drawerWidth = 240;
 
@@ -42,7 +48,7 @@ const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  width: "50% !important",
+  width: "65% !important",
   border: "1px solid #500075",
   background: "white",
   display: "flex", // Add this line
@@ -81,7 +87,7 @@ export default function PrimarySearchAppBar() {
   React.useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     setItems(cartItems);
-    setCartItemCount(cartItems.length)
+    setCartItemCount(cartItems.length);
   }, [cartItemCount]);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -145,7 +151,7 @@ export default function PrimarySearchAppBar() {
     dispatch(AllRestaurant());
   }, [dispatch]);
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box onClick={handleDrawerToggle}>
       <Typography variant="h6" sx={{ my: 2 }}>
         <img
           src={require("../../Images/Logo.png")}
@@ -157,7 +163,11 @@ export default function PrimarySearchAppBar() {
       <List>
         <Link to="/">
           <ListItem disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemButton>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+
               <ListItemText primary={"Inicio"} />
             </ListItemButton>
           </ListItem>
@@ -165,7 +175,10 @@ export default function PrimarySearchAppBar() {
 
         <Link to="/sobre-nosotros">
           <ListItem disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemButton>
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
               <ListItemText primary={"Acerca nosotros"} />
             </ListItemButton>
           </ListItem>
@@ -173,11 +186,94 @@ export default function PrimarySearchAppBar() {
 
         <Link to="/contactanos">
           <ListItem disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContactsIcon />
+              </ListItemIcon>
               <ListItemText primary={"Contáctanos"} />
             </ListItemButton>
           </ListItem>
         </Link>
+
+        {!token ? (
+          <>
+           <br />
+              <Link to="/iniciar-sesión">
+
+
+
+
+
+                <ListItem disablePadding className={styles.btn_login}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LoginIcon sx={{color: "white"}} />
+              </ListItemIcon>
+              <ListItemText primary={"Iniciar sesión"} />
+            </ListItemButton>
+          </ListItem>
+              </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/perfil">
+              <Divider />
+
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <Avatar
+                      sx={{
+                        width: 25,
+                        height: 25,
+                        backgroundColor: datapersonal.backgroundColor,
+                      }}
+                    >
+                      {datapersonal.name && datapersonal.name[0]}
+                    </Avatar>
+                  </ListItemIcon>
+                  <ListItemText primary={"Perfil"} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            {datapersonal.role && datapersonal.role === "restaurante" ? (
+              <Link to="/administrar">
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AdminPanelSettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Administrar"} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ) : null}
+
+            {datapersonal.role && datapersonal.role === "personal" ? (
+              <>
+                <Link to="/administrar">
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <StorefrontIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={"Mis reservaciones"} />
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
+              </>
+            ) : null}
+
+            <ListItem disablePadding onClick={handleLogout}>
+              <ListItemButton>
+                <ListItemIcon>
+                 <Logout fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"Cerrar sesión"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </List>
     </Box>
   );
@@ -259,7 +355,11 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ background: "transparent", color: "#000", boxShadow: 0 }}
+        sx={{
+          background: "transparent",
+          color: "#000",
+          boxShadow: "0  0  1px",
+        }}
       >
         <Toolbar>
           <IconButton
@@ -360,7 +460,7 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-       {/*      <Link to="/contactanos">
+            {/*      <Link to="/contactanos">
               <Button
                 sx={{
                   color: "#500075 ",
@@ -372,7 +472,7 @@ export default function PrimarySearchAppBar() {
               </Button>
             </Link> */}
           </Box>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          {/*         <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Link to="/sobre-nosotros">
               <Button
                 sx={{
@@ -384,10 +484,10 @@ export default function PrimarySearchAppBar() {
                 ¿Quienes somos?
               </Button>
             </Link>
-          </Box>
+          </Box> */}
 
           {token ? (
-            <React.Fragment>
+            <div className={styles.nonemobile}>
               <Box
                 sx={{
                   display: "flex",
@@ -490,7 +590,7 @@ export default function PrimarySearchAppBar() {
                   Cerrar sesión
                 </MenuItem>
               </Menu>
-            </React.Fragment>
+            </div>
           ) : (
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <Link to="/iniciar-sesión">

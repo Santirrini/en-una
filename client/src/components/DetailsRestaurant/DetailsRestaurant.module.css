@@ -4,15 +4,18 @@
 }
 
 .food_box {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 1em;
     width: 90%;
     margin: auto;
+    justify-content: center;
 
 }
 
-
+.contact {
+    display: flex;
+    gap: 1em;
+}
 
 .text_container {
     font-weight: bold;
@@ -24,8 +27,9 @@
     margin-bottom: 1em;
 }
 
-.text_p {
-    width: 80%;
+.description {
+    padding-left: 4em;
+    padding-right: 4em;
 }
 
 .select_container {
@@ -66,4 +70,25 @@
         display: grid;
        
     }
+
+
+    .food_box {
+        display: grid;
+        flex-wrap: wrap;
+        gap: 1em;
+        width: 90%;
+        margin: auto;
+        justify-content: center;
+    
+    }
+    
+    .contact {
+        display: grid;
+        gap: 1em;
+    }
+    .description {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    
 }

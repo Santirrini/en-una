@@ -9,7 +9,7 @@ import styles from "./FrequentQuestions.module.css";
 export default function FrequentQuestions() {
   return (
     <div className={styles.frequentquestions_container}>
-      <Accordion defaultExpanded >
+      <Accordion defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
@@ -77,25 +77,22 @@ export default function FrequentQuestions() {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <Typography>
-            ¿Me puedo contactar con la empresa EN-UNA?
-          </Typography>
+          <Typography>¿Me puedo contactar con la empresa EN-UNA?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          Puedes contactarte con EN-UNA de las siguientes maneras:
-  <ul>
-    <li>
-    .Sección de Contacto: Ubicada en la parte inferior de nuestra página web.
+            Puedes contactarte con EN-UNA de las siguientes maneras:
+            <ul>
+              <li>
+                .Sección de Contacto: Ubicada en la parte inferior de nuestra
+                página web.
+              </li>
 
-    </li>
-
-    <li>
-    .Icono de WhatsApp: Haz clic en el icono de WhatsApp para comunicarte directamente con nuestro equipo.
-
-    </li>
-  </ul>
-
+              <li>
+                .Icono de WhatsApp: Haz clic en el icono de WhatsApp para
+                comunicarte directamente con nuestro equipo.
+              </li>
+            </ul>
           </Typography>
         </AccordionDetails>
       </Accordion>

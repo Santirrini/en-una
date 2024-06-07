@@ -1,10 +1,7 @@
 .terms_container {
-    padding: 10vh;
-    background-color: white;
-    border-radius: 2em;
-    width: 90%;
-    margin: 0 auto;
-    padding-bottom: 10em;
+  padding: 10vh;
+  background-color: #8080801e;
+  margin: 0 auto;
   }
   
   h2, h3 {
@@ -28,12 +25,7 @@
   @media (max-width: 768px) {
     .terms_container {
         padding: 20px;
-        background-color: white;
-        border-radius: 2em;
-        width: 90%;
         margin: 0 auto;
-        padding-bottom: 3em;
-        margin-top: 2em;
     
       }
   }

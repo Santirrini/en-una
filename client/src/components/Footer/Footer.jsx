@@ -39,7 +39,9 @@ const Footer = () => {
           <Link to="/contactanos" className={styles.footer_link_mobile}>Contacto</Link>
           <Link to="/sobre-nosotros" className={styles.footer_link_mobile}>Acerca de Nosotros</Link>
           <Link to="/preguntas-frecuentes" className={styles.footer_link_mobile}>Preguntas frecuentes</Link>
+          <Link to="/sobre-nosotros" className={styles.footer_link_mobile}>¿Quienes somos?</Link>
 
+          
         </div>
       </div>
     </footer>

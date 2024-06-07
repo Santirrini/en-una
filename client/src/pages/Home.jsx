@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
+/* import FeaturedCarousel from "../components/Fea"; */
+
 import Footer from "../components/Footer/Footer";
 import Cards from "../components/Card/Card";
 import Navbar from "../components/Navbar/Navbar";
@@ -26,9 +28,9 @@ export default function Home() {
       <div>
         <Navbar />
       </div>
-      {/*    <div>
+    {/*     <div>
         <FeaturedCarousel />
-      </div> */}
+      </div>  */}
       <div>
         <Cards />
       </div>
