@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
-/* import FeaturedCarousel from "../components/Fea"; */
 
 import Footer from "../components/Footer/Footer";
 import Cards from "../components/Card/Card";
 import Navbar from "../components/Navbar/Navbar";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import CarruselPublicitary from "../components/CarruselPublicitary/CarruselPublicitary";
+import CardDestac from "../components/CardDestac/CardDestac";
+
 
 export default function Home() {
   const [open, setOpen] = useState(true);
@@ -28,9 +30,12 @@ export default function Home() {
       <div>
         <Navbar />
       </div>
-    {/*     <div>
-        <FeaturedCarousel />
-      </div>  */}
+         <div>
+        <CarruselPublicitary />
+      </div>  
+      <div>
+        <CardDestac/>
+      </div>
       <div>
         <Cards />
       </div>

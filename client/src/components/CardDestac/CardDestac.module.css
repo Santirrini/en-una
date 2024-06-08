@@ -9,6 +9,14 @@
     padding-left: 2em;
     padding-bottom: 1em;
 }
+.logo_card {
+    width: 50px;
+    position: absolute;
+  }
+.splides {
+    height: 300px;
+    display: flex;
+}
 
 @media (max-width: 768px) {
     .box_destacado {

@@ -2,12 +2,9 @@ import { useState } from "react";
 import styles from "./ContactUs.module.css";
 import Button from "@mui/material/Button";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+
 
 export default function ContactUs() {
-  const [agreed, setAgreed] = useState(false);
 
   return (
     <div className={styles.contact_container}>
