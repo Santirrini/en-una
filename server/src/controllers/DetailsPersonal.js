@@ -30,11 +30,10 @@ module.exports = {
             include: [
               {
                 model: Order,
-                as: 'orders' // Usa el alias correcto definido en la asociación
+                as: 'orders', // Usa el alias correcto definido en la asociación
+                include: Restaurant
               },
-              {
-                model: Restaurant,
-              }
+            
             ]
           }
         ]
