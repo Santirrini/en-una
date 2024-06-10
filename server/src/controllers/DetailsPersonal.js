@@ -31,6 +31,9 @@ module.exports = {
               {
                 model: Order,
                 as: 'orders' // Usa el alias correcto definido en la asociación
+              },
+              {
+                model: Restaurant,
               }
             ]
           }
