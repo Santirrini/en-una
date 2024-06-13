@@ -24,6 +24,7 @@ import TermsConditions from "./pages/TermsConditions";
 import ConfirmUpdatePassword from "./pages/ConfirmUpdatePassword";
 import MyReservations from "./pages/MyReservations";
 import FrequentQuestions from "./pages/FrequentQuestions";
+import MyReservationsRestaurant from "./pages/MyReservationsRestaurant";
 
 
 
@@ -64,8 +65,12 @@ function App() {
 
           <Route path="/restablacer-contraseña/:token" element={<UpdatePassword />} />
           <Route path="/términos-y-condiciones" element={<TermsConditions />} />
-          <Route path="/mis-reservaciones" element={<MyReservations />} />
+          <Route path="/mis-reservaciones/:reservationId" element={<MyReservations />} />
+          <Route path="/mis-reservaciones" element={<MyReservationsRestaurant />} />
+
           <Route path="/preguntas-frecuentes" element={<FrequentQuestions />} />
+          <Route path="/menús-reservados" element={<CarsFood />} />
+
 
 
 

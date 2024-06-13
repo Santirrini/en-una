@@ -22,7 +22,7 @@ export default function MenuFood() {
   );
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState({}); // Estado para las cantidades de cada ítem
-
+  const [reservation, setReservation] = React.useState({});
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -71,7 +71,10 @@ export default function MenuFood() {
     setCartItems([...updatedCart]);
     localStorage.setItem("cart", JSON.stringify(updatedCart)); // Guardar en localStorage
   };
-
+  React.useEffect(() => {
+    const form = JSON.parse(localStorage.getItem("form")) || {};
+    setReservation(form);
+  }, []);
   return (
     <div>
       {restaurantdetails?.Menus.length === 0 ? (
@@ -161,6 +164,28 @@ export default function MenuFood() {
                 </Box>
               </Card>
             ))}
+          </div>
+          <div className={styles.form_container}>
+            <h2>Resumen de la reserva:</h2>
+            <div>
+              <strong>Local:</strong>{" "}
+              {reservation[0] && 
+                 reservation[0].formData.local
+              }
+            </div>
+            <div>
+            <strong>Fecha:</strong> {reservation[0]?.formData.date}
+
+            </div>
+            <div>
+              <strong>Hora: </strong>
+              {reservation[0]?.formData.hours}
+
+            </div>
+            <div>
+            <strong>Personas:</strong> {reservation[0]?.formData.peoples}
+
+            </div>
           </div>
           <div className={styles.btn_container}>
             <Link to= "/carrito">

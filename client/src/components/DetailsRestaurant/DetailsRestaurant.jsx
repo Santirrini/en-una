@@ -52,7 +52,7 @@ export default function DetailsRestaurant() {
   };
 
   const maxLength = 300; // longitud máxima del texto antes de mostrar "ver más"
-  const details = restaurantdetails ? restaurantdetails.details : '';
+  const details = restaurantdetails ? restaurantdetails.details : "";
 
   return (
     <div className={styles.food_container}>
@@ -97,23 +97,22 @@ export default function DetailsRestaurant() {
             </div>
           </div>
         </div>
-  {/*  */}
+        {/*  */}
       </div>
       <div className={styles.description}>
-          <br />
-          <div>
-
+        <br />
+        <div>
           <h1 className={styles.text_container}>Detalles</h1>
           <p className={styles.text_p}>
             {isExpanded ? details : `${details.substring(0, maxLength)}...`}
           </p>
           {details.length > maxLength && (
             <button onClick={toggleExpand} className={styles.toggleButton}>
-              {isExpanded ? 'Ver menos' : 'Ver más'}
+              {isExpanded ? "Ver menos" : "Ver más"}
             </button>
           )}
         </div>
-        </div>
+      </div>
       <br />
       <hr />
       <br />
@@ -218,6 +217,35 @@ export default function DetailsRestaurant() {
           ))}
         </select>
       </form>
+
+      <div className={styles.form_container}>
+        <h2>Resumen de la reserva:</h2>
+        {formData.local ? (
+          <div>
+            <strong>Local:</strong> {formData.local}
+          </div>
+        ) : null}
+
+        {formData.date ? (
+          <div>
+            <strong>Fecha:</strong> {formData.date}
+          </div>
+        ) : null}
+          {formData.hours ? (
+
+            
+            <div>
+          <strong>Hora: </strong>
+          {formData.hours}
+        </div>
+        ):null}
+         {formData.peoples ? (
+
+           <div>
+          <strong>Personas:</strong> {formData.peoples}
+        </div>
+        ) : null}
+      </div>
       {error ? (
         <p
           className="text-red-500 text-sm mt-2"

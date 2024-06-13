@@ -5,9 +5,13 @@
 
 .menufood_container {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+flex-direction: column;
     gap: 1em;
+    margin: auto;
+    max-width: 90%;
+    padding-bottom: 2em;
+
+
 }
 .text {
     font-weight: bold;
@@ -18,8 +22,6 @@
 
 .menufood_box {
     display: flex;
-    margin-bottom: 2em;
-    max-width: 90%;
 }
 
 .btn_quantity{
@@ -35,15 +37,24 @@
     justify-content: center;
  
  }
-.form_container {
+ .form_container {
     margin: auto;
-    background-color: white;
-    width: 30%;
+    background-color:#500075;
     max-width: 100%;
+    width: 50%;
     padding: 1em;
-    display: grid;
+    display: flex;
     justify-content: center;
     margin-bottom: 1em;
+    gap: 1em;
+    padding: 2em;
+    color: white;
+    border-radius: 2em;
+}
+
+.form_container h2 {
+ 
+    color: white;
 }
  .select_container {
     display: flex;

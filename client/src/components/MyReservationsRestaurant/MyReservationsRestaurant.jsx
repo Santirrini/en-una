@@ -1,164 +1,32 @@
 import * as React from "react";
-import { PaymentReserve } from "../../redux/action";
+import { dataPersonal, DetailRestaurant } from "../../redux/action";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import DeleteIcon from "@mui/icons-material/Delete";
-import styles from "./CarsFood.module.css";
+
+import styles from "./MyReservationsRestaurant.module.css";
 import { Result } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function CarsFood() {
+
+export default function MyReservationsRestaurant() {
   const dispatch = useDispatch();
-  const [items, setItems] = React.useState([]);
-  const [formData, setFormData] = React.useState({});
-  const [quantity, setQuantity] = React.useState({});
-  const [reserve, setReserve] = React.useState({
-    local: "",
-    date: "",
-    hours: "",
-    peoples: "",
-    order: [],
-    restaurantId: "",
-  });
-  const paymentData = useSelector((state) => state.paymentData);
+
   const token = useSelector((state) => state.token);
-
+  const datapersonal = useSelector(
+    (state) => state.datapersonal.successPayments
+  );
+  console.log(datapersonal?.map(d=> d.orders))
   React.useEffect(() => {
-    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
-    const updatedCartData = cartData.map((item) => ({
-      ...item,
-      basePrice: item.basePrice || item.price,
-      quantity: item.quantity || 1,
-      price: item.price || item.basePrice,
-    }));
-    setItems(updatedCartData);
-    localStorage.setItem("cart", JSON.stringify(updatedCartData));
-
-    const quantities = {};
-    updatedCartData.forEach((item, index) => {
-      quantities[index] = item.quantity || 1;
-    });
-    setQuantity(quantities);
-
-    const form = JSON.parse(localStorage.getItem("form")) || {};
-    setFormData(form);
-    setReserve({
-      local: form[0]?.formData.local || "",
-      date: form[0]?.formData.date || "",
-      hours: form[0]?.formData.hours || "",
-      peoples: form[0]?.formData.peoples || "",
-      order: updatedCartData.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: parseFloat(item.basePrice),
-        quantity: item.quantity || 1,
-        restaurantId: item.restaurantId,
-        imageFile: item.imageFile,
-        details: item.details,
-      })),
-      restaurantId:
-        updatedCartData.length > 0 ? updatedCartData[0].restaurantId : "",
-    });
-  }, []);
-
+    dispatch(dataPersonal(token));
+  }, [dispatch, token]);
   React.useEffect(() => {
-    const form = JSON.parse(localStorage.getItem("form")) || {};
-    setFormData(form);
-  }, []);
-
-  const updateReserve = (updatedItems) => {
-    setReserve({
-      ...reserve,
-      order: updatedItems.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: parseFloat(item.basePrice),
-        quantity: item.quantity,
-        restaurantId: item.restaurantId,
-        imageFile: item.imageFile,
-        details: item.details,
-      })),
-    });
-  };
-
-  const handleIncrease = (index) => {
-    const newQuantity = { ...quantity, [index]: (quantity[index] || 1) + 1 };
-    setQuantity(newQuantity);
-
-    const updatedItems = [...items];
-    updatedItems[index].quantity = newQuantity[index];
-    updatedItems[index].price =
-      parseFloat(updatedItems[index].basePrice) * newQuantity[index];
-    setItems(updatedItems);
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    updateReserve(updatedItems);
-  };
-
-  const handleDecrease = (index) => {
-    const newQuantity = {
-      ...quantity,
-      [index]: Math.max((quantity[index] || 1) - 1, 1),
-    };
-    setQuantity(newQuantity);
-
-    const updatedItems = [...items];
-    updatedItems[index].quantity = newQuantity[index];
-    updatedItems[index].price =
-      parseFloat(updatedItems[index].basePrice) * newQuantity[index];
-    setItems(updatedItems);
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    updateReserve(updatedItems);
-  };
-
-  const handleRemove = (index) => {
-    const newItems = items.filter((_, itemIndex) => itemIndex !== index);
-    setItems(newItems);
-    localStorage.setItem("cart", JSON.stringify(newItems));
-
-    const newQuantity = { ...quantity };
-    delete newQuantity[index];
-    setQuantity(newQuantity);
-
-    if (newItems.length === 0) {
-      localStorage.removeItem("cart");
-      setFormData({});
-    } else {
-      localStorage.setItem("cart", JSON.stringify(newItems));
-    }
-    updateReserve(newItems);
-  };
-
-  const handleReserve = async () => {
-    try {
-      dispatch(PaymentReserve(token, reserve));
-    } catch (error) {
-      alert("error en el sistema");
-      console.error("Error al realizar la reserva:", error);
-    }
-  };
-
-  React.useEffect(() => {
-    if (paymentData) {
-      window.location.href = paymentData.data && paymentData.data;
-    }
-  }, [paymentData]);
-
-  const calculateTotal = () => {
-    return items
-      .reduce(
-        (total, item) => total + (parseFloat(item.price * item.quantity) || 0),
-        0
-      )
-      .toFixed(2);
-  };
+    dispatch(DetailRestaurant(token));
+  }, [dispatch, token]);
 
   return (
     <div>
@@ -185,7 +53,7 @@ export default function CarsFood() {
           </div>
         ) : (
           <>
-            {items.length < 1 ? (
+            {datapersonal?.length < 1 ? (
               <div>
                 <Result
                   title="No hay menús guardados en el carrito"
@@ -207,46 +75,37 @@ export default function CarsFood() {
               </div>
             ) : (
               <div className={styles.carsfood_container}>
-                <h1 className={styles.text}>Carrito</h1>
+                <h1 className={styles.text}>Restaurantes reservados</h1>
                 <div className={styles.menufood_container}>
-                  {items.map((item, index) => (
+                  {datapersonal?.map((item, index) => (
+                    item.orders &&  item.orders.order.map((row) => (
+<Link to={`/mis-reservaciones/${item.id}`}>
                     <Card className={styles.menufood_box} key={index}>
-                      {item?.imageFile && item.imageFile[0] && (
                         <CardMedia
                           component="img"
-                          sx={{ maxWidth: "100%", width: 150 }}
-                          image={item.imageFile[0]}
+                          sx={{ height: 200, width: 200, maxWidth: "100%" }}
+                          image={row.imageFile[0]}
                           alt="Live from space album cover"
                         />
-                      )}
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography component="div" variant="h5">
-                            {item?.name}
+                            {row?.name}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                            ${parseFloat(item.price * item.quantity).toFixed(2)}
+                            ${parseFloat(row.price * row.quantity).toFixed(2)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                            Cantidad: {item.quantity}
-                            <Button
-                              sx={{
-                                display: "flex",
-                                flex: 1,
-                                color: "#500075 ",
-                              }}
-                              onClick={() => handleRemove(index)}
-                            >
-                              <DeleteIcon />
-                            </Button>
+                            Cantidad: {row.quantity}
+                     
                           </Typography>
                         </CardContent>
 
@@ -288,6 +147,10 @@ export default function CarsFood() {
                               </Box> */}
                       </Box>
                     </Card>
+
+</Link>
+                    ))
+
                   ))}
                 </div>
 
@@ -313,11 +176,7 @@ export default function CarsFood() {
                   </p>
                 </div> */}
 
-                <div className={styles.btn_container}>
-                  <Button className={styles.btn_login} onClick={handleReserve}>
-                    Reservar
-                  </Button>
-                </div>
+      
               </div>
             )}
           </>
