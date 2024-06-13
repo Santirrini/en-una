@@ -15,6 +15,7 @@ const {UpdateProduct} = require('../controllers/UpdateProduct');
 const {OrderDratails} = require('../controllers/OrderDratails');
 const {Webhooks} = require('../controllers/Webhooks');
 const {WebHooksEvent} = require('../controllers/WebHooksEvent');
+const {DetailsReservation} = require('../controllers/DetailsReservation');
 
 
 
@@ -48,6 +49,7 @@ router.post('/register', Register );
 router.post('/payment', Payment )
 router.get('/obtener-webhook', Webhooks )
 router.post('/webhooks', WebHooksEvent )
+router.get('/details-reservations/:reservationtId', DetailsReservation )
 
 router.get('/orders', AllOrder);
 router.get('/order/:orderId', OrderDratails);
