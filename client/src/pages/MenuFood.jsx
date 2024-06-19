@@ -28,9 +28,9 @@ export default function MenuFood() {
       <div>
         <MenuFoodComponent />
       </div>
-      <div>
+   {/*    <div>
         <ButtonWhatsapp />
-      </div>
+      </div> */}
       <div>
         <Footer />
       </div>

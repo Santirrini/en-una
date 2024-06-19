@@ -1,5 +1,5 @@
 import * as React from "react";
-import { dataPersonal, DetailRestaurant } from "../../redux/action";
+import { dataPersonal, DetailRestaurant, DetailsReservation } from "../../redux/action";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,24 +9,29 @@ import Button from "@mui/material/Button";
 
 import styles from "./MyReservations.module.css";
 import { Result } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 
 export default function MyReservations() {
+const {reservationId} =  useParams();
   const dispatch = useDispatch();
 
   const token = useSelector((state) => state.token);
   const datapersonal = useSelector(
     (state) => state.datapersonal.successPayments
   );
-  console.log(datapersonal?.map(d=> d.orders))
+  const detailsReservation = useSelector(
+    (state) => state.detailsReservation.data
+  );
   React.useEffect(() => {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
+
+
   React.useEffect(() => {
-    dispatch(DetailRestaurant(token));
-  }, [dispatch, token]);
+    dispatch(DetailsReservation(reservationId));
+  }, [dispatch, reservationId]);
 
   return (
     <div>
@@ -77,104 +82,43 @@ export default function MyReservations() {
               <div className={styles.carsfood_container}>
                 <h1 className={styles.text}>Reservaciones</h1>
                 <div className={styles.menufood_container}>
-                  {datapersonal?.map((item, index) => (
-                    item.orders &&  item.orders.order.map((row) => (
+                  {detailsReservation.orders && detailsReservation.orders.order.map((item, index) => (
 
                     <Card className={styles.menufood_box} key={index}>
                         <CardMedia
                           component="img"
                           sx={{ maxWidth: "100%", width: 150 }}
-                          image={row.imageFile[0]}
+                          image={item.imageFile[0]}
                           alt="Live from space album cover"
                         />
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography component="div" variant="h5">
-                            {row?.name}
+                            {item?.name}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                            ${parseFloat(row.price * row.quantity).toFixed(2)}
+                            ${parseFloat(item.price * item.quantity).toFixed(2)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                            Cantidad: {row.quantity}
+                            Cantidad: {item.quantity}
                      
                           </Typography>
                         </CardContent>
 
-                        {/*      <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            pl: 1,
-                            pb: 1,
-                            justifyContent: "center",
-                            }}
-                            >
-                            <ButtonGroup sx={{ display: "flex", gap: "1em" }}>
-                            <Button
-                            aria-label="decrease"
-                            onClick={() => handleDecrease(index)}
-                            sx={{
-                              color: "#500075",
-                              border: "1px solid #500075",
-                              ":hover": { border: "1px solid #500075" },
-                              }}
-                              >
-                              <RemoveIcon fontSize="small" />
-                              </Button>
-                              <Typography>{quantity[index] || 1}</Typography>
-                              <Button
-                              aria-label="increase"
-                              onClick={() => handleIncrease(index)}
-                              sx={{
-                                color: "#500075",
-                                border: "1px solid #500075",
-                                ":hover": { border: "1px solid #500075" },
-                              }}
-                              >
-                              <AddIcon fontSize="small" />
-                              </Button>
-                              </ButtonGroup>
-                              
-                              </Box> */}
+                      
                       </Box>
                     </Card>
-                    ))
 
                   ))}
                 </div>
-
-              {/*   <div className={styles.form_container}>
-                  <h2>Resumen de la reserva:</h2>
-                  <p>
-                    <strong>Local:</strong>{" "}
-                    {formData[0].formData && formData[0].formData.local}
-                  </p>
-                  <p>
-                    <strong>Fecha:</strong> {formData[0]?.formData.date}
-                  </p>
-                  <p>
-                    <strong>Hora: </strong>
-                    {formData[0]?.formData.hours}
-                  </p>
-                  <p>
-                    <strong>Personas:</strong> {formData[0]?.formData.peoples}
-                  </p>
-
-                  <p>
-                    <strong>Total:</strong> ${calculateTotal()}
-                  </p>
-                </div> */}
-
-      
               </div>
             )}
           </>

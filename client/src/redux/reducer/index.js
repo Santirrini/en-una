@@ -16,7 +16,10 @@ const initialState = {
   error: null,
   message: '',
   paymentData: null,
-  orderDetails: []
+  orderDetails: [],
+  detailsReservation: [],
+
+  
 }
 
 
@@ -175,6 +178,12 @@ case "RESET_FAILURE":
       ...state,
       orderDetails: action.payload,
     };
+
+    case "DETAIL_RESERVATION":
+      return {
+        ...state,
+        detailsReservation: action.payload,
+      };
 
     
 

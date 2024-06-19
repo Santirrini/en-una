@@ -94,6 +94,10 @@
   
   }
   .menufood_box {
-    width: 100%;
+    display: flex;
+    width: 90%;
+    margin: auto;
+  
+  
   }
 }

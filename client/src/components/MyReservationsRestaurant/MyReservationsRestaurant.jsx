@@ -78,33 +78,33 @@ export default function MyReservationsRestaurant() {
                 <h1 className={styles.text}>Restaurantes reservados</h1>
                 <div className={styles.menufood_container}>
                   {datapersonal?.map((item, index) => (
-                    item.orders &&  item.orders.order.map((row) => (
+                     
 <Link to={`/mis-reservaciones/${item.id}`}>
                     <Card className={styles.menufood_box} key={index}>
                         <CardMedia
                           component="img"
-                          sx={{ height: 200, width: 200, maxWidth: "100%" }}
-                          image={row.imageFile[0]}
+                          sx={{ height: 151, width: 151, maxWidth: "100%" }}
+                          image={item.orders.Restaurant.imageFile[0]}
                           alt="Live from space album cover"
                         />
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography component="div" variant="h5">
-                            {row?.name}
+                           {item.orders.Restaurant.name}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                            ${parseFloat(row.price * row.quantity).toFixed(2)}
+                            <strong>Local:</strong> {item.orders.Restaurant.local}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                            Cantidad: {row.quantity}
+                      <strong>Dirección:</strong> {item.orders.Restaurant.address}{item.orders.Restaurant.address_optional? "," : null} {item.orders.Restaurant.address_optional}
                      
                           </Typography>
                         </CardContent>
@@ -148,9 +148,8 @@ export default function MyReservationsRestaurant() {
                       </Box>
                     </Card>
 
-</Link>
-                    ))
 
+</Link>
                   ))}
                 </div>
 

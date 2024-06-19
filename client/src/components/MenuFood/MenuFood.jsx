@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import styles from "./MenuFood.module.css";
 import { Result } from "antd";
 import { Link } from "react-router-dom";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function MenuFood() {
   const { restaurantId } = useParams();
@@ -23,6 +23,8 @@ export default function MenuFood() {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState({}); // Estado para las cantidades de cada ítem
   const [reservation, setReservation] = React.useState({});
+  const [items, setItems] = React.useState([]);
+
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -35,7 +37,7 @@ export default function MenuFood() {
   const handleQuantityChange = (id, amount) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [id]: Math.max(1, (prevQuantities[id] || 1) + amount),
+      [id]: Math.max(0, (prevQuantities[id] || 0) + amount),
     }));
   };
 
@@ -47,7 +49,7 @@ export default function MenuFood() {
       return;
     }
 
-    const quantity = quantities[product.id] || 1; // Usar la cantidad específica para este producto
+    const quantity = quantities[product.id] || 0; // Usar la cantidad específica para este producto
 
     let updatedCart = [...cart];
     let found = false;
@@ -75,6 +77,16 @@ export default function MenuFood() {
     const form = JSON.parse(localStorage.getItem("form")) || {};
     setReservation(form);
   }, []);
+
+  const handleRemove = (index) => {
+    const newCartItems = cartItems.filter((_, itemIndex) => itemIndex !== index);
+    setCartItems(newCartItems);
+    localStorage.setItem("cart", JSON.stringify(newCartItems));
+  };
+  const getTotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+  
   return (
     <div>
       {restaurantdetails?.Menus.length === 0 ? (
@@ -84,115 +96,187 @@ export default function MenuFood() {
       ) : (
         <>
           <h1 className={styles.text}>Menu</h1>
-          <div className={styles.menufood_container}>
-            {restaurantdetails?.Menus.map((data) => (
-              <Card className={styles.menufood_box} key={data.id}>
-                <CardMedia
-                  component="img"
-                  sx={{ maxWidth: "100%", width: 300, height: 151 }}
-                  image={data.imageFile[0]}
-                  alt="Live from space album cover"
-                />
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <CardContent sx={{ flex: "1 0 auto" }}>
-                    <Typography component="div" variant="h5">
-                      {data.name}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      color="text.secondary"
-                      component="div"
+          <div className={styles.boxFood}>
+            <div className={styles.menufood_container}>
+              {restaurantdetails?.Menus.map((data) => (
+                <Card className={styles.menufood_box} key={data.id}>
+                  <CardMedia
+                    component="img"
+                    sx={{ maxWidth: "100%", width: 300, height: 151 }}
+                    image={data.imageFile[0]}
+                    alt="Live from space album cover"
+                  />
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <CardContent sx={{ flex: "1 0 auto" }}>
+                      <Typography component="div" variant="h5">
+                        {data.name}
+                      </Typography>
+                      <Typography
+                        variant="subtitle1"
+                        color="text.secondary"
+                        component="div"
+                      >
+                        ${data.price}
+                      </Typography>
+                    </CardContent>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        pl: 1,
+                        pb: 1,
+                        justifyContent: "center",
+                        gap: "1em",
+                      }}
                     >
-                      ${data.price}
-                    </Typography>
-                  </CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      pl: 1,
-                      pb: 1,
-                      justifyContent: "center",
-                      gap: "1em",
-                    }}
-                  >
-                    <Button
-                             sx={{
-                              color: "#500075",
-                              border: "1px solid #500075",
-                              ":hover": { border: "1px solid #500075" },
-                              
-                            }}
-                      onClick={() => handleQuantityChange(data.id, -1)}
-                   
-                   >
-                      -
-                    </Button>
-                    <TextField
-                      type="number"
-                      value={quantities[data.id] || 1}
-                      onChange={(e) =>
-                        setQuantities((prevQuantities) => ({
-                          ...prevQuantities,
-                          [data.id]: Math.max(1, parseInt(e.target.value)),
-                        }))
-                      }
-                      inputProps={{ min: 1 }}
-                      variant="outlined"
-                      size="small"
-                      sx={{ width: 50, textAlign: "center",  color: "#500075",
-                        outline: "none",   }}
+                      <Button
+                        sx={{
+                          color: "#500075",
+                          border: "1px solid #500075",
+                          ":hover": { border: "1px solid #500075" },
+                        }}
+                        onClick={() => handleQuantityChange(data.id, -1)}
+                      >
+                        -
+                      </Button>
+                      <TextField
+                        type="number"
+                        value={quantities[data.id] || 0}
+                        onChange={(e) =>
+                          setQuantities((prevQuantities) => ({
+                            ...prevQuantities,
+                            [data.id]: Math.max(1, parseInt(e.target.value)),
+                          }))
+                        }
+                        inputProps={{ min: 1 }}
+                        variant="outlined"
+                        size="small"
+                        sx={{
+                          width: 50,
+                          textAlign: "center",
+                          color: "#500075",
+                          outline: "none",
+                        }}
                         disabled
-                    />
-                    <Button
-                            sx={{
-                              color: "#500075",
-                              border: "1px solid #500075",
-                              ":hover": { border: "1px solid #500075" },
-                            }}
-                      onClick={() => handleQuantityChange(data.id, 1)}
+                      />
+                      <Button
+                        sx={{
+                          color: "#500075",
+                          border: "1px solid #500075",
+                          ":hover": { border: "1px solid #500075" },
+                        }}
+                        onClick={() => handleQuantityChange(data.id, 1)}
+                      >
+                        +
+                      </Button>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                       marginLeft: "1em",
+                       marginRight: "1em",
+
+                        paddingBottom:"1em",
+
+                      }}
                     >
-                      +
-                    </Button>
-                  </Box>
                     <Button
-                      sx={{ display: "flex", flex: 2, backgroundColor: "#500075", color: "white", ":hover": {backgroundColor: "#500075"} }}
+                      sx={{
+                        display: "flex",
+                        flex: 2,
+                        backgroundColor: "#500075",
+                        color: "white",
+                        ":hover": { backgroundColor: "#500075" },
+                      }}
                       onClick={() => addToCart(data)}
                     >
                       AGREGAR AL CARRITO
                     </Button>
-                </Box>
-              </Card>
-            ))}
-          </div>
-          <div className={styles.form_container}>
-            <h2>Resumen de la reserva:</h2>
-            <div>
-              <strong>Local:</strong>{" "}
-              {reservation[0] && 
-                 reservation[0].formData.local
-              }
-            </div>
-            <div>
-            <strong>Fecha:</strong> {reservation[0]?.formData.date}
+                    </Box>
 
+                  </Box>
+                </Card>
+              ))}
             </div>
-            <div>
-              <strong>Hora: </strong>
-              {reservation[0]?.formData.hours}
+            <div className={styles.form_container}>
+              <div className={styles.form_container_box}>
+                <div>
+                  <strong>Local:</strong>{" "}
+                  {reservation[0] && reservation[0].formData.local}
+                </div>
+                <div>
+                  <strong>Fecha:</strong> {reservation[0]?.formData.date}
+                </div>
+                <div>
+                  <strong>Hora: </strong>
+                  {reservation[0]?.formData.hours}
+                </div>
+                <div>
+                  <strong>Personas:</strong> {reservation[0]?.formData.peoples}
+                </div>
+              </div>
+              <hr />
+              <div className={styles.menucar_container}>
 
-            </div>
-            <div>
-            <strong>Personas:</strong> {reservation[0]?.formData.peoples}
+              <div className={styles.menucar_food}>
+                {cartItems.map((item, index) => (
+                  <Card className={styles.menucar_box} key={index}>
+                    {item?.imageFile && item.imageFile[0] && (
+                      <CardMedia
+                        component="img"
+                        sx={{ maxWidth: "100%", width: 150 }}
+                        image={item.imageFile[0]}
+                        alt="Live from space album cover"
+                      />
+                    )}
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <CardContent sx={{ flex: "1 0 auto" }}>
+                        <Typography component="div" variant="h5">
+                          {item?.name}
+                        </Typography>
+                        <Typography
+                          variant="subtitle1"
+                          color="text.secondary"
+                          component="div"
+                        >
+                          ${parseFloat(item.price * item.quantity).toFixed(2)}
+                        </Typography>
+                        <Typography
+                          variant="subtitle1"
+                          color="text.secondary"
+                          component="div"
+                        >
+                          Cantidad: {item.quantity}
+                          <Button
+                            sx={{
+                              display: "flex",
+                              flex: 1,
+                              color: "#500075 ",
+                            }}
+                            onClick={() => handleRemove(index)}
+                          >
+                            <DeleteIcon />
+                          </Button>
+                        </Typography>
+                      </CardContent>
+                    </Box>
+                  </Card>
+                ))}
+              </div>
+              </div>
 
+
+              <div className={styles.btn_container}>
+              <div className={styles.total}>
+  <h2>
+    <strong>Total:</strong>
+     ${getTotal().toFixed(2)}</h2>
+</div>
+                <Link to="/carrito">
+                  <Button className={styles.btn_login}>IR AL CARRITO</Button>
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className={styles.btn_container}>
-            <Link to= "/carrito">
-            <Button className={styles.btn_login} >
-            IR AL CARRITO
-            </Button>
-            </Link>
           </div>
         </>
       )}

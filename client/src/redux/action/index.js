@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 
-/* https://en-una-production.up.railway.app// */
+/* http://localhost:3001s// */
 
 /* http://localhost:3001 */
 export const RegisterUser = (payload) => {
@@ -140,6 +140,23 @@ export const DetailRestaurant = (restaurantId) => {
       });
     } catch (error) {
       console.error('Error al mostrar el detalle del restaurante:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
+
+export const DetailsReservation = (reservationId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/details-reservations/${reservationId}`);
+      const data = res.data;
+
+      dispatch({
+        type: "DETAIL_RESERVATION",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar el detalle de las reservaciones:', error);
       // Puedes dispatchar una acción de error si es necesario.
     }
   };
