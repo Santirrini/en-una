@@ -219,7 +219,7 @@ export default function DetailsRestaurant() {
       </form>
 
       <div className={styles.form_container}>
-        <h2>Resumen de la reserva:</h2>
+        <h2>Detalle de la reserva:</h2>
         {formData.local ? (
           <div>
             <strong>Local:</strong> {formData.local}

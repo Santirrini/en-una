@@ -6,9 +6,8 @@ import axios from 'axios'
 
 
 
-/* http://localhost:3001s// */
-
-/* http://localhost:3001 */
+/* https://en-una-production.up.railway.app/// */
+/* https://en-una-production.up.railway.app// */
 export const RegisterUser = (payload) => {
   return async (dispatch) => {
     try {

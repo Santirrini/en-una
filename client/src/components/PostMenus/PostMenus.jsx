@@ -31,6 +31,10 @@ const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (data.imageFile.length === 0) {
+      alert("Por favor, sube al menos una imagen del menu.");
+      return;
+    }
     setTimeout(async () => {
 
     try {

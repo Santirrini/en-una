@@ -2,7 +2,7 @@ import React from 'react';
 import { Carousel } from 'antd';
 
 const CarruselPublicitary = () => (
-  <Carousel autoplay>
+  <Carousel arrows autoplay>
     <div>
       <img src={require('../../Images/15614775255199.jpg')} alt="1" style={{ ...contentStyle, backgroundImage: 'url(url_de_la_imagen_1)' }} />
     </div>

@@ -32,7 +32,7 @@ import MyReservationsRestaurant from "./pages/MyReservationsRestaurant";
 
 function App() {
 
- 
+
   return (
     <div >
       <BrowserRouter>
