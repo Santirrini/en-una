@@ -40,7 +40,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.post('/post-restaurant', upload.array('imageFile', 1000), PostRestaurant);
+router.post('/post-restaurant', upload.fields([
+  { name: 'imageFile', maxCount: 1000 },
+  { name: 'logoUrl', maxCount: 1 }
+]), PostRestaurant);
 
 router.get('/restaurants', AllRestaurant);
 router.get('/restaurant/:restaurantId', DetailsRestaurant);

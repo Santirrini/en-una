@@ -29,25 +29,41 @@ module.exports = {
 
         // Verificar si el usuario ya tiene un restaurante asociado
         if (existingRestaurant) {
-          console.log('El usuario ya tiene un restaurante asociado')
+          console.log('El usuario ya tiene un restaurante asociado');
           return res.status(400).send('El usuario ya tiene un restaurante asociado');
         }
 
         // Verificar si se han proporcionado archivos
-        if (!req.files || req.files.length === 0) {
-          console.log('No se han proporcionado archivos.')
-          return res.status(400).send('No se han proporcionado archivos.');
+        if (!req.files || !req.files.imageFile || req.files.imageFile.length === 0) {
+          console.log('No se han proporcionado archivos de imagen.');
+          return res.status(400).send('No se han proporcionado archivos de imagen.');
         }
 
+        if (!req.files.logoUrl || req.files.logoUrl.length === 0) {
+          console.log('No se ha proporcionado un archivo de logo.');
+          return res.status(400).send('No se ha proporcionado un archivo de logo.');
+        }
+
+        // Subir el logo a Cloudinary
+        const logoFile = req.files.logoUrl[0];
+        const cloudinaryUploadResultLogo = await cloudinary.uploader.upload(logoFile.path, {
+          resource_type: 'image',
+          quality: 'auto:low',
+          fetch_format: 'auto',
+        });
+
+        const logoUrl = cloudinaryUploadResultLogo.secure_url;
+        console.log('Logo subido a Cloudinary:', logoUrl);
+
         // Subir imágenes a Cloudinary
-        const imageUrls = await Promise.all(req.files.map(async (file) => {
-          const cloudinaryUploadResult = await cloudinary.uploader.upload(file.path, {
+        const imageUrls = await Promise.all(req.files.imageFile.map(async (file) => {
+          const cloudinaryUploadResultImage = await cloudinary.uploader.upload(file.path, {
             resource_type: 'image',
             quality: 'auto:low',
             fetch_format: 'auto',
           });
-          console.log('Imagen subida a Cloudinary:', cloudinaryUploadResult.secure_url);
-          return cloudinaryUploadResult.secure_url;
+          console.log('Imagen subida a Cloudinary:', cloudinaryUploadResultImage.secure_url);
+          return cloudinaryUploadResultImage.secure_url;
         }));
 
         // Crear el restaurante
@@ -64,6 +80,7 @@ module.exports = {
 
         const newRestaurant = await Restaurant.create({
           imageFile: imageUrls,
+          logo: logoUrl,
           name,
           address,
           address_optional,
@@ -84,3 +101,4 @@ module.exports = {
     });
   }
 };
+

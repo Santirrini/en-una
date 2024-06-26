@@ -12,6 +12,11 @@ module.exports = (sequelize) => {
             type: DataTypes.ARRAY(DataTypes.STRING),
 
         },
+
+        logo: {
+            type: DataTypes.STRING,
+
+        },
         name: {
             type: DataTypes.STRING,
         },
