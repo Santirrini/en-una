@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
 
 module.exports = {
   Register: async (req, res) => {
-    const { name, password, email, phone, role, restaurantId } = req.body;
+    const { name, razon_social, ruc, contact_person, position, address, lastName, genre, date, country, province, district, user, password, email, phone, role, restaurantId } = req.body;
 
     try {
       const existingUser = await User.findOne({ where: { email } });
@@ -39,60 +39,72 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-   /* const emailContent = `
-      <html>
-      <body    style="
-      background-color: #f3f3f3;
-      display: grid;
-      justify-content: center;
-      max-width: 100%;
-    ">
-        <div     style="
-        background-color: #fff;
-        border: 8px solid #bd24bd;
-        padding: 2em;
-        width: 600px;
-        max-width: 100%;
-        margin: 0 auto;
-        font-family: Arial, Helvetica, sans-serif;
-      " >
-          <div style="margin: 0 auto; text-align: center;">
-            <img src="https://elarisneakers.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
-          </div>
-    
-          <p style="color: black;">¡Hola [Nombre]!</p>
-          <p style="color: black;">¡Bienvenido a [Nombre de tu empresa o sitio web]! Nos complace que te hayas registrado y formes parte de nuestra comunidad.</p>
-          <p style="color: black;">Aquí tienes algunos detalles importantes:</p>
-          <p style="color: black;"> <strong>Tu cuenta ha sido creada exitosamente.</strong> </p>
-          <p style="color: black;">Para comenzar, solo necesitas verificar tu dirección de correo electrónico haciendo clic en el siguiente enlace:</p>
-          
-          <p style="color: black;">[Verificar mi correo electrónico]</p>
-          <p style="color: black;">Si el enlace anterior no funciona, copia y pega la siguiente URL en tu navegador:</p>
-          <p style="color: black;">[URL de verificación]</p>
-          <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
-    
-          <p style="color: black;">Gracias por unirte a nosotros. ¡Esperamos que disfrutes de nuestra plataforma!</p>
-          <p style="color: black;">Saludos cordiales,</p>
-          <p style="color: black;">El equipo de [Nombre de tu empresa o sitio web]</p>
-    
-          
-          
-    
+      /* const emailContent = `
+         <html>
+         <body    style="
+         background-color: #f3f3f3;
+         display: grid;
+         justify-content: center;
+         max-width: 100%;
+       ">
+           <div     style="
+           background-color: #fff;
+           border: 8px solid #bd24bd;
+           padding: 2em;
+           width: 600px;
+           max-width: 100%;
+           margin: 0 auto;
+           font-family: Arial, Helvetica, sans-serif;
+         " >
+             <div style="margin: 0 auto; text-align: center;">
+               <img src="https://elarisneakers.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+             </div>
        
-        </div>
-      </body>
-    </html>
-      `;
-
-      await transporter.sendMail({
-        from: process.env.EMAIL,
-        to: email,
-        subject: '¡Bienvenido a nuestra plataforma!',
-        html: emailContent,
-      }); */
+             <p style="color: black;">¡Hola [Nombre]!</p>
+             <p style="color: black;">¡Bienvenido a [Nombre de tu empresa o sitio web]! Nos complace que te hayas registrado y formes parte de nuestra comunidad.</p>
+             <p style="color: black;">Aquí tienes algunos detalles importantes:</p>
+             <p style="color: black;"> <strong>Tu cuenta ha sido creada exitosamente.</strong> </p>
+             <p style="color: black;">Para comenzar, solo necesitas verificar tu dirección de correo electrónico haciendo clic en el siguiente enlace:</p>
+             
+             <p style="color: black;">[Verificar mi correo electrónico]</p>
+             <p style="color: black;">Si el enlace anterior no funciona, copia y pega la siguiente URL en tu navegador:</p>
+             <p style="color: black;">[URL de verificación]</p>
+             <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
+       
+             <p style="color: black;">Gracias por unirte a nosotros. ¡Esperamos que disfrutes de nuestra plataforma!</p>
+             <p style="color: black;">Saludos cordiales,</p>
+             <p style="color: black;">El equipo de [Nombre de tu empresa o sitio web]</p>
+       
+             
+             
+       
+          
+           </div>
+         </body>
+       </html>
+         `;
+   
+         await transporter.sendMail({
+           from: process.env.EMAIL,
+           to: email,
+           subject: '¡Bienvenido a nuestra plataforma!',
+           html: emailContent,
+         }); */
 
       const newUser = await User.create({
         name: capitalizedName,
+        lastName,
+        genre,
+        date,
+        razon_social,
+        ruc,
+        contact_person,
+        position,
+        country,
+        province,
+        address,
+        district,
+        user,
         email,
         password: hashedPassword,
         phone,

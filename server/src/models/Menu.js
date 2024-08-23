@@ -15,12 +15,16 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING,
         },
+        category: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+        },
         details: {
             type: DataTypes.STRING,
         },
         price: {
             type: DataTypes.STRING,
         },
+
         restaurantId: {  // Agrega esta columna para la relación con Restaurant
             type: DataTypes.UUID,
             allowNull: false,

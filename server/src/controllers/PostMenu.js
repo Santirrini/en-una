@@ -54,10 +54,11 @@ module.exports = {
         // Obtener el restaurantId del token
         const { restaurantId } = req.params;
 
-        const { name, details, price } = req.body;
+        const { name, details, price, category } = req.body;
         const newMenu = await Menu.create({
           imageFile: imageUrls,
           name,
+          category: category ? JSON.parse(category) : [],
           details,
           price,
           restaurantId // Asignar el ID del restaurante al menú

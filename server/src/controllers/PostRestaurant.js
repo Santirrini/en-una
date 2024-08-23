@@ -1,11 +1,6 @@
-require('dotenv').config();
-
-const { Restaurant, User } = require('../db');
+const { Restaurant } = require('../db');
 const cloudinary = require('cloudinary').v2;
 const jwt = require('jsonwebtoken');
-
-
-
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,85 +15,118 @@ module.exports = {
     // Verificar el token de autorización
     jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
       if (err) {
+        console.error('Error de autenticación:', err);
         return res.sendStatus(401);
       }
 
       try {
+        const {
+          name, address, phone, email, details, horarios, local, area, additional_services,
+          maximum_per_table, maximum_person_per_table, type_of_meals, average_price
+        } = req.body;
+
         const userId = decoded.id; // ID del usuario extraído del token
-        const existingRestaurant = await Restaurant.findOne({ where: { userId } });
 
-        // Verificar si el usuario ya tiene un restaurante asociado
-        if (existingRestaurant) {
-          console.log('El usuario ya tiene un restaurante asociado');
-          return res.status(400).send('El usuario ya tiene un restaurante asociado');
+        // Subir el logo a Cloudinary si se proporciona
+        let logoUrl = null;
+        if (req.files && req.files.logoUrl) {
+          const logoFile = req.files.logoUrl[0];
+          try {
+            const cloudinaryUploadResultLogo = await cloudinary.uploader.upload(logoFile.path, {
+              resource_type: 'image',
+              quality: 'auto:low',
+              fetch_format: 'auto',
+            });
+            logoUrl = cloudinaryUploadResultLogo.secure_url;
+            console.log('Logo subido a Cloudinary:', logoUrl);
+          } catch (error) {
+            console.error('Error al subir el logo a Cloudinary:', error);
+            return res.status(500).send('Error al subir el logo a Cloudinary');
+          }
         }
 
-        // Verificar si se han proporcionado archivos
-        if (!req.files || !req.files.imageFile || req.files.imageFile.length === 0) {
-          console.log('No se han proporcionado archivos de imagen.');
-          return res.status(400).send('No se han proporcionado archivos de imagen.');
+        // Subir imágenes a Cloudinary si se proporcionan
+        let imageUrls = [];
+        if (req.files && req.files.imageFile) {
+          imageUrls = await Promise.all(req.files.imageFile.map(async (file) => {
+            try {
+              const cloudinaryUploadResultImage = await cloudinary.uploader.upload(file.path, {
+                resource_type: 'image',
+                quality: 'auto:low',
+                fetch_format: 'auto',
+              });
+              console.log('Imagen subida a Cloudinary:', cloudinaryUploadResultImage.secure_url);
+              return cloudinaryUploadResultImage.secure_url;
+            } catch (error) {
+              console.error('Error al subir una imagen a Cloudinary:', error);
+              throw new Error('Error al subir una imagen a Cloudinary');
+            }
+          }));
         }
 
-        if (!req.files.logoUrl || req.files.logoUrl.length === 0) {
-          console.log('No se ha proporcionado un archivo de logo.');
-          return res.status(400).send('No se ha proporcionado un archivo de logo.');
+        // Parsear horarios
+        let parsedHorarios = [];
+        if (horarios) {
+          try {
+            parsedHorarios = JSON.parse(horarios);
+          } catch (error) {
+            console.error('Error al parsear los horarios:', error);
+            return res.status(400).send('El formato de los horarios no es válido');
+          }
         }
 
-        // Subir el logo a Cloudinary
-        const logoFile = req.files.logoUrl[0];
-        const cloudinaryUploadResultLogo = await cloudinary.uploader.upload(logoFile.path, {
-          resource_type: 'image',
-          quality: 'auto:low',
-          fetch_format: 'auto',
-        });
+        // Verificar si el restaurante ya existe
+        let restaurant = await Restaurant.findOne({ where: { userId } });
 
-        const logoUrl = cloudinaryUploadResultLogo.secure_url;
-        console.log('Logo subido a Cloudinary:', logoUrl);
+        if (restaurant) {
+          // Si el restaurante ya existe, actualízalo
+          await Restaurant.update({
+            imageFile: imageUrls.length > 0 ? imageUrls : restaurant.imageFile,
+            logo: logoUrl || restaurant.logo,
+            address: address || restaurant.address,
+            phone: phone || restaurant.phone,
+            maximum_per_table: maximum_per_table || restaurant.maximum_per_table,
+            maximum_person_per_table: maximum_person_per_table || restaurant.maximum_person_per_table,
+            type_of_meals: type_of_meals || restaurant.type_of_meals,
+            average_price: average_price || restaurant.average_price,
+            email: email || restaurant.email,
+            local: local || restaurant.local,
+            area: area ? JSON.parse(area) : restaurant.area,
+            additional_services: additional_services ? JSON.parse(additional_services) : restaurant.additional_services,
+            horarios: horarios ? parsedHorarios : restaurant.horarios,
+            details: details || restaurant.details,
+          }, { where: { userId } });
 
-        // Subir imágenes a Cloudinary
-        const imageUrls = await Promise.all(req.files.imageFile.map(async (file) => {
-          const cloudinaryUploadResultImage = await cloudinary.uploader.upload(file.path, {
-            resource_type: 'image',
-            quality: 'auto:low',
-            fetch_format: 'auto',
+          console.log('Restaurante actualizado correctamente');
+          res.status(200).send({ success: true, message: 'Restaurante actualizado correctamente' });
+        } else {
+          // Si el restaurante no existe, créalo
+          const newRestaurant = await Restaurant.create({
+            imageFile: imageUrls,
+            logo: logoUrl,
+            name,
+            address,
+            phone,
+            maximum_per_table,
+            maximum_person_per_table,
+            type_of_meals,
+            average_price,
+            email,
+            local,
+            area: area ? JSON.parse(area) : [],
+            additional_services: additional_services ? JSON.parse(additional_services) : [],
+            horarios: parsedHorarios,
+            details,
+            userId // Asignar el ID del usuario al restaurante
           });
-          console.log('Imagen subida a Cloudinary:', cloudinaryUploadResultImage.secure_url);
-          return cloudinaryUploadResultImage.secure_url;
-        }));
 
-        // Crear el restaurante
-        const { name, address, address_optional, phone, email, details, horarios, local } = req.body;
-
-        // Asegúrate de convertir horarios a un array si es un string
-        let parsedHorarios;
-        try {
-          parsedHorarios = JSON.parse(horarios);
-        } catch (error) {
-          console.error('Error al parsear los horarios:', error);
-          return res.status(400).send('El formato de los horarios no es válido');
+          console.log('Restaurante creado correctamente');
+          res.status(201).send({ success: true, message: 'Restaurante creado correctamente', data: newRestaurant });
         }
-
-        const newRestaurant = await Restaurant.create({
-          imageFile: imageUrls,
-          logo: logoUrl,
-          name,
-          address,
-          address_optional,
-          phone,
-          email,
-          local,
-          horarios: parsedHorarios, // Usar el array parseado
-          details,
-          userId // Asignar el ID del usuario al restaurante
-        });
-
-        console.log('Restaurante creado correctamente');
-        res.status(200).send({ success: true, data: newRestaurant });
       } catch (error) {
-        console.error('Error al crear el restaurante:', error);
-        res.status(500).send({ success: false, error: 'Ocurrió un error al crear el restaurante' });
+        console.error('Error al procesar la solicitud:', error);
+        res.status(500).send({ success: false, error: 'Ocurrió un error al procesar la solicitud' });
       }
     });
   }
 };
-

@@ -25,10 +25,7 @@ module.exports = (sequelize) => {
 
         },
 
-        address_optional: {
-            type: DataTypes.STRING,
-
-        },
+    
 
         phone: {
             type: DataTypes.STRING,
@@ -42,13 +39,44 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
+
+        maximum_per_table: {
+            type: DataTypes.STRING,
+
+        },
+        
+        maximum_person_per_table: {
+            type: DataTypes.STRING,
+
+        },
+
+        type_of_meals: {
+            type: DataTypes.STRING,
+
+        },
+
+        average_price: {
+            type: DataTypes.STRING,
+
+        },
         
 
         horarios: {
             type: DataTypes.ARRAY(DataTypes.JSON),
             defaultValue: []
           },
-          
+
+          area: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            defaultValue: []
+
+          },
+
+          additional_services: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            defaultValue: []
+
+          },
 
         details: {
             type: DataTypes.STRING(3000),

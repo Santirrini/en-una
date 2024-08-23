@@ -11,14 +11,56 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
     },
+    lastName: {
+      type: DataTypes.STRING,
+    },
+    razon_social: {
+      type: DataTypes.STRING,
+    },
+
+    ruc: {
+      type: DataTypes.STRING,
+    },
+    address: {
+      type: DataTypes.STRING,
+    },
+    contact_person: {
+      type: DataTypes.STRING,
+    },
+    position: {
+      type: DataTypes.STRING,
+    },
+    
+    genre: {
+      type: DataTypes.STRING,
+    },
+    date: {
+      type: DataTypes.STRING,
+    },
     email: {
       type: DataTypes.STRING,
     },
-    password: {
+    country: {
       type: DataTypes.STRING,
     },
+    province: {
+      type: DataTypes.STRING,
+    },
+    
+    district: {
+      type: DataTypes.STRING,
+    },
+    
+  
+    
     phone: {
       type: DataTypes.STRING
+    },
+    user: {
+      type: DataTypes.STRING
+    },
+    password: {
+      type: DataTypes.STRING,
     },
     backgroundColor: {
       type: DataTypes.STRING
