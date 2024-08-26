@@ -7,6 +7,8 @@ const {AllUsers} = require('../controllers/AllUsers');
 const {Login} = require('../controllers/Login');
 const {DetailsPersonal} = require('../controllers/DetailsPersonal');
 const {ContactUs} = require('../controllers/ContactUs');
+const {UpdatePersonal} = require('../controllers/UpdatePersonal');
+
 
 
 
@@ -19,6 +21,8 @@ router.post('/login', Login );
 router.get('/datapersonal', DetailsPersonal );
 router.get('/datapersonal', DetailsPersonal );
 router.post('/contact-us', ContactUs );
+router.put('/update-datapersonal', UpdatePersonal );
+
 
 
 

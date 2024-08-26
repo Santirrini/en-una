@@ -3,6 +3,8 @@ const { Router } = require('express');
 const router = Router();
 
 const { PostMenu } = require('../controllers/PostMenu');
+const { UpdateMenu } = require('../controllers/UpdateMenu');
+
 
 
 
@@ -23,6 +25,7 @@ const upload = multer({ storage: storage });
 
 router.post('/post-menu/:restaurantId', upload.array('imageFile', 1000), PostMenu);
 
+router.put('/update-menu/:menuId', upload.array('imageFile', 1000), UpdateMenu);
 
 
 
