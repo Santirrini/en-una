@@ -18,7 +18,7 @@ module.exports = {
       // Verifica y guarda la orden en la base de datos
       try {
         const { name, email, phone_number } = customer; // Ajusta según tu estructura
-        const { additional_info_1} = metadata; // Ajusta según tu estructura
+        const { additional_info_1, custom_field} = metadata; // Ajusta según tu estructura
 
         // Busca la orden relacionada
         const order = await Order.findOne({ where: { id: order_id } });
@@ -32,6 +32,7 @@ module.exports = {
           name,
           email,
           phone: phone_number,
+          observation: custom_field,
           orderId: order.id,
           userId: additional_info_1
         });

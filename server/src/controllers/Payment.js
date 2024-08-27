@@ -7,7 +7,7 @@ const { Order } = require("../db");
 
 module.exports = {
   Payment: async (req, res) => {
-    const { location, date, hours, peoples, order, restaurantId } = req.body;
+    const { location, date, hours, peoples, order, observation, restaurantId } = req.body;
     const { authorization } = req.headers;
 
     jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
@@ -48,8 +48,7 @@ module.exports = {
           redirect_url: 'https://www.google.com',
           metadata: {
             additional_info_1: decoded.id,
-            additional_info_2: 'Informacion extra 2',
-            custom_field: 'Valor personalizado'
+            custom_field: observation
           }
         };
         

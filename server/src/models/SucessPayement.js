@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
     phone: {
       type: DataTypes.STRING,
     },
+
+    observation: {
+      type: DataTypes.STRING,
+    },
     orderId: {
       type: DataTypes.UUID,
       references: {

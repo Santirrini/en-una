@@ -27,6 +27,9 @@ module.exports = (sequelize) => {
     order: {
       type: DataTypes.ARRAY(DataTypes.JSON),
     },
+    observation: {
+      type: DataTypes.STRING,
+    },
     restaurantId: {
       type: DataTypes.UUID,
     },
