@@ -1,7 +1,7 @@
 const { Order } = require('../db');
 
 module.exports = {
-  OrderDratails: async (req, res) => {
+  OrderDetails: async (req, res) => {
         const {orderId} = req.params;
     try {
   

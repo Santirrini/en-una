@@ -12,7 +12,7 @@ const {AllRestaurant} = require('../controllers/AllRestaurants');
 const {DeleteOrder} = require('../controllers/DeleteOrder');
 const {UpdateProduct} = require('../controllers/UpdateProduct');
 
-const {OrderDratails} = require('../controllers/OrderDratails');
+const {OrderDetails} = require('../controllers/OrderDetails');
 const {Webhooks} = require('../controllers/Webhooks');
 const {WebHooksEvent} = require('../controllers/WebHooksEvent');
 const {DetailsReservation} = require('../controllers/DetailsReservation');
@@ -54,8 +54,8 @@ router.get('/obtener-webhook', Webhooks )
 router.post('/webhooks', WebHooksEvent )
 router.get('/details-reservations/:reservationtId', DetailsReservation )
 
-router.get('/orders', AllOrder);
-router.get('/order/:orderId', OrderDratails);
+router.get('/orders/:restaurantId', AllOrder);
+router.get('/order/:orderId', OrderDetails);
 router.delete('/delete/:productId', DeletePost);
 router.delete('/order/delete/:orderId', DeleteOrder);
 router.put('/productupdate/:productId', UpdateProduct);
