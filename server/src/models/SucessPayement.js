@@ -15,6 +15,9 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
     },
+    lastName: {
+      type: DataTypes.STRING,
+    },
     email: {
       type: DataTypes.STRING,
     },
@@ -23,6 +26,10 @@ module.exports = (sequelize) => {
     },
 
     observation: {
+      type: DataTypes.STRING,
+    },
+
+    status: {
       type: DataTypes.STRING,
     },
     orderId: {

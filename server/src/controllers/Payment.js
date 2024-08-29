@@ -7,7 +7,7 @@ const { Order } = require("../db");
 
 module.exports = {
   Payment: async (req, res) => {
-    const { location, date, hours, peoples, order, observation, restaurantId } = req.body;
+    const { location, date, hours,area, peoples, order, observation,  restaurantId } = req.body;
     const { authorization } = req.headers;
 
     jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
@@ -22,11 +22,13 @@ module.exports = {
         }
 
         // Crear la orden en la base de datos y obtener el UUID generado
-        const orders = await Order.create({ location, date, hours, peoples, order, restaurantId, userId: decoded.id });
+        const orders = await Order.create({ location, date, hours, area, peoples,observation, order, restaurantId, userId: decoded.id });
         const orderId = orders.id;  // UUID generado por la base de datos
 
 
         const name = decoded.name;
+        const lastName = decoded.lastName;
+
         const email = decoded.email;
         const phone = decoded.phone;
 
@@ -40,14 +42,16 @@ module.exports = {
           order_id: orderId,  // Utilizar el UUID generado por la base de datos
           customer: {
             name: name,
+            lastName: lastName,
             email: email,
             phone_number: phone,
           },
           send_email: false,
           confirm: false,
-          redirect_url: 'https://www.google.com',
+          redirect_url: 'https://www.enunaapp.com',
           metadata: {
             additional_info_1: decoded.id,
+
             custom_field: observation
           }
         };

@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
 
 module.exports = {
   Register: async (req, res) => {
-    const { name, razon_social, ruc, contact_person, position, address, lastName, genre, date, country, province, district, user, password, email, phone, role, restaurantId } = req.body;
+    const { name, razon_social, ruc, contact_person, position, address, lastName, genre, date, country, province, district, password, email, phone, role, restaurantId } = req.body;
 
     try {
       const existingUser = await User.findOne({ where: { email } });
@@ -104,7 +104,6 @@ module.exports = {
         province,
         address,
         district,
-        user,
         email,
         password: hashedPassword,
         phone,
