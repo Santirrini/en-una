@@ -2,7 +2,7 @@ const { SuccessPayment, Order } = require('../db');
 
 module.exports = {
   AllOrder: async (req, res) => {
-    const { restaurantId } = req.query;
+    const { restaurantId } = req.params;
 
     if (!restaurantId) {
       return res.status(400).json({ error: 'restaurantId es requerido' });
