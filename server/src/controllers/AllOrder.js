@@ -12,7 +12,7 @@ module.exports = {
       const orders = await SuccessPayment.findAll({
         include: {
           model: Order,
-          as: 'order',
+          as: 'orders',
           where: { restaurantId } // Filtro por restaurantId
         }
       });
