@@ -46,9 +46,9 @@ module.exports = {
         }
 
         // Subir imágenes a Cloudinary si se proporcionan
-        let imageUrls = [];
+        let newImageUrls = [];
         if (req.files && req.files.imageFile) {
-          imageUrls = await Promise.all(req.files.imageFile.map(async (file) => {
+          newImageUrls = await Promise.all(req.files.imageFile.map(async (file) => {
             try {
               const cloudinaryUploadResultImage = await cloudinary.uploader.upload(file.path, {
                 resource_type: 'image',
@@ -79,9 +79,11 @@ module.exports = {
         let restaurant = await Restaurant.findOne({ where: { userId } });
 
         if (restaurant) {
-          // Si el restaurante ya existe, actualízalo
+          // Si el restaurante ya existe, combinar las nuevas imágenes con las existentes
+          const combinedImageUrls = [...restaurant.imageFile, ...newImageUrls];
+          
           await Restaurant.update({
-            imageFile: imageUrls.length > 0 ? imageUrls : restaurant.imageFile,
+            imageFile: combinedImageUrls.length > 0 ? combinedImageUrls : restaurant.imageFile,
             logo: logoUrl || restaurant.logo,
             address: address || restaurant.address,
             phone: phone || restaurant.phone,
@@ -102,7 +104,7 @@ module.exports = {
         } else {
           // Si el restaurante no existe, créalo
           const newRestaurant = await Restaurant.create({
-            imageFile: imageUrls,
+            imageFile: newImageUrls,
             logo: logoUrl,
             name,
             address,
