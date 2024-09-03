@@ -79,16 +79,10 @@ module.exports = {
         let restaurant = await Restaurant.findOne({ where: { userId } });
 
         if (restaurant) {
-          // Si el restaurante ya existe, determinar las imágenes a eliminar
+          // Si el restaurante ya existe, eliminar todas las imágenes antiguas en Cloudinary
           const oldImageUrls = restaurant.imageFile;
-          const updatedImageUrls = [...new Set([...oldImageUrls, ...newImageUrls])];
-
-          // Imágenes a eliminar
-          const imagesToDelete = oldImageUrls.filter(img => !updatedImageUrls.includes(img));
-
-          // Eliminar imágenes en Cloudinary
-          if (imagesToDelete.length > 0) {
-            await Promise.all(imagesToDelete.map(async (url) => {
+          if (oldImageUrls.length > 0) {
+            await Promise.all(oldImageUrls.map(async (url) => {
               try {
                 const publicId = url.split('/').pop().split('.')[0]; // Obtener el public_id de la URL
                 await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
@@ -100,9 +94,9 @@ module.exports = {
             }));
           }
 
-          // Actualizar el restaurante en la base de datos
+          // Actualizar el restaurante en la base de datos con las nuevas imágenes
           await Restaurant.update({
-            imageFile: updatedImageUrls.length > 0 ? updatedImageUrls : restaurant.imageFile,
+            imageFile: newImageUrls,
             logo: logoUrl || restaurant.logo,
             address: address || restaurant.address,
             phone: phone || restaurant.phone,
