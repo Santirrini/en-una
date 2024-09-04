@@ -6,18 +6,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import Avatar from "@mui/material/Avatar";
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [agreed, setAgreed] = useState(false);
 
   const [data, setData] = useState({
     name: "",
     lastName: "",
+    razon_social: "",
+    ruc: "",
+    contact_person: "",
+    position: "",
+    address: "",
+  
+    genre: "",
+    date: "",
+    country: "",
+    province: "",
+    district: "",
     email: "",
     password: "",
     phone: "",
+    role: "",
   });
   const [loadingSuccess, setLoadingSuccess] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -39,20 +50,20 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoadingSuccess(true);
-      try {
-        const registers = await dispatch(RegisterUser(data));
-        if (registers) {
-          Success();
-          setTimeout(async () => {
-            navigate("/iniciar-sesión");
-          }, 2000);
-        }
-      } catch (error) {
-        Error();
-        console.log(error);
-      } finally {
-        setLoadingSuccess(false);
+    try {
+      const registers = await dispatch(RegisterUser(data));
+      if (registers) {
+        Success();
+        setTimeout(async () => {
+          navigate("/iniciar-sesión");
+        }, 2000);
       }
+    } catch (error) {
+      Error();
+      console.log(error);
+    } finally {
+      setLoadingSuccess(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -66,14 +77,14 @@ export default function Register() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-           <img src={require("../../Images/Logo.png")} alt="Logo.png" className={styles.logo} />
+          <Avatar alt="Remy Sharp" className={styles.logo} />
           <h2
-            className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
+            className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.textTitle}`}
           >
-            Ingreso de usuario
+            Crear usuario
           </h2>
           <h2
-            className={`mt-10 text-center  font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
+            className={`mt-10 text-center  font-bold leading-9 tracking-tight text-gray-900 ${styles.textSubTitle}`}
           >
             Bienvenido a EnUna
           </h2>
@@ -96,7 +107,7 @@ export default function Register() {
                   onChange={handleChange}
                   autoComplete="name"
                   required
-                  className="outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+                  className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                 >
                   <option value="">Seleccione un tipo de cuenta</option>
 
@@ -105,105 +116,507 @@ export default function Register() {
                 </select>
               </div>
             </div>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Nombre Completo
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  onChange={handleChange}
-                  required
-                  className="outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Correo
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={handleChange}
-                  autoComplete="email"
-                  required
-                  className="outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Contraseña
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+            {data.role === "personal" || data.role === "" ? (
+              <>
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    {/* Forgot password? */}
-                  </a>
+                    Nombre
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Escribe tu nombre"
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  onChange={handleChange}
-                  autoComplete="current-password"
-                  required
-                  className="outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-                />
-              </div>
-            </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Telefóno
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    {/* Forgot password? */}
-                  </a>
+                    Apellido
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Escribe tu apellido"
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="phone"
-                  name="phone"
-                  type="phone"
-                  autoComplete="phone"
-                  onChange={handleChange}
-                  required
-                  className="outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-                />
-              </div>
-            </div>
 
+                <div>
+                  <label
+                    htmlFor="genre"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Género
+                  </label>
+                  <div className="mt-2">
+                    <select
+                      id="genre"
+                      name="genre"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    >
+                      <option value="">Seleccione tu genero</option>
+
+                      <option value="masculino">Masculino</option>
+                      <option value="femenino">Femenino</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="date"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Fecha de nacimiento
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="date"
+                      name="date"
+                      type="date"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Correo
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Correo electrónico"
+                      id="email"
+                      name="email"
+                      type="email"
+                      onChange={handleChange}
+                      autoComplete="email"
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="country"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    País
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="país"
+                      id="country"
+                      name="country"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="province"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Provincia
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="provincia"
+                      id="province"
+                      name="province"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="district"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Distrito
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Distrito"
+                      id="district"
+                      name="district"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Telefóno
+                    </label>
+                    <div className="text-sm">
+                      <a
+                        href="#"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        {/* Forgot password? */}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="phone"
+                      placeholder="Ingresa tu número de telefóno"
+                      autoComplete="phone"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+           
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Contraseña
+                    </label>
+                    <div className="text-sm">
+                      <a
+                        href="#"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        {/* Forgot password? */}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      placeholder="**********"
+                      id="password"
+                      name="password"
+                      type="password"
+                      onChange={handleChange}
+                      autoComplete="current-password"
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
+
+            {data.role === "restaurante" ? (
+              <>
+                <div>
+                  <label
+                    htmlFor="razon_social"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Razón Social
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Escribe tu razón social"
+                      id="razon_social"
+                      name="razon_social"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Nombre comercial
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Escribe tu nombre comercial"
+                      id="name"
+                      name="name"
+                      type="name"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="ruc"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      RUC
+                    </label>
+                    <div className="text-sm">
+                      <a
+                        href="#"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        {/* Forgot password? */}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      id="ruc"
+                      name="ruc"
+                      type="ruc"
+                      placeholder="Ingresa tu RUC"
+                      autoComplete="ruc"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="address"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Dirección
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Correo electrónico"
+                      id="address"
+                      name="address"
+                      type="emaaddressil"
+                      onChange={handleChange}
+                      autoComplete="address"
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+
+             
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Correo
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Correo electrónico"
+                      id="email"
+                      name="email"
+                      type="email"
+                      onChange={handleChange}
+                      autoComplete="email"
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Telefóno
+                    </label>
+                    <div className="text-sm">
+                      <a
+                        href="#"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        {/* Forgot password? */}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="phone"
+                      placeholder="Ingresa tu número de telefóno"
+                      autoComplete="phone"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="contact_person"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Persona de contacto
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Persona de contacto"
+                      id="contact_person"
+                      name="contact_person"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="position"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Cargo
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Cargo"
+                      id="position"
+                      name="position"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="country"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    País
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="País"
+                      id="country"
+                      name="country"
+                      type="country"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="province"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Provincia
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Provincia"
+                      id="province"
+                      name="province"
+                      type="province"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="district"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Distrito
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      placeholder="Distrito"
+                      id="district"
+                      name="district"
+                      type="text"
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+          
+             
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Contraseña
+                    </label>
+                    <div className="text-sm">
+                      <a
+                        href="#"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        {/* Forgot password? */}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      placeholder="**********"
+                      id="password"
+                      name="password"
+                      type="password"
+                      onChange={handleChange}
+                      autoComplete="current-password"
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
             <div>
               <button
                 type="submit"

@@ -5,6 +5,7 @@ import Footer from "../components/Footer/Footer";
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
+import HeaderMobile from "../components/Header/Header";
 
 export default function WhyUs() {
   const [open, setOpen] = useState(true);
@@ -22,6 +23,9 @@ export default function WhyUs() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

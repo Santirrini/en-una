@@ -1,0 +1,97 @@
+import * as React from "react";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import Badge from "@mui/material/Badge";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-router-dom";
+import {  useSelector, useDispatch } from "react-redux";
+import { dataPersonal } from "../../redux/action";
+
+export default function Notification() {
+  const dispatch = useDispatch();
+
+  const [anchorElNoti, setAnchorElNoti] = React.useState(null);
+  const openNoti = Boolean(anchorElNoti);
+  const [items, setItems] = React.useState([]);
+  const datapersonal = useSelector((state) => state.datapersonal);
+  const token = useSelector((state) => state.token);
+
+  React.useEffect(() => {
+    dispatch(dataPersonal(token));
+  }, [dispatch, token]);
+  React.useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    setItems(cartItems);
+  }, []);
+  const handleCloseNoti = () => {
+    setAnchorElNoti(null);
+  };
+  const handleClickNoti = (event) => {
+    setAnchorElNoti(event.currentTarget);
+  };
+  return (
+    <div>
+      <IconButton
+        id="basic-button"
+        aria-controls={openNoti ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={openNoti ? "true" : undefined}
+        onClick={handleClickNoti}
+      >
+        <Badge
+          color="secondary"
+          variant={items.length > 0 && items[0].id === datapersonal?.id ? "dot" : ""}
+          sx={{ color: "white" }}
+        >
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorElNoti}
+        open={openNoti}
+        onClose={handleCloseNoti}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&::before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        {items.length > 0 ? (
+          <Link to="/carrito">
+            <MenuItem onClick={handleCloseNoti}>
+              ¡Tenes una reserva pendiente!
+            </MenuItem>
+          </Link>
+        ) : (
+          <MenuItem onClick={handleCloseNoti}>No hay notificaciones</MenuItem>
+        )}
+      </Menu>
+    </div>
+  );
+}

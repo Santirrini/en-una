@@ -9,7 +9,7 @@ import CarsFood from "./pages/CarsFood";
 import MenuFood from "./pages/MenuFood";
 import Perfil from "./pages/Perfil";
 import Admin from './pages/Admin';
-import PostProducts from './components/PostProducts/PostRestaurant';
+import PostProducts from './components/PostRestaurant/PostRestaurant';
 import Order from './pages/Order';
 import DeletePostPage from './pages/DeletePostPage';
 import Myrestaurant from "./pages/MyRestaurant";
@@ -25,6 +25,12 @@ import ConfirmUpdatePassword from "./pages/ConfirmUpdatePassword";
 import MyReservations from "./pages/MyReservations";
 import FrequentQuestions from "./pages/FrequentQuestions";
 import MyReservationsRestaurant from "./pages/MyReservationsRestaurant";
+import PanelRestaurant from "./pages/PanelRestaurant";
+import PostRestaurant from "./pages/PostRestaurant";
+import EditMenu from './pages/EditMenu';
+
+import React, { useState } from 'react';
+
 
 
 
@@ -32,6 +38,7 @@ import MyReservationsRestaurant from "./pages/MyReservationsRestaurant";
 
 function App() {
 
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <div >
@@ -74,7 +81,20 @@ function App() {
 
 
 
+          <Route path='/panel' element={<PanelRestaurant />}>
+            <Route index element={<PostRestaurant />} />
+            <Route path='publicar-restaurante' element={<PostRestaurant disabled={disabled} setDisabled={setDisabled} />} />
+            <Route path='publicar-menu' element={<PostMenus />} />
+            <Route path='editar-menu/:restaurantId' element={<EditMenu />} />
 
+            <Route path='pedidos' element={<Order />} />
+
+
+
+
+
+
+          </Route>
 
 
         </Routes>

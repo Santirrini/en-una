@@ -1,7 +1,11 @@
 
 .OrderProducts_container {
-    margin-top: 5em;
     background-color: white;
+}
+.order {
+  height: 3.5em;
+  border: 1px solid #cecece;
+  outline: none;
 }
 .InputContainer {
     display: grid;
@@ -41,7 +45,8 @@
   }
   
   .boletin_table th {
-    background-color: #f2f2f2;
+    background-color: #500075;
+    color: white;
   }
   
   .boletin_table tbody tr:nth-child(even) {
@@ -56,7 +61,51 @@
     color: black;
   }
 
-  .search{
-    display: flex;
-    justify-content: center;
-   }
+  .search {
+    width: 100%;
+    border: "1px solid #500075";
+    border-radius: 2em;
+    padding-left: 1em;
+    outline: none;
+  }
+
+/* OrderProducts.module.css */
+.selectAtendido {
+  background-color: green;
+  color: white;
+}
+
+.selectPendiente {
+  background-color: yellow;
+  color: black;
+}
+
+.search_container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2em;
+}
+.order_for_container  {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5em;
+}
+.order_for_container h4 {
+  color: #500075;
+  font-weight: bold;
+}
+
+.calendar {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+
+@media only screen and  (max-width: 768px) {
+.order_for_container  {
+    width: 90%;
+    margin: auto;
+    gap: 2em;
+}
+}

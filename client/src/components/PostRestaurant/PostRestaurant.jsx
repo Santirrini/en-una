@@ -21,10 +21,11 @@ export default function PostProducts() {
     { dia: "Domingo", inicio: "", fin: "", cerrado: false },
   ]);
 
-  console.log(horarios);
+
 
   const [data, setData] = useState({
     imageFile: [],
+    logo: "",
     name: "",
     address: "",
     address_optional: "",
@@ -73,9 +74,14 @@ export default function PostProducts() {
       // Convertir el array de horarios a una cadena JSON
       formData.append("horarios", JSON.stringify(horarios));
 
+
       data.imageFile.forEach((image) => {
         formData.append("imageFile", image);
       });
+
+      if (data.logoFile) {
+        formData.append("logoUrl", data.logoFile);
+      }
 
       await dispatch(postRestaurant(token, formData));
       success();
@@ -85,6 +91,7 @@ export default function PostProducts() {
     } finally {
       setData({
         imageFile: [],
+        logoFile: "",
         name: "",
         address: "",
         address_optional: "",
@@ -115,12 +122,28 @@ export default function PostProducts() {
     }));
   }, []);
 
+  const handleLogo = useCallback((acceptedFiles) => {
+    setData((prevState) => ({
+      ...prevState,
+      logoFile: acceptedFiles[0],
+    }));
+  }, []);
+
   const onDrop = useCallback((acceptedFiles) => {
     handleImage(acceptedFiles);
   }, []);
 
+  const onLogoDrop = useCallback((acceptedFiles) => {
+    handleLogo(acceptedFiles);
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+  });
+
+  const { getRootProps: getLogoRootProps, getInputProps: getLogoInputProps, isDragActive: isLogoDragActive } = useDropzone({
+    onDrop: onLogoDrop,
+    maxFiles: 1,
   });
 
   const handleRemove = (index) => {
@@ -176,6 +199,32 @@ export default function PostProducts() {
               ))}
           </div>
         </div>
+
+        <div className={styles.dropzone} {...getLogoRootProps()}>
+          <input {...getLogoInputProps()} />
+          {isLogoDragActive ? (
+            <p>Suelta el logo aquí...</p>
+          ) : (
+            <div>
+              <p>
+                Arrastra y suelta el logo aquí o haz clic para seleccionar.
+              </p>
+              <span>Puedes subir un logo.</span>
+            </div>
+          )}
+        </div>
+        {data.logoFile && (
+          <div className={styles.prev_mini}>
+            <Upload listType="picture-card" disabled>
+              <img
+                alt="Logo preview"
+                src={URL.createObjectURL(data.logoFile)}
+                accept=".jpg, .jpeg, .png"
+              />
+            </Upload>
+          </div>
+        )}
+
         <div className="mx-auto mt-16 max-w-xl sm:mt-20">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
@@ -212,12 +261,10 @@ export default function PostProducts() {
                   onChange={(e) => setData({ ...data, local: e.target.value })}
                   value={data.local}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  required
                 />
               </div>
             </div>
-
-            <div>
+            <div className="sm:col-span-2">
               <label
                 htmlFor="address"
                 className="block text-sm font-semibold leading-6 text-gray-900"
@@ -229,33 +276,30 @@ export default function PostProducts() {
                   type="text"
                   name="address"
                   id="address"
-                  onChange={(e) =>
-                    setData({ ...data, address: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, address: e.target.value })}
                   value={data.address}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                 />
               </div>
             </div>
-
-            <div>
+            <div className="sm:col-span-2">
               <label
                 htmlFor="address_optional"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Dirección(opcional)
+                Dirección opcional
               </label>
-              <div className="relative mt-2 rounded-md shadow-sm">
+              <div className="mt-2.5">
                 <input
                   type="text"
                   name="address_optional"
                   id="address_optional"
-                  className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={(e) =>
                     setData({ ...data, address_optional: e.target.value })
                   }
                   value={data.address_optional}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -264,105 +308,98 @@ export default function PostProducts() {
                 htmlFor="phone"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Telefóno
+                Teléfono
               </label>
-              <div className="relative mt-2 rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <span className="text-gray-500 sm:text-sm">+51</span>
-                </div>
+              <div className="mt-2.5">
                 <input
-                  type="text"
+                  type="tel"
                   name="phone"
                   id="phone"
-                  className="block w-full rounded-md border-0 py-1.5 pl-10 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={(e) => setData({ ...data, phone: e.target.value })}
                   value={data.phone}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                 />
               </div>
             </div>
-
             <div>
               <label
                 htmlFor="email"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Correo electrónico
+                Email
               </label>
-              <div className="relative mt-2 rounded-md shadow-sm">
+              <div className="mt-2.5">
                 <input
                   type="email"
                   name="email"
                   id="email"
-                  className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={(e) => setData({ ...data, email: e.target.value })}
                   value={data.email}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  required
                 />
               </div>
             </div>
+            <div>
+      <h3>Horarios de apertura </h3>
 
-            <div className={styles.container}>
-              <h3>Horarios</h3>
-              {horarios.map((horario, index) => (
-                <div key={index} className={styles.formGroup}>
-                  <label className={styles.label}>{horario.dia}</label>
-                  {horario.cerrado ? (
-                    <span className={styles.cerradoText}>Cerrado</span>
-                  ) : (
-                    <>
-                      <input
-                        type="time"
-                        value={horario.inicio}
-                        onChange={(e) =>
-                          handleInputChange(index, "inicio", e.target.value)
-                        }
-                        className={styles.inputTime}
-                      />
-                      <span>-</span>
-                      <input
-                        type="time"
-                        value={horario.fin}
-                        onChange={(e) =>
-                          handleInputChange(index, "fin", e.target.value)
-                        }
-                        className={styles.inputTime}
-                      />
-                    </>
-                  )}
-                  <input
-                    type="checkbox"
-                    checked={horario.cerrado}
-                    onChange={() => toggleCerrado(index)}
-                  />
-                </div>
-              ))}
+            {horarios.map((horario, index) => (
+          <div key={index} className={styles.formGroup}>
+            <label className={styles.label}>{horario.dia}</label>
+            {horario.cerrado ? (
+              <span className={styles.cerradoText}>Cerrado</span>
+            ) : (
+              <>
+                <input
+                  type="time"
+                  value={horario.inicio}
+                  onChange={(e) =>
+                    handleInputChange(index, "inicio", e.target.value)
+                  }
+                  className={styles.inputTime}
+                />
+                <span>-</span>
+                <input
+                  type="time"
+                  value={horario.fin}
+                  onChange={(e) =>
+                    handleInputChange(index, "fin", e.target.value)
+                  }
+                  className={styles.inputTime}
+                />
+              </>
+            )}
+            <input
+              type="checkbox"
+              checked={horario.cerrado}
+              onChange={() => toggleCerrado(index)}
+            />
+          </div>
+        ))}
             </div>
-
             <div className="sm:col-span-2">
               <label
                 htmlFor="details"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Detalles del Restaurante
+                Detalles
               </label>
               <div className="mt-2.5">
                 <textarea
                   name="details"
                   id="details"
-                  rows={4}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={""}
+                  onChange={(e) => setData({ ...data, details: e.target.value })}
                   value={data.details}
-                  onChange={(e) =>
-                    setData({ ...data, details: e.target.value })
-                  }
+                  rows="4"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
-                />
+                ></textarea>
               </div>
             </div>
           </div>
           <div className="mt-10">
-            <button
+         <button
               type="submit"
               className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -377,6 +414,7 @@ export default function PostProducts() {
               )}
             </button>
             {contextHolder}
+
           </div>
         </div>
       </div>

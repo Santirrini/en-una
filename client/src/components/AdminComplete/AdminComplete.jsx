@@ -50,16 +50,7 @@ function AdminComplete(props) {
       <Toolbar />
       <Divider />
       <List>
-    {/*     <Link to="pedidos">
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <LocalShippingIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Pedidos"} />
-            </ListItemButton>
-          </ListItem>
-        </Link> */}
+
     {/*   <Divider /> */}
         <Link to="publicar-mi-restaurante">
           <ListItem disablePadding>
@@ -99,6 +90,17 @@ function AdminComplete(props) {
        
 
         <Divider />
+
+        <Link to="pedidos">
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <LocalShippingIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Pedidos"} />
+            </ListItemButton>
+          </ListItem>
+        </Link> 
 {/* 
         <Link to="publicaciones">
           <ListItem disablePadding>

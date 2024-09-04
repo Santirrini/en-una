@@ -3,6 +3,9 @@ import MyReservationsRestaurantComponents from "../components/MyReservationsRest
 import Backdrop from "@mui/material/Backdrop";
 import Navbar from "../components/Navbar/Navbar";
 import CircularProgress from "@mui/material/CircularProgress";
+import HeaderMobile from "../components/Header/Header";
+import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
+import Footer from "../components/Footer/Footer";
 
 export default function MyReservationsRestaurant() {
   const [open, setOpen] = useState(true);
@@ -21,10 +24,19 @@ export default function MyReservationsRestaurant() {
         <CircularProgress color="inherit" />
       </Backdrop>
       <div>
+        <HeaderMobile/>
+      </div>
+      <div>
         <Navbar />
       </div>
       <div>
         <MyReservationsRestaurantComponents />
+      </div>
+      <div>
+        <ButtonWhatsapp />
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

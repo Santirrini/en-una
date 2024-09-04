@@ -5,6 +5,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Navbar from "../components/Navbar/Navbar";
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
+import HeaderMobile from "../components/Header/Header";
 
 export default function ResetAccount() {
   const [open, setOpen] = useState(true);
@@ -23,6 +24,9 @@ export default function ResetAccount() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

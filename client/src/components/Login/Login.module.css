@@ -6,11 +6,10 @@
 }
 .btn_success {
     color: #ffffff !important;
-    background-color: #c501e2 !important;
-    border: 2px solid #c501e2;
+    background-color: #500075 !important;
+    border: 2px solid #500075;
     border-radius: 0;
-    -webkit-box-shadow: 3px 3px #daa0ed;
-    box-shadow: 3px 3px #daa0ed;
+
 }
 
 .text {

@@ -21,7 +21,6 @@
 
 .logo_card {
   width: 50px;
-  position: absolute;
 }
 
 .logo_title {
@@ -31,6 +30,27 @@ display: flex;
 .title_subtitle {
  text-align: center;
 }
+
+.card {
+  max-width: 345px;
+  width: 345px;
+  height: 320px;
+ margin-bottom: 10px;
+ cursor: pointer;
+ margin: auto; 
+ 
+ }
+ 
+ .card:hover {
+     box-shadow: 3px 5px 5px #cacaca;
+ }
+ 
+
+ .text_logo {
+  display: flex;
+  text-align: center;
+  gap: 2em;
+ }
 @media (max-width: 768px) {
   .cards_container {
     padding-top: 5em;

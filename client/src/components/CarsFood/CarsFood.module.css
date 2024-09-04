@@ -1,89 +1,212 @@
 .carsfood_container {
-    margin-bottom: 2em;
-    
+  margin-bottom: 2em;
+  max-width: 100%;
+
 }
 
 .menufood_container {
-    display: flex;
-flex-direction: column;
-gap: 2em;
-margin: auto;
-width: 50%;
-max-width: 100%;
-padding-bottom: 2em;
-justify-content: center;
-
-
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  margin: auto;
+  width: 50%;
+  max-width: 100%;
+  padding-bottom: 2em;
+  justify-content: center;
 }
 .text {
-    font-weight: bold;
-    font-size: 20px;
-    padding-bottom: 1em;
-    text-align: center;
+  font-weight: bold;
+  font-size: 50px;
+  padding-bottom: 0.2em;
+  text-align: center;
+  color: #500075;
 }
 
+.card_media{
+  max-width: 100% !important;
+  width: 200px !important;
+  height: 150px !important;
+  object-fit: cover !important;
+  padding: 0.5em !important;
+}
+.quantity_price {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+  margin-bottom: -130px;
+}
 .menufood_box {
-    display: flex;
+  display: flex;
+  border: 1px solid #500075;
 }
+.textarea {
+  outline: none;
+  border: 1px solid #500075;
+  padding: 0.5em;
+  width: 950px;
+  border-radius: 5px;
+}
+.label_textarea {
+  display: grid;
+  width: 100%;
+  justify-content: center;
 
-.btn_quantity{
-    display: flex;
+}
+.btn_quantity {
+  display: flex;
 }
 
 .modal_img {
-    z-index: 9000;
-    height: 50vh;
+  z-index: 9000;
+  height: 50vh;
 }
 .btn_container {
-    display: flex;
-    justify-content: center;
- 
- }
- .form_container {
-    margin: auto;
-    background-color:#500075;
-    max-width: 100%;
-    width: 50%;
-    padding: 1em;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1em;
-    gap: 1em;
-    padding: 2em;
-    color: white;
-    border-radius: 2em;
+  display: grid;
+  justify-content: center;
+ gap: 1em;
+ font-size: 25px;
+ margin-top: 1em;
+}
+.form_container {
+  margin: auto;
+  background-color: #500075;
+  max-width: 100%;
+  width: 50%;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+  gap: 1em;
+  padding: 2em;
+  color: white;
+  border-radius: 5px;
 }
 
-.form_container h2 {
- 
-    color: white;
-}
- .select_container {
-    display: flex;
-    gap: 1em;
-    margin-bottom: 2em;
+
+.select_container {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 2em;
 }
 .btn_login {
-    color: #ffffff !important;
-    background-color: #500075 !important;
-    border: 2px solid #500075;
-    border-radius: 0;
-    -webkit-box-shadow: 3px 3px #a994ba;
-    box-shadow: 3px 3px #a994ba;
-    padding: 0.5em;
-    width: 10em;
-    text-align: center;
+  color: #ffffff !important;
+  background-color: #500075 !important;
+  border-radius: 0;
+
+  padding: 0.5em;
+  width: 10em;
+  text-align: center;
 }
 
+.btn_login:hover {
+  background-color: #7000a4 !important;
+
+}
+
+.btn_clean {
+  color: #ffffff !important;
+  background-color: red !important;
+  border-radius: 0;
+
+  padding: 0.5em;
+  width: 10em;
+  text-align: center;
+}
+.btn_clean:hover {
+  background-color: #ff3700 !important;
+ 
+}
+
+.btn_decrease_increment {
+  color: #000;
+  border: 1px solid #500075;
+  width: 50px;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.1em;
+  font-size: 15px;
+}
+
+.btn_decrease_increment:hover {
+  border: "1px solid #500075"
+}
+
+.btn_delete {
+  background-color: #500075;
+  color: #000;
+  border: 1px solid #500075;
+  cursor: pointer;
+  text-align: center;
+  font-size: 15px;
+}
 @media (max-width: 768px) {
-    .form_container {
-        margin: auto;
-        background-color: white;
-        width: 90%;
-        max-width: 100%;
-        padding: 1em;
-        display: grid;
-        justify-content: center;
-        margin-bottom: 1em;
-    }
+  .menufood_container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    margin: auto;
+    width: 90%;
+    max-width: 100%;
+    padding-bottom: 2em;
+    justify-content: center;
+  }
+  .form_container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 100%;
+    text-align: center;
+ 
+  }
+  .text {
+    font-weight: bold;
+    font-size: 30px;
+    padding-bottom: 0.2em;
+    text-align: center;
+    color: #500075;
+  }
+  .card_media{
+    max-width: 100% !important;
+    width: 150px !important;
+    height: auto !important;
+    object-fit: cover !important;
+    padding: 0.5em !important;
+  }
+
+  .textarea {
+    outline: none;
+    border: 1px solid #500075;
+    width: 345px;
+  }
+
+  .btn_decrease_increment {
+    color: #000;
+    border: 1px solid #500075;
+    width: 30px;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.1em;
+    font-size: 15px;
+  }
+
+  .quantity_price {
+ 
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .textarea {
+    outline: none;
+    border: 1px solid #500075;
+    width: 500px;
+  }
+}
+
+
+@media only screen and (min-width: 1024px) and (max-width: 1440px) {
+  .textarea {
+    outline: none;
+    border: 1px solid #500075;
+    width: 650px;
+  }
 }

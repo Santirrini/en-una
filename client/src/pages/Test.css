@@ -1,0 +1,8 @@
+
+
+.custom-preview-group img {
+width: 100px !important;  /* Ajusta el ancho según tus necesidades */
+    height: 100px; /* Ajusta la altura según tus necesidades */
+    object-fit: cover; /* Mantiene la proporción y recorta si es necesario */
+  }
+  

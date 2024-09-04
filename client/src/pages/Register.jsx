@@ -6,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Navbar from "../components/Navbar/Navbar";
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
 
+import HeaderMobile from "../components/Header/Header";
 
 export default function Register() {
     const [open, setOpen] = useState(true);
@@ -24,6 +25,9 @@ export default function Register() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

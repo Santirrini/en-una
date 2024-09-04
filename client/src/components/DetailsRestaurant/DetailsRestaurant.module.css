@@ -1,123 +1,367 @@
 .food_container {
-    margin-top: 2em;
-    margin-bottom: 2em;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
 }
-
+.details_box {
+  display: grid;
+  gap: 1em;
+  width: 100%;
+  justify-content: center;
+}
 .food_box {
-    display: grid;
-    gap: 1em;
-    width: 90%;
-    margin: auto;
-    justify-content: center;
-
+  width: 100%;
+  background-image: url("../../Images/Triangulo\ morado\ .png");
+  background-size: cover;
+  background-position: center ;
+  background-repeat: no-repeat;
+}
+.title {
+  color: gray;
+  font-weight: bolder;
+  font-size: 18px;
+}
+.custom-preview-group  {
+  width: 10px !important;  /* Ajusta el ancho según tus necesidades */
+  object-fit: cover; /* Mantiene la proporción y recorta si es necesario */
 }
 
+.none_desktop {
+  display: none;
+}
 .contact {
-    display: flex;
-    gap: 1em;
+  display: flex;
+  gap: 1em;
+  padding-left: 2em;
+  color: white;
+  padding-bottom: 2em;
 }
-
+.description_aditional {
+  display: flex;
+  gap: 10em;
+  justify-content: center;
+}
+.day_atention {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em;
+}
 .text_container {
-    font-weight: bold;
-    font-size: 25px;
+  font-weight: bold;
+  font-size: 25px;
 }
 .text_box {
-    font-weight: bold;
-    font-size: 20px;
-    margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 1em;
+}
+.container_icons {
+  display: flex;
+  gap: 1em;
+}
+.additional {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+.icons {
+  color: #500075;
+  font-size: 22px;
+  cursor: pointer;
 }
 
-.description {
-    padding-left: 4em;
-    padding-right: 4em;
+.icons_restaurant {
+  color: #500075;
+  border: 1px solid #500075;
+  border-radius: 100%;
 }
 
+.icons_additional {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 1em;
+}
+.subtitle {
+  color: #a6a6a6;
+}
 .select_container {
-    display: flex;
-    width: 90%;
-    margin: auto;
-    gap: 1em;
-    margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
+  justify-content: center;
+  width: 30%;
+  padding-left: 2em;
+  gap: 1em;
+}
+
+.select_container select {
+  border-color: #500075;
+}
+
+.select_container input {
+  border-color: #500075;
 }
 .btn_login {
-    color: #ffffff !important;
-    background-color: #500075 !important;
-    border: 2px solid #500075;
-    border-radius: 0;
-    -webkit-box-shadow: 3px 3px #a994ba;
-    box-shadow: 3px 3px #a994ba;
-    padding: 0.5em;
-    width: 10em;
-    text-align: center;
+  color: #ffffff !important;
+  background-color: #500075 !important;
+  border: 2px solid #500075;
+  border-radius: 0;
+  -webkit-box-shadow: 3px 3px #a994ba;
+  box-shadow: 3px 3px #a994ba;
+  padding: 0.5em;
+  width: 10em;
+  text-align: center;
+}
+.text_p {
+  width: 30em;
 }
 
 .btn_container {
-   display: flex;
-   justify-content: center;
-
+  display: flex;
+  justify-content: center;
 }
 .form_container {
-    margin: auto;
-    background-color:#500075;
-    max-width: 100%;
-    width: 50%;
-    padding: 1em;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1em;
-    gap: 1em;
-    padding: 2em;
-    color: white;
-    border-radius: 2em;
+  margin: auto;
+  max-width: 100%;
+  width: 50%;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+  gap: 1em;
+  padding: 2em;
+  color: #500075;
+  border: 1px solid #500075;
+  border-radius: 5px;
 }
 
 .form_container h2 {
- 
-    color: white;
+  color: #500075;
+}
+
+.maps {
+  width: 300px;
+  height: 300px;
+}
+
+.img_details {
+  width: 800px !important;
+  height: 400px !important;
+  object-fit: cover !important;
 }
 @media (max-width: 768px) {
-    .text_container {
-        font-size: 20px;
-    }
-    .text_box {
-        font-size: 15px;
+  .img_container{
+    margin: auto;
 
-    }
+  }
+  .img_details {
+    width: 345px !important;
+    height: 200px !important;
+    object-fit: cover !important;
+  }
+  .text_container {
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+  }
+  .text_box {
+    font-size: 15px;
+  }
 
-    .select_container {
-        display: grid;
-       
-    }
+  .select_container {
+    display: grid;
+    width: 100%;
+  }
+
+  .food_box {
+    display: grid;
+    gap: 1em;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+  }
+
+  .contact {
+    display: grid;
+    gap: 1em;
+  }
+  .day_atention {
+   text-align: center;
+   font-size: 13px;
+  }
+  .form_container {
+    margin: auto;
+    background-color: white;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    margin-bottom: 1em;
+  }
+
+  .description_aditional {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+  }
+
+  .select_container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+    justify-content: center;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+  }
+
+  .additional {
+    display: grid;
+    gap: 1em;
+    justify-content: center;
+    padding-bottom: 2em;
+  }
+
+  .text_p {
+    width: 90%;
+    text-align: center;
+    margin: auto;
+  
+  }
+
+  .contact {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .maps {
+    width: 100%;
+  }
+
+  .text_container {
+    text-align: center;
+  }
+  .text_box {
+    text-align: center;
+  }
+
+  .none_mobile {
+    display: none;
+  }
+
+  .none_desktop {
+    display: block;
+  }
+}
 
 
-    .food_box {
-        display: grid;
-        flex-wrap: wrap;
-        gap: 1em;
-        width: 90%;
-        margin: auto;
-        justify-content: center;
-    
-    }
-    
-    .contact {
-        display: grid;
-        gap: 1em;
-    }
-    .description {
-        padding-left: 1em;
-        padding-right: 1em;
-    }
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .img_details {
+    width: 690px !important;
+    height: 300px !important;
+    object-fit: cover !important;
+  }
+  .text_container {
+    font-size: 20px;
+  }
+  .text_box {
+    font-size: 15px;
+  }
 
-    .form_container {
-        margin: auto;
-        background-color: white;
-        width: 90%;
-        max-width: 100%;
-        padding: 1em;
-        display: grid;
-        justify-content: center;
-        margin-bottom: 1em;
-    }
-    
+  .select_container {
+    display: grid;
+    width: 100%;
+  }
+
+  .food_box {
+    display: grid;
+    gap: 1em;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+  }
+
+  .contact {
+    display: grid;
+    gap: 1em;
+  }
+
+  .form_container {
+    margin: auto;
+    background-color: white;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    margin-bottom: 1em;
+  }
+
+  .description_aditional {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+  }
+
+  .select_container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+    justify-content: center;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+  }
+
+  .additional {
+    display: grid;
+    gap: 1em;
+    justify-content: center;
+    padding-bottom: 2em;
+  }
+
+  .text_p {
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact {
+    display: grid;
+    gap: 1em;
+    justify-content: center;
+    place-content: center;
+    place-items: center;
+  }
+
+  .maps {
+    width: 100%;
+  }
+
+  .text_container {
+    text-align: center;
+  }
+  .text_box {
+    text-align: center;
+  }
+  .food_box {
+    width: 100%;
+    background-image: url("../../Images/Triangulo\ morado\ .png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 90%;
+  }
+  .day_atention {
+  width: 100%;
+ margin-left: 20%;
+}
+
+#email_phone {
+  width: 100%;
+ margin-left: 20%;
+}
+
 }

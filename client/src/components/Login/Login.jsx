@@ -1,30 +1,34 @@
 import styles from "./Login.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../redux/action";
 import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import { message } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [open, setOpen] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
   const [auth, setAuth] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
 
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState(false);
+
   const error = () => {
     messageApi.open({
       type: "error",
       content: "el correo y/o la contraseña no coinciden",
     });
   };
+
   useEffect(() => {
-    setTimeout(async () => {
+    setTimeout(() => {
       setLoading(false);
     }, 3000);
   }, []);
@@ -58,14 +62,13 @@ export default function Login() {
         className={`flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ${styles.login_container}`}
       >
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-       
           <h2
             className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
           >
-            Ingreso de usuario
+            Iniciar sesión
           </h2>
           <h2
-            className={`mt-10 text-center  font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
+            className={`mt-10 text-center font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
           >
             Bienvenido a EnUna
           </h2>
@@ -103,25 +106,29 @@ export default function Login() {
                 </label>
                 <div className="text-sm">
                   <Link
-                  to="/recuperar-cuenta"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    to="/recuperar-cuenta"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
-                     ¿Has olvidado la contraseña?
+                    ¿Has olvidado la contraseña?
                   </Link>
-             
-                   
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Alterna el tipo de input entre texto y contraseña
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                   required
                   className="outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
                 />
+                <div
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)} // Cambia el estado de la visibilidad de la contraseña
+                >
+                  {showPassword ? <EyeTwoTone style={{color: '#500075'}} /> :  <EyeInvisibleOutlined />}
+                </div>
               </div>
             </div>
 

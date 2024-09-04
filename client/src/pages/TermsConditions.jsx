@@ -5,6 +5,7 @@ import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
 import TermsConditionsComponent from "../components/TermsConditions/TermsConditions";
+import HeaderMobile from "../components/Header/Header";
 
 export default function TermsConditions() {
   const [open, setOpen] = useState(true);
@@ -22,6 +23,9 @@ export default function TermsConditions() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

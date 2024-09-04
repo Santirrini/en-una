@@ -5,6 +5,7 @@ import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
 import PoliticPrivate from "../components/PoliticPrivate/PoliticPrivate";
+import HeaderMobile from "../components/Header/Header";
 
 export default function PolicityPrivacity() {
   const [open, setOpen] = useState(true);
@@ -22,6 +23,9 @@ export default function PolicityPrivacity() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

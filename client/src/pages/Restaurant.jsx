@@ -5,6 +5,7 @@ import Footer from "../components/Footer/Footer";
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import HeaderMobile from "../components/Header/Header";
 
 export default function Restaurant() {
 
@@ -23,6 +24,9 @@ export default function Restaurant() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

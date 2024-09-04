@@ -1,32 +1,63 @@
-import React from 'react';
-import { Carousel } from 'antd';
+import React, { useEffect } from "react";
+import Splide from "@splidejs/splide";
+import "@splidejs/splide/dist/css/splide.min.css";
+import styles from "./CarruselPublicitary.module.css";
 
-const CarruselPublicitary = () => (
-  <Carousel arrows autoplay>
-    <div>
-      <img src={require('../../Images/15614775255199.jpg')} alt="1" style={{ ...contentStyle, backgroundImage: 'url(url_de_la_imagen_1)' }} />
-    </div>
-    <div>
-      <img src={require("../../Images/como-distribuir-un-restaurante.jpg")} alt="2" style={{ ...contentStyle, backgroundImage: 'url(url_de_la_imagen_2)' }} />
-    </div>
-    <div>
-      <img src={require("../../Images/foto-simon-bosch.jpg")} alt="3" style={{ ...contentStyle, backgroundImage: 'url(url_de_la_imagen_3)' }} />
-    </div>
-    <div>
-      <img src={require("../../Images/restaurante-espana-slide-01.jpg")} alt="4" style={{ ...contentStyle, backgroundImage: 'url(url_de_la_imagen_4)' }} />
-    </div>
-  </Carousel>
-);
+const CarruselPublicitary = () => {
+  useEffect(() => {
+    const splide = new Splide(".splide", {
+      type  : 'fade',
+  rewind: true,
+      pagination: false, // Cambiado a false ya que tu CSS maneja la paginación
+      autoplay: true,
+      pauseOnHover: true,
+      arrows: true,
 
-const contentStyle = {
- width: "100%",
- height:500,
- objectFit: "cover",
-  color: '#fff',
-  lineHeight: '160px',
-  textAlign: 'center',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
+      classes: {
+        arrow: `splide__arrow ${styles.customPrevArrow}`,
+        prev: `splide__arrow--prev ${styles.customPrevArrow }`,
+        next: `splide__arrow--next ${styles.customNextArrow }`,
+      },
+    });
+
+    splide.mount();
+
+    return () => {
+      splide.destroy();
+    };
+  }, []);
+
+  return (
+    <div className={`splide ${styles.container_destac}`}>
+      <div className="splide__track">
+        <ul className="splide__list">
+          <li className="splide__slide">
+            <img
+              src="https://www.comedera.com/wp-content/uploads/2022/06/jalea-mixta.jpg"
+              alt="Slide 1"
+              className={styles.fullscreenImage}
+            />
+          </li>
+          <li className="splide__slide">
+            <img
+              src={require("../../Images/como-distribuir-un-restaurante.jpg")}
+              alt="Slide 2"
+              className={styles.fullscreenImage}
+            />
+          </li>
+          <li className="splide__slide">
+            <img
+              src={require("../../Images/foto-simon-bosch.jpg")}
+              alt="Slide 3"
+              className={styles.fullscreenImage}
+            />
+          </li>
+        </ul>
+      </div>
+
+   
+    </div>
+  );
 };
 
 export default CarruselPublicitary;

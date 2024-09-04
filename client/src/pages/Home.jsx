@@ -9,6 +9,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import CarruselPublicitary from "../components/CarruselPublicitary/CarruselPublicitary";
 import CardDestac from "../components/CardDestac/CardDestac";
+import HeaderMobile from "../components/Header/Header";
 
 
 export default function Home() {
@@ -27,6 +28,9 @@ export default function Home() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

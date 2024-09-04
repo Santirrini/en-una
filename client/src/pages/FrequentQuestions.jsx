@@ -6,6 +6,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
 import Footer from "../components/Footer/Footer";
+import HeaderMobile from "../components/Header/Header";
 
 export default function FrequentQuestions() {
     const [open, setOpen] = useState(true);
@@ -23,6 +24,9 @@ export default function FrequentQuestions() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

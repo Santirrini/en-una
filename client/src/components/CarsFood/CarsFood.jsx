@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PaymentReserve } from "../../redux/action";
+import { PaymentReserve, dataPersonal } from "../../redux/action";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -12,24 +12,36 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./CarsFood.module.css";
 import { Result } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import CircularProgress from "@mui/material/CircularProgress";
 export default function CarsFood() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [items, setItems] = React.useState([]);
   const [formData, setFormData] = React.useState({});
   const [quantity, setQuantity] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+  const datapersonal = useSelector((state) => state.datapersonal);
+  const token = useSelector((state) => state.token);
   const [reserve, setReserve] = React.useState({
     local: "",
     date: "",
     hours: "",
     peoples: "",
+    observation: "",
     order: [],
     restaurantId: "",
   });
-  const paymentData = useSelector((state) => state.paymentData);
-  const token = useSelector((state) => state.token);
+
+  React.useEffect(() => {
+    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    const quantities = {};
+    cartData.forEach((item, index) => {
+      quantities[index] = item.quantity || 1;
+    });
+    setQuantity(quantities);
+  }, []);
 
   React.useEffect(() => {
     const cartData = JSON.parse(localStorage.getItem("cart")) || [];
@@ -68,7 +80,9 @@ export default function CarsFood() {
         updatedCartData.length > 0 ? updatedCartData[0].restaurantId : "",
     });
   }, []);
-
+  React.useEffect(() => {
+    dispatch(dataPersonal(token));
+  }, [dispatch, token]);
   React.useEffect(() => {
     const form = JSON.parse(localStorage.getItem("form")) || {};
     setFormData(form);
@@ -89,33 +103,24 @@ export default function CarsFood() {
     });
   };
 
-  const handleIncrease = (index) => {
-    const newQuantity = { ...quantity, [index]: (quantity[index] || 1) + 1 };
-    setQuantity(newQuantity);
-
-    const updatedItems = [...items];
-    updatedItems[index].quantity = newQuantity[index];
-    updatedItems[index].price =
-      parseFloat(updatedItems[index].basePrice) * newQuantity[index];
-    setItems(updatedItems);
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    updateReserve(updatedItems);
+  const handleIncreaseQuantity = (index) => {
+    const newCartItems = [...items];
+    newCartItems[index].quantity = (newCartItems[index].quantity || 1) + 1;
+    setItems(newCartItems);
+    localStorage.setItem("cart", JSON.stringify(newCartItems));
+    updateReserve(newCartItems);
+    setQuantity({ ...quantity, [index]: newCartItems[index].quantity });
   };
 
-  const handleDecrease = (index) => {
-    const newQuantity = {
-      ...quantity,
-      [index]: Math.max((quantity[index] || 1) - 1, 1),
-    };
-    setQuantity(newQuantity);
-
-    const updatedItems = [...items];
-    updatedItems[index].quantity = newQuantity[index];
-    updatedItems[index].price =
-      parseFloat(updatedItems[index].basePrice) * newQuantity[index];
-    setItems(updatedItems);
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    updateReserve(updatedItems);
+  const handleDecreaseQuantity = (index) => {
+    const newCartItems = [...items];
+    if (newCartItems[index].quantity > 1) {
+      newCartItems[index].quantity -= 1;
+      setItems(newCartItems);
+      localStorage.setItem("cart", JSON.stringify(newCartItems));
+      updateReserve(newCartItems);
+      setQuantity({ ...quantity, [index]: newCartItems[index].quantity });
+    }
   };
 
   const handleRemove = (index) => {
@@ -137,27 +142,44 @@ export default function CarsFood() {
   };
 
   const handleReserve = async () => {
+    setLoading(true);
+
     try {
-      dispatch(PaymentReserve(token, reserve));
+      await dispatch(PaymentReserve(token, reserve));
     } catch (error) {
       alert("error en el sistema");
       console.error("Error al realizar la reserva:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  React.useEffect(() => {
-    if (paymentData) {
-      window.location.href = paymentData.data && paymentData.data;
-    }
-  }, [paymentData]);
-
-  const calculateTotal = () => {
+  const getTotal = () => {
     return items
       .reduce(
         (total, item) => total + (parseFloat(item.price * item.quantity) || 0),
         0
       )
       .toFixed(2);
+  };
+  const limitarTexto = (texto) => {
+    const limite =
+      window.innerWidth <= 768
+        ? 18
+        : window.innerWidth <= 1024
+        ? 18
+        : window.innerWidth <= 1440
+        ? 45
+        : 70; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
+
+  const handleRemoveAll = () => {
+    localStorage.removeItem("cart");
+    navigate(-1); // Regresa a la página anterior
   };
 
   return (
@@ -185,7 +207,173 @@ export default function CarsFood() {
           </div>
         ) : (
           <>
-            {items.length < 1 ? (
+            {items.length > 0 && items[0]?.id === datapersonal?.id ? (
+              <div className={styles.carsfood_container}>
+                <h1 className={styles.text}>Detalle de la reserva</h1>
+                <div className={styles.form_container}>
+                  {formData[0].formData?.local ? (
+                    <div>
+                      <strong>Local:</strong> {formData[0].formData?.local}
+                    </div>
+                  ) : null}
+
+                  {formData[0].formData?.date ? (
+                    <div>
+                      <strong>Fecha:</strong> {formData[0].formData?.date}
+                    </div>
+                  ) : null}
+                  {formData[0].formData?.hours ? (
+                    <div>
+                      <strong>Hora: </strong>
+                      {formData[0].formData?.hours}
+                    </div>
+                  ) : null}
+                  {formData[0].formData?.peoples ? (
+                    <div>
+                      <strong>Personas:</strong> {formData[0].formData?.peoples}
+                    </div>
+                  ) : null}
+                      {formData[0].formData?.local ? (
+                    <div>
+                      <strong>Zona:</strong> {formData[0].formData?.area}
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className={styles.menufood_container}>
+                  {items.map((item, index) => (
+                    <>
+                      <Card className={styles.menufood_box} key={index}>
+                        {item?.imageFile && item.imageFile[0] && (
+                          <CardMedia
+                            component="img"
+                            className={styles.card_media}
+                            image={item.imageFile[0]}
+                            alt="Menu"
+                          />
+                        )}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%", // Asegúrate de que el contenedor tenga altura suficiente
+                          }}
+                        >
+                          <CardContent>
+                            <Typography component="div" variant="h5">
+                              {item?.name}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              color="text.secondary"
+                              component="div"
+                            >
+                              {limitarTexto(item?.details)}
+                            </Typography>
+
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.2em",
+                              }}
+                            >
+                              <div
+                                onClick={() => handleDecreaseQuantity(index)}
+                                className={styles.btn_decrease_increment}
+                              >
+                                -
+                              </div>
+                              <div className={styles.btn_decrease_increment}>
+                                {item.quantity}
+                              </div>
+                              <div
+                                onClick={() => handleIncreaseQuantity(index)}
+                                className={styles.btn_decrease_increment}
+                              >
+                                +
+                              </div>
+                              <div
+                                onClick={() => handleRemove(index)}
+                                className={styles.btn_delete}
+                              >
+                                <DeleteIcon
+                                  sx={{
+                                    color: "white",
+                                  }}
+                                />
+                              </div>
+                            </Box>
+                            <div className={styles.quantity_price}>
+                              <Typography
+                                variant="subtitle1"
+                                color="text.secondary"
+                                component="div"
+                              >
+                                Cantidad: {item.quantity}
+                              </Typography>
+                              <Typography
+                                variant="subtitle1"
+                                color="text.secondary"
+                                component="div"
+                              >
+                                <strong>
+                                  S/
+                                  {parseFloat(
+                                    item.basePrice * item.quantity
+                                  ).toFixed(2)}
+                                </strong>
+                              </Typography>
+                            </div>
+                          </CardContent>
+                        </Box>
+                      </Card>
+                    </>
+                  ))}
+                </div>
+
+                <div className={styles.label_textarea}>
+                  <strong>
+                    <label htmlFor="">Observaciones (opcional)</label>
+                  </strong>
+                  <textarea
+                    name=""
+                    id=""
+                    cols="10"
+                    value={reserve.observation}
+                    onChange={(e) => {
+                      setReserve({ ...reserve, observation: e.target.value });
+                    }}
+                    rows={5}
+                    className={styles.textarea}
+                  ></textarea>
+                </div>
+                <div className={styles.btn_container}>
+                  <div>
+                    <strong>Total: </strong>S/{getTotal()}
+                  </div>
+                  <Button className={styles.btn_login} onClick={handleReserve}>
+                    {loading ? (
+                      <CircularProgress
+                        size={25}
+                        thickness={5}
+                        sx={{ color: "#fff" }}
+                      />
+                    ) : (
+                      "Reservar"
+                    )}
+                  </Button>
+
+                  <Button
+                    className={styles.btn_clean}
+                    onClick={handleRemoveAll}
+                  >
+                    Limpiar
+                  </Button>
+                </div>
+              </div>
+            ) : (
               <div>
                 <Result
                   title="No hay menús guardados en el carrito"
@@ -204,120 +392,6 @@ export default function CarsFood() {
                     </Link>
                   }
                 />
-              </div>
-            ) : (
-              <div className={styles.carsfood_container}>
-                <h1 className={styles.text}>Carrito</h1>
-                <div className={styles.menufood_container}>
-                  {items.map((item, index) => (
-                    <Card className={styles.menufood_box} key={index}>
-                      {item?.imageFile && item.imageFile[0] && (
-                        <CardMedia
-                          component="img"
-                          sx={{ maxWidth: "100%", width: 150 }}
-                          image={item.imageFile[0]}
-                          alt="Live from space album cover"
-                        />
-                      )}
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography component="div" variant="h5">
-                            {item?.name}
-                          </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                            component="div"
-                          >
-                            ${parseFloat(item.price * item.quantity).toFixed(2)}
-                          </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                            component="div"
-                          >
-                            Cantidad: {item.quantity}
-                            <Button
-                              sx={{
-                                display: "flex",
-                                flex: 1,
-                                color: "#500075 ",
-                              }}
-                              onClick={() => handleRemove(index)}
-                            >
-                              <DeleteIcon />
-                            </Button>
-                          </Typography>
-                        </CardContent>
-
-                        {/*      <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            pl: 1,
-                            pb: 1,
-                            justifyContent: "center",
-                            }}
-                            >
-                            <ButtonGroup sx={{ display: "flex", gap: "1em" }}>
-                            <Button
-                            aria-label="decrease"
-                            onClick={() => handleDecrease(index)}
-                            sx={{
-                              color: "#500075",
-                              border: "1px solid #500075",
-                              ":hover": { border: "1px solid #500075" },
-                              }}
-                              >
-                              <RemoveIcon fontSize="small" />
-                              </Button>
-                              <Typography>{quantity[index] || 1}</Typography>
-                              <Button
-                              aria-label="increase"
-                              onClick={() => handleIncrease(index)}
-                              sx={{
-                                color: "#500075",
-                                border: "1px solid #500075",
-                                ":hover": { border: "1px solid #500075" },
-                              }}
-                              >
-                              <AddIcon fontSize="small" />
-                              </Button>
-                              </ButtonGroup>
-                              
-                              </Box> */}
-                      </Box>
-                    </Card>
-                  ))}
-                </div>
-
-              {/*   <div className={styles.form_container}>
-                  <h2>Resumen de la reserva:</h2>
-                  <p>
-                    <strong>Local:</strong>{" "}
-                    {formData[0].formData && formData[0].formData.local}
-                  </p>
-                  <p>
-                    <strong>Fecha:</strong> {formData[0]?.formData.date}
-                  </p>
-                  <p>
-                    <strong>Hora: </strong>
-                    {formData[0]?.formData.hours}
-                  </p>
-                  <p>
-                    <strong>Personas:</strong> {formData[0]?.formData.peoples}
-                  </p>
-
-                  <p>
-                    <strong>Total:</strong> ${calculateTotal()}
-                  </p>
-                </div> */}
-
-                <div className={styles.btn_container}>
-                  <Button className={styles.btn_login} onClick={handleReserve}>
-                    Reservar
-                  </Button>
-                </div>
               </div>
             )}
           </>

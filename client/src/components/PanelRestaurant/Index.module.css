@@ -1,0 +1,352 @@
+#navbar {
+    background: transparent;
+    color: blueviolet;
+    box-shadow: 0px 0px 0px;
+    position: relative;
+    
+}
+.logo {
+    width: 100px;
+}
+.css-hyum1k-MuiToolbar-root {
+    padding-right: 0;
+}
+.box_navbar {
+    display: flex;
+    justify-content: center;
+    gap: 5em;
+}
+.btn_x  {
+ }
+.container_form {
+  margin-top:2em;
+}
+.btn_x button {
+ color: white;
+background-color: red;
+border-radius: 50%;
+padding: 0.1em;
+
+}
+.logo_mobile {
+    width: 50%;
+    margin: auto;
+}
+.checkbox {
+  display: flex;
+  gap: 4em;
+}
+.avatar {
+        width: 60px !important;
+        height: 60px !important;
+}
+.btn_login {
+    color: black !important;
+    background-color: #ffffff !important;
+    border: 2px solid #500075;
+}
+.search {
+    width: 100%;
+    border: "1px solid #500075";
+    border-radius: 2em;
+    padding-left: 1em;
+    outline: none;
+}
+
+.bg_navbar_details {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1em;
+    place-items: center;
+    height: 100px; /* Ajusta según tus necesidades */
+    width: 60%;
+   background-position: center;
+   background-size: cover;
+   
+}
+.bg_navbar {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1em;
+    place-items: center;
+    height: 100px; /* Ajusta según tus necesidades */
+    width: 60%;
+    background-image: url("../../Images/background\ user.png");
+   background-position: center;
+   background-size: cover;
+   background-repeat: no-repeat;
+   
+}
+
+
+.toolbar {
+    display: flex;
+}
+.nonemobile {
+    display: flex;
+    place-items: center;
+}
+.postRestaurant {
+  display: flex;
+  gap: 1em;
+}
+
+/* Estilos para el contenedor principal */
+.dropzone {
+  border: 2px dashed #c0c0c0;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background-color: white;
+  width:30%;
+  margin: auto;
+  text-align: center;
+  margin-bottom: 1em;
+}
+.text {
+  text-align: center;
+  margin-bottom: 2em;
+
+  }
+/* Estilos para cuando se está arrastrando un archivo */
+.dropzone-active {
+  border-color: #4caf50; /* Cambia a tu color preferido */
+  background-color: #f8f8f8;
+}
+
+/* Estilos para cuando no se está arrastrando ningún archivo */
+.dropzone-inactive {
+  color: #666;
+}
+
+/* Estilos adicionales según sea necesario */
+.dropzone p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.dropzone span {
+  display: block;
+  margin-top: 10px;
+  color: #999;
+  font-size: 14px;
+}
+
+.prev_mini {
+  display: flex;
+  margin-top: 1em;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}
+
+.prev_mini img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 5px;
+  opacity: 0.6;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2em;
+  margin-bottom: 1em;
+  color: #500075;
+}
+.color_text{
+  color: #500075;
+
+}
+.icons {
+font-size: 50px !important;
+color: grey;
+}
+/* Horarios.module.css */
+.bg_btn{
+background-color: #500075;
+}
+.bg_btn:hover {
+background-color: #500075;
+
+}
+.disabled {
+background-color: #666;
+}
+
+.disabled:hover {
+background-color: #666;
+
+
+}
+.bg_btn_disabled_container {
+display: flex;
+justify-content: flex-end;
+margin-right: 5em;
+margin-top: -8em;
+}
+.bg_btn_disabled{
+background-color: #500075;
+width: 250px;
+max-width: 90%;
+cursor: pointer;
+}
+.bg_btn_disabled:hover {
+background-color: #500075;
+
+}
+.disabled_class {
+background-color:grey;
+
+}
+.container {
+margin: 0 auto;
+padding: 20px;
+}
+
+.formGroup {
+display: flex;
+margin-bottom: 10px;
+align-items: center;
+width: 100%;
+}
+.label {
+flex: 1;
+margin-right: 10px;
+}
+.label_check {
+width: 200px;
+}
+
+.inputTime {
+width: 80px;
+margin-right: 5px;
+}
+
+.button {
+background-color: #000;
+color: #fff;
+padding: 5px 10px;
+cursor: pointer;
+border: none;
+border-radius: 5px;
+}
+.cerradoText{
+margin-right: 10px;
+}
+
+
+.input_label {
+display: flex;
+place-items: center;
+gap: 0.5em;
+margin-bottom: 1em;
+}
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .avatar {
+        display: none !important;
+    }
+
+    .nonemobile {
+        display: none;
+    }
+
+    .bg_navbar {
+        display: none;
+    }
+
+    .toolbar {
+        padding: 0.5em;
+    }
+
+    .dropzone {
+      border: 2px dashed #c0c0c0;
+      border-radius: 4px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background-color: white;
+      width:100% !important;
+      margin: auto;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .container {
+      width: 90%;
+   
+    }
+    .title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1em;
+    }
+    .checkbox {
+      display: grid;
+      gap: 4em;
+    }
+
+   
+
+    .bg_btn_disabled_container {
+      display: flex;
+      justify-content: center;
+      margin-right: 0;
+      margin-top: 0;
+    }
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .bg_navbar {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 1em;
+        place-items: center;
+        height: 100px; /* Ajusta según tus necesidades */
+        width: 60%;
+        background-image: url("../../Images/background\ user.png");
+       background-position: center;
+       background-size: contain;
+       background-repeat: no-repeat;
+       
+    }
+    .dropzone {
+      border: 2px dashed #c0c0c0;
+      border-radius: 4px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background-color: white;
+      width:50% !important;
+      margin: auto;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .bg_btn_disabled_container {
+      display: flex;
+      justify-content: center;
+      margin-right: 0;
+      margin-top: 0;
+    }
+  }
+
+@media only screen and (min-width: 1024px) and (max-width: 1440px) {
+  .bg_btn_disabled_container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5em;
+    margin-top: -7.5em;
+    width: 100%;
+    }
+}
+
+
+  

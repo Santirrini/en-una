@@ -16,7 +16,6 @@ import { AllRestaurant } from "../../redux/action";
 export default function Restaurant() {
   const dispatch = useDispatch();
   const allrestaurant = useSelector((state) => state.allrestaurant.data);
-  console.log(allrestaurant);
   React.useEffect(() => {
     dispatch(AllRestaurant());
   }, [dispatch]);

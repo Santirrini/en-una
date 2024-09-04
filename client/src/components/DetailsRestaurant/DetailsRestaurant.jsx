@@ -5,25 +5,53 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailRestaurant } from "../../redux/action";
 import { Image } from "antd";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import NavbarDetails from "../Navbar/NavbarDetails";
+import Navbar from "../Navbar/Navbar";
+import "antd/dist/reset.css";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import WifiIcon from "@mui/icons-material/Wifi";
+import PetsIcon from "@mui/icons-material/Pets";
+import LocalParkingIcon from "@mui/icons-material/LocalParking";
+import WheelchairPickupIcon from "@mui/icons-material/WheelchairPickup";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
+import { LuSalad } from "react-icons/lu";
+import CarRentalIcon from "@mui/icons-material/CarRental";
+import Tooltip from "@mui/material/Tooltip";
+import { useLocation } from 'react-router-dom';
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 export default function DetailsRestaurant() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
 
+  const position = [51.505, -0.09];
   const [formData, setFormData] = useState({
     date: "",
     hours: "",
     peoples: "",
     local: "",
+    area: "",
   });
   const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -38,26 +66,66 @@ export default function DetailsRestaurant() {
 
   const handleContinue = () => {
     // Verificar si todos los campos tienen un valor
-    if (formData.date && formData.hours && formData.peoples && formData.local) {
-      const updatedCart = [...items, { formData }];
-      localStorage.setItem("form", JSON.stringify(updatedCart));
-      navigate(`/menu/restaurante/${restaurantId}`);
-    } else {
+    /*     if (formData.date && formData.hours && formData.peoples && formData.local) { */
+    const updatedCart = [...items, { formData }];
+    localStorage.setItem("form", JSON.stringify(updatedCart));
+    navigate(`/menu/restaurante/${restaurantId}`);
+    /*    } else {
       setError(true);
+    } */
+  };
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  // Obtener todos los horarios de todos los días
+  const obtenerTodosHorarios = () => {
+    if (!restaurantdetails || !restaurantdetails.horarios) return [];
+
+    let todosHorarios = [];
+
+    restaurantdetails.horarios.forEach((horario) => {
+      if (!horario.cerrado) {
+        const horarios = generarHorarios(horario.inicio, horario.fin, 30); // Cambiado a 30 minutos
+        todosHorarios = todosHorarios.concat(horarios);
+      }
+    });
+
+    return todosHorarios;
+  };
+
+  const generarHorarios = (inicio, fin, intervaloMinutos) => {
+    let horarios = [];
+    let [horaInicio, minutoInicio] = inicio.split(":").map(Number);
+    let [horaFin, minutoFin] = fin.split(":").map(Number);
+
+    let fechaInicio = new Date(0, 0, 0, horaInicio, minutoInicio);
+    let fechaFin = new Date(0, 0, 0, horaFin, minutoFin);
+
+    while (fechaInicio <= fechaFin) {
+      let horas = fechaInicio.getHours().toString().padStart(2, "0");
+      let minutos = fechaInicio.getMinutes().toString().padStart(2, "0");
+      horarios.push(`${horas}:${minutos}`);
+      fechaInicio.setMinutes(fechaInicio.getMinutes() + intervaloMinutos);
     }
+
+    return horarios;
   };
-
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const maxLength = 300; // longitud máxima del texto antes de mostrar "ver más"
-  const details = restaurantdetails ? restaurantdetails.details : "";
-
+  const horarios = obtenerTodosHorarios();
+  const today = new Date().toISOString().split("T")[0];
   return (
     <div className={styles.food_container}>
       <div className={styles.food_box}>
-        <div>
+        <div className={styles.none_mobile}>
+          <NavbarDetails />
+        </div>
+        <div className={styles.none_desktop}>
+          <Navbar />
+        </div>
+
+        <div className={styles.details_box}>
           <h1 className={styles.text_container}>
             {restaurantdetails && restaurantdetails.name}
           </h1>
@@ -68,24 +136,62 @@ export default function DetailsRestaurant() {
               : null}
           </h1>
           <div className={styles.contact}>
-            <Image.PreviewGroup items={restaurantdetails?.imageFile}>
-              <Image
-                src={restaurantdetails && restaurantdetails.imageFile[0]}
-                alt="Foto del restaurante"
-                style={{ maxWidth: "100%", width: 600 }}
-              />
-            </Image.PreviewGroup>
+            <div className={styles.img_container}>
+              <Image.PreviewGroup
+                className="custom-preview-group"
+                items={restaurantdetails?.imageFile}
+              >
+                <Image
+                  src={restaurantdetails && restaurantdetails.imageFile[0]}
+                  alt="Foto del restaurante"
+                  className={styles.img_details}
+                />
+              </Image.PreviewGroup>
+            </div>
             <div>
               <span>
-                <strong>Correo electrónico: </strong>
-                {restaurantdetails && restaurantdetails.email}
+                <h1 className={styles.text_container}>
+                  Descripción del restaurante
+                </h1>
+                <div className={styles.text_p}>
+                  {/*        {isExpanded ? details : `${details.substring(0, maxLength)}...`} */}
+
+                  {restaurantdetails && restaurantdetails.details}
+                </div>
+       
               </span>
               <br />
+
               <span>
+                <h1 className={styles.text_container}> Horario de atención</h1>
+                <div className={styles.day_atention}>
+                  {restaurantdetails &&
+                    restaurantdetails.horarios.map((data, index) => (
+                      <div key={index} >
+                        {data.cerrado ? "" : `${data.dia},`}
+                      </div>
+                    ))}
+                </div>
+              </span>
+
+              <br />
+
+              <br />
+              <span>
+                <h1 className={styles.text_container}>Contactos</h1>
+
+                <span id={styles.email_phone}>
+                <strong>Correo electrónico: </strong>
+
+                {restaurantdetails && restaurantdetails.email}
+                </span>
+              </span>
+              <br />
+              <span id={styles.email_phone}>
                 <strong>Teléfono: </strong>
                 {restaurantdetails && restaurantdetails.phone}
               </span>
-              <div>
+              {/*    <div>
                 {restaurantdetails &&
                   restaurantdetails.horarios.map((data) => (
                     <p className={styles.text_p}>
@@ -93,130 +199,238 @@ export default function DetailsRestaurant() {
                       {data.cerrado === true ? "Cerrado" : "-"} {data.fin}
                     </p>
                   ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
         {/*  */}
       </div>
-      <div className={styles.description}>
-        <br />
-        <div>
-          <h1 className={styles.text_container}>Detalles</h1>
-          <p className={styles.text_p}>
-            {isExpanded ? details : `${details.substring(0, maxLength)}...`}
-          </p>
-          {details.length > maxLength && (
-            <button onClick={toggleExpand} className={styles.toggleButton}>
-              {isExpanded ? "Ver menos" : "Ver más"}
-            </button>
-          )}
-        </div>
-      </div>
-      <br />
       <hr />
       <br />
+      <div className={styles.description_aditional}>
+        <form className={styles.select_container}>
+          <div>
+            <label htmlFor="local" className={styles.title}>
+              Local
+            </label>
+            <select
+              name="local"
+              value={formData.local}
+              onChange={handleChange}
+              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${}"
+              required
+            >
+              <option value="">Seleccionar</option>
+              <option value={restaurantdetails && restaurantdetails.local}>
+                {restaurantdetails && restaurantdetails.local}
+              </option>
+            </select>
+          </div>
 
-      <form className={styles.select_container}>
-        <label htmlFor="local">Local</label>
-        <select
-          name="local"
-          value={formData.local}
-          onChange={handleChange}
-          className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-          required
-        >
-          <option value="">Seleccionar local</option>
-          <option value={restaurantdetails && restaurantdetails.local}>
-            {restaurantdetails && restaurantdetails.local}
-          </option>
-        </select>
+          <div>
+            <label htmlFor="date" className={styles.title}>
+              Fecha
+            </label>
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+              min={today}
+              required
+            />
+          </div>
 
-        <label htmlFor="date">Fecha</label>
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-          required
-        />
+          <div>
+            <label htmlFor="hours" className={styles.title}>
+              Hora
+            </label>
 
-        <label htmlFor="hours">Hora</label>
-        <select
-          name="hours"
-          value={formData.hours}
-          onChange={handleChange}
-          className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-          required
-        >
-          <option value="">Seleccionar horario</option>
-          <option value="00:00">00:00</option>
-          <option value="00:30">0:30</option>
-          <option value="01:00">01:00</option>
-          <option value="01:30">01:30</option>
-          <option value="02:00">01:30</option>
-          <option value="02:30">02:30</option>
-          <option value="03:00">03:00</option>
-          <option value="03:30">03:30</option>
-          <option value="04:00">04:00</option>
-          <option value="04:30">04:30</option>
-          <option value="05:00">05:00</option>
-          <option value="05:30">05:30</option>
-          <option value="06:00">06:00</option>
-          <option value="06:30">06:30</option>
-          <option value="07:00">07:00</option>
-          <option value="07:30">07:30</option>
-          <option value="08:00">08:00</option>
-          <option value="08:30">08:30</option>
-          <option value="09:00">09:00</option>
-          <option value="09:30">09:30</option>
-          <option value="10:00">09:30</option>
-          <option value="10:30">10:30</option>
-          <option value="11:00">11:00</option>
-          <option value="11:30">11:30</option>
-          <option value="12:00">12:00</option>
-          <option value="12:30">12:30</option>
-          <option value="13:00">13:00</option>
-          <option value="13:30">13:30</option>
-          <option value="14:00">14:00</option>
-          <option value="14:30">14:30</option>
-          <option value="15:00">15:00</option>
-          <option value="15:30">15:30</option>
-          <option value="16:00">16:00</option>
-          <option value="16:30">16:30</option>
-          <option value="17:00">17:00</option>
-          <option value="17:30">17:30</option>
-          <option value="18:00">18:00</option>
-          <option value="18:30">18:30</option>
-          <option value="19:00">19:00</option>
-          <option value="19:30">19:30</option>
-          <option value="20:00">20:00</option>
-          <option value="20:30">20:30</option>
-          <option value="21:00">21:00</option>
-          <option value="21:30">21:30</option>
-          <option value="22:00">22:00</option>
-          <option value="22:30">22:30</option>
-          <option value="23:00">23:00</option>
-          <option value="23:30">23:30</option>
-        </select>
+            <select
+              name="hours"
+              value={formData.hours}
+              onChange={handleChange}
+              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+              required
+            >
+              <option value="">Seleccionar hora</option>
+              {horarios.map((horario, index) => (
+                <option key={index} value={horario}>
+                  {horario}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="peoples">Personas</label>
-        <select
-          name="peoples"
-          value={formData.peoples}
-          onChange={handleChange}
-          className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-          required
-        >
-          <option value="">Seleccionar la cantidad de personas</option>
-          {[...Array(100).keys()].map((num) => (
-            <option key={num + 1} value={num + 1}>
-              {num + 1}
-            </option>
-          ))}
-        </select>
-      </form>
+          <div>
+            <label htmlFor="peoples" className={styles.title}>
+              Personas
+            </label>
+            <input
+    type="number"
+    id="peoples"
+    name="peoples"
+    value={formData.peoples || ''}
+    min={1}
+    max={restaurantdetails?.maximum_person_per_table || 10}
+    onChange={(e) => {
+      // Convierte el valor ingresado a número
+      const value = Number(e.target.value);
+
+      // Obtén el valor máximo permitido
+      const max = restaurantdetails?.maximum_person_per_table || 10;
+
+      // Asegúrate de que el valor esté dentro del rango permitido
+      if (!isNaN(value) && (value === '' || (value >= 1 && value <= max))) {
+        setFormData({ ...formData, peoples: value });
+      }
+    }}
+    className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+    required
+  />
+          </div>
+          <div>
+            <label htmlFor="area" className={styles.title}>
+              Zona
+            </label>
+
+            <select
+              name="area"
+              value={formData.area}
+              onChange={handleChange}
+              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+              required
+            >
+              <option value="">Seleccionar zona</option>
+              {restaurantdetails?.area &&
+                restaurantdetails?.area?.map((zone, index) => (
+                  <>
+                    <option key={index} value={zone}>
+                      {zone}
+                    </option>
+                  </>
+                ))}
+            </select>
+          </div>
+        </form>
+        <div className={styles.additional}>
+          <div className={styles.container_icons}>
+            <RestaurantOutlinedIcon className={styles.icons_restaurant} />
+            <div>
+              <label htmlFor="" className={styles.title}>
+                Tipo de comida
+              </label>
+              <br />
+              <span className={styles.subtitle}>
+                {restaurantdetails?.type_of_meals}
+              </span>
+            </div>
+          </div>
+
+          <div className={styles.container_icons}>
+            <AccountBalanceWalletOutlinedIcon className={styles.icons} />
+            <div>
+              <label htmlFor="" className={styles.title}>
+                Precio promedio
+              </label>
+              <br />
+              <span className={styles.subtitle}>
+                S/{restaurantdetails?.average_price}
+              </span>
+            </div>
+          </div>
+
+          <div className={styles.container_icons}>
+            <VolunteerActivismOutlinedIcon className={styles.icons} />
+            <div>
+              <label htmlFor="" className={styles.title}>
+                Servicios adicionales
+              </label>
+              <br />
+              <div className={styles.icons_additional}>
+                {restaurantdetails?.additional_services.map((s, index) => (
+                  <div>
+                    <div key={index}>
+                      {s.includes("Wifi") ? (
+                        <Tooltip title="Wifi" placement="bottom">
+                          <WifiIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Pet friendly") ? (
+                        <Tooltip title="Pet friendly" placement="bottom">
+                          <PetsIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Estacionamiento") ? (
+                        <Tooltip title="Estacionamiento" placement="bottom">
+                          {" "}
+                          <LocalParkingIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Rampa discapacitados") ? (
+                        <Tooltip
+                          title="Rampa para discapacitados"
+                          placement="bottom"
+                        >
+                          <WheelchairPickupIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Aire acondicionado") ? (
+                        <Tooltip title="Aire acondicionado" placement="bottom">
+                          <AcUnitIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Silla para bebés") ? (
+                        <Tooltip title="Silla para bebés" placement="bottom">
+                          {" "}
+                          <ChildCareIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Comida vegetariana") ? (
+                        <Tooltip title="Comida vegetariana" placement="bottom">
+                          {" "}
+                          <LuSalad className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                    <div key={index}>
+                      {s.includes("Valet Parking") ? (
+                        <Tooltip title="Valet Parking" placement="bottom">
+                          <CarRentalIcon className={styles.icons} />{" "}
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <MapContainer center={position} zoom={13} className={styles.maps}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <Marker position={position}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </div>
 
       <div className={styles.form_container}>
         <h2>Detalle de la reserva:</h2>
@@ -231,19 +445,21 @@ export default function DetailsRestaurant() {
             <strong>Fecha:</strong> {formData.date}
           </div>
         ) : null}
-          {formData.hours ? (
-
-            
-            <div>
-          <strong>Hora: </strong>
-          {formData.hours}
-        </div>
-        ):null}
-         {formData.peoples ? (
-
-           <div>
-          <strong>Personas:</strong> {formData.peoples}
-        </div>
+        {formData.hours ? (
+          <div>
+            <strong>Hora: </strong>
+            {formData.hours}
+          </div>
+        ) : null}
+        {formData.peoples ? (
+          <div>
+            <strong>Personas:</strong> {formData.peoples}
+          </div>
+        ) : null}
+        {formData.area ? (
+          <div>
+            <strong>Zona:</strong> {formData.area}
+          </div>
         ) : null}
       </div>
       {error ? (

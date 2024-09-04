@@ -1,0 +1,74 @@
+.img_container img {
+  width: 100%;
+  object-fit: cover;
+}
+.container_destac {
+  width: 100%; /* Ocupa el ancho completo de la pantalla */
+
+  overflow: hidden; /* Evita el desbordamiento de contenido */
+object-fit: cover;
+position: relative;
+}
+
+.splide__slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Asegura que las slides ocupen el 100% de la altura del contenedor */
+}
+
+.splide__slide img {
+  width: 100vw; /* Las imágenes ocupan todo el ancho de la ventana */
+  object-fit: cover; /* Cubre el área del contenedor sin distorsionar la imagen */
+}
+
+.img_container {
+  text-align: center;
+}
+
+
+.fullscreenImage {
+  width: 100%; /* Ocupa el ancho completo de la pantalla */
+  height: 50vh; /* Ocupa la altura completa de la pantalla */
+  object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsión */
+
+}
+
+
+
+/* Flechas personalizadas */
+.customPrevArrow, .customNextArrow {
+  background-color: white !important; /* Fondo transparente */
+  color: white !important; /* Color de las flechas */
+  border: none !important;
+  padding: 10px !important;
+  font-size: 30px !important;
+  cursor: pointer !important;
+  width: 50px !important;
+  height: 50px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+
+/* Opcional: Añadir efecto hover */
+.customPrevArrow:hover, .customNextArrow:hover {
+  color: white !important; /* Color de las flechas al pasar el ratón */
+}
+
+  @media (max-width: 768px) {
+    .img_container img {
+      width: 100%;
+      height: auto;
+    }
+
+    .fullscreenImage {
+      width: 100%; /* Ocupa el ancho completo de la pantalla */
+      height: auto;
+
+      object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsión */
+    
+    }
+  }
+  

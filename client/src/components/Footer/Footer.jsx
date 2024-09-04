@@ -28,7 +28,7 @@ const Footer = () => {
         </div>
         <div className={styles.footer_text}>
           <p>
-            © {new Date().getFullYear()} Tu Empresa. Todos los derechos
+            © {new Date().getFullYear()} Tu Mesa en Una. Todos los derechos
             reservados.
           </p>
         </div>

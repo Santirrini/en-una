@@ -5,6 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import ButtonWhatsapp from "../components/ButtonWhatsaapp/ButtonWhatsaapp";
+import HeaderMobile from "../components/Header/Header";
 
 export default function ConfirmUpdatePassword() {
   const [open, setOpen] = useState(true);
@@ -22,6 +23,9 @@ export default function ConfirmUpdatePassword() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <div>
+        <HeaderMobile/>
+      </div>
       <div>
         <Navbar />
       </div>

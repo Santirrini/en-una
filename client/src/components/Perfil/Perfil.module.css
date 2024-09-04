@@ -1,13 +1,32 @@
 .perfil_container {
   padding: 10vh;
-  background-color: #8080801e;
   margin: 0 auto;
   }
+.input_container {
+  display: grid;
+  gap: 2em;
+  justify-content: center;
+}
+.input {
+  width: 100%;
+}
+.title_perfil h1{
+  text-align: center;
+  color: #500075;
+  font-size: 30px;
+}
 
+.btn_container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
   @media (max-width: 768px) {
     .perfil_container {
       padding: 20px;
         margin: 0 auto;
     
       }
+      
   }

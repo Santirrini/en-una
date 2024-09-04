@@ -1,11 +1,12 @@
 .footer {
-    color: white;
+    color: gray;
     padding-bottom: 20px ;
     text-align: center;
     font-size: 14px;  
     position: relative;  
     bottom: 0;
     width: 100%;
+    background-color: black;
   }
   
   
@@ -22,7 +23,8 @@
   }
   
   .footer_social a {
-    color: black;
+    color: white;
+
     font-size: 20px;
     margin: 0 10px;
     transition: color 0.3s;
@@ -32,9 +34,10 @@
     color: #500075;
   }
   
-  .footer_text {
+  .footer_text p{
     margin-top: 10px;
-    color: black;
+    color: gray;
+
 
   }
   
@@ -48,21 +51,27 @@
     gap: 10px;
   }
   .footer_link {
-    color: #007bff;
+    color: gray;
+
     text-decoration: none;
   }
   
   .footer_link:hover {
     text-decoration: underline;
+    color: white;
+
   }
 
   .footer_link_mobile {
-    color: #007bff;
+    color: gray;
+
     text-decoration: none;
   }
   
   .footer_link_mobile:hover {
     text-decoration: underline;
+    color: white;
+
   }
 
   @media (max-width: 768px) {

@@ -5,7 +5,6 @@ import axios from 'axios'
 
 
 
-
 /* https://en-una-production.up.railway.app/// */
 /* https://en-una-production.up.railway.app// */
 export const RegisterUser = (payload) => {
@@ -161,7 +160,7 @@ export const DetailsReservation = (reservationId) => {
   };
 };
 
-export const OrderDratails = (orderId) => {
+export const OrderDetails = (orderId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`https://en-una-production.up.railway.app/api/order/${orderId}`);
@@ -172,7 +171,7 @@ export const OrderDratails = (orderId) => {
         payload: data
       });
     } catch (error) {
-      console.error('Error al mostrar las compañias:', error);
+      console.error('Error al mostrar los detalles de las ordenes:', error);
       // Puedes dispatchar una acción de error si es necesario.
     }
   };
@@ -203,7 +202,23 @@ export const dataPersonal = (token) => {
     }
   };
 };
+export const UpdatePersonal = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put(`https://en-una-production.up.railway.app/api/update-datapersonal`, payload);
 
+      const data = res.data;
+
+      dispatch({
+        type: 'UPDATE_PERSONAL',
+        payload: data,
+      });
+    } catch (error) {
+      console.error("Error a actualizar el usuario:", error);
+      // Podrías dispatch una acción de error si es necesario
+    }
+  };
+};
 export const postRestaurant = (token, payload) => {
   return async (dispatch) => {
     try {
@@ -243,6 +258,26 @@ export const PostMenu = (token, payload, restaurantId) => {
     }
   };
 };
+
+export const PutMenu = (token, payload, menuId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put(`https://en-una-production.up.railway.app/api/update-menu/${menuId}`, payload, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const data = res.data;
+      dispatch({
+        type: "_MENU",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al crear una publicación:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
 export const PaymentReserve = (token, cart) => {
   return async (dispatch) => {
     try {
@@ -252,6 +287,7 @@ export const PaymentReserve = (token, cart) => {
         },
       });
       const data = res.data;
+      window.location.href= res.data.data
       dispatch({
         type: "PAYMENT_RESERVE",
         payload: data
@@ -401,7 +437,7 @@ export const Order = (payload) => {
 export const AllOrder = (restaurantId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`https://en-una-production.up.railway.app/api/orders?restaurantId=${restaurantId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/orders/${restaurantId}`);
       const data = res.data;
       dispatch({
         type: "ALL_ORDER",

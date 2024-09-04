@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AllRestaurant, dataPersonal } from "../../redux/action";
 import Avatar from "@mui/material/Avatar";
-
+import Box from "@mui/material/Box";
 export default function Cards() {
   const dispatch = useDispatch();
   const allrestaurant = useSelector((state) => state.allrestaurant.data);
@@ -33,13 +33,7 @@ export default function Cards() {
           <div className={styles.cards_container}>
             {allrestaurant?.map((data) => (
               <Link to={`/detalles/restaurante/${data.id}`}>
-                <Card
-                  sx={{
-                    maxWidth: 345,
-                    width: 500,
-                    ":hover": { boxShadow: "3px 5px 5px #cacaca" },
-                  }}
-                >
+                <Card className={styles.card}>
                   <CardMedia
                     component="img"
                     image={data.imageFile[0]}
@@ -47,28 +41,22 @@ export default function Cards() {
                     sx={{ height: 200 }}
                   />
 
-                  <CardContent>
-                    <Typography
-                      sx={{ textAlign: "center", textDecoration: "none" }}
-                    >
+                  <CardContent className={styles.text_logo}>
+                    <div>
                       <img
-                        src={require("../../Images/Logo.png")}
+                        src={data.logo}
                         alt="Logo"
                         className={styles.logo_card}
                       />
-                      {data.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        textAlign: "center",
-                        textDecoration: "none",
-                      }}
-                    >
+                    </div>
+
+                    <div>
+                      <div>
+                        <strong>{data.name}</strong>
+                      </div>
                       {data.address},{" "}
                       {data.address_optional ? data.address_optional : null}
-                    </Typography>
+                    </div>
                   </CardContent>
                 </Card>
               </Link>

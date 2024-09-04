@@ -2,33 +2,42 @@
  
 }
 .logo {
-    width: 150px;
+
+    width: 100px !important;
+    height: 100px !important;
     margin: auto;
+    background-color: #500075 !important;
+
 }
 .input_container {
     margin: auto;
 }
 .btn_success {
     color: #ffffff !important;
-    background-color: #c501e2 !important;
-    border: 2px solid #c501e2;
+    background-color: #500075 !important;
+    border: 2px solid #500075;
     border-radius: 0;
-    -webkit-box-shadow: 3px 3px #daa0ed;
-    box-shadow: 3px 3px #daa0ed;
+  
 }
 
-.text {
+.textTitle {
     color: #500075
+}
+
+.textSubTitle {
+    color: #c501e2
 }
 
 .logo_login {
     width: 150px;
     margin: auto;
 }
-
+.input {
+    border-color: #500075;
+}
 @media (max-width: 768px) {
     .logo {
-        width: 100px;
+        width: 100px !important;
         margin: auto;
     }
 }

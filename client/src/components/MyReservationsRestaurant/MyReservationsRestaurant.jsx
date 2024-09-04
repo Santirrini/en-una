@@ -6,181 +6,214 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import Paper from "@mui/material/Paper";
 
 import styles from "./MyReservationsRestaurant.module.css";
 import { Result } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Avatar from "@mui/material/Avatar";
+import ListItemText from "@mui/material/ListItemText";
 
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: "2em",
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  height: "2.5em",
+  border: "1px solid gray",
+  background: "white",
+  display: "flex",
+  alignItems: "center",
+  width: "100% !important",
+  marginLeft: 0,
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "40% !important",
+    marginTop: "25px",
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "40% !important",
+    marginTop: "25px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    width: "40% !important",
+    marginTop: "25px",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  position: "relative",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  color: "orange",
+}));
 
 export default function MyReservationsRestaurant() {
   const dispatch = useDispatch();
-
   const token = useSelector((state) => state.token);
   const datapersonal = useSelector(
-    (state) => state.datapersonal.successPayments
+    (state) => state.datapersonal?.successPayments || []
   );
-  console.log(datapersonal?.map(d=> d.orders))
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   React.useEffect(() => {
-    dispatch(dataPersonal(token));
+    if (token) {
+      dispatch(dataPersonal(token));
+      dispatch(DetailRestaurant(token));
+    }
   }, [dispatch, token]);
-  React.useEffect(() => {
-    dispatch(DetailRestaurant(token));
-  }, [dispatch, token]);
+
+  const limitarTexto = (texto) => {
+    const limite =
+      window.innerWidth <= 768
+        ? 10
+        : window.innerWidth <= 1024
+        ? 18
+        : window.innerWidth <= 1440
+        ? 45
+        : 70;
+    return texto.length > limite ? texto.slice(0, limite) + "..." : texto;
+  };
+
+  // Filtrar los restaurantes según el término de búsqueda
+  const filteredRestaurants = datapersonal?.filter((row) =>
+    row.orders?.Restaurant?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
 
   return (
     <div>
-      <>
-        {!token ? (
-          <div>
-            <Result
-              title="Iniciar Sesión"
-              subTitle="Por favor inicie sesión para ver los menús guardados en el carrito."
-              extra={
-                <Link to="/iniciar-sesión">
-                  <Button
-                    sx={{
-                      background: "#500075",
-                      ":hover": { background: "#500075" },
-                    }}
-                    variant="contained"
-                  >
-                    Iniciar Sesión
-                  </Button>
-                </Link>
-              }
-            />
-          </div>
-        ) : (
-          <>
-            {datapersonal?.length < 1 ? (
-              <div>
-                <Result
-                  title="No hay menús guardados en el carrito"
-                  subTitle="Por favor, ingrese a los restaurantes para ver los menús y hacer las reservaciones."
-                  extra={
-                    <Link to="/">
-                      <Button
-                        sx={{
-                          background: "#500075",
-                          ":hover": { background: "#500075" },
-                        }}
-                        variant="contained"
-                      >
-                        Ver restaurantes
-                      </Button>
-                    </Link>
-                  }
-                />
+      {!token ? (
+        <div>
+          <Result
+            title="Iniciar Sesión"
+            subTitle="Por favor inicie sesión para ver los menús guardados en el carrito."
+            extra={
+              <Link to="/iniciar-sesión">
+                <Button
+                  sx={{
+                    background: "#500075",
+                    ":hover": { background: "#500075" },
+                  }}
+                  variant="contained"
+                >
+                  Iniciar Sesión
+                </Button>
+              </Link>
+            }
+          />
+        </div>
+      ) : (
+        <>
+          {datapersonal.length < 1 ? (
+            <div>
+              <Result
+                title="No hay menús guardados en el carrito"
+                subTitle="Por favor, ingrese a los restaurantes para ver los menús y hacer las reservaciones."
+                extra={
+                  <Link to="/">
+                    <Button
+                      sx={{
+                        background: "#500075",
+                        ":hover": { background: "#500075" },
+                      }}
+                      variant="contained"
+                    >
+                      Ver restaurantes
+                    </Button>
+                  </Link>
+                }
+              />
+            </div>
+          ) : (
+            <div className={styles.carsfood_container}>
+              <h1 className={styles.text}>Mis Reservas</h1>
+
+              <div className={styles.search_container}>
+                <Search className="input-container">
+                  <input
+                    placeholder="Buscar..."
+                    className={styles.search}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                </Search>
               </div>
-            ) : (
-              <div className={styles.carsfood_container}>
-                <h1 className={styles.text}>Restaurantes reservados</h1>
+
+              {/* Mostrar mensaje si no hay coincidencias */}
+              {filteredRestaurants.length === 0 ? (
+                <Typography variant="h6" sx={{ marginTop: 2, textAlign: "center" }}>
+                  No se encontraron restaurantes.
+                </Typography>
+              ) : (
                 <div className={styles.menufood_container}>
-                  {datapersonal?.map((item, index) => (
-                     
-<Link to={`/mis-reservaciones/${item.id}`}>
-                    <Card className={styles.menufood_box} key={index}>
+                  {filteredRestaurants.map((item, index) => (
+                    <Link to={`/mis-reservaciones/${item.id}`} key={index}>
+                      <Card className={styles.menufood_box}>
                         <CardMedia
                           component="img"
-                          sx={{ height: 151, width: 151, maxWidth: "100%" }}
-                          image={item.orders.Restaurant.imageFile[0]}
-                          alt="Live from space album cover"
+                          className={styles.card_media}
+                          image={item.orders?.Restaurant?.imageFile?.[0] || "ruta/a/imagen/default.jpg"}
+                          alt={item.orders?.Restaurant?.name}
                         />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography component="div" variant="h5">
-                           {item.orders.Restaurant.name}
-                          </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                            component="div"
-                          >
-                            <strong>Local:</strong> {item.orders.Restaurant.local}
-                          </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                            component="div"
-                          >
-                      <strong>Dirección:</strong> {item.orders.Restaurant.address}{item.orders.Restaurant.address_optional? "," : null} {item.orders.Restaurant.address_optional}
-                     
-                          </Typography>
-                        </CardContent>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <CardContent sx={{ flex: "1 0 auto" }}>
+                            <Typography component="div" variant="h5">
+                              {item.orders?.Restaurant?.name}
+                            </Typography>
 
-                        {/*      <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            pl: 1,
-                            pb: 1,
-                            justifyContent: "center",
-                            }}
+                            <Typography
+                              variant="subtitle1"
+                              color="text.secondary"
+                              component="div"
                             >
-                            <ButtonGroup sx={{ display: "flex", gap: "1em" }}>
-                            <Button
-                            aria-label="decrease"
-                            onClick={() => handleDecrease(index)}
-                            sx={{
-                              color: "#500075",
-                              border: "1px solid #500075",
-                              ":hover": { border: "1px solid #500075" },
-                              }}
-                              >
-                              <RemoveIcon fontSize="small" />
-                              </Button>
-                              <Typography>{quantity[index] || 1}</Typography>
-                              <Button
-                              aria-label="increase"
-                              onClick={() => handleIncrease(index)}
+                              <strong>Descripción de la reserva:</strong>{" "}
+                              {limitarTexto(item.orders?.Restaurant?.details)}
+                            </Typography>
+                            <Box
                               sx={{
-                                color: "#500075",
-                                border: "1px solid #500075",
-                                ":hover": { border: "1px solid #500075" },
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "100%",
                               }}
+                            >
+                              <Typography
+                                variant="subtitle1"
+                                color="text.secondary"
+                                component="div"
                               >
-                              <AddIcon fontSize="small" />
-                              </Button>
-                              </ButtonGroup>
-                              
-                              </Box> */}
-                      </Box>
-                    </Card>
+                                <span>Cantidad de personas:</span> {item.orders?.peoples}
+                              </Typography>
 
-
-</Link>
+                              <Typography
+                                variant="subtitle1"
+                                color="text.secondary"
+                                component="div"
+                              >
+                                <strong>s/20</strong>
+                              </Typography>
+                            </Box>
+                          </CardContent>
+                        </Box>
+                      </Card>
+                    </Link>
                   ))}
                 </div>
-
-              {/*   <div className={styles.form_container}>
-                  <h2>Resumen de la reserva:</h2>
-                  <p>
-                    <strong>Local:</strong>{" "}
-                    {formData[0].formData && formData[0].formData.local}
-                  </p>
-                  <p>
-                    <strong>Fecha:</strong> {formData[0]?.formData.date}
-                  </p>
-                  <p>
-                    <strong>Hora: </strong>
-                    {formData[0]?.formData.hours}
-                  </p>
-                  <p>
-                    <strong>Personas:</strong> {formData[0]?.formData.peoples}
-                  </p>
-
-                  <p>
-                    <strong>Total:</strong> ${calculateTotal()}
-                  </p>
-                </div> */}
-
-      
-              </div>
-            )}
-          </>
-        )}
-      </>
+              )}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
+

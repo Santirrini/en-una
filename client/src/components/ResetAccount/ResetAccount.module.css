@@ -1,13 +1,32 @@
-.input {
-    outline: none;
-    border: 1px solid gray;
-    width: 100%;
-    border-radius: 5px;
-    height: 2em;
-}
-
-.input::placeholder {
-    padding-left: 0.5em;
+.container_reset {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80vh;
+    text-align: center; /* Opcional, para centrar el texto */
   }
   
+
+.title_resetaccount h1{
+    font-size: 30px;
+    color:  #500075;
+    padding-bottom: 1em;
+}
+  
+  .btnContainer {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    gap: 1em;
+  }
+
+  .input {
+    width: 50%;
+  }
+
+  @media (max-width: 768px) {
+    .input {
+      width: 90%;
+    }
+  }
   

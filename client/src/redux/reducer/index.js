@@ -84,6 +84,10 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
       };
+      case 'UPDATE_MENU':
+      return {
+        ...state,
+      };
     case 'ALL_RESTAURANTS':
       return {
         ...state,
@@ -125,6 +129,12 @@ export const rootReducer = (state = initialState, action) => {
 
       };
 
+      case 'UPDATE_PERSONAL':
+        return {
+          ...state,
+  
+        };
+      
     case 'ALL_CART':
       return {
         ...state,
@@ -165,8 +175,7 @@ case "RESET_FAILURE":
   case "PAYMENT_RESERVE":
     return {
       ...state,
-      paymentData: action.payload,
-      paymentError: null,
+     
     };
   case "PAYMENT_ERROR":
     return {
