@@ -3,7 +3,6 @@ const cloudinary = require('cloudinary').v2;
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 require('dotenv').config();
 
 const storage = multer.diskStorage({
@@ -28,12 +27,14 @@ module.exports = {
   UpdateMenu: async (req, res) => {
     const { authorization } = req.headers;
 
+    // Verificar el token de autorización
     jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
       if (err) {
         return res.sendStatus(401);
       }
 
       try {
+        // Verificar si se han proporcionado archivos
         let imageUrls = [];
         if (req.files && req.files.length > 0) {
           imageUrls = await Promise.all(req.files.map(async (file) => {
@@ -43,31 +44,35 @@ module.exports = {
               fetch_format: 'auto',
             });
             console.log('Imagen subida a Cloudinary:', cloudinaryUploadResult.secure_url);
-
-            // Eliminar archivo temporal
-            fs.unlinkSync(file.path);
-
             return cloudinaryUploadResult.secure_url;
           }));
         }
 
+        // Obtener el menuId del menú a actualizar desde los parámetros de la URL
         const { menuId } = req.params;
+
+        // Obtener los datos actualizados desde el cuerpo de la solicitud
         const { name, details, price, category } = req.body;
 
+        // Buscar el menú existente por su ID
         const menuToUpdate = await Menu.findByPk(menuId);
 
         if (!menuToUpdate) {
           return res.status(404).send({ success: false, error: 'Menú no encontrado' });
         }
 
+        // Actualizar los campos del menú
         menuToUpdate.name = name || menuToUpdate.name;
         menuToUpdate.details = details || menuToUpdate.details;
         menuToUpdate.price = price || menuToUpdate.price;
         menuToUpdate.category = category ? JSON.parse(category) : menuToUpdate.category;
+
+        // Si hay nuevas imágenes, combinarlas con las existentes
         if (imageUrls.length > 0) {
-          menuToUpdate.imageFile = imageUrls;
+          menuToUpdate.imageFile = [...menuToUpdate.imageFile, ...imageUrls];
         }
 
+        // Guardar los cambios en la base de datos
         await menuToUpdate.save();
 
         console.log('Menú actualizado correctamente');
