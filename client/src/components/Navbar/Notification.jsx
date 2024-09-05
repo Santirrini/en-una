@@ -14,14 +14,14 @@ export default function Notification() {
   const [anchorElNoti, setAnchorElNoti] = React.useState(null);
   const openNoti = Boolean(anchorElNoti);
   const [items, setItems] = React.useState([]);
-  const datapersonal = useSelector((state) => state.datapersonal);
+  const userId = useSelector((state) => state.userId);
   const token = useSelector((state) => state.token);
 
   React.useEffect(() => {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
   React.useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItems = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setItems(cartItems);
   }, []);
   const handleCloseNoti = () => {
@@ -41,7 +41,7 @@ export default function Notification() {
       >
         <Badge
           color="secondary"
-          variant={items.length > 0 && items[0].id === datapersonal?.id ? "dot" : ""}
+          variant={items.length > 0  ? "dot" : ""}
           sx={{ color: "white" }}
         >
           <NotificationsIcon />

@@ -23,7 +23,7 @@ import ChildCareIcon from "@mui/icons-material/ChildCare";
 import { LuSalad } from "react-icons/lu";
 import CarRentalIcon from "@mui/icons-material/CarRental";
 import Tooltip from "@mui/material/Tooltip";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -40,13 +40,14 @@ export default function DetailsRestaurant() {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
-
+  const userId = useSelector((state) => state.userId);
   const position = [51.505, -0.09];
   const [formData, setFormData] = useState({
+    name: "",
     date: "",
     hours: "",
     peoples: "",
-    local: "",
+    location: "",
     area: "",
   });
   const [items, setItems] = useState([]);
@@ -55,6 +56,12 @@ export default function DetailsRestaurant() {
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
+
+  useEffect(() => {
+    setFormData({
+      name: restaurantdetails?.name,
+    });
+  }, [restaurantdetails]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,13 +75,12 @@ export default function DetailsRestaurant() {
     // Verificar si todos los campos tienen un valor
     /*     if (formData.date && formData.hours && formData.peoples && formData.local) { */
     const updatedCart = [...items, { formData }];
-    localStorage.setItem("form", JSON.stringify(updatedCart));
+    localStorage.setItem(`form_${userId}`, JSON.stringify(updatedCart));
     navigate(`/menu/restaurante/${restaurantId}`);
     /*    } else {
       setError(true);
     } */
   };
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -158,7 +164,6 @@ export default function DetailsRestaurant() {
 
                   {restaurantdetails && restaurantdetails.details}
                 </div>
-       
               </span>
               <br />
 
@@ -167,7 +172,7 @@ export default function DetailsRestaurant() {
                 <div className={styles.day_atention}>
                   {restaurantdetails &&
                     restaurantdetails.horarios.map((data, index) => (
-                      <div key={index} >
+                      <div key={index}>
                         {data.cerrado ? "" : `${data.dia},`}
                       </div>
                     ))}
@@ -181,9 +186,9 @@ export default function DetailsRestaurant() {
                 <h1 className={styles.text_container}>Contactos</h1>
 
                 <span id={styles.email_phone}>
-                <strong>Correo electrónico: </strong>
+                  <strong>Correo electrónico: </strong>
 
-                {restaurantdetails && restaurantdetails.email}
+                  {restaurantdetails && restaurantdetails.email}
                 </span>
               </span>
               <br />
@@ -210,12 +215,12 @@ export default function DetailsRestaurant() {
       <div className={styles.description_aditional}>
         <form className={styles.select_container}>
           <div>
-            <label htmlFor="local" className={styles.title}>
+            <label htmlFor="location" className={styles.title}>
               Local
             </label>
             <select
-              name="local"
-              value={formData.local}
+              name="location"
+              value={formData.location}
               onChange={handleChange}
               className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${}"
               required
@@ -268,27 +273,30 @@ export default function DetailsRestaurant() {
               Personas
             </label>
             <input
-    type="number"
-    id="peoples"
-    name="peoples"
-    value={formData.peoples || ''}
-    min={1}
-    max={restaurantdetails?.maximum_person_per_table || 10}
-    onChange={(e) => {
-      // Convierte el valor ingresado a número
-      const value = Number(e.target.value);
+              type="number"
+              value={formData.peoples || ""}
+              onChange={(e) => {
+                const value = e.target.value;
 
-      // Obtén el valor máximo permitido
-      const max = restaurantdetails?.maximum_person_per_table || 10;
+                // Obtén el valor máximo permitido
+                const max = restaurantdetails?.maximum_person_per_table || 10;
 
-      // Asegúrate de que el valor esté dentro del rango permitido
-      if (!isNaN(value) && (value === '' || (value >= 1 && value <= max))) {
-        setFormData({ ...formData, peoples: value });
-      }
-    }}
-    className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-    required
-  />
+                // Permitir valores vacíos o números válidos dentro del rango
+                if (
+                  value === "" ||
+                  (!isNaN(Number(value)) &&
+                    Number(value) >= 1 &&
+                    Number(value) <= max)
+                ) {
+                  setFormData({
+                    ...formData,
+                    peoples: value === "" ? "" : Number(value),
+                  });
+                }
+              }}
+              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+              required
+            />
           </div>
           <div>
             <label htmlFor="area" className={styles.title}>
@@ -434,9 +442,13 @@ export default function DetailsRestaurant() {
 
       <div className={styles.form_container}>
         <h2>Detalle de la reserva:</h2>
-        {formData.local ? (
+
+        <div>
+          <strong>Restaurante:</strong> {formData.name}
+        </div>
+        {formData.location ? (
           <div>
-            <strong>Local:</strong> {formData.local}
+            <strong>Local:</strong> {formData.location}
           </div>
         ) : null}
 

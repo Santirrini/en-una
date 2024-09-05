@@ -29,6 +29,7 @@ export default function MenuFood() {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
+  const userId = useSelector((state) => state.userId);
   const [cartItems, setCartItems] = useState([]);
   const [reservation, setReservation] = useState({});
   const [showSummary, setShowSummary] = useState(false);
@@ -41,12 +42,12 @@ export default function MenuFood() {
   }, [dispatch, restaurantId]);
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setCartItems(cart);
   }, []);
 
   useEffect(() => {
-    const form = JSON.parse(localStorage.getItem("form")) || {};
+    const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
     setReservation(form);
   }, []);
 
@@ -55,14 +56,14 @@ export default function MenuFood() {
       (_, itemIndex) => itemIndex !== index
     );
     setCartItems(newCartItems);
-    localStorage.setItem("cart", JSON.stringify(newCartItems));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
   };
 
   const handleIncreaseQuantity = (index) => {
     const newCartItems = [...cartItems];
     newCartItems[index].quantity += 1;
     setCartItems(newCartItems);
-    localStorage.setItem("cart", JSON.stringify(newCartItems));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
   };
 
   const handleDecreaseQuantity = (index) => {
@@ -70,7 +71,7 @@ export default function MenuFood() {
     if (newCartItems[index].quantity > 1) {
       newCartItems[index].quantity -= 1;
       setCartItems(newCartItems);
-      localStorage.setItem("cart", JSON.stringify(newCartItems));
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
     }
   };
 
@@ -90,22 +91,40 @@ export default function MenuFood() {
           <h1 className={styles.text}>NUESTRA CARTA</h1>
 
           <div>
-            <MenuDestacad setCartItems={setCartItems} setShowSummary={setShowSummary}/>
+            <MenuDestacad
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+            />
           </div>
           <div>
-            <Piqueos setCartItems={setCartItems} setShowSummary={setShowSummary} />
+            <Piqueos
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+            />
           </div>
           <div>
-            <Entradas setCartItems={setCartItems} setShowSummary={setShowSummary}/>
+            <Entradas
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+            />
           </div>
           <div>
-            <Segundos setCartItems={setCartItems} setShowSummary={setShowSummary}/>
+            <Segundos
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+            />
           </div>
           <div>
-            <Bebidas setCartItems={setCartItems} setShowSummary={setShowSummary}/>
+            <Bebidas
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+            />
           </div>
           <div>
-            <Postres setCartItems={setCartItems}  setShowSummary={setShowSummary}/>
+            <Postres
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+            />
           </div>
           {cartItems.length > 0 && (
             <div className={styles.btn_reservation}>
@@ -127,12 +146,19 @@ export default function MenuFood() {
               <div className={styles.title_cars}>Resumen de la reserva</div>
 
               <div className={styles.form_container_box}>
+              <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  Restaurante: {reservation[0] && reservation[0].formData.name}
+                </Typography>
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
                   component="div"
                 >
-                  Local: {reservation[0] && reservation[0].formData.local}
+                  Local: {reservation[0] && reservation[0].formData.location}
                 </Typography>
                 <Typography
                   variant="subtitle1"
@@ -198,7 +224,7 @@ export default function MenuFood() {
                               color="text.secondary"
                               component="div"
                             >
-                              s/
+                              S/
                               {parseFloat(item.price * item.quantity).toFixed(
                                 2
                               )}

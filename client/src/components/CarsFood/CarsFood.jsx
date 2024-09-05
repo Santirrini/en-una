@@ -22,10 +22,11 @@ export default function CarsFood() {
   const [formData, setFormData] = React.useState({});
   const [quantity, setQuantity] = React.useState({});
   const [loading, setLoading] = React.useState(false);
-  const datapersonal = useSelector((state) => state.datapersonal);
   const token = useSelector((state) => state.token);
+  const userId = useSelector((state) => state.userId);
+
   const [reserve, setReserve] = React.useState({
-    local: "",
+    location: "",
     date: "",
     hours: "",
     peoples: "",
@@ -35,7 +36,7 @@ export default function CarsFood() {
   });
 
   React.useEffect(() => {
-    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     const quantities = {};
     cartData.forEach((item, index) => {
       quantities[index] = item.quantity || 1;
@@ -44,7 +45,7 @@ export default function CarsFood() {
   }, []);
 
   React.useEffect(() => {
-    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     const updatedCartData = cartData.map((item) => ({
       ...item,
       basePrice: item.basePrice || item.price,
@@ -52,7 +53,7 @@ export default function CarsFood() {
       price: item.price || item.basePrice,
     }));
     setItems(updatedCartData);
-    localStorage.setItem("cart", JSON.stringify(updatedCartData));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCartData));
 
     const quantities = {};
     updatedCartData.forEach((item, index) => {
@@ -60,10 +61,10 @@ export default function CarsFood() {
     });
     setQuantity(quantities);
 
-    const form = JSON.parse(localStorage.getItem("form")) || {};
+    const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
     setFormData(form);
     setReserve({
-      local: form[0]?.formData.local || "",
+      location: form[0]?.formData.location || "",
       date: form[0]?.formData.date || "",
       hours: form[0]?.formData.hours || "",
       peoples: form[0]?.formData.peoples || "",
@@ -84,7 +85,7 @@ export default function CarsFood() {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
   React.useEffect(() => {
-    const form = JSON.parse(localStorage.getItem("form")) || {};
+    const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
     setFormData(form);
   }, []);
 
@@ -107,7 +108,7 @@ export default function CarsFood() {
     const newCartItems = [...items];
     newCartItems[index].quantity = (newCartItems[index].quantity || 1) + 1;
     setItems(newCartItems);
-    localStorage.setItem("cart", JSON.stringify(newCartItems));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
     updateReserve(newCartItems);
     setQuantity({ ...quantity, [index]: newCartItems[index].quantity });
   };
@@ -117,7 +118,7 @@ export default function CarsFood() {
     if (newCartItems[index].quantity > 1) {
       newCartItems[index].quantity -= 1;
       setItems(newCartItems);
-      localStorage.setItem("cart", JSON.stringify(newCartItems));
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
       updateReserve(newCartItems);
       setQuantity({ ...quantity, [index]: newCartItems[index].quantity });
     }
@@ -126,17 +127,17 @@ export default function CarsFood() {
   const handleRemove = (index) => {
     const newItems = items.filter((_, itemIndex) => itemIndex !== index);
     setItems(newItems);
-    localStorage.setItem("cart", JSON.stringify(newItems));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(newItems));
 
     const newQuantity = { ...quantity };
     delete newQuantity[index];
     setQuantity(newQuantity);
 
     if (newItems.length === 0) {
-      localStorage.removeItem("cart");
+      localStorage.removeItem(`cart_${userId}`);
       setFormData({});
     } else {
-      localStorage.setItem("cart", JSON.stringify(newItems));
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(newItems));
     }
     updateReserve(newItems);
   };
@@ -178,8 +179,10 @@ export default function CarsFood() {
   };
 
   const handleRemoveAll = () => {
-    localStorage.removeItem("cart");
-    navigate(-1); // Regresa a la página anterior
+    localStorage.removeItem(`cart_${userId}`);
+    localStorage.removeItem(`form_${userId}`);
+
+    navigate("/"); // Regresa a la página anterior
   };
 
   return (
@@ -207,13 +210,16 @@ export default function CarsFood() {
           </div>
         ) : (
           <>
-            {items.length > 0 && items[0]?.id === datapersonal?.id ? (
+            {items.length > 0  ? (
               <div className={styles.carsfood_container}>
                 <h1 className={styles.text}>Detalle de la reserva</h1>
                 <div className={styles.form_container}>
-                  {formData[0].formData?.local ? (
                     <div>
-                      <strong>Local:</strong> {formData[0].formData?.local}
+                      <strong>Restaurante:</strong> {formData[0].formData?.name}
+                    </div>
+                  {formData[0].formData?.location ? (
+                    <div>
+                      <strong>Local:</strong> {formData[0].formData?.location}
                     </div>
                   ) : null}
 

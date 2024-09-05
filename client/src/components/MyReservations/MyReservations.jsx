@@ -106,9 +106,9 @@ export default function MyReservations() {
             <div className={styles.carsfood_container}>
               <h1 className={styles.text}>Reservaciones</h1>
               <div className={styles.form_container}>
-                {detailsReservation?.orders?.local ? (
+                {detailsReservation?.orders?.location ? (
                   <div>
-                    <strong>Local:</strong> {detailsReservation?.orders?.local}
+                    <strong>Local:</strong> {detailsReservation?.orders?.location}
                   </div>
                 ) : null}
 

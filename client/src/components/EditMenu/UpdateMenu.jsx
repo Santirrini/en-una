@@ -86,10 +86,25 @@ export default function UpdateMenu({
   };
 
   const handleImage = useCallback((acceptedFiles) => {
-    setData((prevState) => ({
-      ...prevState,
-      imageFile: [...prevState.imageFile, ...acceptedFiles],
-    }));
+    acceptedFiles.forEach((file) => {
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+  
+      img.onload = () => {
+        if (img.width < 1280 || img.height < 720) {
+          alert('La imagen debe tener al menos 1280x720 píxeles.');
+        } else {
+          // Si la imagen es válida, la añadimos al estado
+          setData((prevState) => ({
+            ...prevState,
+            imageFile: [...prevState.imageFile, file],
+          }));
+        }
+        URL.revokeObjectURL(objectUrl); // Liberar la URL creada
+      };
+  
+      img.src = objectUrl;
+    });
   }, []);
 
   const onDrop = useCallback(
@@ -148,6 +163,8 @@ export default function UpdateMenu({
                   seleccionar.
                 </p>
                 <span>Puedes subir hasta 100 imágenes.</span>
+                <span>Las imagenes tienen que tener un minimo de 1280x720 pixeles.</span>
+
               </div>
             </div>
           )}

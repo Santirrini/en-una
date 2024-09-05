@@ -1,5 +1,6 @@
 const initialState = {
   token: localStorage.getItem('token'),
+  userId: localStorage.getItem('userId'),  
   role: [],
   loginUser: {},
   loginError: null,
@@ -43,6 +44,9 @@ export const rootReducer = (state = initialState, action) => {
         ...state,
         token: action.payload.token,
         role: action.payload.role,
+        userId: action.payload.userId,
+
+        
       };
 
 
@@ -57,6 +61,8 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         token: localStorage.removeItem("token"),
+        userId: localStorage.removeItem("userId"),
+
         role: null,
 
       };

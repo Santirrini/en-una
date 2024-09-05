@@ -30,6 +30,7 @@ import PostRestaurant from "./pages/PostRestaurant";
 import EditMenu from './pages/EditMenu';
 
 import React, { useState } from 'react';
+import SuccessReserve from "./pages/SuccessReserve";
 
 
 
@@ -77,6 +78,8 @@ function App() {
 
           <Route path="/preguntas-frecuentes" element={<FrequentQuestions />} />
           <Route path="/menús-reservados" element={<CarsFood />} />
+          <Route path="/reserva-exitosa" element={<SuccessReserve />} />
+
 
 
 

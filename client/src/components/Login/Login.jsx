@@ -1,75 +1,95 @@
-import styles from "./Login.module.css";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/action";
 import { useNavigate, Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-
 import CircularProgress from "@mui/material/CircularProgress";
 import { message } from "antd";
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import styles from "./Login.module.css";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userId = useSelector((state) => state.userId);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
-  const [auth, setAuth] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(false);
 
   const error = () => {
     messageApi.open({
       type: "error",
-      content: "el correo y/o la contraseña no coinciden",
+      content: "El correo y/o la contraseña no coinciden",
     });
   };
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoadingError(true); // Activa el indicador de carga
-    setTimeout(async () => {
-      try {
-        if (email && password) {
-          const authResult = await dispatch(login(email, password));
-          setAuth(authResult);
-
-          if (authResult) {
-            navigate("/");
-          } else {
-            error();
-          }
+    setLoading(true);
+    setLoadingError(false);
+  
+    try {
+      if (email && password) {
+        const authResult = await dispatch(login(email, password));
+        console.log("AuthResult:", authResult); // Verifica la estructura de authResult
+  
+        if (authResult && authResult.userId) {
+          // Almacena el userId en localStorage
+          localStorage.setItem("userId", authResult.userId);
+  
+          // Sincroniza el carrito anónimo con el carrito del usuario
+          await mergeCarts(authResult.userId);
+  
+          // Navega a la página principal o a donde desees
+          navigate("/");
+        } else {
+          // Manejo de errores si no se obtiene userId
+          error("Error en la autenticación");
         }
-      } catch (error) {
-        console.error("Error durante el inicio de sesión", error);
-      } finally {
-        setLoadingError(false); // Desactiva el indicador de carga al finalizar
+      } else {
+        // Manejo de errores si el email o la contraseña están vacíos
+        error("Por favor, ingresa el correo y la contraseña");
       }
-    }, 3000);
+    } catch (error) {
+      console.error("Error durante el inicio de sesión", error);
+      error("Error durante el inicio de sesión");
+    } finally {
+      setLoading(false);
+    }
   };
-
+  
+  const mergeCarts = async (userId) => {
+  
+    
+    // Obtener el carrito del usuario autenticado
+    const userCart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+  
+    // Fusionar los carritos
+    const mergedCart = [ ...userCart];
+  
+    // Guardar el carrito fusionado en localStorage bajo la clave del usuario
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(mergedCart));
+  
+    // Eliminar el carrito anónimo
+    localStorage.removeItem("cart");
+  };
   return (
     <>
-      <div
-        className={`flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ${styles.login_container}`}
-      >
+      <div className={`flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ${styles.login_container}`}>
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2
-            className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
-          >
+          <h2 className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}>
             Iniciar sesión
           </h2>
-          <h2
-            className={`mt-10 text-center font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}
-          >
+          <h2 className={`mt-10 text-center font-bold leading-9 tracking-tight text-gray-900 ${styles.text}`}>
             Bienvenido a EnUna
           </h2>
         </div>
@@ -77,12 +97,7 @@ export default function Login() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Correo
-              </label>
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Correo</label>
               <div className="mt-2">
                 <input
                   id="email"
@@ -98,17 +113,9 @@ export default function Login() {
 
             <div>
               <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Contraseña
-                </label>
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
                 <div className="text-sm">
-                  <Link
-                    to="/recuperar-cuenta"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
+                  <Link to="/recuperar-cuenta" className="font-semibold text-indigo-600 hover:text-indigo-500">
                     ¿Has olvidado la contraseña?
                   </Link>
                 </div>
@@ -117,7 +124,7 @@ export default function Login() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"} // Alterna el tipo de input entre texto y contraseña
+                  type={showPassword ? "text" : "password"}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                   required
@@ -125,9 +132,9 @@ export default function Login() {
                 />
                 <div
                   className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)} // Cambia el estado de la visibilidad de la contraseña
+                  onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeTwoTone style={{color: '#500075'}} /> :  <EyeInvisibleOutlined />}
+                  {showPassword ? <EyeTwoTone style={{ color: "#500075" }} /> : <EyeInvisibleOutlined />}
                 </div>
               </div>
             </div>
@@ -137,12 +144,8 @@ export default function Login() {
                 type="submit"
                 className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${styles.btn_success}`}
               >
-                {loadingError ? (
-                  <CircularProgress
-                    size={25}
-                    thickness={5}
-                    sx={{ color: "#fff" }}
-                  />
+                {loading ? (
+                  <CircularProgress size={25} thickness={5} sx={{ color: "#fff" }} />
                 ) : (
                   "Iniciar sesión"
                 )}
@@ -153,10 +156,7 @@ export default function Login() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Si no tiene una cuenta, haga click{" "}
-            <Link
-              to="/registrarse"
-              className={`font-semibold leading-6 text-indigo-600 hover:text-indigo-500 `}
-            >
+            <Link to="/registrarse" className={`font-semibold leading-6 text-indigo-600 hover:text-indigo-500`}>
               aquí
             </Link>
           </p>

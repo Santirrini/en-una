@@ -28,36 +28,45 @@ export const RegisterUser = (payload) => {
   };
 };
 
-export const login = (email, password) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.post("https://en-una-production.up.railway.app/api/login", {
-        email,
-        password,
+// action.js
+// action.js
+export const login = (email, password) => async (dispatch) => {
+  try {
+    const response = await axios.post("https://en-una-production.up.railway.app/api/login", {
+      email,
+      password,
+    });
+
+    if (response.status === 200 && response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.userId);
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          token: response.data.token,
+          role: response.data.role,
+          userId: response.data.userId,
+        },
       });
 
-      if (response.status === 200 && response.data.token) {
-        localStorage.setItem("token", response.data.token);
-
-        dispatch({
-          type: "LOGIN_SUCCESS",
-          payload: {
-            token: response.data.token,
-            role: response.data.role,
-          },
-        });
-
-        return true; // Autenticación exitosa
-      } else {
-        throw new Error("Error durante el inicio de sesión.");
-      }
-    } catch (error) {
+      // Devuelve un objeto con los datos necesarios
+      return {
+        token: response.data.token,
+        userId: response.data.userId,
+        role: response.data.role,
+      };
+    } else {
       dispatch({ type: "LOGIN_ERROR" });
-      return false; // Autenticación fallida
+      return null;
     }
-  };
+  } catch (error) {
+    dispatch({ type: "LOGIN_ERROR" });
+    return null;
+  }
 };
-// action.js
+
+
 
 
 export const SendEmailPassword = (email) => {

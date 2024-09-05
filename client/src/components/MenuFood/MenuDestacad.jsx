@@ -32,8 +32,9 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
-  const datapersonal = useSelector((state) => state.datapersonal);
   const token = useSelector((state) => state.token);
+  const userId = useSelector((state) => state.userId);
+
 
   const [quantities, setQuantities] = useState({});
   const [open, setOpen] = useState(false);
@@ -50,9 +51,11 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
   }, [dispatch, token]);
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Leer el carrito de localStorage usando el userId
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setCartItems(cart);
-  }, [setCartItems]);
+  }, [setCartItems, userId ]);
 
   const handleQuantityChange = (id, amount) => {
     setQuantities((prevQuantities) => ({
@@ -62,38 +65,53 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
   };
 
   const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+    // Obtener carrito de localStorage o inicializarlo si está vacío
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+
+    // Validar si el carrito ya tiene productos de otro restaurante
     if (cart.length > 0 && cart[0].restaurantId !== product.restaurantId) {
       alert("Solo puedes agregar menús del mismo restaurante al carrito.");
       return;
     }
 
+    // Obtener la cantidad de productos seleccionada (asegurarse que sea al menos 1)
     const quantity = quantities[product.id] || 0;
+    if (quantity <= 0) {
+      alert("Por favor, selecciona una cantidad válida.");
+      return;
+    }
 
+    // Copiar el carrito para actualizarlo
     let updatedCart = [...cart];
     let found = false;
+
+    // Buscar si el producto ya está en el carrito
     updatedCart.forEach((item) => {
-      if (item.name === product.name) {
-        item.quantity += quantity;
+      if (item.id === product.id) {
+        item.quantity += quantity; // Incrementar la cantidad
         found = true;
       }
     });
 
+    // Si el producto no estaba en el carrito, agregarlo
     if (!found) {
       updatedCart.push({
-        id: datapersonal?.id,
+        id: product.id, // Identificador único
         name: product.name,
         price: product.price,
         details: product.details,
-        quantity: quantity,
+        quantity: quantity, // Cantidad seleccionada
         imageFile: product.imageFile,
         restaurantId: product.restaurantId,
       });
     }
 
+    // Actualizar el estado del carrito y guardarlo en localStorage
     setCartItems([...updatedCart]);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+
+    // Mostrar resumen de compra
     setShowSummary(true);
   };
 
@@ -115,13 +133,11 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
 
   const handleClose = () => setOpen(false);
 
-  // Obtener el ID del usuario desde localStorage (si está presente)
-  const userId = JSON.parse(localStorage.getItem("datapersonal"))?.id;
 
   // Filtrar los menús destacados según el ID del usuario
   const destacados = restaurantdetails?.Menus.filter((menu) =>
     menu.category.includes("Destacados")
-  ).filter((menu) => menu.userId === userId); // Suponiendo que los menús tienen un campo userId
+  ) // Suponiendo que los menús tienen un campo userId
 
   return (
     <div>
@@ -240,44 +256,54 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
           <Modal
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
           >
             <Box sx={modalStyle}>
               <Splide
                 options={{
+                  type: "loop",
                   perPage: 1,
-                  perMove: 1,
                   pagination: false,
-                  autoplay: true,
-                  pauseOnHover: true,
                   arrows: true,
+                  height: "500px",
+                  cover: true,
                 }}
               >
-                {selectedImages.map((img, index) => (
+                {selectedImages.map((image, index) => (
                   <SplideSlide key={index}>
-                    <img src={img} alt="menu" className={styles.img_carrusel} />
+                    <img
+                      src={image}
+                      alt={selectedName}
+                      style={{ width: "100%", height: "100%" }}
+                    />
                   </SplideSlide>
                 ))}
               </Splide>
               <Typography
-                id="modal-modal-title"
+                id="modal-title"
                 variant="h6"
                 component="h2"
-                sx={{ textAlign: "center", paddingBottom: "0.5em" }}
+                sx={{ p: 2, textAlign: "center" }}
               >
                 {selectedName}
               </Typography>
               <Typography
-                id="modal-modal-description"
-                sx={{ textAlign: "center", paddingBottom: "1em" }}
+                id="modal-description"
+                sx={{ p: 2, textAlign: "center" }}
               >
                 {selectedDetails}
               </Typography>
             </Box>
           </Modal>
         </div>
-      ) : null}
+      ) : (
+        <Result
+          status="404"
+          title="404"
+          subTitle="Lo sentimos, no se han encontrado productos destacados."
+        />
+      )}
     </div>
   );
 }

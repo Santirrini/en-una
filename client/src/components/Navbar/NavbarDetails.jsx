@@ -92,13 +92,15 @@ export default function NavbarDetails() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const open = Boolean(anchorEl);
   const inputRef = React.useRef(null);
+  const userId = useSelector((state) => state.userId);
+
   const [items, setItems] = React.useState([]);
   const [cartItemCount, setCartItemCount] = React.useState(0);
   React.useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItems = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setItems(cartItems);
     setCartItemCount(cartItems.length);
-  }, [cartItemCount]);
+  }, [cartItemCount, userId]);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };

@@ -199,7 +199,7 @@ export default function MyReservationsRestaurant() {
                                 color="text.secondary"
                                 component="div"
                               >
-                                <strong>s/20</strong>
+                                <strong>S/20</strong>
                               </Typography>
                             </Box>
                           </CardContent>

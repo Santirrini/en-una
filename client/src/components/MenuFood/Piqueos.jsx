@@ -35,6 +35,8 @@ export default function Piqueos({setCartItems, setShowSummary}) {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
+  const userId = useSelector((state) => state.userId);
+
   const [quantities, setQuantities] = useState({});
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -46,7 +48,7 @@ export default function Piqueos({setCartItems, setShowSummary}) {
   }, [dispatch, restaurantId]);
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setCartItems(cart);
   }, []);
 
@@ -58,7 +60,7 @@ export default function Piqueos({setCartItems, setShowSummary}) {
   };
 
   const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
     if (cart.length > 0 && cart[0].restaurantId !== product.restaurantId) {
       alert("Solo puedes agregar menús del mismo restaurante al carrito.");
@@ -89,7 +91,7 @@ export default function Piqueos({setCartItems, setShowSummary}) {
     }
 
     setCartItems([...updatedCart]);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
     setShowSummary(true)
   
   };

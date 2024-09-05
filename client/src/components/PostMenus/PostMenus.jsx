@@ -75,11 +75,27 @@ export default function PostMenus() {
   };
 
   const handleImage = useCallback((acceptedFiles) => {
-    setData((prevState) => ({
-      ...prevState,
-      imageFile: [...prevState.imageFile, ...acceptedFiles],
-    }));
+    acceptedFiles.forEach((file) => {
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+  
+      img.onload = () => {
+        if (img.width < 1280 || img.height < 720) {
+          alert('La imagen debe tener al menos 1280x720 píxeles.');
+        } else {
+          // Si la imagen es válida, la añadimos al estado
+          setData((prevState) => ({
+            ...prevState,
+            imageFile: [...prevState.imageFile, file],
+          }));
+        }
+        URL.revokeObjectURL(objectUrl); // Liberar la URL creada
+      };
+  
+      img.src = objectUrl;
+    });
   }, []);
+  
 
   const onDrop = useCallback((acceptedFiles) => {
     handleImage(acceptedFiles);
@@ -130,7 +146,7 @@ export default function PostMenus() {
     <form onSubmit={handleSubmit} className={styles.container_form}>
       <div className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8">
         <div className={styles.title}>
-          <h1>Mi carta/Menú</h1>
+          <h1>Mi carta/Menú </h1> (Subir un producto a la vez)
         </div>
         <div className={styles.dropzone} {...getRootProps()}>
           <input {...getInputProps()} />
@@ -147,6 +163,8 @@ export default function PostMenus() {
                   seleccionar.
                 </p>
                 <span>Puedes subir hasta 100 imágenes.</span>
+                <span>Las imagenes tienen que tener un minimo de 1280x720 pixeles.</span>
+
               </div>
             </div>
           )}
