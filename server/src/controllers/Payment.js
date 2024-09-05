@@ -48,7 +48,7 @@ module.exports = {
           },
           send_email: false,
           confirm: false,
-          redirect_url: 'https://www.enunaapp.com',
+          redirect_url: 'https://www.enunaapp.com/reserva-exitosa',
           metadata: {
             additional_info_1: decoded.id,
 
