@@ -29,7 +29,6 @@ module.exports = {
         id: user.id,
         name: user.name,
         lastName: user.lastName,
-
         email: user.email,
         password: user.password,
         phone: user.phone,
