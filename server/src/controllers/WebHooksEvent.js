@@ -17,7 +17,7 @@ module.exports = {
 
       // Verifica y guarda la orden en la base de datos
       try {
-        const { name, lastName, email, phone_number } = customer; // Ajusta según tu estructura
+        const { name, last_name, email, phone_number } = customer; // Ajusta según tu estructura
         const { additional_info_1, custom_field} = metadata; // Ajusta según tu estructura
 
         // Busca la orden relacionada
@@ -30,7 +30,7 @@ module.exports = {
         const successPayment = await SuccessPayment.create({
           order_id,
           name,
-          lastName,
+          lastName: last_name,
           email,
           phone: phone_number,
           observation: custom_field,

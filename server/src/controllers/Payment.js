@@ -27,7 +27,7 @@ module.exports = {
 
 
         const name = decoded.name;
-        const last_name = decoded.lastName;
+        const lastName = decoded.lastName;
 
         const email = decoded.email;
         const phone = decoded.phone;
@@ -42,7 +42,7 @@ module.exports = {
           order_id: orderId,  // Utilizar el UUID generado por la base de datos
           customer: {
             name: name,
-            last_name: "asdasdsad",
+            last_name: lastName,
             email: email,
             phone_number: phone,
           },
