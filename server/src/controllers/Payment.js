@@ -28,7 +28,7 @@ module.exports = {
 
         const name = decoded.name;
         const lastName = decoded.lastName;
-
+    console.log(lastName)
         const email = decoded.email;
         const phone = decoded.phone;
 
