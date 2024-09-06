@@ -7,7 +7,7 @@ const { Order } = require("../db");
 
 module.exports = {
   Payment: async (req, res) => {
-    const { location, date, hours,area, peoples, order, observation,  restaurantId } = req.body;
+    const { location, date, hours, area, peoples, order, observation, restaurantId } = req.body;
     const { authorization } = req.headers;
 
     jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
@@ -22,13 +22,12 @@ module.exports = {
         }
 
         // Crear la orden en la base de datos y obtener el UUID generado
-        const orders = await Order.create({ location, date, hours, area, peoples,observation, order, restaurantId, userId: decoded.id });
+        const orders = await Order.create({ location, date, hours, area, peoples, observation, order, restaurantId, userId: decoded.id });
         const orderId = orders.id;  // UUID generado por la base de datos
 
 
         const name = decoded.name;
         const lastName = decoded.lastName;
-    console.log(lastName)
         const email = decoded.email;
         const phone = decoded.phone;
 
@@ -55,7 +54,7 @@ module.exports = {
             custom_field: observation
           }
         };
-        
+
 
         openpay.charges.create(newCharge, function (error, body) {
           if (error) {
