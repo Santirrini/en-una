@@ -2,7 +2,7 @@ const { User } = require('../db');
 
 module.exports = {
     UpdatePersonal: async (req, res) => {
-    const {  name, lastName, email,genre, date, phone, userId} = req.body;
+    const {  name, lastName, email,genre, date, phone, razon_social, ruc, contact_person, position, address, country, province, district, userId} = req.body;
 
 
 
@@ -14,7 +14,7 @@ module.exports = {
         return res.status(404).json({ succes: false, message: 'Usuario no encontrado' });
       }
 
-      await user.update({  name, lastName, email,genre, date, phone});
+      await user.update({ name, lastName, email,genre, date, phone, razon_social, ruc, contact_person, position, address, country, province, district,});
       
       res.status(200).send({success: true, message:'Estado actualizado'});
       console.log('Estado actualizado')
