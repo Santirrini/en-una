@@ -42,7 +42,7 @@ module.exports = {
           order_id: orderId,  // Utilizar el UUID generado por la base de datos
           customer: {
             name: name,
-            last_name: last_name,
+            last_name: "asdasdsad",
             email: email,
             phone_number: phone,
           },
