@@ -50,6 +50,11 @@ module.exports = (sequelize) => {
 
         },
 
+        minimum_consumption: {
+            type: DataTypes.STRING,
+
+        },
+        
         type_of_meals: {
             type: DataTypes.STRING,
 
