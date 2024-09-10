@@ -22,7 +22,7 @@ module.exports = {
       try {
         const {
           name, address, phone, email, details, horarios, local, area, additional_services,
-          maximum_per_table, maximum_person_per_table, type_of_meals, average_price
+          maximum_per_table, maximum_person_per_table,minimum_consumption, type_of_meals, average_price
         } = req.body;
 
         const userId = decoded.id; // ID del usuario extraído del token
@@ -89,6 +89,9 @@ module.exports = {
             phone: phone || restaurant.phone,
             maximum_per_table: maximum_per_table || restaurant.maximum_per_table,
             maximum_person_per_table: maximum_person_per_table || restaurant.maximum_person_per_table,
+            minimum_consumption: minimum_consumption || restaurant.minimum_consumption,
+
+            
             type_of_meals: type_of_meals || restaurant.type_of_meals,
             average_price: average_price || restaurant.average_price,
             email: email || restaurant.email,
@@ -111,6 +114,7 @@ module.exports = {
             phone,
             maximum_per_table,
             maximum_person_per_table,
+            minimum_consumption,
             type_of_meals,
             average_price,
             email,
