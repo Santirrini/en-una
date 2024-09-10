@@ -8,6 +8,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
+    restaurant: {
+      type: DataTypes.STRING,
+
+    },
     location: {
       type: DataTypes.STRING,
 
