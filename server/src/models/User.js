@@ -40,6 +40,11 @@ module.exports = (sequelize) => {
     email: {
       type: DataTypes.STRING,
     },
+    email_additional: {
+      type: DataTypes.STRING,
+    },
+
+    
     country: {
       type: DataTypes.STRING,
     },
