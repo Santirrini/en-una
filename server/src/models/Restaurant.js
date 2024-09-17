@@ -86,7 +86,15 @@ module.exports = (sequelize) => {
         details: {
             type: DataTypes.STRING(3000),
 
-        }
+        },
+
+        facebook: {
+            type: DataTypes.STRING,
+
+        },
+        instagram: {
+            type: DataTypes.STRING,
+        },
 
     });
     return Restaurant
