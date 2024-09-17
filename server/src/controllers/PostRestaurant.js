@@ -22,7 +22,7 @@ module.exports = {
       try {
         const {
           name, address, phone, email, details, horarios, local, area, additional_services,
-          maximum_per_table, maximum_person_per_table,minimum_consumption, type_of_meals, average_price
+          maximum_per_table, maximum_person_per_table,minimum_consumption, type_of_meals, average_price,facebook, instagram
         } = req.body;
 
         const userId = decoded.id; // ID del usuario extraído del token
@@ -91,6 +91,8 @@ module.exports = {
             maximum_person_per_table: maximum_person_per_table || restaurant.maximum_person_per_table,
             minimum_consumption: minimum_consumption || restaurant.minimum_consumption,
 
+            facebook: facebook || restaurant.facebook,
+            instagram: instagram || restaurant.instagram,
             
             type_of_meals: type_of_meals || restaurant.type_of_meals,
             average_price: average_price || restaurant.average_price,
@@ -119,6 +121,9 @@ module.exports = {
             average_price,
             email,
             local,
+            facebook,
+            instagram,
+            
             area: area ? JSON.parse(area) : [],
             additional_services: additional_services ? JSON.parse(additional_services) : [],
             horarios: parsedHorarios,
