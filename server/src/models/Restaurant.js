@@ -64,6 +64,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
+        district: {
+            type: DataTypes.STRING,
+
+        },
         
 
         horarios: {

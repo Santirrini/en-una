@@ -21,7 +21,7 @@ module.exports = {
 
       try {
         const {
-          name, address, phone, email, details, horarios, local, area, additional_services,
+          name, address, phone, email, details, district, horarios, local, area, additional_services,
           maximum_per_table, maximum_person_per_table,minimum_consumption, type_of_meals, average_price,facebook, instagram, tiktok, youtube
         } = req.body;
 
@@ -88,6 +88,7 @@ module.exports = {
             address: address || restaurant.address,
             phone: phone || restaurant.phone,
             maximum_per_table: maximum_per_table || restaurant.maximum_per_table,
+            district: district || restaurant.district,
             maximum_person_per_table: maximum_person_per_table || restaurant.maximum_person_per_table,
             minimum_consumption: minimum_consumption || restaurant.minimum_consumption,
 
@@ -95,6 +96,7 @@ module.exports = {
             instagram: instagram || restaurant.instagram,
             tiktok: tiktok || restaurant.tiktok,
             youtube: youtube || restaurant.youtube,
+
 
             
             type_of_meals: type_of_meals || restaurant.type_of_meals,
@@ -124,6 +126,7 @@ module.exports = {
             average_price,
             email,
             local,
+            district,
             facebook,
             instagram,
             youtube,
