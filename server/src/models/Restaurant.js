@@ -95,6 +95,13 @@ module.exports = (sequelize) => {
         instagram: {
             type: DataTypes.STRING,
         },
+        tiktok: {
+            type: DataTypes.STRING,
+
+        },
+        youtube: {
+            type: DataTypes.STRING,
+        },
 
     });
     return Restaurant
