@@ -1,10 +1,11 @@
-const { Menu } = require('../db');
+const { Menu } = require('../db'); // Asegúrate de que tu modelo Menu tenga un campo para las categorías
 const cloudinary = require('cloudinary').v2;
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
 
+// Configuración de multer para el almacenamiento de archivos
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../../uploads'));
@@ -17,6 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Configuración de Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -55,10 +57,15 @@ module.exports = {
         const { restaurantId } = req.params;
 
         const { name, details, price, category } = req.body;
+
+        // Parsear y filtrar las categorías si se proporcionan
+        const categories = category ? JSON.parse(category) : [];
+
+        // Crear un nuevo menú en la base de datos
         const newMenu = await Menu.create({
           imageFile: imageUrls,
           name,
-          category: category ? JSON.parse(category) : [],
+          category: categories, // Guardar categorías en la base de datos
           details,
           price,
           restaurantId // Asignar el ID del restaurante al menú
