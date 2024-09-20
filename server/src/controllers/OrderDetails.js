@@ -1,11 +1,16 @@
-const { Order } = require('../db');
+const { SuccessPayment, Order } = require('../db');
 
 module.exports = {
   OrderDetails: async (req, res) => {
         const {orderId} = req.params;
     try {
   
-        const order = await Order.findByPk(orderId);
+        const order = await SuccessPayment.findByPk(orderId, {
+          include: {
+            model: Order,
+            as: 'orders',
+          }
+        });
 
         if (!order) {
           
