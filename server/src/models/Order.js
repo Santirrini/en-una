@@ -8,11 +8,8 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
-    name_client: {
-      type: DataTypes.STRING,
 
-    },
-    restaurant: {
+    area: {
       type: DataTypes.STRING,
 
     },
