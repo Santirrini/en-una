@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
         },
 
+        stock: {
+            type: DataTypes.BOOLEAN,
+        },
+  
         restaurantId: {  // Agrega esta columna para la relación con Restaurant
             type: DataTypes.UUID,
             allowNull: false,

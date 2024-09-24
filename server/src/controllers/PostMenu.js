@@ -67,6 +67,7 @@ module.exports = {
           name,
           category: categories, // Guardar categorías en la base de datos
           details,
+          stock: true,
           price,
           restaurantId // Asignar el ID del restaurante al menú
         });

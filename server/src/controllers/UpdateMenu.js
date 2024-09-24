@@ -52,7 +52,7 @@ module.exports = {
         const { menuId } = req.params;
 
         // Obtener los datos actualizados desde el cuerpo de la solicitud
-        const { name, details, price, category } = req.body;
+        const { name, details, price, category, stock } = req.body;
 
         // Buscar el menú existente por su ID
         const menuToUpdate = await Menu.findByPk(menuId);
@@ -66,7 +66,9 @@ module.exports = {
         menuToUpdate.details = details || menuToUpdate.details;
         menuToUpdate.price = price || menuToUpdate.price;
         menuToUpdate.category = category ? JSON.parse(category) : menuToUpdate.category;
+        menuToUpdate.stock = stock || menuToUpdate.stock;
 
+        
         // Si hay nuevas imágenes, combinarlas con las existentes
         if (imageUrls.length > 0) {
           menuToUpdate.imageFile = [...menuToUpdate.imageFile, ...imageUrls];
