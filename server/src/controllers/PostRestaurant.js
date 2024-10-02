@@ -22,7 +22,7 @@ module.exports = {
       try {
         const {
           name, address, phone, email, details, district, horarios, local, area, additional_services,
-          maximum_per_table, maximum_person_per_table,minimum_consumption, type_of_meals, average_price,facebook, instagram, tiktok, youtube
+          maximum_per_table, maximum_person_per_table, minimum_consumption, type_of_meals, average_price, facebook, instagram, tiktok, youtube
         } = req.body;
 
         const userId = decoded.id; // ID del usuario extraído del token
@@ -44,7 +44,6 @@ module.exports = {
             return res.status(500).send('Error al subir el logo a Cloudinary');
           }
         }
-
         // Subir imágenes a Cloudinary si se proporcionan
         let newImageUrls = [];
         if (req.files && req.files.imageFile) {
@@ -63,7 +62,6 @@ module.exports = {
             }
           }));
         }
-
         // Parsear horarios
         let parsedHorarios = [];
         if (horarios) {
@@ -74,38 +72,32 @@ module.exports = {
             return res.status(400).send('El formato de los horarios no es válido');
           }
         }
-
         // Verificar si el restaurante ya existe
         let restaurant = await Restaurant.findOne({ where: { userId } });
-
         if (restaurant) {
           // Si el restaurante ya existe, combinar las nuevas imágenes con las existentes
           const combinedImageUrls = [...restaurant.imageFile, ...newImageUrls];
-          
+
           await Restaurant.update({
             imageFile: combinedImageUrls.length > 0 ? combinedImageUrls : restaurant.imageFile || "",
-            logo: logoUrl || restaurant.logo|| "",
-            address: address || restaurant.address|| "",
-            phone: phone || restaurant.phone|| "",
-            maximum_per_table: maximum_per_table || restaurant.maximum_per_table|| "",
-            district: district || restaurant.district|| "",
-            maximum_person_per_table: maximum_person_per_table || restaurant.maximum_person_per_table|| "",
-            minimum_consumption: minimum_consumption || restaurant.minimum_consumption|| "",
-
-            facebook: facebook || restaurant.facebook|| "",
-            instagram: instagram || restaurant.instagram|| "",
-            tiktok: tiktok || restaurant.tiktok|| "",
-            youtube: youtube || restaurant.youtube|| "",
-
-
-            
-            type_of_meals: type_of_meals || restaurant.type_of_meals|| "",
-            average_price: average_price || restaurant.average_price|| "",
-            email: email || restaurant.email|| "",
-            local: local || restaurant.local|| "",
-            area: area ? JSON.parse(area) : restaurant.area|| "",
-            additional_services: additional_services ? JSON.parse(additional_services) : restaurant.additional_services|| "",
-            horarios: horarios ? parsedHorarios : restaurant.horarios|| "",
+            logo: logoUrl || restaurant.logo || "",
+            address: address || restaurant.address || "",
+            phone: phone || restaurant.phone || "",
+            maximum_per_table: maximum_per_table || restaurant.maximum_per_table || "",
+            district: district || restaurant.district || "",
+            maximum_person_per_table: maximum_person_per_table || restaurant.maximum_person_per_table || "",
+            minimum_consumption: minimum_consumption || restaurant.minimum_consumption || "",
+            facebook: facebook || restaurant.facebook || "",
+            instagram: instagram || restaurant.instagram || "",
+            tiktok: tiktok || restaurant.tiktok || "",
+            youtube: youtube || restaurant.youtube || "",
+            type_of_meals: type_of_meals || restaurant.type_of_meals || "",
+            average_price: average_price || restaurant.average_price || "",
+            email: email || restaurant.email || "",
+            local:  restaurant.local || "",
+            area: area ? JSON.parse(area) : restaurant.area || "",
+            additional_services: additional_services ? JSON.parse(additional_services) : restaurant.additional_services || "",
+            horarios: horarios ? parsedHorarios : restaurant.horarios || "",
             details: details || restaurant.details || "",
           }, { where: { userId } });
 

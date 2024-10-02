@@ -93,6 +93,8 @@ module.exports = (sequelize) => {
         key: 'id',
       },
     },
+  }, {
+    timestamps: false, // Desactiva los campos createdAt y updatedAt
   });
 
   

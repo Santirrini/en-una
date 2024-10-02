@@ -41,6 +41,8 @@ module.exports = (sequelize) => {
     userId: {
       type: DataTypes.UUID,
     }
+  }, {
+    timestamps: false, // Desactiva los campos createdAt y updatedAt
   });
 
 

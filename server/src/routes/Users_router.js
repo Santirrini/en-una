@@ -8,6 +8,9 @@ const {Login} = require('../controllers/Login');
 const {DetailsPersonal} = require('../controllers/DetailsPersonal');
 const {ContactUs} = require('../controllers/ContactUs');
 const {UpdatePersonal} = require('../controllers/UpdatePersonal');
+const {LoginGoogle} = require('../controllers/LoginGoogle');
+const {GoogleCallback} = require('../controllers/LoginGoogle');
+
 
 
 
@@ -23,6 +26,9 @@ router.get('/datapersonal', DetailsPersonal );
 router.post('/contact-us', ContactUs );
 router.put('/update-datapersonal', UpdatePersonal );
 
+router.get('/auth/google', LoginGoogle);
+
+router.get('/auth/google/callback', GoogleCallback);
 
 
 

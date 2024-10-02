@@ -33,7 +33,11 @@ module.exports = (sequelize) => {
             type: DataTypes.UUID,
             allowNull: false,
         }
-    });
+    },
+    {
+        timestamps: false, // Desactiva los campos createdAt y updatedAt
+      }
+);
 
     return Menu;
 };

@@ -42,6 +42,8 @@ module.exports = (sequelize) => {
     }
 
 
+  }, {
+    timestamps: false, // Desactiva los campos createdAt y updatedAt
   });
 
   return SuccessPayment;

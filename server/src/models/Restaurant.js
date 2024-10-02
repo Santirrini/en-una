@@ -107,6 +107,8 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
         },
 
-    });
+    },{
+        timestamps: false, // Desactiva los campos createdAt y updatedAt
+      });
     return Restaurant
 };
