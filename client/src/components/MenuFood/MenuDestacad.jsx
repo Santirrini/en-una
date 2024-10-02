@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { DetailRestaurant, dataPersonal } from "../../redux/action";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -26,7 +26,12 @@ const modalStyle = {
   boxShadow: 24,
 };
 
-export default function MenuDestacad({ setCartItems, setShowSummary }) {
+export default function MenuDestacad({
+  setCartItems,
+  setShowSummary,
+  setQuantities,
+  quantities,
+}) {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
@@ -34,14 +39,15 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
   );
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
+  const { pathname } = useLocation();
 
-
-  const [quantities, setQuantities] = useState({});
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedName, setSelectedName] = useState([]);
   const [selectedDetails, setSelectedDetails] = useState([]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -51,21 +57,70 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
   }, [dispatch, token]);
 
   useEffect(() => {
-
-    // Leer el carrito de localStorage usando el userId
+    // Leer el carrito de localStorage usando el userId y sincronizar las cantidades en el menú
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setCartItems(cart);
-  }, [setCartItems, userId ]);
+
+    // Sincronizar las cantidades de los productos en el menú
+    const initialQuantities = {};
+    cart.forEach((item) => {
+      initialQuantities[item.id] = item.quantity;
+    });
+    setQuantities(initialQuantities);
+  }, [setCartItems, userId]);
 
   const handleQuantityChange = (id, amount) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [id]: Math.max(0, (prevQuantities[id] || 0) + amount),
-    }));
+    setQuantities((prevQuantities) => {
+      const newQuantity = Math.max(0, (prevQuantities[id] || 0) + amount);
+
+      // Actualizar el carrito al cambiar la cantidad
+      const productInMenu = restaurantdetails.Menus.find(
+        (menu) => menu.id === id
+      );
+      updateCart(productInMenu, newQuantity);
+
+      return { ...prevQuantities, [id]: newQuantity };
+    });
+  };
+
+  const updateCart = (product, newQuantity) => {
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+
+    // Si la cantidad es mayor a 0, agregar o actualizar el producto en el carrito
+    if (newQuantity > 0) {
+      let updatedCart = [...cart];
+      const productIndex = updatedCart.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (productIndex >= 0) {
+        // Si el producto ya está en el carrito, actualizar la cantidad
+        updatedCart[productIndex].quantity = newQuantity;
+      } else {
+        // Si el producto no está en el carrito, agregarlo
+        updatedCart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          details: product.details,
+          quantity: newQuantity,
+          imageFile: product.imageFile,
+          restaurantId: product.restaurantId,
+        });
+      }
+
+      // Guardar el carrito actualizado en localStorage
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+      setCartItems(updatedCart);
+    } else {
+      // Si la cantidad es 0, eliminar el producto del carrito
+      const updatedCart = cart.filter((item) => item.id !== product.id);
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+      setCartItems(updatedCart);
+    }
   };
 
   const addToCart = (product) => {
-
     // Obtener carrito de localStorage o inicializarlo si está vacío
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
@@ -121,7 +176,13 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
     setSelectedDetails(details);
     setOpen(true);
   };
-
+  const limitarName = (texto) => {
+    const limite = window.innerWidth <= 768 ? 20 : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
   // Función para limitar el texto
   const limitarTexto = (texto) => {
     const limite = window.innerWidth <= 768 ? 25 : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
@@ -133,12 +194,10 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
 
   const handleClose = () => setOpen(false);
 
-
   // Filtrar los menús destacados según el ID del usuario
   const destacados = restaurantdetails?.Menus.filter((menu) =>
-    menu.category.includes("Destacados")
-  ) // Suponiendo que los menús tienen un campo userId
-
+    menu.category.includes("Destacados") && menu.stock === true
+  ); // Suponiendo que los menús tienen un campo userId
   return (
     <div>
       {destacados?.length > 0 ? (
@@ -165,69 +224,78 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
                 },
               }}
             >
-              {destacados.map((data) => (
-                <SplideSlide key={data.id}>
-                  <Card className={styles.card}>
-                    <CardMedia
-                      component="img"
-                      className={styles.img_menu}
-                      image={data.imageFile[0]}
-                      alt={data.name}
-                      onClick={() =>
-                        handleOpen(data.imageFile, data.name, data.details)
-                      }
-                    />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography component="div" variant="h5">
-                          {data.name}
-                        </Typography>
-                        <Typography variant="subtitle1" color="text.secondary">
-                          {limitarTexto(data.details)}
-                        </Typography>
-                        <div className={styles.price_quantity}>
-                          <Typography
-                            component="div"
-                            variant="h6"
-                            sx={{ fontWeight: "bold" }}
-                          >
-                            S/{data.price}
-                          </Typography>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              pl: 1,
-                              pb: 1,
-                              justifyContent: "center",
-                              gap: "1em",
-                            }}
-                          >
-                            <Button
-                              sx={{
-                                color: "#000",
-                                border: "1px solid orange",
-                                ":hover": { border: "1px solid orange" },
-                              }}
-                              onClick={() => handleQuantityChange(data.id, -1)}
+              {destacados.map((data) =>
+                    <SplideSlide key={data.id}>
+                      <Card className={styles.card}>
+                        <CardMedia
+                          component="img"
+                          className={styles.img_menu}
+                          image={data.imageFile[0]}
+                          alt={data.name}
+                          onClick={() =>
+                            handleOpen(data.imageFile, data.name, data.details)
+                          }
+                        />
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <CardContent sx={{ flex: "1 0 auto" }}>
+                            <Typography component="div" variant="h5">
+                              {limitarName(data.name)}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              color="text.secondary"
                             >
-                              -
-                            </Button>
-                            <Typography>{quantities[data.id] || 0}</Typography>
-                            <Button
-                              sx={{
-                                color: "#000",
-                                border: "1px solid orange",
-                                ":hover": { border: "1px solid orange" },
-                              }}
-                              onClick={() => handleQuantityChange(data.id, 1)}
-                            >
-                              +
-                            </Button>
-                          </Box>
-                        </div>
-                      </CardContent>
-                      <Box
+                              {limitarTexto(data.details)}
+                            </Typography>
+                            <div className={styles.price_quantity}>
+                              <Typography
+                                component="div"
+                                variant="h6"
+                                sx={{ fontWeight: "bold" }}
+                              >
+                                S/{data.price}
+                              </Typography>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  pl: 1,
+                                  pb: 1,
+                                  justifyContent: "center",
+                                  gap: "1em",
+                                }}
+                              >
+                                <Button
+                                  sx={{
+                                    color: "#000",
+                                    border: "1px solid orange",
+                                    ":hover": { border: "1px solid orange" },
+                                  }}
+                                  onClick={() =>
+                                    handleQuantityChange(data.id, -1)
+                                  }
+                                >
+                                  -
+                                </Button>
+                                <Typography>
+                                  {quantities[data.id] || 0}
+                                </Typography>
+                                <Button
+                                  sx={{
+                                    color: "#000",
+                                    border: "1px solid orange",
+                                    ":hover": { border: "1px solid orange" },
+                                  }}
+                                  onClick={() =>
+                                    handleQuantityChange(data.id, 1)
+                                  }
+                                >
+                                  +
+                                </Button>
+                              </Box>
+                            </div>
+                          </CardContent>
+                          {/*    <Box
                         sx={{
                           display: "flex",
                           marginLeft: "1em",
@@ -246,11 +314,11 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
                         >
                           AGREGAR AL CARRITO
                         </Button>
-                      </Box>
-                    </Box>
-                  </Card>
-                </SplideSlide>
-              ))}
+                      </Box> */}
+                        </Box>
+                      </Card>
+                    </SplideSlide>
+              )}
             </Splide>
           </div>
           <Modal
@@ -297,13 +365,7 @@ export default function MenuDestacad({ setCartItems, setShowSummary }) {
             </Box>
           </Modal>
         </div>
-      ) : (
-        <Result
-          status="404"
-          title="404"
-          subTitle="Lo sentimos, no se han encontrado productos destacados."
-        />
-      )}
+      ) : null}
     </div>
   );
 }

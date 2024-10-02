@@ -44,6 +44,9 @@ export default function Segundos({ setCartItems }) {
   const [selectedDetails, setSelectedDetails] = useState("");
   const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedMenuId, setSelectedMenuId] = useState("");
+  const [selectedStock, setSelecteStock] = useState("");
+
+
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -95,17 +98,26 @@ export default function Segundos({ setCartItems }) {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleOpen = (images, name, details, price, category, menuId) => {
+  const handleOpen = (images, name, details, price, category, stock, menuId) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
     setSelectedPrices(price);
     setSelectedCategory(category);
     setSelectedMenuId(menuId);
+    setSelecteStock(stock)
     setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
+
+  const limitarName = (texto) => {
+    const limite = window.innerWidth <= 768 ? 20 : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
   const limitarTexto = (texto) => {
     const limite = window.innerWidth <= 768 ? 25 : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
@@ -170,7 +182,7 @@ export default function Segundos({ setCartItems }) {
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography component="div" variant="h5">
-                            {data.name}
+                            {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
@@ -214,7 +226,8 @@ export default function Segundos({ setCartItems }) {
                                 data.details,
                                 data.price,
                                 data.category,
-                                data.id
+                                data.stock,
+                                data.id,
                               )
                             }
                           >
@@ -235,7 +248,7 @@ export default function Segundos({ setCartItems }) {
             aria-describedby="modal-modal-description"
           >
             <Box sx={modalStyle}>
-              <UpdateMenu
+            <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
                 selectedImages={selectedImages}
@@ -243,6 +256,7 @@ export default function Segundos({ setCartItems }) {
                 selectedCategory={selectedCategory}
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
+                selectedStock={selectedStock}
               />
             </Box>
           </Modal>

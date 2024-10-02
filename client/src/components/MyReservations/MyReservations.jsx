@@ -11,7 +11,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Result } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./MyReservations.module.css";
@@ -19,6 +19,7 @@ import styles from "./MyReservations.module.css";
 export default function MyReservations() {
   const { reservationId } = useParams();
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const token = useSelector((state) => state.token);
   const datapersonal = useSelector(
@@ -27,7 +28,9 @@ export default function MyReservations() {
   const detailsReservation = useSelector(
     (state) => state.detailsReservation.data
   );
-  console.log(detailsReservation)
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   React.useEffect(() => {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
@@ -43,20 +46,30 @@ export default function MyReservations() {
       )
       .toFixed(2);
   };
-
-  const limitarTexto = (texto) => {
+  const limitarTitle = (texto) => {
     const limite =
       window.innerWidth <= 768
-        ? 18
+        ? 13
         : window.innerWidth <= 1024
         ? 18
         : window.innerWidth <= 1440
         ? 45
-        : 70; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+        : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
       return texto.slice(0, limite) + "...";
     }
     return texto;
+  };
+  const limitarTexto = (texto) => {
+    const limite =
+      window.innerWidth <= 768
+        ? 2
+        : window.innerWidth <= 1024
+        ? 18
+        : window.innerWidth <= 1440
+        ? 45
+        : 50;
+    return texto.length > limite ? texto.slice(0, limite) + "..." : texto;
   };
   return (
     <div>
@@ -104,7 +117,7 @@ export default function MyReservations() {
             </div>
           ) : (
             <div className={styles.carsfood_container}>
-              <h1 className={styles.text}>Reservaciones</h1>
+              <h1 className={styles.text}>Detalle de la reserva</h1>
               <div className={styles.form_container}>
                 {detailsReservation?.orders?.location ? (
                   <div>
@@ -129,6 +142,13 @@ export default function MyReservations() {
                     {detailsReservation?.orders?.peoples}
                   </div>
                 ) : null}
+                     {detailsReservation?.orders?.area ? (
+                  <div>
+                    <strong>Zona:</strong>{" "}
+                    {detailsReservation?.orders?.area}
+                  </div>
+                ) : null}
+                
               </div>
               <div className={styles.menufood_container}>
                 {detailsReservation?.orders?.order?.map((item, index) => (
@@ -139,10 +159,15 @@ export default function MyReservations() {
                       image={item.imageFile[0]}
                       alt="Menu"
                     />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography component="div" variant="h5">
-                          {item?.name}
+                                              <CardContent sx={{ width: "100%" }}>
+
+                                              <Typography
+                            component="div"
+                            variant="h5"
+                            className={styles.name_product}
+                          >
+                        {limitarTitle(item?.name)}
+
                         </Typography>
                         <Typography
                           variant="subtitle1"
@@ -171,10 +196,30 @@ export default function MyReservations() {
                           </Typography>
                         </div>
                       </CardContent>
-                    </Box>
                   </Card>
                 ))}
               </div>
+
+              {detailsReservation?.orders?.observation && (
+
+                <div className={styles.label_textarea}>
+                  <strong>
+                    <label htmlFor="">Observaciones (opcional)</label>
+                  </strong>
+                  <textarea
+                    name=""
+                    id=""
+                    cols="10"
+                    placeholder="Alergias a alimentos, intolerancias a alimentos, especificaciones en el pedido, etc..."
+                    value={detailsReservation?.orders?.observation}
+                    
+                    rows={5}
+                    className={styles.textarea}
+                    ></textarea>
+                </div>
+                  )}
+
+
               <div className={styles.total}>
 
                 <strong>Total: </strong>S/{getTotal()}

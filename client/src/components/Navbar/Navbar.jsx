@@ -92,7 +92,6 @@ export default function PrimarySearchAppBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const open = Boolean(anchorEl);
-
   const inputRef = React.useRef(null);
 
   const handleDrawerToggle = () => {
@@ -258,7 +257,7 @@ export default function PrimarySearchAppBar() {
                       <ListItemIcon>
                         <StorefrontIcon />
                       </ListItemIcon>
-                      <ListItemText primary={"Mis reservaciones"} />
+                      <ListItemText primary={"Mis Reservas"} />
                     </ListItemButton>
                   </ListItem>
                 </Link>
@@ -353,73 +352,86 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <div
-        position="static"
-        sx={{
-          background: "transparent",
-          color: "#000",
-          boxShadow: "0  0  1px",
-        }}
-      >
-        {/* <div className={styles.toolbar} > */}
-        <div className={styles.toolbar}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            <Link to="/">
-              <img
-                src={require("../../Images/Logo.png")}
-                alt="Logo"
-                className={styles.logo}
+    <div className={styles.navbar_container}>
+      <Box sx={{ flexGrow: 1 }}>
+        <div
+          position="static"
+          sx={{
+            background: "transparent",
+            color: "#000",
+            boxShadow: "0  0  1px",
+          }}
+        >
+          {/* <div className={styles.toolbar} > */}
+          <div className={styles.toolbar}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              <Link to="/">
+                <img
+                  src={require("../../Images/Logo.png")}
+                  alt="Logo"
+                  className={styles.logo}
+                />
+              </Link>
+            </Typography>
+            <Search className="input-container">
+              <input
+                ref={inputRef}
+                placeholder="Buscar..."
+                inputProps={{ "aria-label": "search" }}
+                className={styles.search}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)} // Mantiene el valor tal cual lo introduce el usuario
               />
-            </Link>
-          </Typography>
-          <Search className="input-container">
-            <input
-              ref={inputRef}
-              placeholder="Buscar..."
-              inputProps={{ "aria-label": "search" }}
-              className={styles.search}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
 
-            {searchTerm && (
-              <Paper
-                sx={{
-                  width: "100%",
-                  maxWidth: "100%",
-                  position: "absolute",
-                  marginTop: "9em",
-                  textAlign: "center",
-                  maxHeight: "400px",
-                  overflow: "auto",
-                  zIndex: 2000,
-                }}
-              >
-                {allrestaurant &&
-                  allrestaurant
-                    .filter((row) =>
-                      row.name.toLowerCase().includes(searchTerm.toLowerCase())
+              {searchTerm.trim() && ( // Elimina espacios solo para la búsqueda, pero los mantiene en el input
+                <Paper className={styles.paper}>
+                  {allrestaurant
+                    ?.filter(
+                      (row) =>
+                        row.name
+                          .toLowerCase()
+                          .includes(searchTerm.trim().toLowerCase()) || // Se usa trim() solo para filtrar
+                        row.type_of_meals
+                          .toLowerCase()
+                          .includes(searchTerm.trim().toLowerCase()) ||
+                        row.additional_services.some((service) =>
+                          service
+                            .toLowerCase()
+                            .includes(searchTerm.trim().toLowerCase())
+                        ) ||
+                        row.address
+                          .toLowerCase()
+                          .includes(searchTerm.trim().toLowerCase()) ||
+                        row.area.some((item) =>
+                          item
+                            .toLowerCase()
+                            .includes(searchTerm.trim().toLowerCase())
+                        ) ||
+                        row.Menus.some((item) =>
+                          item.name
+                            .toLowerCase()
+                            .includes(searchTerm.trim().toLowerCase())
+                        )
                     )
                     .map((row) => (
-                      <MenuList>
+                      <MenuList key={row.id}>
                         <Link
                           to={`/detalles/restaurante/${row.id}`}
                           className="title-search-name"
@@ -444,254 +456,217 @@ export default function PrimarySearchAppBar() {
                         </Link>
                       </MenuList>
                     ))}
-                {!allrestaurant ||
-                  (allrestaurant &&
-                    allrestaurant.filter((row) =>
-                      row.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).length === 0 && (
-                      <MenuList sx={{ height: "6em" }}>
-                        <MenuItem>
-                          <ListItemText>
-                            No se encontraron resultados
-                          </ListItemText>
-                        </MenuItem>
-                      </MenuList>
-                    ))}
-              </Paper>
-            )}
 
-            {searchTerm && (
-              <Paper
-                sx={{
-                  width: "100%",
-                  maxWidth: "100%",
-                  position: "absolute",
-                  marginTop: "9em",
-                  textAlign: "center",
-                  maxHeight: "400px",
-                  overflow: "auto",
-                  zIndex: 2000,
-                }}
-              >
-  {allrestaurant
-  ?.filter(
-    (row) =>
-      row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.type_of_meals.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.additional_services.some(service =>
-        service.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  )
-  .map((row) => (
-    <MenuList key={row.id}>
-      <Link to={`/detalles/restaurante/${row.id}`} className="title-search-name">
-        <MenuItem>
-          <ListItemIcon>
-            <Avatar
-              src={row.imageFile[0]}
-              className={styles.avatar}
-            ></Avatar>
-          </ListItemIcon>
-          <ListItemText>
-            {row.name}
-            <ListItemText sx={{ color: "gray" }}>
-              {row.address}{" "}
-              {row.address_optional ? row.address_optional : null}
-            </ListItemText>
-          </ListItemText>
-        </MenuItem>
-      </Link>
-    </MenuList>
-  ))}
-
-
-                {!allrestaurant ||
-                  (allrestaurant &&
-                    allrestaurant.filter((row) =>
-                      row.name.toLowerCase().includes(searchTerm.toLowerCase())   ||
-                     row.type_of_meals.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                     row.additional_services.some(service =>
-                      service.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-
-                    ).length === 0 && (
-                      <MenuList sx={{ height: "6em" }}>
-                        <MenuItem>
-                          <ListItemText>
-                            No se encontraron resultados
-                          </ListItemText>
-                        </MenuItem>
-                      </MenuList>
-                    ))}
-              </Paper>
-            )}
-          </Search>
-
-          <div className={styles.bg_navbar}>
-            {token ? (
-              <div className={styles.nonemobile}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <Tooltip>
-                    <div style={{ display: "flex", placeItems: "center" }}>
-                      <div>
-                        <strong style={{ color: "#fff" }}>
-                          ¡Hola {datapersonal.name}!
-                        </strong>
-                        <IconButton
-                          onClick={handleClick}
-                          size="small"
-                          sx={{ ml: 2 }}
-                          aria-controls={open ? "account-menu" : undefined}
-                          aria-haspopup="true"
-                          aria-expanded={open ? "true" : undefined}
-                        >
-                          <Avatar
-                            sx={{
-                              width: 50,
-                              height: 50,
-                              backgroundColor: datapersonal.backgroundColor,
-                            }}
-                          >
-                            {datapersonal.name && datapersonal.name[0]}
-                          </Avatar>
-                        </IconButton>
-                      </div>
-
-                      <div>
-                        <Notification />
-                      </div>
-                    </div>
-                  </Tooltip>
-                </Box>
-                <Menu
-                  anchorEl={anchorEl}
-                  id="account-menu"
-                  open={open}
-                  onClose={handleClose}
-                  onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                      mt: 1.5,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      "&::before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  <Link to="/perfil">
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <AccountCircleIcon fontSize="small" />
-                      </ListItemIcon>
-                      Perfil
-                    </MenuItem>
-                  </Link>
-
-                  {datapersonal.role && datapersonal.role === "restaurante" ? (
-                    <Link to="/panel" target="_blank">
-                      <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                          <AdminPanelSettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        Administrar
+                  {(!allrestaurant ||
+                    (allrestaurant &&
+                      allrestaurant.filter(
+                        (row) =>
+                          row.name
+                            .toLowerCase()
+                            .includes(searchTerm.trim().toLowerCase()) || // Nuevamente usamos trim() para la búsqueda
+                          row.type_of_meals
+                            .toLowerCase()
+                            .includes(searchTerm.trim().toLowerCase()) ||
+                          row.additional_services.some((service) =>
+                            service
+                              .toLowerCase()
+                              .includes(searchTerm.trim().toLowerCase())
+                          ) ||
+                          row.address
+                            .toLowerCase()
+                            .includes(searchTerm.trim().toLowerCase()) ||
+                          row.area.some((item) =>
+                            item
+                              .toLowerCase()
+                              .includes(searchTerm.trim().toLowerCase())
+                          ) ||
+                          row.Menus.some((item) =>
+                            item.name
+                              .toLowerCase()
+                              .includes(searchTerm.trim().toLowerCase())
+                          )
+                      ).length === 0)) && (
+                    <MenuList sx={{ height: "6em" }}>
+                      <MenuItem>
+                        <ListItemText>
+                          No se encontraron resultados
+                        </ListItemText>
                       </MenuItem>
-                    </Link>
-                  ) : null}
+                    </MenuList>
+                  )}
+                </Paper>
+              )}
+            </Search>
 
-                  {datapersonal.role && datapersonal.role === "personal" ? (
-                    <Link to="/mis-reservaciones">
-                      <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                          <AdminPanelSettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        Mis reservaciones
-                      </MenuItem>
-                    </Link>
-                  ) : null}
-                  <Divider />
-
-                  <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Cerrar sesión
-                  </MenuItem>
-                </Menu>
-              </div>
-            ) : (
-              <>
-                <IconButton
-                  size="large"
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                >
-                  <Avatar
+            <div className={styles.bg_navbar}>
+              {token ? (
+                <div className={styles.nonemobile}>
+                  <Box
                     sx={{
-                      width: 50,
-                      height: 50,
-                      backgroundColor: "transparent",
-                      border: "2px solid #fff",
-                      color: "gray",
-                      fontSize: 50,
+                      display: "flex",
+                      alignItems: "center",
+                      textAlign: "center",
                     }}
-                  ></Avatar>
-                </IconButton>
-                <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                  <Link to="/iniciar-sesión">
-                    <Button className={styles.btn_login}>Iniciar sesión</Button>
-                  </Link>
-                </Box>
-              </>
-            )}
+                  >
+                    <Tooltip>
+                      <div style={{ display: "flex", placeItems: "center" }}>
+                        <div>
+                          <strong style={{ color: "#fff" }}>
+                            ¡Hola {datapersonal.name}!
+                          </strong>
+                          <IconButton
+                            onClick={handleClick}
+                            size="small"
+                            sx={{ ml: 2 }}
+                            aria-controls={open ? "account-menu" : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? "true" : undefined}
+                          >
+                            <Avatar
+                              sx={{
+                                width: 50,
+                                height: 50,
+                                backgroundColor: datapersonal.backgroundColor,
+                              }}
+                            >
+                              {datapersonal.name && datapersonal.name[0]}
+                            </Avatar>
+                          </IconButton>
+                        </div>
+
+                        <div>
+                          <Notification />
+                        </div>
+                      </div>
+                    </Tooltip>
+                  </Box>
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&::before": {
+                          content: '""',
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <Link to="/perfil">
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <AccountCircleIcon fontSize="small" />
+                        </ListItemIcon>
+                        Perfil
+                      </MenuItem>
+                    </Link>
+
+                    {datapersonal.role &&
+                    datapersonal.role === "restaurante" ? (
+                      <Link to="/panel" target="_blank">
+                        <MenuItem onClick={handleClose}>
+                          <ListItemIcon>
+                            <AdminPanelSettingsIcon fontSize="small" />
+                          </ListItemIcon>
+                          Administrar
+                        </MenuItem>
+                      </Link>
+                    ) : null}
+
+                    {datapersonal.role && datapersonal.role === "personal" ? (
+                      <Link to="/mis-reservaciones">
+                        <MenuItem onClick={handleClose}>
+                          <ListItemIcon>
+                            <AdminPanelSettingsIcon fontSize="small" />
+                          </ListItemIcon>
+                          Mis Reservas
+                        </MenuItem>
+                      </Link>
+                    ) : null}
+                    <Divider />
+
+                    <MenuItem onClick={handleLogout}>
+                      <ListItemIcon>
+                        <Logout fontSize="small" />
+                      </ListItemIcon>
+                      Cerrar sesión
+                    </MenuItem>
+                  </Menu>
+                </div>
+              ) : (
+                <>
+                  <IconButton
+                    size="large"
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                  >
+                    <Avatar
+                      sx={{
+                        width: 50,
+                        height: 50,
+                        backgroundColor: "transparent",
+                        border: "2px solid #fff",
+                        color: "gray",
+                        fontSize: 50,
+                      }}
+                    ></Avatar>
+                  </IconButton>
+                  <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                    <Link to="/iniciar-sesión">
+                      <Button className={styles.btn_login}>
+                        Iniciar sesión
+                      </Button>
+                    </Link>
+                  </Box>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <nav>
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-    </Box>
+        <nav>
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </nav>
+      </Box>
+    </div>
   );
 }

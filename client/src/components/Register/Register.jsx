@@ -74,7 +74,7 @@ export default function Register() {
   };
 
   return (
-    <>
+    <div className={styles.register_container}>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Avatar alt="Remy Sharp" className={styles.logo} />
@@ -144,7 +144,7 @@ export default function Register() {
                     htmlFor="lastName"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Apellido
+                    Apellidos
                   </label>
                   <div className="mt-2">
                     <input
@@ -177,8 +177,10 @@ export default function Register() {
                     >
                       <option value="">Seleccione tu genero</option>
 
-                      <option value="masculino">Masculino</option>
-                      <option value="femenino">Femenino</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Prefiero no contestar">Prefiero no contestar</option>
+
                     </select>
                   </div>
                 </div>
@@ -339,6 +341,17 @@ export default function Register() {
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
                   </div>
+                  <div style={{display: 'flex', gap: "1em", marginTop: "1em"}}>
+                    <input type="checkbox"  name="" id=""
+                      onChange={handleChange}
+                      className={styles.input}
+                    required
+                    />
+                    <label htmlFor="">
+
+                    Aceptar terminos y condiciones
+                    </label>
+                  </div>
                 </div>
               </>
             ) : null}
@@ -414,7 +427,7 @@ export default function Register() {
                     />
                   </div>
                 </div>
-                <div>
+              {/*   <div>
                   <label
                     htmlFor="address"
                     className="block text-sm font-medium leading-6 text-gray-900"
@@ -433,7 +446,7 @@ export default function Register() {
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
                   </div>
-                </div>
+                </div> */}
 
              
                 <div>
@@ -614,6 +627,18 @@ export default function Register() {
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
                   </div>
+
+                  <div style={{display: 'flex', gap: "1em", marginTop: "1em"}}>
+                    <input type="checkbox"  name="" id=""
+                      onChange={handleChange}
+                      className={styles.input}
+                    required
+                    />
+                    <label htmlFor="">
+
+                    Aceptar terminos y condiciones
+                    </label>
+                  </div>
                 </div>
               </>
             ) : null}
@@ -648,6 +673,6 @@ export default function Register() {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }

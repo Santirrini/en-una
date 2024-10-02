@@ -1,5 +1,6 @@
-.login_container {
- 
+.register_container {
+    margin-top: 10em;
+    position: relative;
 }
 .logo {
 
@@ -36,6 +37,9 @@
     border-color: #500075;
 }
 @media (max-width: 768px) {
+    .register_container {
+        margin-top: 1em;
+    }
     .logo {
         width: 100px !important;
         margin: auto;

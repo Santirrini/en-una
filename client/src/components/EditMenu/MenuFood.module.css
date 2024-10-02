@@ -178,7 +178,20 @@ border: 1px solid #500075;
   text-decoration: none;
   background-color: white;
 }
+.stock_container {
+  display: flex;
+  justify-content: space-between;
+}
 
+.stock_input {
+  width: 15px; /* Ajusta el ancho del checkbox */
+  height: 15px; /* Ajusta la altura del checkbox */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transform: scale(1.5); /* Escala el checkbox (cambia el valor para ajustar el tamaño) */
+  margin-right: 10px; /* Espacio entre el checkbox y el texto */
+  accent-color: #4caf50; /* Cambia el color del checkbox cuando está marcado (solo en navegadores compatibles) */
+  color: white;
+}
 .form_container_box {
   display: flex;
   font-size: 15px;

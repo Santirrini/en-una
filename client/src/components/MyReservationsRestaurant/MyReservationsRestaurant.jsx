@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 
 import styles from "./MyReservationsRestaurant.module.css";
 import { Result } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
@@ -62,23 +62,39 @@ export default function MyReservationsRestaurant() {
     (state) => state.datapersonal?.successPayments || []
   );
   const [searchTerm, setSearchTerm] = React.useState("");
-
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   React.useEffect(() => {
     if (token) {
       dispatch(dataPersonal(token));
       dispatch(DetailRestaurant(token));
     }
   }, [dispatch, token]);
-
-  const limitarTexto = (texto) => {
+  const limitarTitle = (texto) => {
     const limite =
       window.innerWidth <= 768
-        ? 10
+        ? 13
         : window.innerWidth <= 1024
         ? 18
         : window.innerWidth <= 1440
         ? 45
-        : 70;
+        : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
+  const limitarTexto = (texto) => {
+    const limite =
+      window.innerWidth <= 768
+        ? 2
+        : window.innerWidth <= 1024
+        ? 18
+        : window.innerWidth <= 1440
+        ? 45
+        : 50;
     return texto.length > limite ? texto.slice(0, limite) + "..." : texto;
   };
 
@@ -86,6 +102,23 @@ export default function MyReservationsRestaurant() {
   const filteredRestaurants = datapersonal?.filter((row) =>
     row.orders?.Restaurant?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
+
+const getTotal = () => {
+  return filteredRestaurants.map((data) => {
+    // Verifica si data.orders existe y contiene el arreglo order
+    if (Array.isArray(data.orders.order)) {
+      // Calcula el total para esta orden
+      const total = data.orders.order.reduce((subtotal, item) => {
+        return subtotal + (item.price * item.quantity);
+      }, 0); // 0 es el valor inicial para la suma
+      return total; // Retorna el total de esta orden
+    }
+    return 0; // Retorna 0 si no hay 'orders' o 'order' no es un array
+  });
+};
+
+
+const total = getTotal();
 
   return (
     <div>
@@ -165,12 +198,14 @@ export default function MyReservationsRestaurant() {
                           image={item.orders?.Restaurant?.imageFile?.[0] || "ruta/a/imagen/default.jpg"}
                           alt={item.orders?.Restaurant?.name}
                         />
-                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                          <CardContent sx={{ flex: "1 0 auto" }}>
+                          <CardContent sx={{ width: "100%" }}>
                             <Typography component="div" variant="h5">
-                              {item.orders?.Restaurant?.name}
+                              {limitarTitle(item.orders?.Restaurant?.name)}
                             </Typography>
+                            <Typography component="div" variant="h6">
+                            {item.orders?.date}
 
+                            </Typography>
                             <Typography
                               variant="subtitle1"
                               color="text.secondary"
@@ -179,31 +214,31 @@ export default function MyReservationsRestaurant() {
                               <strong>Descripción de la reserva:</strong>{" "}
                               {limitarTexto(item.orders?.Restaurant?.details)}
                             </Typography>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                width: "100%",
-                              }}
-                            >
+                            
+                      
+                            
                               <Typography
-                                variant="subtitle1"
-                                color="text.secondary"
-                                component="div"
-                              >
-                                <span>Cantidad de personas:</span> {item.orders?.peoples}
-                              </Typography>
+                            variant="subtitle1"
+                            color="text.secondary"
+                            component="div"
+                          >
+                            Cantidad de personas: {item.orders?.peoples}
+                          </Typography>
+                              <div className={styles.quantity_price}>
 
                               <Typography
                                 variant="subtitle1"
                                 color="text.secondary"
                                 component="div"
                               >
-                                <strong>S/20</strong>
+                                <strong>  
+                                
+                                S/{total[index].toFixed(2)}
+                                </strong>
                               </Typography>
-                            </Box>
+                        </div>
+
                           </CardContent>
-                        </Box>
                       </Card>
                     </Link>
                   ))}

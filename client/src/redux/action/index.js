@@ -5,7 +5,7 @@ import axios from 'axios'
 
 
 
-/* https://en-una-production.up.railway.app/// */
+/* http://localhost:30021/// */
 /* https://en-una-production.up.railway.app// */
 export const RegisterUser = (payload) => {
   return async (dispatch) => {
@@ -65,6 +65,52 @@ export const login = (email, password) => async (dispatch) => {
     return null;
   }
 };
+
+
+export const loginGoogle = () => async () => {
+  try {
+
+    window.location.href = "https://en-una-production.up.railway.app/api/auth/google";
+   
+  } catch (error) {
+    console.error("Error en loginGoogle:", error); // Agrega este log
+    return null;
+  }
+};
+
+export const dataGoogle = () => async (dispatch) => {
+  try {
+    const response = await axios.get("https://en-una-production.up.railway.app/auth/google/callback");
+
+    if (response.status === 200 && response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.userId);
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          token: response.data.token,
+          role: response.data.role,
+          userId: response.data.userId,
+        },
+      });
+
+      return {
+        token: response.data.token,
+        userId: response.data.userId,
+        role: response.data.role,
+      };
+    } else {
+      dispatch({ type: "LOGIN_ERROR", payload: "Error en la respuesta del servidor" });
+      return null;
+    }
+  } catch (error) {
+    dispatch({ type: "LOGIN_ERROR", payload: error.message });
+    console.error("Error en loginGoogle:", error); // Agrega este log
+    return null;
+  }
+};
+
 
 
 

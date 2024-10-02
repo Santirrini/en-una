@@ -1,7 +1,5 @@
 import * as React from "react";
 import styles from "./OrderProducts.module.css";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AllOrder, dataPersonal, OrderDetails } from "../../redux/action";
@@ -10,9 +8,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // Importa el adaptador de Day.js
 import dayjs from "dayjs";
+import { Button, Box, Typography } from "@mui/material";
+import printJS from "print-js";
+import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-
+import "dayjs/locale/es";
+dayjs.locale("es");
 // Configura dayjs con los plugins necesarios
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -66,21 +68,24 @@ export default function OrderProducts() {
   const dispatch = useDispatch();
   const allOrders = useSelector((state) => state.allOrders);
   const orderDetails = useSelector((state) => state.orderDetails.data);
+  console.log(orderDetails)
   const token = useSelector((state) => state.token);
   const datapersonal = useSelector((state) => state.datapersonal);
-
   const [open, setOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [orderStatus, setOrderStatus] = React.useState({});
   const [fromDate, setFromDate] = React.useState(null);
   const [toDate, setToDate] = React.useState(null);
-  const [sortOption, setSortOption] = React.useState("hours");
-
+  const [sortOption, setSortOption] = React.useState("name");
   const handleOpen = (orderId) => {
     dispatch(OrderDetails(orderId));
     setOpen(orderId);
   };
-
+  const handleCalendarNull = () => {
+    setFromDate(null);
+    setToDate(null);
+    setSortOption("name");
+  };
   const handleClose = () => setOpen(false);
 
   const handleStatusChange = (orderId, status) => {
@@ -99,14 +104,19 @@ export default function OrderProducts() {
   }, [dispatch, token]);
 
   const filteredOrders = React.useMemo(() => {
-    return allOrders
-      .filter((order) => {
-        const orderDate = dayjs(order.orders.date);
-        const isAfterFromDate = fromDate ? orderDate.isSameOrAfter(dayjs(fromDate).startOf("day")) : true;
-        const isBeforeToDate = toDate ? orderDate.isSameOrBefore(dayjs(toDate).endOf("day")) : true;
-        const matchesSearchTerm = order.name.toLowerCase().includes(searchTerm.toLowerCase());
-        return isAfterFromDate && isBeforeToDate && matchesSearchTerm;
-      });
+    return allOrders.filter((order) => {
+      const orderDate = dayjs(order.orders.date);
+      const isAfterFromDate = fromDate
+        ? orderDate.isSameOrAfter(dayjs(fromDate).startOf("day"))
+        : true;
+      const isBeforeToDate = toDate
+        ? orderDate.isSameOrBefore(dayjs(toDate).endOf("day"))
+        : true;
+      const matchesSearchTerm = order.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      return isAfterFromDate && isBeforeToDate && matchesSearchTerm;
+    });
   }, [allOrders, fromDate, toDate, searchTerm]);
 
   const sortedOrders = React.useMemo(() => {
@@ -125,6 +135,145 @@ export default function OrderProducts() {
       }
     });
   }, [filteredOrders, sortOption]);
+  const handlePrint = (orderDetails) => {
+    // Calcular el total basado en los elementos de la orden
+    const items = orderDetails?.orders.order || [
+      { quantity: 1, name: "Producto", price: 0.0 },
+    ];
+    const total = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    const ticketData = {
+      customerName: `${orderDetails?.name} ${orderDetails?.lastName}` || "",
+      orderDate: orderDetails?.date || new Date().toLocaleDateString(),
+      orderTime: orderDetails?.hours || new Date().toLocaleTimeString(),
+      area: orderDetails?.orders.area || "",
+
+      items: items,
+      
+      observation: orderDetails?.observation || "",
+
+      total: total,
+    };
+
+    const printContent = `
+      <html>
+        <head>
+          <title>Imprimir Ticket</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              width: 58mm; /* Ancho típico para impresoras de 58mm */
+              height: 100%;
+            }
+            #print-content {
+              width: 100%;
+              padding: 10px;
+              border: 1px solid #000;
+              box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+              background: #fff;
+              font-size: 12px; /* Tamaño de fuente reducido para tickets más pequeños */
+            }
+            h1 {
+              font-size: 14px;
+              text-align: center;
+              margin: 0;
+              padding: 0;
+            }
+            p {
+              margin: 3px 0;
+              font-size: 12px;
+            }
+            h3 {
+              font-size: 12px;
+              margin: 5px 0;
+            }
+            @media print {
+              body {
+                margin: 0;
+              }
+              #print-content {
+                width: 58mm; /* Asegura que el contenido se ajuste al ancho del ticket */
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div id="print-content">
+            <h1>Ticket de Compra</h1>
+            <p><strong>Cliente:</strong> ${ticketData.customerName}</p>
+            <p><strong>Fecha:</strong> ${ticketData.orderDate}</p>
+            <p><strong>Hora:</strong> ${ticketData.orderTime}</p>
+            <p><strong>Zona:</strong> ${ticketData.area}</p>
+    <br>
+            <h3>Detalle del Pedido:</h3>
+            ${ticketData.items
+              .map(
+                (item) => `
+              <p>${item.quantity} x ${item.name} - S/ ${parseFloat(
+                  item.price * item.quantity
+                ).toFixed(2)}</p>
+            `
+              )
+              .join("")}
+            <p><strong>Observación:</strong> ${ticketData.observation}</p>
+
+            <p><strong>Total:</strong> S/ ${parseFloat(
+              ticketData.total
+            ).toFixed(2)} </p>
+          </div>
+        </body>
+      </html>
+    `;
+
+    printJS({
+      printable: printContent,
+      type: "raw-html",
+      style: `
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          width: 58mm; /* Ancho típico para impresoras de 58mm */
+          height: 100%;
+        }
+        #print-content {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #000;
+          box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+          background: #fff;
+          font-size: 12px; /* Tamaño de fuente reducido para tickets más pequeños */
+        }
+        h1 {
+          font-size: 14px;
+          text-align: center;
+          margin: 0;
+          padding: 0;
+        }
+        p {
+          margin: 3px 0;
+          font-size: 12px;
+        }
+        h3 {
+          font-size: 12px;
+          margin: 5px 0;
+        }
+      `,
+    });
+  };
+
+  const handlePrintClick = () => {
+    handlePrint(orderDetails);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -141,24 +290,39 @@ export default function OrderProducts() {
           </SearchIconWrapper>
         </Search>
       </div>
+
       <div className={styles.order_for_container}>
+        <div className={styles.container_btnReset}>
+          <Button
+            variant="contained"
+            onClick={handleCalendarNull}
+            sx={{
+              backgroundColor: "#500075",
+              height: "4em",
+              ":hover": {
+                backgroundColor: "#500075",
+              },
+            }}
+          >
+            Ver todo
+          </Button>
+        </div>
         <div>
           <label htmlFor="">
-
-          <h4>Fecha</h4>
+            <h4>Fecha</h4>
           </label>
-          <div className={styles.calendar} >
+          <div className={styles.calendar}>
             <DatePicker
               label="Desde"
               value={fromDate}
               onChange={(newValue) => setFromDate(newValue)}
-              format="YYYY-MM-DD"
+              format="DD-MM-YYYY"
             />
             <DatePicker
               label="Hasta"
               value={toDate}
               onChange={(newValue) => setToDate(newValue)}
-              format="YYYY-MM-DD"
+              format="DD-MM-YYYY"
             />
           </div>
         </div>
@@ -167,14 +331,17 @@ export default function OrderProducts() {
           <div>
             <select
               name="area"
-              className={ styles.order}
+              className={styles.order}
               required
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
             >
+              <option value="name">Nombre</option>
               <option value="hours">Hora</option>
               <option value="peoples">Nro de personas</option>
-              <option value="name">Nombre</option>
+              <option value="date">Fecha</option>
+
+
               <option value="status">Estado</option>
             </select>
           </div>
@@ -185,9 +352,10 @@ export default function OrderProducts() {
           <table className={styles.boletin_table}>
             <thead>
               <tr>
-                <th>Fecha</th>
+                <th>Fecha de reserva</th>
                 <th>Hora</th>
                 <th>N* Persona</th>
+                <th>Zona</th>
                 <th>Nombre</th>
                 <th>Telefono</th>
                 <th>Correo</th>
@@ -201,14 +369,23 @@ export default function OrderProducts() {
                   <td>{data.orders.date}</td>
                   <td>{data.orders.hours}</td>
                   <td>{data.orders.peoples}</td>
+                  <td>{data.orders.area}</td>
+
                   <td>{`${data.name} ${data.lastName}`}</td>
                   <td>{data.phone}</td>
                   <td>{data.email}</td>
-                  <td onClick={() => handleOpen(data.orders.id)}>Ver detalles</td>
+                  <td
+                    className={styles.view_details}
+                    onClick={() => handleOpen(data.id)}
+                  >
+                    Ver detalles
+                  </td>
                   <td>
                     <select
                       value={orderStatus[data.orders.id] || "Pendiente"}
-                      onChange={(e) => handleStatusChange(data.orders.id, e.target.value)}
+                      onChange={(e) =>
+                        handleStatusChange(data.orders.id, e.target.value)
+                      }
                       className={
                         orderStatus[data.orders.id] === "Atendido"
                           ? styles.selectAtendido
@@ -220,7 +397,7 @@ export default function OrderProducts() {
                     </select>
                   </td>
                   <Modal
-                    open={open === data.orders.id}
+                    open={open === data.id}
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
@@ -241,18 +418,100 @@ export default function OrderProducts() {
                       </Typography>
                       <Typography
                         id="modal-modal-description"
-                        sx={{ mt: 2, padding: 1, textAlign: "center" }}
+                        sx={{ mt: 2, padding: 1, textAlign: "left" }}
                       >
-                        {orderDetails?.order.map((orderData) => {
+                        {orderDetails?.orders?.order.map((orderData) => {
                           return (
-                            <div key={orderData.product.id}>
-                              <p>{orderData.product.name}</p>
-                              <p>Precio: {orderData.product.price}€</p>
-                              <p>Cantidad: {orderData.quantity}</p>
+                            <div
+                              key={orderData.product?.id}
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                placeItems: "center",
+                                margin: 0, // Eliminamos cualquier margen
+                                padding: 0, // Eliminamos cualquier padding adicional
+                              }}
+                            >
+                              <p style={{ margin: 0 }}>
+                                {orderData.quantity} {orderData.name}
+                              </p>
+                              <p style={{ margin: 0 }}>
+                                S/
+                                {parseFloat(
+                                  orderData.price * orderData.quantity
+                                ).toFixed(2)}
+                              </p>
                             </div>
                           );
                         })}
+                        {orderDetails?.observation ? (
+                          <div style={{ marginTop: "8px" }}>
+                            <strong>Observación: </strong>
+                            {orderDetails?.observation}
+                          </div>
+                        ) : null}
                       </Typography>
+                      <Typography
+                        id="modal-modal-description"
+                        sx={{ mt: 2, padding: 1, textAlign: "center" }}
+                      >
+                        <div>
+                          <h4 style={{ margin: 0 }}>
+                            Total: S/
+                            {parseFloat(
+                              orderDetails?.orders?.order.reduce(
+                                (total, item) =>
+                                  total + item.price * item.quantity,
+                                0
+                              )
+                            ).toFixed(2)}
+                          </h4>
+                        </div>
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          width: "50%",
+                          margin: "auto",
+                          gap: "1em",
+                          paddingBottom: "1em",
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            border: "2px solid #500075",
+                            color: "#500075",
+                            ":hover": {
+                              border: "2px solid #500075",
+                              color: "#fff",
+                              backgroundColor: "#500075",
+                            },
+                          }}
+                          onClick={handlePrintClick}
+                        >
+                          Imprimir Ticket
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            border: "2px solid #500075",
+                            backgroundColor: "#500075",
+                            color: "#fff",
+                            ":hover": {
+                              border: "2px solid #500075",
+                              color: "#fff",
+                              backgroundColor: "#500075",
+                            },
+                          }}
+                          onClick={handleClose}
+                        >
+                          salir
+                        </Button>
+                      </Box>
                     </Box>
                   </Modal>
                 </tr>

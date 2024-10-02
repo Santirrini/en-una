@@ -8,6 +8,7 @@
   gap: 1em;
   width: 100%;
   justify-content: center;
+  place-content: center;
 }
 .food_box {
   width: 100%;
@@ -16,10 +17,40 @@
   background-position: center ;
   background-repeat: no-repeat;
 }
+
+.date{
+  width: 545px;
+}
+
+
+.footer_container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+}
+.footer_social {
+  margin-bottom: 10px;
+  display: flex;
+}
+.footer_social a {
+  color: white;
+
+  font-size: 20px;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.footer_social a:hover {
+  color: #500075;
+}
+
 .title {
   color: gray;
   font-weight: bolder;
   font-size: 18px;
+}
+.logo  {
+  width:50px;
 }
 .custom-preview-group  {
   width: 10px !important;  /* Ajusta el ancho según tus necesidades */
@@ -43,12 +74,15 @@
 }
 .day_atention {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.2em;
 }
 .text_container {
   font-weight: bold;
   font-size: 25px;
+  display: flex;
+  place-items: center;
+  gap: 1em;
 }
 .text_box {
   font-weight: bold;
@@ -127,6 +161,7 @@
   width: 60%;
   padding: 1em;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 1em;
   gap: 1em;
@@ -164,6 +199,7 @@
     font-size: 20px;
     text-align: center;
     width: 100%;
+    justify-content: center;
   }
   .text_box {
     font-size: 15px;
@@ -173,7 +209,7 @@
     display: grid;
     width: 100%;
   }
-
+ 
   .food_box {
     display: grid;
     gap: 1em;
@@ -255,6 +291,7 @@
   .none_desktop {
     display: block;
   }
+ 
 }
 
 

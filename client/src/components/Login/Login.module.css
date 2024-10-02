@@ -1,4 +1,6 @@
 .login_container {
+    margin-top: 10em;
+    position: relative;
 }
 
 .input_container {
@@ -19,4 +21,12 @@
 .logo_login {
     width: 150px;
     margin: auto;
+}
+
+
+@media (max-width: 768px) {
+    .login_container {
+        margin-top: 1em;
+    }
+  
 }

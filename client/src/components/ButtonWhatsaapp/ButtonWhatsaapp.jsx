@@ -7,7 +7,7 @@ export default function ButtonWhatsapp() {
         <div>
 
 
-		<a href="https://wa.me/+541161361408" className={styles.whatsapp} target="__blank"> <i className={styles.icon_whatsapp}><BsWhatsapp/></i></a>
+		<a href="https://wa.me/+51997915937" className={styles.whatsapp} target="__blank"> <i className={styles.icon_whatsapp}><BsWhatsapp/></i></a>
 	</div>
     )
 }

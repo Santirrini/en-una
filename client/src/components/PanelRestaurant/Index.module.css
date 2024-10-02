@@ -241,14 +241,19 @@ margin-right: 10px;
 .input_label {
 display: flex;
 place-items: center;
+justify-content: space-between;
 gap: 0.5em;
 margin-bottom: 1em;
 }
 
 
+.input_bottom {
+  margin-top: 3em;
+}
 
-
-
+.type_food {
+  margin-top: 0.5em;
+}
 
 @media (max-width: 768px) {
     .avatar {

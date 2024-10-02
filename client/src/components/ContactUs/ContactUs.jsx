@@ -16,7 +16,11 @@ export default function ContactUs() {
           <p className="mt-2 text-lg leading-8 text-gray-600">
             Para consultas llene el formulario y nos contactaremos con usted, 
             <br />
-            sino contáctenos a través de: +1 (234) 567-890
+            sino contáctenos a través de: 
+            <br />
+            email: contacto@enunaapp.com
+            <br />
+            Whatsapp:  <a href="https://wa.me/+51997915937">+51997915937</a>
            
           </p>
         </div>

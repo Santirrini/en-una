@@ -1,7 +1,8 @@
 .carsfood_container {
   margin-bottom: 2em;
   max-width: 100%;
-
+  margin-top: 10em;
+  position: relative;
 }
 
 .menufood_container {
@@ -24,20 +25,28 @@
 
 .card_media{
   max-width: 100% !important;
-  width: 200px !important;
+  width: 50% !important;
   height: 150px !important;
   object-fit: cover !important;
   padding: 0.5em !important;
 }
+
 .quantity_price {
+  position: relative; /* Asegura que los elementos dentro puedan posicionarse de forma absoluta */
   display: flex;
-  justify-content: space-between;
   margin-top: 1em;
-  margin-bottom: -130px;
+  width: 100%;
+}
+
+.quantity_price strong {
+  position: absolute;
+  right: 10px; /* Fija el precio al extremo derecho */
+  bottom: 5px;
 }
 .menufood_box {
   display: flex;
   border: 1px solid #500075;
+  height: 152px;
 }
 .textarea {
   outline: none;
@@ -139,7 +148,16 @@
   text-align: center;
   font-size: 15px;
 }
+
+.details_product {
+  width: 150% ;
+  white-space: normal;
+  word-break: break-word;
+}
 @media (max-width: 768px) {
+  .carsfood_container {
+    margin-top: 1em;
+  }
   .menufood_container {
     display: flex;
     flex-direction: column;
@@ -189,17 +207,18 @@
     font-size: 15px;
   }
 
-  .quantity_price {
- 
+  
+  .name_product {
+    font-size: 16px !important;
+  }
+
+  .details_product {
+    font-size: 16px !important;
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  .textarea {
-    outline: none;
-    border: 1px solid #500075;
-    width: 500px;
-  }
+@media only screen and (max-width: 768px) {
+
 }
 
 
@@ -208,5 +227,12 @@
     outline: none;
     border: 1px solid #500075;
     width: 650px;
+  }
+  .card_media{
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 150px !important;
+    object-fit: cover !important;
+    padding: 0.5em !important;
   }
 }

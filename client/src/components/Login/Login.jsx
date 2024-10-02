@@ -6,11 +6,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { message } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import styles from "./Login.module.css";
+import { useLocation } from "react-router-dom";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.userId);
+  const { pathname } = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +33,9 @@ export default function Login() {
       setLoading(false);
     }, 2000);
   }, []);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

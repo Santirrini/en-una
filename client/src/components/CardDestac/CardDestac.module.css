@@ -56,15 +56,18 @@
 
 .customPrev {
   left: 0; /* Ajusta la posición según sea necesario */
+
 }
 
 .customNext {
   right: 0; /* Ajusta la posición según sea necesario */
+
 }
 
 .customArrow::before {
   color: orange; /* Cambia este color para modificar el color de la flecha */
   font-size: 30px; /* Cambia el tamaño del icono si es necesario */
+
 }
 
   
@@ -94,7 +97,6 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
 }
 
 .carousel-button.prev {

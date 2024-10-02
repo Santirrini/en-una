@@ -1,7 +1,6 @@
 .terms_container {
-  padding: 10vh;
   background-color: #8080801e;
-  margin: 0 auto;
+  margin: 10em auto;
   }
   
   h2, h3 {
@@ -11,6 +10,8 @@
   p {
     margin-top: 10px;
     color: #555;
+  width: 100%;
+
   }
   
   ul {

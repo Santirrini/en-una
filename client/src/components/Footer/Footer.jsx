@@ -36,6 +36,8 @@ const Footer = () => {
           {/* <Link to="/faq" className={styles.footer_link}>Preguntas Frecuentes</Link> */}
           <Link to="/términos-y-condiciones" className={styles.footer_link}>Términos y Condiciones</Link>
           <Link to="/politica-de-privacidad" className={styles.footer_link}>Política de Privacidad</Link>
+          <Link to="/politica-de-privacidad-restaurante" className={styles.footer_link}>Política de Privacidad del restaurante</Link>
+
           <Link to="/contactanos" className={styles.footer_link_mobile}>Contacto</Link>
           <Link to="/sobre-nosotros" className={styles.footer_link_mobile}>Acerca de Nosotros</Link>
           <Link to="/preguntas-frecuentes" className={styles.footer_link_mobile}>Preguntas frecuentes</Link>

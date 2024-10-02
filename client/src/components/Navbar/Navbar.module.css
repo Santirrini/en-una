@@ -5,6 +5,14 @@
     position: relative;
     
 }
+
+.navbar_container {
+    position: fixed;
+    width: 100%;
+    z-index: 9;
+    background-color: white;
+    top: 0;
+}
 .logo {
     width: 120px;
 }
@@ -71,8 +79,23 @@
     display: flex;
     place-items: center;
 }
-
+.paper {
+    width: 40%;
+    max-width: 100%;
+    position: fixed;
+    top: 5em;
+    text-align: center;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 2;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgb(0, 0, 0,0.1) ;
+}
 @media (max-width: 768px) {
+    .navbar_container {
+        position: relative;
+     
+    }
     .avatar {
         display: none !important;
     }
@@ -88,6 +111,19 @@
     .toolbar {
         padding: 0.5em;
     }
+    .paper {
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        top: 3em;
+        text-align: center;
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 2000;
+        background-color: white;
+        box-shadow: 0px 4px 6px rgb(0, 0, 0,0.1) ;
+    }
+
 }
 
 

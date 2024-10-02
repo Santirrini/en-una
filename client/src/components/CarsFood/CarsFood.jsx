@@ -1,14 +1,11 @@
 import * as React from "react";
-import { PaymentReserve, dataPersonal } from "../../redux/action";
+import { PaymentReserve, dataPersonal, DetailRestaurant } from "../../redux/action";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./CarsFood.module.css";
 import { Result } from "antd";
@@ -24,8 +21,13 @@ export default function CarsFood() {
   const [loading, setLoading] = React.useState(false);
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
-
+  const restaurantdetails = useSelector(
+    (state) => state.restaurantdetails.data
+  );
   const [reserve, setReserve] = React.useState({
+    name: "",
+    lastName: "",
+     area: "",
     location: "",
     date: "",
     hours: "",
@@ -34,7 +36,9 @@ export default function CarsFood() {
     order: [],
     restaurantId: "",
   });
-
+  React.useEffect(() => {
+    dispatch(DetailRestaurant(items.id));
+  }, [dispatch, items.id]);
   React.useEffect(() => {
     const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     const quantities = {};
@@ -64,6 +68,7 @@ export default function CarsFood() {
     const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
     setFormData(form);
     setReserve({
+            area: form[0]?.formData.area || "",
       location: form[0]?.formData.location || "",
       date: form[0]?.formData.date || "",
       hours: form[0]?.formData.hours || "",
@@ -152,6 +157,8 @@ export default function CarsFood() {
       console.error("Error al realizar la reserva:", error);
     } finally {
       setLoading(false);
+      localStorage.removeItem(`cart_${userId}`);
+      localStorage.removeItem(`form_${userId}`);
     }
   };
 
@@ -163,6 +170,21 @@ export default function CarsFood() {
       )
       .toFixed(2);
   };
+
+  const limitarTitle = (texto) => {
+    const limite =
+      window.innerWidth <= 768
+        ? 13
+        : window.innerWidth <= 1024
+        ? 18
+        : window.innerWidth <= 1440
+        ? 13
+        : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
   const limitarTexto = (texto) => {
     const limite =
       window.innerWidth <= 768
@@ -170,8 +192,8 @@ export default function CarsFood() {
         : window.innerWidth <= 1024
         ? 18
         : window.innerWidth <= 1440
-        ? 45
-        : 70; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+        ? 30
+        : 60; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
       return texto.slice(0, limite) + "...";
     }
@@ -210,13 +232,13 @@ export default function CarsFood() {
           </div>
         ) : (
           <>
-            {items.length > 0  ? (
+            {items.length > 0 ? (
               <div className={styles.carsfood_container}>
                 <h1 className={styles.text}>Detalle de la reserva</h1>
                 <div className={styles.form_container}>
-                    <div>
-                      <strong>Restaurante:</strong> {formData[0].formData?.name}
-                    </div>
+                  <div>
+                    <strong>Restaurante:</strong> {formData[0].formData?.name}
+                  </div>
                   {formData[0].formData?.location ? (
                     <div>
                       <strong>Local:</strong> {formData[0].formData?.location}
@@ -239,7 +261,7 @@ export default function CarsFood() {
                       <strong>Personas:</strong> {formData[0].formData?.peoples}
                     </div>
                   ) : null}
-                      {formData[0].formData?.local ? (
+                  {formData[0].formData?.area ? (
                     <div>
                       <strong>Zona:</strong> {formData[0].formData?.area}
                     </div>
@@ -258,82 +280,80 @@ export default function CarsFood() {
                             alt="Menu"
                           />
                         )}
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%", // Asegúrate de que el contenedor tenga altura suficiente
-                          }}
-                        >
-                          <CardContent>
-                            <Typography component="div" variant="h5">
-                              {item?.name}
-                            </Typography>
-                            <Typography
-                              variant="subtitle1"
-                              color="text.secondary"
-                              component="div"
-                            >
-                              {limitarTexto(item?.details)}
-                            </Typography>
 
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.2em",
-                              }}
+                        <CardContent sx={{ width: "100%" }}>
+                          <Typography
+                            component="div"
+                            variant="h5"
+                            className={styles.name_product}
+                          >
+                            {limitarTitle(item?.name)}
+                          </Typography>
+
+                          {/* Asegura que item.details ocupe todo el ancho */}
+                          <Typography
+                            variant="subtitle1"
+                            color="text.secondary"
+                            component="div"
+                            className={styles.details_product}
+                          >
+                            {limitarTexto(item?.details)}
+                          </Typography>
+
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.2em",
+                              marginTop: "1em",
+                            }}
+                          >
+                            <div
+                              onClick={() => handleDecreaseQuantity(index)}
+                              className={styles.btn_decrease_increment}
                             >
-                              <div
-                                onClick={() => handleDecreaseQuantity(index)}
-                                className={styles.btn_decrease_increment}
-                              >
-                                -
-                              </div>
-                              <div className={styles.btn_decrease_increment}>
-                                {item.quantity}
-                              </div>
-                              <div
-                                onClick={() => handleIncreaseQuantity(index)}
-                                className={styles.btn_decrease_increment}
-                              >
-                                +
-                              </div>
-                              <div
-                                onClick={() => handleRemove(index)}
-                                className={styles.btn_delete}
-                              >
-                                <DeleteIcon
-                                  sx={{
-                                    color: "white",
-                                  }}
-                                />
-                              </div>
-                            </Box>
-                            <div className={styles.quantity_price}>
-                              <Typography
-                                variant="subtitle1"
-                                color="text.secondary"
-                                component="div"
-                              >
-                                Cantidad: {item.quantity}
-                              </Typography>
-                              <Typography
-                                variant="subtitle1"
-                                color="text.secondary"
-                                component="div"
-                              >
-                                <strong>
-                                  S/
-                                  {parseFloat(
-                                    item.basePrice * item.quantity
-                                  ).toFixed(2)}
-                                </strong>
-                              </Typography>
+                              -
                             </div>
-                          </CardContent>
-                        </Box>
+                            <div className={styles.btn_decrease_increment}>
+                              {item.quantity}
+                            </div>
+                            <div
+                              onClick={() => handleIncreaseQuantity(index)}
+                              className={styles.btn_decrease_increment}
+                            >
+                              +
+                            </div>
+                            <div
+                              onClick={() => handleRemove(index)}
+                              className={styles.btn_delete}
+                            >
+                              <DeleteIcon sx={{ color: "white" }} />
+                            </div>
+                          </Box>
+
+                          <Typography
+                            variant="subtitle1"
+                            color="text.secondary"
+                            component="div"
+                          >
+                            Cantidad: {item.quantity}
+                          </Typography>
+                        </CardContent>
+
+                        <div className={styles.quantity_price}>
+                          <Typography
+                            variant="subtitle1"
+                            color="text.secondary"
+                            component="div"
+                          >
+                            <strong>
+                              S/
+                              {parseFloat(
+                                item.basePrice * item.quantity
+                              ).toFixed(2)}
+                            </strong>
+                          </Typography>
+                        </div>
                       </Card>
                     </>
                   ))}
@@ -347,12 +367,14 @@ export default function CarsFood() {
                     name=""
                     id=""
                     cols="10"
+                    placeholder="Alergias a alimentos, intolerancias a alimentos, especificaciones en el pedido, etc..."
                     value={reserve.observation}
                     onChange={(e) => {
                       setReserve({ ...reserve, observation: e.target.value });
                     }}
                     rows={5}
                     className={styles.textarea}
+                    
                   ></textarea>
                 </div>
                 <div className={styles.btn_container}>

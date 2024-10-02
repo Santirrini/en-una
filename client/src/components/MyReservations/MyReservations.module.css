@@ -1,7 +1,9 @@
 .carsfood_container {
     margin-bottom: 2em;
     max-width: 100%;
-  
+   margin-top: 10em;
+   position: relative;
+
   }
   
   .menufood_container {
@@ -21,10 +23,24 @@
     text-align: center;
     color: #500075;
   }
+  .textarea {
+    outline: none;
+    border: 1px solid #500075;
+    padding: 0.5em;
+    width: 950px;
+    border-radius: 5px;
+    max-width: 100%;
+  }
+  .label_textarea {
+    display: grid;
+    width: 100%;
+    justify-content: center;
   
+  }
   .menufood_box {
     display: flex;
     border: 1px solid #500075;
+    height: 152px;
   }
   
   .btn_quantity {
@@ -80,7 +96,7 @@
 
   .card_media{
     max-width: 100% !important;
-    width: 200px !important;
+    width: 50% !important;
     height: 150px !important;
     object-fit: cover !important;
     padding: 0.5em !important;
@@ -90,9 +106,13 @@
     display: flex;
     justify-content: space-between;
     margin-top: 1em;
-    margin-bottom: -130px;
+    width: 100%;
+
   }
   @media (max-width: 768px) {
+    .carsfood_container {
+      margin-top: 1em;
+    }
     .menufood_container {
       display: flex;
       flex-direction: column;
@@ -102,6 +122,7 @@
       max-width: 100%;
       padding-bottom: 2em;
       justify-content: center;
+      
     }
     .form_container {
       display: flex;
@@ -122,6 +143,31 @@
       max-width: 100% !important;
       width: 150px !important;
       height: auto !important;
+      object-fit: cover !important;
+      padding: 0.5em !important;
+    }
+    .name_product {
+      font-size: 16px !important;
+    }
+
+    .textarea {
+      outline: none;
+      border: 1px solid #500075;
+      width: 345px;
+    }
+  
+  }
+
+  @media only screen and (min-width: 1024px) and (max-width: 1440px) {
+    .textarea {
+      outline: none;
+      border: 1px solid #500075;
+      width: 650px;
+    }
+    .card_media{
+      max-width: 100% !important;
+      width: 100% !important;
+      height: 150px !important;
       object-fit: cover !important;
       padding: 0.5em !important;
     }

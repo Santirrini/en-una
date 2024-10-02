@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DetailRestaurant } from "../../redux/action";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,9 +26,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 export default function MenuFood() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
+  const [quantities, setQuantities] = useState({});
+
   const userId = useSelector((state) => state.userId);
   const [cartItems, setCartItems] = useState([]);
   const [reservation, setReservation] = useState({});
@@ -41,11 +46,67 @@ export default function MenuFood() {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
 
+
   useEffect(() => {
+    // Leer el carrito de localStorage usando el userId y sincronizar las cantidades en el menú
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
     setCartItems(cart);
-  }, []);
 
+    // Sincronizar las cantidades de los productos en el menú
+    const initialQuantities = {};
+    cart.forEach((item) => {
+      initialQuantities[item.id] = item.quantity;
+    });
+    setQuantities(initialQuantities);
+  }, [setCartItems, userId]);
+
+
+  const handleQuantityChange = (id, amount) => {
+    // Actualizar la cantidad en el estado local
+    setQuantities((prevQuantities) => {
+      const newQuantity = Math.max(0, (prevQuantities[id] || 0) + amount);
+      return { ...prevQuantities, [id]: newQuantity };
+    });
+
+    // Actualizar la cantidad en el carrito
+    updateCart(id, amount);
+  };
+
+
+  const updateCart = (productId, amount) => {
+    // Obtener el carrito actual de localStorage
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+
+    // Buscar si el producto ya está en el carrito
+    let updatedCart = cart.map((item) => {
+      if (item.id === productId) {
+        return { ...item, quantity: item.quantity + amount };
+      }
+      return item;
+    });
+
+    // Si el producto no está en el carrito, agregarlo si la cantidad es mayor a 0
+    const productInMenu = restaurantdetails.Menus.find((menu) => menu.id === productId);
+    const newQuantity = quantities[productId] + amount;
+    if (newQuantity > 0 && !cart.some((item) => item.id === productId)) {
+      updatedCart.push({
+        id: productInMenu.id,
+        name: productInMenu.name,
+        price: productInMenu.price,
+        details: productInMenu.details,
+        quantity: newQuantity,
+        imageFile: productInMenu.imageFile,
+        restaurantId: productInMenu.restaurantId,
+      });
+    }
+
+    // Eliminar productos con cantidad 0
+    updatedCart = updatedCart.filter((item) => item.quantity > 0);
+
+    // Actualizar localStorage y el estado del carrito
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+    setCartItems(updatedCart);
+  };
   useEffect(() => {
     const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
     setReservation(form);
@@ -82,6 +143,27 @@ export default function MenuFood() {
     );
   };
 
+  const handleContinue = () => {
+    const test =  cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
+    const consumitionPeoples =  reservation[0]?.formData?.peoples * restaurantdetails.minimum_consumption ;
+    if (test > consumitionPeoples ) {
+      navigate("/carrito")
+    } else{
+      alert("Debes consumir al menos S/" + consumitionPeoples)
+    }
+  }
+
+  const limitarName = (texto) => {
+    const limite = window.innerWidth <= 768 ? 14 : 18; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
   return (
     <div>
       {restaurantdetails?.Menus.length === 0 ? (
@@ -94,36 +176,49 @@ export default function MenuFood() {
             <MenuDestacad
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
+              
             />
           </div>
           <div>
             <Piqueos
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
             />
           </div>
           <div>
             <Entradas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
             />
           </div>
           <div>
             <Segundos
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
             />
           </div>
           <div>
             <Bebidas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
             />
           </div>
           <div>
             <Postres
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
             />
           </div>
           {cartItems.length > 0 && (
@@ -148,21 +243,21 @@ export default function MenuFood() {
               <div className={styles.form_container_box}>
               <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="black"
                   component="div"
                 >
                   Restaurante: {reservation[0] && reservation[0].formData.name}
                 </Typography>
                 <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="black"
                   component="div"
                 >
                   Local: {reservation[0] && reservation[0].formData.location}
                 </Typography>
                 <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="black"
                   component="div"
                 >
                   Fecha: {reservation[0]?.formData.date}
@@ -170,21 +265,21 @@ export default function MenuFood() {
 
                 <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="black"
                   component="div"
                 >
                   Hora: {reservation[0]?.formData.hours}
                 </Typography>
                 <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="black"
                   component="div"
                 >
                   Personas: {reservation[0]?.formData.peoples}
                 </Typography>
                 <Typography
                   variant="subtitle1"
-                  color="text.secondary"
+                  color="black"
                   component="div"
                 >
                   Zona: {reservation[0]?.formData.area}
@@ -209,7 +304,7 @@ export default function MenuFood() {
                             variant="h5"
                             className={styles.title_food}
                           >
-                            {item?.name}
+                            {limitarName(item?.name)}
                           </Typography>
                           <div className={styles.quantity_price}>
                             <Typography
@@ -244,7 +339,7 @@ export default function MenuFood() {
                               }}
                             >
                               <div
-                                onClick={() => handleDecreaseQuantity(index)}
+                                onClick={() => handleQuantityChange(item.id, -1)}
                                 className={styles.btn_decrease_increment}
                               >
                                 -
@@ -253,7 +348,7 @@ export default function MenuFood() {
                                 {item.quantity}
                               </div>
                               <div
-                                onClick={() => handleIncreaseQuantity(index)}
+                                onClick={() => handleQuantityChange(item.id, 1)}
                                 className={styles.btn_decrease_increment}
                               >
                                 +
@@ -279,10 +374,11 @@ export default function MenuFood() {
               </div>
               <div className={styles.prices_btn}>
                 <div>
-                  <strong>Total: </strong>s/{getTotal().toFixed(2)}
+                  <strong>Total: </strong>S/{getTotal().toFixed(2)}
                 </div>
                 <div className={styles.payment_button}>
-                  <Link to={`/carrito`}>
+                  <div>
+
                     <Button
                       sx={{
                         display: "flex",
@@ -291,10 +387,12 @@ export default function MenuFood() {
                         color: "white",
                         ":hover": { backgroundColor: "#500075" },
                       }}
-                    >
+                      onClick={handleContinue}
+                      >
                       Confirmar reserva
                     </Button>
-                  </Link>
+                      </div>
+                 
                 </div>
               </div>
             </div>

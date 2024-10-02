@@ -89,7 +89,6 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const open = Boolean(anchorEl);
- console.log(token)
   const inputRef = React.useRef(null);
 
   const handleDrawerToggle = () => {
@@ -476,7 +475,7 @@ export default function Navbar() {
                     </MenuItem>
                   </Link>
 
-                  {datapersonal.role && datapersonal.role === "restaurante" ? (
+              {/*     {datapersonal.role && datapersonal.role === "restaurante" ? (
                     <Link to="/administrar" target="_blank">
                       <MenuItem onClick={handleClose}>
                         <ListItemIcon>
@@ -485,7 +484,7 @@ export default function Navbar() {
                         Administrar
                       </MenuItem>
                     </Link>
-                  ) : null}
+                  ) : null} */}
 
                   {datapersonal.role && datapersonal.role === "personal" ? (
                     <Link to="/mis-reservaciones">

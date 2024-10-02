@@ -45,6 +45,7 @@ export default function Piqueos() {
   const [selectedDetails, setSelectedDetails] = useState("");
   const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedMenuId, setSelectedMenuId] = useState("");
+  const [selectedStock, setSelecteStock] = useState("");
   
 
   useEffect(() => {
@@ -58,17 +59,26 @@ export default function Piqueos() {
 
 
 
-  const handleOpen = (images, name, details, price, category, menuId) => {
+  const handleOpen = (images, name, details, price, category, stock, menuId) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
-    setSelectedPrices(price)
-    setSelectedCategory(category)
-    setSelectedMenuId(menuId)
+    setSelectedPrices(price);
+    setSelectedCategory(category);
+    setSelectedMenuId(menuId);
+    setSelecteStock(stock)
     setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
+
+  const limitarName = (texto) => {
+    const limite = window.innerWidth <= 768 ? 20 : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
   const limitarTexto = (texto) => {
     const limite = window.innerWidth <= 768 ? 25 : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
@@ -133,7 +143,7 @@ export default function Piqueos() {
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }} >
                           <Typography component="div" variant="h5">
-                            {data.name}
+                            {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
@@ -172,8 +182,17 @@ export default function Piqueos() {
                               ":hover": { backgroundColor: "orange" },
                             }}
                             onClick={() =>
-                              handleOpen( data.imageFile, data.name, data.details, data.price, data.category, data.id)
-                            }
+                            handleOpen(
+                              data.imageFile,
+                              data.name,
+                              data.details,
+                              data.price,
+                              data.category,
+                              data.stock,
+                              data.id,
+                            )
+                          }
+
                           >
                            EDITAR
                           </Button>
@@ -194,7 +213,16 @@ export default function Piqueos() {
             aria-describedby="modal-modal-description"
           >
             <Box sx={modalStyle}>
-              <UpdateMenu selectedDetails={selectedDetails} selectedName={selectedName} selectedImages={selectedImages} selectedPrices={selectedPrices} selectedCategory={selectedCategory} handleClose={handleClose}  selectedMenuId={selectedMenuId}/>
+            <UpdateMenu
+                selectedDetails={selectedDetails}
+                selectedName={selectedName}
+                selectedImages={selectedImages}
+                selectedPrices={selectedPrices}
+                selectedCategory={selectedCategory}
+                handleClose={handleClose}
+                selectedMenuId={selectedMenuId}
+                selectedStock={selectedStock}
+              />
             </Box>
           </Modal>
         </div>

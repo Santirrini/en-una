@@ -16,6 +16,7 @@ export default function UpdateMenu({
   selectedImages,
   selectedPrices,
   selectedCategory,
+  selectedStock,
   handleClose,
 }) {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export default function UpdateMenu({
     name: "",
     details: "",
     price: "",
+    stock: false,
   });
   const success = () => {
     messageApi.open({
@@ -36,7 +38,6 @@ export default function UpdateMenu({
       content: "Publicación creada correctamente",
     });
   };
-
   React.useEffect(() => {
     setData({
       imageFile: selectedImages || [],
@@ -44,8 +45,10 @@ export default function UpdateMenu({
       name: selectedName || "",
       details: selectedDetails || "",
       price: selectedPrices || "",
+      stock: selectedStock || false,
     });
   }, []);
+  console.log(data.stock);
 
   React.useEffect(() => {
     dispatch(dataPersonal(token));
@@ -67,6 +70,7 @@ export default function UpdateMenu({
         formData.append("details", data.details);
         formData.append("price", data.price);
         formData.append("category", JSON.stringify(data.category));
+        formData.append("stock", data.stock);
 
         data.imageFile.forEach((image) => {
           formData.append("imageFile", image);
@@ -89,10 +93,10 @@ export default function UpdateMenu({
     acceptedFiles.forEach((file) => {
       const img = new Image();
       const objectUrl = URL.createObjectURL(file);
-  
+
       img.onload = () => {
         if (img.width < 1280 || img.height < 720) {
-          alert('La imagen debe tener al menos 1280x720 píxeles.');
+          alert("La imagen debe tener al menos 1280x720 píxeles.");
         } else {
           // Si la imagen es válida, la añadimos al estado
           setData((prevState) => ({
@@ -102,7 +106,7 @@ export default function UpdateMenu({
         }
         URL.revokeObjectURL(objectUrl); // Liberar la URL creada
       };
-  
+
       img.src = objectUrl;
     });
   }, []);
@@ -163,8 +167,9 @@ export default function UpdateMenu({
                   seleccionar.
                 </p>
                 <span>Puedes subir hasta 100 imágenes.</span>
-                <span>Las imagenes tienen que tener un minimo de 1280x720 pixeles.</span>
-
+                <span>
+                  Las imagenes tienen que tener un minimo de 1280x720 pixeles.
+                </span>
               </div>
             </div>
           )}
@@ -225,7 +230,7 @@ export default function UpdateMenu({
                 htmlFor="price"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Price
+                Precio
               </label>
               <div className="relative mt-2 rounded-md shadow-sm">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -248,7 +253,7 @@ export default function UpdateMenu({
                 htmlFor="details"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Detalles del menu
+                Detalle del producto
               </label>
               <div className="mt-2.5">
                 <textarea
@@ -266,6 +271,8 @@ export default function UpdateMenu({
               </div>
             </div>
           </div>
+          <div className={styles.stock_container}>
+
           <div className={styles.check_container}>
             <strong>Categoria</strong>
             <div className={styles.checkbox}>
@@ -334,7 +341,26 @@ export default function UpdateMenu({
               </div>
               <div>Bebidas</div>
             </div>
+
+           
           </div>
+          <div className={styles.checkbox}>
+              <div>
+                <input
+                  type="checkbox"
+                  name="stock"
+                  checked={data.stock}
+                  onChange={(e) =>
+                    setData({ ...data, stock: e.target.checked })
+                  }
+
+                  className={styles.stock_input}
+                />
+              </div>
+              <div>Stock</div>
+            </div>
+          </div>
+
           <div className="mt-10">
             <button
               type="submit"

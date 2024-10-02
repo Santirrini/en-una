@@ -17,7 +17,6 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import Modal from "@mui/material/Modal";
 
-
 import UpdateMenu from "./UpdateMenu";
 
 const modalStyle = {
@@ -46,30 +45,40 @@ export default function Entradas() {
   const [selectedDetails, setSelectedDetails] = useState("");
   const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedMenuId, setSelectedMenuId] = useState("");
-  
+  const [selectedStock, setSelecteStock] = useState("");
 
   useEffect(() => {
-      dispatch(DetailRestaurant(restaurantId));
-
+    dispatch(DetailRestaurant(restaurantId));
   }, [restaurantId, dispatch]);
-    
 
-
-
-
-
-
-  const handleOpen = (images, name, details, price, category, menuId) => {
+  const handleOpen = (
+    images,
+    name,
+    details,
+    price,
+    category,
+    stock,
+    menuId
+  ) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
-    setSelectedPrices(price)
-    setSelectedCategory(category)
-    setSelectedMenuId(menuId)
+    setSelectedPrices(price);
+    setSelectedCategory(category);
+    setSelectedMenuId(menuId);
+    setSelecteStock(stock);
     setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
+
+  const limitarName = (texto) => {
+    const limite = window.innerWidth <= 768 ? 20 : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+    if (texto.length > limite) {
+      return texto.slice(0, limite) + "...";
+    }
+    return texto;
+  };
   const limitarTexto = (texto) => {
     const limite = window.innerWidth <= 768 ? 25 : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
@@ -77,17 +86,17 @@ export default function Entradas() {
     }
     return texto;
   };
-  const entradas = restaurantdetails?.Menus.filter(menu => menu.category.includes("Entradas/Sopas"))
+  const entradas = restaurantdetails?.Menus.filter((menu) =>
+    menu.category.includes("Entradas/Sopas")
+  );
 
   return (
     <div>
-   
-        {entradas?.length > 0 ? (
+      {entradas?.length > 0 ? (
         <div>
           <div className={styles.container_bg_none}>
             <div className={styles.title_Carrusel2}>
-
-                <h1>Entradas</h1>
+              <h1>Entradas</h1>
             </div>
             <Splide
               options={{
@@ -116,46 +125,45 @@ export default function Entradas() {
                 },
               }}
             >
-                  {restaurantdetails?.Menus.filter(menu =>
+              {restaurantdetails?.Menus.filter((menu) =>
                 menu.category.includes("Entradas/Sopas")
               ).map((data) => (
                 <>
                   <SplideSlide key={data.id}>
                     <Card className={styles.card} key={data.id}>
-                    <CardMedia
-                      component="img"
-                      className={styles.img_menu}
-                      image={data.imageFile[0]}
-                      alt={data.name}
-                      onClick={() =>
-                        handleOpen(data.imageFile, data.name, data.details)
-                      }
-                    />
+                      <CardMedia
+                        component="img"
+                        className={styles.img_menu}
+                        image={data.imageFile[0]}
+                        alt={data.name}
+                        onClick={() =>
+                          handleOpen(data.imageFile, data.name, data.details)
+                        }
+                      />
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }} >
+                        <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography component="div" variant="h5">
-                            {data.name}
+                            {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
                           >
-                                                      {limitarTexto(data.details)} {/* Limita a 50 caracteres */}
-
+                            {limitarTexto(data.details)}{" "}
+                            {/* Limita a 50 caracteres */}
                           </Typography>
                           <div className={styles.price_quantity}>
-                          <Typography
-                            component="div"
-                            variant="h6"
-                            sx={{ fontWeight: "bold" }}
-                          >
-                          S/{data.price}
-                          </Typography>
-                        </div>
-
+                            <Typography
+                              component="div"
+                              variant="h6"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              S/{data.price}
+                            </Typography>
+                          </div>
                         </CardContent>
-                      
+
                         <Box
                           sx={{
                             display: "flex",
@@ -173,10 +181,18 @@ export default function Entradas() {
                               ":hover": { backgroundColor: "orange" },
                             }}
                             onClick={() =>
-                              handleOpen( data.imageFile, data.name, data.details, data.price, data.category, data.id)
+                              handleOpen(
+                                data.imageFile,
+                                data.name,
+                                data.details,
+                                data.price,
+                                data.category,
+                                data.stock,
+                                data.id
+                              )
                             }
                           >
-                          EDITAR
+                            EDITAR
                           </Button>
                         </Box>
                       </Box>
@@ -185,8 +201,6 @@ export default function Entradas() {
                 </>
               ))}
             </Splide>
-
-     
           </div>
           <Modal
             open={open}
@@ -194,13 +208,21 @@ export default function Entradas() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-        <Box sx={modalStyle}>
-              <UpdateMenu selectedDetails={selectedDetails} selectedName={selectedName} selectedImages={selectedImages} selectedPrices={selectedPrices} selectedCategory={selectedCategory} handleClose={handleClose}  selectedMenuId={selectedMenuId}/>
+            <Box sx={modalStyle}>
+              <UpdateMenu
+                selectedDetails={selectedDetails}
+                selectedName={selectedName}
+                selectedImages={selectedImages}
+                selectedPrices={selectedPrices}
+                selectedCategory={selectedCategory}
+                handleClose={handleClose}
+                selectedMenuId={selectedMenuId}
+                selectedStock={selectedStock}
+              />
             </Box>
           </Modal>
-
         </div>
-              ):null}
+      ) : null}
     </div>
   );
 }

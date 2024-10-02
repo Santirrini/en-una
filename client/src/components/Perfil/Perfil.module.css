@@ -1,6 +1,5 @@
 .perfil_container {
-  padding: 10vh;
-  margin: 0 auto;
+  margin: 10em auto;
   }
 .input_container {
   display: grid;
@@ -21,6 +20,19 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
+  margin-top: 1em;
+}
+
+.updatePassword {
+  display: flex;
+  gap: 1em;
+}
+
+.btnContainer {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  margin-top: 1em;
 }
   @media (max-width: 768px) {
     .perfil_container {

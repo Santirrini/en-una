@@ -59,6 +59,7 @@
   .decoration_Link {
     text-decoration: none;
     color: black;
+
   }
 
   .search {
@@ -89,7 +90,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 5em;
+  gap: 1em;
 }
 .order_for_container h4 {
   color: #500075;
@@ -101,7 +102,15 @@
   gap: 1em;
   justify-content: center;
 }
+.container_btnReset {
+  margin: 1.7em  ;
+  display: flex;
+}
+.view_details:hover {
+  text-decoration: underline;
+  cursor: pointer;
 
+}
 @media only screen and  (max-width: 768px) {
 .order_for_container  {
     width: 90%;

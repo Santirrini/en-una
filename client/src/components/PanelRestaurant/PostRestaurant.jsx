@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRestaurant, dataPersonal } from "../../redux/action";
 import { useDropzone } from "react-dropzone";
@@ -6,12 +6,28 @@ import styles from "./Index.module.css";
 import { Button, message, Space, Upload } from "antd";
 import CircularProgress from "@mui/material/CircularProgress";
 import CollectionsIcon from "@mui/icons-material/Collections";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
+// Estilos para el contenedor del mapa
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
+
+// Coordenadas iniciales centradas en Perú
+const defaultCenter = {
+  lat: -12.0464,
+  lng: -77.0428,
+};
 export default function PostRestaurant() {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
   const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
   const [disabled, setDisabled] = useState(false);
-
   const token = useSelector((state) => state.token);
   const [loading, setLoading] = useState(false);
   const [horarios, setHorarios] = useState([
@@ -23,6 +39,12 @@ export default function PostRestaurant() {
     { dia: "Sábado", inicio: "", fin: "", cerrado: false },
     { dia: "Domingo", inicio: "", fin: "", cerrado: false },
   ]);
+  const [center, setCenter] = useState(defaultCenter); // Coordenadas del mapa
+  const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
+  const [direccion, setDireccion] = useState(""); // Estado para la dirección
+  const [distritos, setDistritos] = useState([]); // Estado para la lista de distritos
+  const [distritoSeleccionado, setDistritoSeleccionado] = useState(""); // Estado para el distrito seleccionado
+  const autocompleteRef = useRef(null); // Referencia para el Autocomplete
   const [area, setArea] = useState([]);
   const [additional_services, setAdditional_services] = useState([]);
   const handleDisabled = () => {
@@ -43,7 +65,57 @@ export default function PostRestaurant() {
       }
     });
   };
-
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setCurrentLocation(userLocation);
+          setCenter(userLocation); // Centramos el mapa en la ubicación del usuario
+        },
+        (error) => {
+          console.error("Error al obtener la ubicación", error);
+        }
+      );
+    } else {
+      console.error("El navegador no soporta Geolocalización");
+    }
+  }, []);
+  const onPlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      if (place.geometry) {
+        const location = place.geometry.location;
+        setCenter({ lat: location.lat(), lng: location.lng() });
+        
+        // Extraer los componentes de la dirección
+        const addressComponents = place.address_components;
+  
+        // Buscar el distrito (administrative_area_level_2) y localidad (locality)
+        const district = addressComponents.find(component =>
+          component.types.includes("administrative_area_level_2")
+        );
+        const locality = addressComponents.find(component =>
+          component.types.includes("locality")
+        );
+  
+        // Actualizar el estado con la dirección, distrito y localidad
+        setData({
+          ...data,
+          address: place.formatted_address,
+          district: district ? district.long_name : '',
+          local: locality ? locality.long_name : '', // Asegúrate de usar `long_name` para localidad
+        });
+  
+      } else {
+        console.error('No se pudo obtener la información de la dirección.');
+      }
+    }
+  };
+  
   // Maneja los cambios en los checkboxes
   const handleCheckboxChangeAditional = (event) => {
     const { name, checked } = event.target;
@@ -65,16 +137,22 @@ export default function PostRestaurant() {
     logo: "",
     name: "",
     address: "",
+    district: "",
     phone: "",
     email: "",
     details: "",
     local: "",
+    instagram: "",
+    facebook: "",
+    tiktok: "",
+    youtube: "",
     maximum_per_table: "",
     maximum_person_per_table: "",
+    minimum_consumption: "",
     type_of_meals: "",
     average_price: "",
   });
-
+  console.log(data.local);
   const handleInputChange = (index, campo, valor) => {
     const nuevosHorarios = [...horarios];
     nuevosHorarios[index][campo] = valor;
@@ -115,9 +193,16 @@ export default function PostRestaurant() {
         "maximum_person_per_table",
         data.maximum_person_per_table
       );
+      formData.append("minimum_consumption", data.minimum_consumption);
+
       formData.append("type_of_meals", data.type_of_meals);
       formData.append("average_price", data.average_price);
       formData.append("logoUrl", data.logo);
+      formData.append("facebook", data.facebook);
+      formData.append("instagram", data.instagram);
+      formData.append("tiktok", data.tiktok);
+      formData.append("youtube", data.youtube);
+      formData.append("district", data.district);
 
       // Convertir el array de horarios a una cadena JSON
       formData.append("horarios", JSON.stringify(horarios));
@@ -140,6 +225,7 @@ export default function PostRestaurant() {
     } finally {
       setDisabled(false);
       setLoading(false);
+      window.location.reload();
     }
   };
 
@@ -147,26 +233,25 @@ export default function PostRestaurant() {
     acceptedFiles.forEach((file) => {
       const img = new Image();
       const objectUrl = URL.createObjectURL(file);
-  
+
       img.onload = () => {
-        if (img.width < 1280  || img.height < 720) {
+        /*    if (img.width < 1280  || img.height < 720) {
           alert('La imagen debe tener al menos 1280x720 píxeles.');
-        } else {
-          // Si la imagen es válida, la añadimos al estado
-          setData((prevState) => ({
-            ...prevState,
-            imageFile: Array.isArray(prevState.imageFile)
-              ? [...prevState.imageFile, file]
-              : [file],
-          }));
-        }
+        } else { */
+        // Si la imagen es válida, la añadimos al estado
+        setData((prevState) => ({
+          ...prevState,
+          imageFile: Array.isArray(prevState.imageFile)
+            ? [...prevState.imageFile, file]
+            : [file],
+        }));
+        /*   } */
         URL.revokeObjectURL(objectUrl); // Liberar la URL creada
       };
-  
+
       img.src = objectUrl;
     });
   }, []);
-  
 
   const handleLogo = useCallback((acceptedFiles) => {
     setData((prevState) => ({
@@ -225,8 +310,15 @@ export default function PostRestaurant() {
       email: datapersonal?.email || "",
       details: datapersonal?.details || "",
       local: datapersonal?.local || "",
+      facebook: datapersonal?.facebook || "",
+      instagram: datapersonal?.instagram || "",
+      tiktok: datapersonal?.tiktok || "",
+      youtube: datapersonal?.youtube || "",
+      district: datapersonal?.district || "",
+
       maximum_per_table: datapersonal?.maximum_per_table || "",
       maximum_person_per_table: datapersonal?.maximum_person_per_table || "",
+      minimum_consumption: datapersonal?.minimum_consumption || "",
       type_of_meals: datapersonal?.type_of_meals || "",
       average_price: datapersonal?.average_price || "",
     });
@@ -267,24 +359,43 @@ export default function PostRestaurant() {
             <h1>Mi restaurante</h1>
           </div>
           <div className={styles.dropzone} {...getLogoRootProps()}>
-            <input {...getLogoInputProps()} />
+            <input
+              {...getLogoInputProps()}
+              disabled={datapersonal?.name ? !disabled : disabled}
+            />
             {isLogoDragActive ? (
-              <p>Suelta el logo aquí...</p>
+              <p disabled={datapersonal?.name ? !disabled : disabled}>
+                Suelta el logo aquí...
+              </p>
             ) : (
-              <div>
+              <div disabled={datapersonal?.name ? !disabled : disabled}>
                 <CollectionsIcon className={styles.icons} />
               </div>
             )}
           </div>
-          <div className={styles.text}>
+          <div
+            className={styles.text}
+            disabled={datapersonal?.name ? !disabled : disabled}
+          >
             <p>Arrastra y suelta el logo aquí o haz clic para seleccionar.</p>
             <span>Puedes subir un logo.</span>
           </div>
           {data.logo && (
-            <div className={styles.prev_mini}>
-              <img src={data.logo } alt="Logo" className={styles.logoPreview} />
+            <div
+              className={styles.prev_mini}
+              disabled={datapersonal?.name ? !disabled : disabled}
+            >
+              <img
+                src={createObjectURL(data.logo) || data.logo}
+                alt="Logo"
+                className={styles.logoPreview}
+              />
               <div className={styles.btn_x}>
-                <button type="button" onClick={handleRemoveLogo} disabled={datapersonal?.name ? !disabled : disabled}>
+                <button
+                  type="button"
+                  onClick={handleRemoveLogo}
+                  disabled={datapersonal?.name ? !disabled : disabled}
+                >
                   <strong>X</strong>
                 </button>
               </div>
@@ -292,11 +403,14 @@ export default function PostRestaurant() {
           )}
 
           <div className={styles.dropzone} {...getRootProps()}>
-            <input {...getInputProps()} disabled={datapersonal?.name ? !disabled : disabled} />
+            <input
+              {...getInputProps()}
+              disabled={datapersonal?.name ? !disabled : disabled}
+            />
             {isDragActive ? (
               <p>Suelta las imágenes aquí...</p>
             ) : (
-              <div className={styles.postRestaurant} >
+              <div className={styles.postRestaurant}>
                 <div>
                   <CollectionsIcon className={styles.icons} />
                 </div>
@@ -306,8 +420,9 @@ export default function PostRestaurant() {
                     seleccionar.
                   </p>
                   <span>Puedes subir hasta 100 imágenes.</span>
-                  <span>Las imagenes tienen que tener un minimo de 1280x720 pixeles.</span>
-
+                  <span>
+                    Las imagenes tienen que tener un minimo de 1280x720 pixeles.
+                  </span>
                 </div>
               </div>
             )}
@@ -318,17 +433,24 @@ export default function PostRestaurant() {
                 data.imageFile.map((file, index) => (
                   <div key={index}>
                     <div className={styles.btn_x}>
-                    
-                    <button type="button" onClick={() => handleRemove(index)}  disabled={datapersonal?.name ? !disabled : disabled}>
+                      <button
+                        type="button"
+                        onClick={() => handleRemove(index)}
+                        disabled={datapersonal?.name ? !disabled : disabled}
+                      >
                         <strong>X</strong>
                       </button>
                     </div>
 
                     <img
-              src={createObjectURL(file) || file}
-              alt={`Preview ${index}`}
-              style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-            />
+                      src={createObjectURL(file) || file}
+                      alt={`Preview ${index}`}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                      }}
+                    />
                   </div>
                 ))}
             </div>
@@ -363,18 +485,23 @@ export default function PostRestaurant() {
                 >
                   Local
                 </label>
+
                 <div className="mt-2.5">
-                  <input
-                    type="text"
-                    name="local"
-                    id="local"
-                    onChange={(e) =>
-                      setData({ ...data, local: e.target.value })
-                    }
-                    value={data.local}
-                    className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    disabled={datapersonal?.local ? !disabled : disabled}
-                  />
+                  <input 
+                  type="text"
+                  name="local"
+                  id="local"
+                  onChange={(e) =>
+                    setData({ ...data, local: e.target.value })
+                  }
+                  value={data.local}
+                
+                  className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+
+                  disabled={datapersonal?.local ? !disabled : disabled}
+                   />
+                 
+               
                 </div>
               </div>
               <div className="sm:col-span-2">
@@ -385,27 +512,69 @@ export default function PostRestaurant() {
                   Dirección
                 </label>
                 <div className="mt-2.5">
+               
+
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+                    {/* Input de autocompletado para direcciones */}
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Escribe una dirección"
+                        value={data.address}
+                        name="address"
+                        className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        id="address"
+                        onChange={(e) =>
+                          setData({ ...data, address: e.target.value })
+                        }
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          marginBottom: "10px",
+                        }}
+                        disabled={datapersonal?.address ? !disabled : disabled}
+                      />
+                    </Autocomplete>
+                  </LoadScript>
+                </div>
+              </div>
+              <div></div>
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="district"
+                  className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
+                >
+                  Distrito
+                </label>
+                <div className="mt-2.5">
                   <input
                     type="text"
-                    name="address"
-                    id="address"
+                    name="district"
+                    id="district"
                     onChange={(e) =>
-                      setData({ ...data, address: e.target.value })
+                      setData({ ...data, district: e.target.value })
                     }
-                    value={data.address}
+                    value={data.district}
                     className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
-                    disabled={datapersonal?.address ? !disabled : disabled}
+                    disabled={datapersonal?.name ? !disabled : disabled}
                   />
                 </div>
               </div>
-
               <div>
                 <label
                   htmlFor="phone"
                   className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
                 >
-                  Teléfono
+                  Teléfono de contacto
                 </label>
                 <div className="mt-2.5">
                   <input
@@ -427,7 +596,7 @@ export default function PostRestaurant() {
                   htmlFor="email"
                   className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
                 >
-                  Email
+                  Email de contacto
                 </label>
                 <div className="mt-2.5">
                   <input
@@ -439,11 +608,96 @@ export default function PostRestaurant() {
                     }
                     value={data.email}
                     className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    required
                     disabled={datapersonal?.email ? !disabled : disabled}
                   />
                 </div>
               </div>
+                <div>
+                  <label
+                    htmlFor="facebook"
+                    className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
+                  >
+                    Enlace de facebook
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      type="text"
+                      name="facebook"
+                      id="facebook"
+                      onChange={(e) =>
+                        setData({ ...data, facebook: e.target.value })
+                      }
+                      value={data.facebook}
+                      className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      disabled={datapersonal?.name ? !disabled : disabled}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="instagram"
+                    className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
+                  >
+                    Enlace de Instagram
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      type="instagram"
+                      name="instagram"
+                      id="instagram"
+                      onChange={(e) =>
+                        setData({ ...data, instagram: e.target.value })
+                      }
+                      value={data.instagram}
+                      className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      disabled={datapersonal?.name ? !disabled : disabled}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="tiktok"
+                    className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
+                  >
+                    Enlace de tiktok
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      type="text"
+                      name="tiktok"
+                      id="tiktok"
+                      onChange={(e) =>
+                        setData({ ...data, tiktok: e.target.value })
+                      }
+                      value={data.tiktok}
+                      className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      disabled={datapersonal?.name ? !disabled : disabled}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="youtube"
+                    className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
+                  >
+                    Enlace de youtube
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      type="youtube"
+                      name="youtube"
+                      id="youtube"
+                      onChange={(e) =>
+                        setData({ ...data, youtube: e.target.value })
+                      }
+                      value={data.youtube}
+                      className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      disabled={datapersonal?.name ? !disabled : disabled}
+                    />
+                  </div>
+                </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="details"
@@ -466,9 +720,11 @@ export default function PostRestaurant() {
                   ></textarea>
                 </div>
               </div>
+
               <div className={styles.checkbox}>
                 <div>
-                  <h3 className={styles.color_text}>Horarios de apertura </h3>
+                  <h3 className={styles.color_text}>Horario de atención </h3>
+                  <h3 className={styles.color_text}>(turno cada 30 min) </h3>
 
                   {horarios.map((horario, index) => (
                     <div key={index} className={styles.formGroup}>
@@ -668,6 +924,26 @@ export default function PostRestaurant() {
                         }
                       />
                     </div>
+
+                    <div className={styles.formGroup}>
+                      <label className={styles.label_check}>
+                        Cambiador para bebés
+                      </label>
+
+                      <input
+                        type="checkbox"
+                        name="Cambiador para bebés"
+                        checked={additional_services.includes(
+                          "Cambiador para bebés"
+                        )}
+                        onChange={handleCheckboxChangeAditional}
+                        disabled={
+                          datapersonal?.additional_services
+                            ? !disabled
+                            : disabled
+                        }
+                      />
+                    </div>
                     <div className={styles.formGroup}>
                       <label className={styles.label_check}>
                         Comida vegetariana
@@ -724,7 +1000,7 @@ export default function PostRestaurant() {
                     setData({ ...data, maximum_per_table: e.target.value })
                   }
                   value={data.maximum_per_table}
-                  className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full outline-none rounded-md border-0 py-1.5 pl-2 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   min={1}
                   required
                   disabled={
@@ -752,7 +1028,7 @@ export default function PostRestaurant() {
                     })
                   }
                   value={data.maximum_person_per_table}
-                  className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full outline-none rounded-md border-0 py-1.5 pl-2 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   min={1}
                   required
                   disabled={
@@ -763,7 +1039,39 @@ export default function PostRestaurant() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+
+            <div className={styles.input_label}>
+              <label
+                htmlFor="minimum_consumption"
+                className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
+              >
+                Consumo minimo por persona
+              </label>
+
+              <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-500 sm:text-sm">S/</span>
+                </div>
+                <input
+                  name="minimum_consumption"
+                  id="minimum_consumption"
+                  type="number"
+                  onChange={(e) =>
+                    setData({ ...data, minimum_consumption: e.target.value })
+                  }
+                  value={data.minimum_consumption}
+                  min={1}
+                  placeholder="0.00"
+                  className="block w-full outline-none rounded-md border-0 py-1.5 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  disabled={
+                    datapersonal?.minimum_consumption ? !disabled : disabled
+                  }
+                />
+              </div>
+            </div>
+            <div
+              className={`grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 ${styles.input_bottom}`}
+            >
               <div>
                 <label
                   htmlFor="type_of_meals"
@@ -778,74 +1086,40 @@ export default function PostRestaurant() {
                   onChange={(e) =>
                     setData({ ...data, type_of_meals: e.target.value })
                   }
-                  className="h-[2.5rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+                  className={`h-[2.5rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.type_food}`}
                   required
                   disabled={datapersonal?.type_of_meals ? !disabled : disabled}
                 >
                   <option value="">Seleccionar tipo de comida</option>
-                  <option value="Peruana">Peruana</option>
+                  <option value="Pollo a la brasa">Pollo a la brasa</option>
+                  <option value="Peruana Criolla">Peruana Criolla</option>
+                  <option value="Peruana Andina">Peruana Andina</option>
+                  <option value="Peruana Amazónica">Peruana Amazónica</option>
                   <option value="Pescados y Mariscos">
                     Pescados y Mariscos
                   </option>
-                  <option value="Carnes y Parrillas">Carnes y Parrillas</option>
-                  <option value="Italiana">Italiana</option>
-                  <option value="Fusión">Fusión</option>
-                  <option value="Nikkei / Japonesa">Nikkei / Japonesa</option>
-                  <option value="Sushi">Sushi</option>
-                  <option value="Makis">Makis</option>
-                  <option value="Internacional">Internacional</option>
-                  <option value="Peruana Contemporánea">
-                    Peruana Contemporánea
-                  </option>
-                  <option value="Café - Sandwich">Café - Sandwich</option>
-                  <option value="Bar - Tapas y Piqueos">
-                    Bar - Tapas y Piqueos
-                  </option>
-                  <option value="Hamburguesas">Hamburguesas</option>
-                  <option value="Pizzas">Pizzas</option>
-                  <option value="Brasas - Leña y Horno de barro">
-                    Brasas - Leña y Horno de barro
-                  </option>
-                  <option value="Bar">Bar</option>
                   <option value="Chifa">Chifa</option>
-                  <option value="Mediterránea">Mediterránea</option>
-                  <option value="Postres">Postres</option>
-                  <option value="Vegetariana">Vegetariana</option>
-                  <option value="Pastas">Pastas</option>
-                  <option value="Desayuno">Desayuno</option>
-                  <option value="Americana">Americana</option>
-                  <option value="Panaderia">Panaderia</option>
-                  <option value="Orgánica">Orgánica</option>
-                  <option value="Heladerías">Heladerías</option>
-                  <option value="Asiática">Asiática</option>
-                  <option value="Opciones vegetarianas">
-                    Opciones vegetarianas
-                  </option>
-                  <option value="Amazónica">Amazónica</option>
-                  <option value="Ensaladas">Ensaladas</option>
-                  <option value="Bowl">Bowl</option>
-                  <option value="India">India</option>
-                  <option value="Latinoamericana">Latinoamericana</option>
-                  <option value="Thai">Thai</option>
-                  <option value="Buffet">Buffet</option>
-                  <option value="Española">Española</option>
-                  <option value="Jugos y batidos">Jugos y batidos</option>
-                  <option value="Alitas">Alitas</option>
-                  <option value="Andina">Andina</option>
-                  <option value="Mexicana">Mexicana</option>
-                  <option value="Bar de vinos">Bar de vinos</option>
-                  <option value="Churros">Churros</option>
-                  <option value="Crepes">Crepes</option>
-                  <option value="India">India</option>
-                  <option value="Grill">Grill</option>
-                  <option value="Nikkei Thai">Nikkei Thai</option>
-                  <option value="Sudamericana">Sudamericana</option>
+                  <option value="Japonesa / Nikkei">Japonesa / Nikkei</option>
+                  <option value="Carnes y Parrillas">Carnes y Parrillas</option>
                   <option value="Argentina">Argentina</option>
-                  <option value="Árabe">Árabe</option>
-                  <option value="Chicharronería">Chicharronería</option>
-                  <option value="Arequipeña">Arequipeña</option>
-                  <option value="Comida Regional">Comida Regional</option>
-                  <option value="De Autor">De Autor</option>
+                  <option value="Pizzería">Pizzería</option>
+                  <option value="Italiana">Italiana</option>
+                  <option value="Española">Española</option>
+                  <option value="India">India</option>
+                  <option value="Internacional">Internacional</option>
+                  <option value="Fusión">Fusión</option>
+                  <option value="Vegetariana / Orgánica">
+                    Vegetariana / Orgánica
+                  </option>
+                  <option value="Sándwiches / Hamburguesas">
+                    Sándwiches / Hamburguesas
+                  </option>
+                  <option value="Pastelería">Pastelería</option>
+                  <option value="Cafetería">Cafetería</option>
+                  <option value="Heladería">Heladería</option>
+                  <option value="Fast Food">Fast Food</option>
+                  <option value="Buffet">Buffet</option>
+                  <option value="Bar">Bar</option>
                 </select>
               </div>
               <div>
@@ -853,22 +1127,25 @@ export default function PostRestaurant() {
                   htmlFor="average_price"
                   className={`block text-sm font-semibold leading-6  ${styles.color_text}`}
                 >
-                  Precio promedio
+                  Precio promedio (opcional)
                 </label>
-                <div>
+                <div className="relative mt-2 rounded-md shadow-sm">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span className="text-gray-500 sm:text-sm">S/</span>
+                  </div>
                   <input
-                    type="number"
                     name="average_price"
                     id="average_price"
+                    type="number"
                     onChange={(e) =>
                       setData({ ...data, average_price: e.target.value })
                     }
                     value={data.average_price}
-                    className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     min={1}
-                    required
+                    placeholder="0.00"
+                    className="block w-full outline-none rounded-md border-0 py-1.5 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     disabled={
-                      datapersonal?.average_price ? !disabled : disabled
+                      datapersonal?.name ? !disabled : disabled
                     }
                   />
                 </div>

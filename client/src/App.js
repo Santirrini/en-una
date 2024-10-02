@@ -31,6 +31,7 @@ import EditMenu from './pages/EditMenu';
 
 import React, { useState } from 'react';
 import SuccessReserve from "./pages/SuccessReserve";
+import PoliticPrivateRestaurant from "./pages/PoliticPrivateRestaurant";
 
 
 
@@ -66,6 +67,8 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/contactanos" element={<Contact />} />
           <Route path="/politica-de-privacidad" element={<PolicityPrivacity />} />
+          <Route path="/politica-de-privacidad-restaurante" element={<PoliticPrivateRestaurant />} />
+
           <Route path="/sobre-nosotros" element={<WhyUs />} />
           <Route path="/recuperar-cuenta" element={<ResetAccount />} />
           <Route path="/email-enviado" element={<ResetSendEmail />} />
