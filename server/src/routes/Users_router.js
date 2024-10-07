@@ -23,7 +23,6 @@ router.post('/register', Register );
 router.get('/users', AllUsers );
 router.post('/login', Login );
 router.get('/datapersonal', DetailsPersonal );
-router.get('/datapersonal', DetailsPersonal );
 router.post('/contact-us', ContactUs );
 router.put('/update-datapersonal', UpdatePersonal );
 
