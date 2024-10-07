@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
 
     },
     identify_contract: {
-      type: DataTypes.ARRAY(DataTypes.JSON),
+      type: DataTypes.STRING,
     },
     description: {
       type: DataTypes.STRING,
