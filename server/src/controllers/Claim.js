@@ -52,18 +52,18 @@ module.exports = {
                 <p style="color: black;"><strong>Solución esperada:</strong> ${expected_solution}</p>
                 <p style="color: black;"><strong>Fecha:</strong> ${date}</p>
                 <p style="color: black;"><strong>Hora:</strong> ${hour}</p
-                ${name_tutor ? (
+                {${name_tutor} ? (
             <p style="color: black;"><strong>Nombre del tutor:</strong> ${name_tutor}</p>
         ) : null}
-                ${address_tutor ? (
+                {${address_tutor} ? (
 
             <p style="color: black;"><strong>Dirección del tutor:</strong> ${address_tutor}</p>
         ) : null}
-                ${phone_tutor ? (
+                {${phone_tutor} ? (
 
             <p style="color: black;"><strong>Teléfono del tutor:</strong> ${phone_tutor}</p>
         ) : null}
-                ${email_tutor ? (
+                {${email_tutor} ? (
 
             <p style="color: black;"><strong>Correo electrónico del tutor:</strong> ${email_tutor}</p>
         ) : null}
@@ -110,18 +110,18 @@ module.exports = {
               <p style="color: black;"><strong>Solución esperada:</strong> ${expected_solution}</p>
               <p style="color: black;"><strong>Fecha:</strong> ${date}</p>
               <p style="color: black;"><strong>Hora:</strong> ${hour}</p
-              ${name_tutor ? (
+              {${name_tutor} ? (
           <p style="color: black;"><strong>Nombre del tutor:</strong> ${name_tutor}</p>
       ) : null}
-              ${address_tutor ? (
+              {${address_tutor} ? (
 
           <p style="color: black;"><strong>Dirección del tutor:</strong> ${address_tutor}</p>
       ) : null}
-              ${phone_tutor ? (
+              {${phone_tutor} ? (
 
           <p style="color: black;"><strong>Teléfono del tutor:</strong> ${phone_tutor}</p>
       ) : null}
-              ${email_tutor ? (
+              {${email_tutor} ? (
 
           <p style="color: black;"><strong>Correo electrónico del tutor:</strong> ${email_tutor}</p>
       ) : null}
