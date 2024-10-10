@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
 
 module.exports = {
   Register: async (req, res) => {
-    const { name, razon_social, ruc, contact_person, position, address, lastName, genre, email_additional, date, country, province, district, password, email, phone, role, restaurantId } = req.body;
+    const { name, razon_social, ruc, contact_person, position,departament, address, lastName, genre, email_additional, date, country, province, district, password, email, phone, role, restaurantId } = req.body;
 
     try {
       const existingUser = await User.findOne({ where: { email } });
@@ -57,7 +57,7 @@ module.exports = {
            font-family: Arial, Helvetica, sans-serif;
          " >
              <div style="margin: 0 auto; text-align: center;">
-               <img src="https://elarisneakers.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+               <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
              </div>
        
              <p style="color: black;">¡Hola [Nombre]!</p>

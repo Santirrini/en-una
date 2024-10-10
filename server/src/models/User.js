@@ -48,6 +48,9 @@ module.exports = (sequelize) => {
     country: {
       type: DataTypes.STRING,
     },
+    departament: {
+      type: DataTypes.STRING,
+    },
     province: {
       type: DataTypes.STRING,
     },

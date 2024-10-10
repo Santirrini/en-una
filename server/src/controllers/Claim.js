@@ -35,7 +35,7 @@ module.exports = {
         <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
             <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
                 <div style="margin: 0 auto; text-align: center;">
-                    <img src="https://elarisneakers.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+                    <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
                 </div>
                 <p style="color: black;">¡Hola ${name_complete}!</p>
                 <p style="color: black;">¡Gracias por enviar tu reclamo! Aquí tienes los detalles:</p>
@@ -84,7 +84,7 @@ module.exports = {
         <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
             <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
                 <div style="margin: 0 auto; text-align: center;">
-                    <img src="https://elarisneakers.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+                    <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
                 </div>
                 <p style="color: black;">¡Hay un nuevo reclamo!</p>
                 <p style="color: black;"><strong>Nombre completo:</strong> ${name_complete}</p>
