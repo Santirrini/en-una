@@ -11,8 +11,8 @@ module.exports = {
 
 
     } catch (error) {
-      console.error('error al obtener Todas las ordenes:', error);
-      res.status(500).json({ error: 'error al obtener Todas las ordenes' });
+      console.error('error al obtener Todaos los formularios:', error);
+      res.status(500).json({ error: 'error al obtener Todaos los formularios' });
     }
   }
 };
