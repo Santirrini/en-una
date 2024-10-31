@@ -12,7 +12,7 @@ module.exports = {
       }
 
       console.log('Detalle del usuario');
-      res.status(200).send({ success: true, data: FormDetail });
+      res.status(200).send({ success: true, data: userDetail });
     } catch (error) {
       console.error('Error al mostrar los detalles del usuario:', error);
       res.status(500).json({ error: 'Error al mostrar los detalles del usuario' });
