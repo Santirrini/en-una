@@ -11,6 +11,7 @@ const {UpdatePersonal} = require('../controllers/UpdatePersonal');
 const {LoginGoogle} = require('../controllers/LoginGoogle');
 const {GoogleCallback} = require('../controllers/LoginGoogle');
 const {Claim} = require('../controllers/Claim');
+const {DetailsUser} = require('../controllers/DetailsUser');
 
 
 
@@ -21,6 +22,8 @@ const {Claim} = require('../controllers/Claim');
 
 router.post('/register', Register );
 router.get('/users', AllUsers );
+router.get('/user/:userId', DetailsUser);
+
 router.post('/login', Login );
 router.get('/datapersonal', DetailsPersonal );
 router.post('/contact-us', ContactUs );
