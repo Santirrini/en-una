@@ -17,6 +17,8 @@ const {Webhooks} = require('../controllers/Webhooks');
 const {WebHooksEvent} = require('../controllers/WebHooksEvent');
 const {DetailsReservation} = require('../controllers/DetailsReservation');
 const {FormPetition} = require('../controllers/FormPetition');
+const {AllForm} = require('../controllers/AllForm');
+
 
 
 
@@ -62,6 +64,8 @@ router.delete('/order/delete/:orderId', DeleteOrder);
 router.put('/productupdate/:productId', UpdateProduct);
 
 router.post('/form-petition', FormPetition);
+router.get('/forms', AllForm);
+
 
 
 
