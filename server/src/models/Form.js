@@ -39,9 +39,7 @@ module.exports = (sequelize) => {
           local_phone: {
             type: DataTypes.STRING,
           },
-          email: {
-            type: DataTypes.STRING,
-          },
+         
           email_contract: {
             type: DataTypes.STRING,
           },

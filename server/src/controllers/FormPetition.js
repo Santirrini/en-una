@@ -4,13 +4,13 @@ require('dotenv').config();
 
 module.exports = {
     FormPetition: async (req, res) => {
- const {ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email, email_contract } = req.body
+ const {ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract } = req.body
       try {
         const formRegister = await Form.create({
-            ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email, email_contract 
+            ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract 
         })
             console.log("Formulario enviado correctamente")
-            res.status(200).send({ success: true, message: 'Formulario enviado correctamente' });
+            res.status(200).send({ success: true, data: formRegister });
       
       } catch (error) {
         console.error('Error al enviar formulario de petición de registro:', error);
