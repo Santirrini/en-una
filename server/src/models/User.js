@@ -74,6 +74,10 @@ module.exports = (sequelize) => {
     role: {
       type: DataTypes.STRING
     },
+
+    status: {
+      type: DataTypes.STRING
+    },
     restaurantId: {
       type: DataTypes.UUID,
       references: {
