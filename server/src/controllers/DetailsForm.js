@@ -14,8 +14,8 @@ module.exports = {
       console.log('Detalle del formulario');
       res.status(200).send({ success: true, data: FormDetail });
     } catch (error) {
-      console.error('Error al mostrar los detalles de las reservaciones:', error);
-      res.status(500).json({ error: 'Error al mostrar los detalles de las reservaciones' });
+      console.error('Error al mostrar la petición de registro:', error);
+      res.status(500).json({ error: 'Error al mostrar la petición de registro' });
     }
   },
 };
