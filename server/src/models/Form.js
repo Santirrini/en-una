@@ -43,6 +43,10 @@ module.exports = (sequelize) => {
           email_contract: {
             type: DataTypes.STRING,
           },
+
+          status: {
+            type: DataTypes.STRING,
+          },
       
           
          
