@@ -8,6 +8,9 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
+    code: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
     },
@@ -44,7 +47,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
 
-    
+   
     country: {
       type: DataTypes.STRING,
     },
