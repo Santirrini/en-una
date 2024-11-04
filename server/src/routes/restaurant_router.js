@@ -22,6 +22,8 @@ const { DetailsForm } = require('../controllers/DetailsForm');
 const { PostCarrusel } = require('../controllers/PostCarrusel');
 const { AllCarousel } = require('../controllers/AllCarousel');
 const { DeleteCarousel } = require('../controllers/DeleteCarousel');
+const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
+
 
 
 
@@ -78,6 +80,8 @@ router.post('/post-carrusel', upload.single('carrusel'), PostCarrusel);
 
 router.get('/carousels', AllCarousel);
 router.delete('/carousels/:id', DeleteCarousel);
+router.post('/confirm-form', AdminFormSuccess);
+
 
 
 
