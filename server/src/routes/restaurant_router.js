@@ -19,7 +19,7 @@ const { DetailsReservation } = require('../controllers/DetailsReservation');
 const { FormPetition } = require('../controllers/FormPetition');
 const { AllForm } = require('../controllers/AllForm');
 const { DetailsForm } = require('../controllers/DetailsForm');
-
+const { PostCarrusel } = require('../controllers/PostCarrusel');
 
 
 
@@ -70,6 +70,7 @@ router.get('/forms', AllForm);
 router.get('/forms/:formId', DetailsForm);
 
 
+router.post('/post-carrusel', upload.single('carrusel'), PostCarrusel);
 
 
 
