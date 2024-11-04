@@ -8,11 +8,11 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
-code: {
+/* code: {
   type: DataTypes.INTEGER,
   unique: true
 },
-
+ */
     name: {
       type: DataTypes.STRING,
     },
