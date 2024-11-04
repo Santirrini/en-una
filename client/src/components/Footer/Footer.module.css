@@ -49,6 +49,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+    margin-bottom: 1em;
   }
   .footer_link {
     color: gray;
@@ -73,7 +74,10 @@
     color: white;
 
   }
-
+.book_reclam img {
+width: 60px;
+cursor: pointer;
+}
   @media (max-width: 768px) {
     .footer_link_mobile {
       display: none;

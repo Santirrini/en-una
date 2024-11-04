@@ -5,7 +5,11 @@ const initialState = {
   loginUser: {},
   loginError: null,
   allrestaurant: [],
+  allform: [],
+
   allUsers: [],
+  detailuser: [],
+
   registrationSuccess: false,
   registrationError: null,
   datapersonal: [],
@@ -19,7 +23,7 @@ const initialState = {
   paymentData: null,
   orderDetails: [],
   detailsReservation: [],
-
+  formdetails:[]
   
 }
 
@@ -67,7 +71,7 @@ export const rootReducer = (state = initialState, action) => {
 
       };
 
-
+      
     case 'DATA_PERSONAL':
       return {
         ...state,
@@ -78,6 +82,12 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
 
+      };
+
+      case 'DETAIL_USER':
+      return {
+        ...state,
+        detailuser: action.payload
       };
 
 
@@ -99,6 +109,14 @@ export const rootReducer = (state = initialState, action) => {
         ...state,
         allrestaurant: action.payload
       };
+
+      case 'ALL_FORM':
+        return {
+          ...state,
+          allform: action.payload
+        };
+
+      
     case 'ALL_USERS':
       return {
         ...state,
@@ -110,6 +128,14 @@ export const rootReducer = (state = initialState, action) => {
         ...state,
         restaurantdetails: action.payload
       };
+
+      case 'DETAIL_FORM':
+      return {
+        ...state,
+       formdetails: action.payload
+      };
+
+      
     case 'PAYMENT_PAYPAL':
       return {
         ...state,
@@ -200,6 +226,11 @@ case "RESET_FAILURE":
         detailsReservation: action.payload,
       };
 
+      case "FORM_SUCCESS":
+        return {
+          ...state,
+        };
+      
     
 
 

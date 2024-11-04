@@ -1,6 +1,14 @@
+import React, { useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./TermsConditions.module.css";
 
 export default function TermsConditions() {
+  const { pathname } = useLocation();
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <div className={styles.terms_container}>
       <div className="mx-auto max-w-2xl">

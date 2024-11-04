@@ -156,7 +156,39 @@ export const ResetPassword = (token, newPassword) => {
 };
 
 
+export const ClaimSend = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post('https://en-una-production.up.railway.app/api/claim', payload);
 
+      // Aquí podrías despachar una acción indicando que el registro fue exitoso
+      dispatch({ type: 'CLAIM_SUCCESS', payload: response.data });
+
+      return response; // Devolver la respuesta para su procesamiento en el componente
+    } catch (error) {
+      // Manejar errores aquí si es necesario
+      console.error("No se pudo enviar el reclamo:",error);
+
+    }
+  };
+};
+
+export const petitionForm = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post('https://en-una-production.up.railway.app/api/form-petition', payload);
+
+      // Aquí podrías despachar una acción indicando que el registro fue exitoso
+      dispatch({ type: 'FORM_SUCCESS', payload: response.data });
+
+      return response; // Devolver la respuesta para su procesamiento en el componente
+    } catch (error) {
+      // Manejar errores aquí si es necesario
+      console.error("No se pudo enviar el la petición de registro:",error);
+
+    }
+  };
+};
 // actions/authActions.js
 
 export const logout = () => {
@@ -181,6 +213,23 @@ export const AllRestaurant = () => {
     }
   };
 };
+
+export const AllForms = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get('https://en-una-production.up.railway.app/api/forms',);
+      const data = res.data;
+
+      dispatch({
+        type: "ALL_FORM",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar los FORMULARIOS:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
 export const DetailRestaurant = (restaurantId) => {
   return async (dispatch) => {
     try {
@@ -198,6 +247,39 @@ export const DetailRestaurant = (restaurantId) => {
   };
 };
 
+export const DetailForm = (formId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/forms/${formId}`);
+      const data = res.data;
+
+      dispatch({
+        type: "DETAIL_FORM",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar el detalle del formulario:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
+
+export const DetailUser= (userId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/user/${userId}`);
+      const data = res.data;
+
+      dispatch({
+        type: "DETAIL_USER",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar el detalle del usuario:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
 export const DetailsReservation = (reservationId) => {
   return async (dispatch) => {
     try {
@@ -389,106 +471,6 @@ export const DeleteAccount = (token) => async (dispatch) => {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export const deleteProduct = (productId) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.delete(`https://en-una-production.up.railway.app/api/delete/${productId}`);
-      const data = res.data;
-      dispatch({
-        type: "DELETE_PRODUCT",
-        payload: data
-      });
-    } catch (error) {
-      console.error('Error al ver la orden:', error);
-    }
-  };
-};
-
-
-export const AllUsers = (payload) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.get('https://en-una-production.up.railway.app/api/users', payload);
-      const data = res.data;
-
-      dispatch({
-        type: "ALL_USERS",
-        payload: data
-      });
-    } catch (error) {
-      console.error('Error al mostrar las publicaciónes:', error);
-      // Puedes dispatchar una acción de error si es necesario.
-    }
-  };
-};
-
-
-export const ProductDetail = (productId) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.get(`https://en-una-production.up.railway.app/api/product/${productId}`);
-      const data = res.data;
-
-      dispatch({
-        type: "PRODUCT_DETAILS",
-        payload: data
-      });
-    } catch (error) {
-      console.error('Error al mostrar los detalles:', error);
-    }
-  };
-};
-
-export const PaymentPaypal = (productId) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.post(`https://en-una-production.up.railway.app/api/create-payment/${productId}`);
-      const data = res.data;
-      window.location.href = data.links[1].href
-      dispatch({
-        type: "PAYMENT_PAYPAL",
-        payload: data
-      });
-    } catch (error) {
-      console.error('Error al al pagar on paypal:', error);
-    }
-  };
-};
-
-export const Order = (payload) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.post(`https://en-una-production.up.railway.app/api/order`, payload);
-      const data = res.data;
-      dispatch({
-        type: "ORDER",
-        payload: data
-      });
-    } catch (error) {
-      console.error('Error al crear la orden:', error);
-    }
-  };
-};
-
 export const AllOrder = (restaurantId) => {
   return async (dispatch) => {
     try {
@@ -534,6 +516,105 @@ export const deleteOrder = (orderId) => {
 };
 
 
+
+export const ProductDetail = (productId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/product/${productId}`);
+      const data = res.data;
+
+      dispatch({
+        type: "PRODUCT_DETAILS",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar los detalles:', error);
+    }
+  };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const deleteProduct = (productId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.delete(`https://en-una-production.up.railway.app/api/delete/${productId}`);
+      const data = res.data;
+      dispatch({
+        type: "DELETE_PRODUCT",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al ver la orden:', error);
+    }
+  };
+};
+
+
+export const AllUsers = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get('https://en-una-production.up.railway.app/api/users', );
+      const data = res.data;
+
+      dispatch({
+        type: "ALL_USERS",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al mostrar los usuarios:', error);
+      // Puedes dispatchar una acción de error si es necesario.
+    }
+  };
+};
+
+
+
+export const PaymentPaypal = (productId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`https://en-una-production.up.railway.app/api/create-payment/${productId}`);
+      const data = res.data;
+      window.location.href = data.links[1].href
+      dispatch({
+        type: "PAYMENT_PAYPAL",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al al pagar on paypal:', error);
+    }
+  };
+};
+
+export const Order = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`https://en-una-production.up.railway.app/api/order`, payload);
+      const data = res.data;
+      dispatch({
+        type: "ORDER",
+        payload: data
+      });
+    } catch (error) {
+      console.error('Error al crear la orden:', error);
+    }
+  };
+};
+
+
+
+
 export const updateProduct = (productId, payload) => {
   return async (dispatch) => {
     try {
@@ -564,4 +645,4 @@ export const AllProducts = (payload) => {
       // Puedes dispatchar una acción de error si es necesario.
     }
   };
-};
+}; 

@@ -27,11 +27,21 @@ import FrequentQuestions from "./pages/FrequentQuestions";
 import MyReservationsRestaurant from "./pages/MyReservationsRestaurant";
 import PanelRestaurant from "./pages/PanelRestaurant";
 import PostRestaurant from "./pages/PostRestaurant";
+
 import EditMenu from './pages/EditMenu';
 
 import React, { useState } from 'react';
 import SuccessReserve from "./pages/SuccessReserve";
 import PoliticPrivateRestaurant from "./pages/PoliticPrivateRestaurant";
+import ReclamoForm from "./pages/ReclamoForm";
+import ComplaintBook from "./pages/ComplaintBook";
+import ReclaimSend from "./pages/ReclaimSend";
+import AdminComplete from './pages/Admin'
+import TableUsers from "./components/AdminComplete/TableUsers";
+import TableRestaurant from "./components/AdminComplete/TableRestaurant";
+import TableFormPetition from "./components/AdminComplete/TableFormPetition";
+
+
 
 
 
@@ -82,8 +92,14 @@ function App() {
           <Route path="/preguntas-frecuentes" element={<FrequentQuestions />} />
           <Route path="/menús-reservados" element={<CarsFood />} />
           <Route path="/reserva-exitosa" element={<SuccessReserve />} />
+          <Route path="/libro-de-quejas" element={<ComplaintBook />} />
+          <Route path="/reclamación" element={<ReclamoForm />} />
+          <Route path="/reclamo-enviado" element={<ReclaimSend />} />
 
 
+
+
+          
 
 
 
@@ -101,6 +117,30 @@ function App() {
 
 
           </Route>
+
+
+
+
+   
+
+
+
+
+          <Route path='/panel/administrativo' element={<AdminComplete />}>
+            <Route index element={<TableFormPetition />} />
+        
+            <Route path='formularios-de-registros' element={<TableFormPetition />} />
+            <Route path='usuarios-registrados' element={<TableUsers />} />
+
+            <Route path='restaurantes-registrados' element={<TableRestaurant />} />
+
+
+           
+
+
+
+          </Route>
+          
 
 
         </Routes>

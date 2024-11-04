@@ -1,11 +1,17 @@
-import { useState } from "react";
+import React, { useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./ContactUs.module.css";
 import Button from "@mui/material/Button";
 
 
 
 export default function ContactUs() {
+  const { pathname } = useLocation();
 
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <div className={styles.contact_container}>
       <div>

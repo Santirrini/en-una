@@ -1,15 +1,24 @@
 import { Link } from "react-router-dom";
 import styles from "./Register.module.css";
 import { RegisterUser } from "../../redux/action";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Avatar from "@mui/material/Avatar";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
+
+
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const autocompleteRef = useRef(null); // Referencia para el Autocomplete
 
   const [data, setData] = useState({
     name: "",
@@ -23,6 +32,8 @@ export default function Register() {
     genre: "",
     date: "",
     country: "",
+    
+    departament: "",
     province: "",
     district: "",
     email: "",
@@ -30,6 +41,7 @@ export default function Register() {
     phone: "",
     role: "",
   });
+
   const [loadingSuccess, setLoadingSuccess] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [messageApiError, contextHolderError] = message.useMessage();
@@ -72,7 +84,59 @@ export default function Register() {
       [e.target.name]: e.target.value,
     });
   };
-
+  const onPlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+  
+      if (place?.geometry) {
+        const addressComponents = place.address_components;
+        if (addressComponents) {
+          // Extraer el país (country)
+          const country = addressComponents.find(component =>
+            component.types.includes("country")
+          );
+  
+          // Filtrar todos los departamentos/estados (administrative_area_level_1)
+          const departments = addressComponents.filter(component =>
+            component.types.includes("administrative_area_level_1")
+          );
+  
+          // Filtrar todas las provincias (administrative_area_level_1)
+          const provinces = addressComponents.filter(component =>
+            component.types.includes("administrative_area_level_1")
+          );
+  
+          // Filtrar todos los distritos (administrative_area_level_2)
+          const districts = addressComponents.filter(component =>
+            component.types.includes("administrative_area_level_2")
+          );
+  
+          // Filtrar todas las localidades/ciudades (locality)
+          const localities = addressComponents.filter(component =>
+            component.types.includes("locality")
+          );
+  
+          // Actualizar el estado con las listas de componentes
+          setData({
+            ...data,
+            country: country ? country.long_name : "",
+            departments: departments.map(dep => dep.long_name), // Múltiples departamentos
+            provinces: provinces.map(prov => prov.long_name), // Múltiples provincias
+            districts: districts.map(dist => dist.long_name), // Múltiples distritos
+            localities: localities.map(loc => loc.long_name), // Múltiples localidades
+            address: place.formatted_address, // Dirección completa
+          });
+        } else {
+          console.error('No se pudo obtener los componentes de la dirección.');
+        }
+      } else {
+        console.error('No se pudo obtener la información de geometría.');
+      }
+    }
+  };
+  
+  
+  
   return (
     <div className={styles.register_container}>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -83,6 +147,7 @@ export default function Register() {
           >
             Crear usuario
           </h2>
+
           <h2
             className={`mt-10 text-center  font-bold leading-9 tracking-tight text-gray-900 ${styles.textSubTitle}`}
           >
@@ -231,18 +296,73 @@ export default function Register() {
                     País
                   </label>
                   <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
                     <input
-                      placeholder="país"
+                      placeholder="País"
                       id="country"
                       name="country"
+                      autoComplete= {false}
                       type="text"
                       onChange={handleChange}
                       required
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
+                            </Autocomplete>
+                            </LoadScript>
                   </div>
                 </div>
+                <div>
+                  <label
+                    htmlFor="departament"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Departamento
+                  </label>
+             
 
+                  <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
+                    <input
+                      placeholder="Departamento"
+                      id="departament"
+                      autoComplete= {false}
+                      name="departament"
+                      type="text"
+                      value={data.departament}
+
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+
+                    
+                    </Autocomplete>
+
+                  </LoadScript>
+
+                  </div>
+                </div>
                 <div>
                   <label
                     htmlFor="province"
@@ -251,15 +371,30 @@ export default function Register() {
                     Provincia
                   </label>
                   <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
                     <input
                       placeholder="provincia"
                       id="province"
                       name="province"
                       type="text"
+                      autoComplete= {false}
                       onChange={handleChange}
                       required
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
+                       </Autocomplete>
+                       </LoadScript>
                   </div>
                 </div>
                 <div>
@@ -270,15 +405,30 @@ export default function Register() {
                     Distrito
                   </label>
                   <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
                     <input
                       placeholder="Distrito"
                       id="district"
                       name="district"
                       type="text"
+                      autoComplete= {false}
                       onChange={handleChange}
                       required
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
+                             </Autocomplete>
+                             </LoadScript>
                   </div>
                 </div>
                 <div>
@@ -341,7 +491,7 @@ export default function Register() {
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
                   </div>
-                  <div style={{display: 'flex', gap: "1em", marginTop: "1em"}}>
+                  <div style={{display: 'flex', gap: "1em", marginTop: "1em", fontSize: '13px', }}>
                     <input type="checkbox"  name="" id=""
                       onChange={handleChange}
                       className={styles.input}
@@ -349,7 +499,7 @@ export default function Register() {
                     />
                     <label htmlFor="">
 
-                    Aceptar terminos y condiciones
+                    Aceptar terminos y condiciones <Link to='/términos-y-condiciones' className={styles.term_register}>Terminos y condiciones</Link>
                     </label>
                   </div>
                 </div>
@@ -547,15 +697,71 @@ export default function Register() {
                     País
                   </label>
                   <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
                     <input
                       placeholder="País"
                       id="country"
                       name="country"
                       type="country"
                       onChange={handleChange}
+                      autoComplete= {false}
                       required
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
+                             </Autocomplete>
+
+</LoadScript>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="departament"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Departamento
+                  </label>
+             
+
+                  <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
+                    <input
+                      placeholder="Departamento"
+                      id="departament"
+                      name="departament"
+                      type="text"
+                      autoComplete= {false}
+                       value={data.departament}
+
+                      onChange={handleChange}
+                      required
+                      className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
+                    />
+
+                    
+                    </Autocomplete>
+
+                  </LoadScript>
+
                   </div>
                 </div>
                 <div>
@@ -566,15 +772,33 @@ export default function Register() {
                     Provincia
                   </label>
                   <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
+
                     <input
                       placeholder="Provincia"
                       id="province"
                       name="province"
                       type="province"
+                      autoComplete= {false}
+
                       onChange={handleChange}
                       required
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
+                      </Autocomplete>
+                  </LoadScript>
+
                   </div>
                 </div>
                 <div>
@@ -585,15 +809,30 @@ export default function Register() {
                     Distrito
                   </label>
                   <div className="mt-2">
+                  <LoadScript
+                    googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+                    libraries={["places"]} // Necesario para usar Autocomplete
+                  >
+
+
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        (autocompleteRef.current = autocomplete)
+                      }
+                      onPlaceChanged={onPlaceChanged}
+                    >
                     <input
                       placeholder="Distrito"
                       id="district"
                       name="district"
+                      autoComplete= {false}
                       type="text"
                       onChange={handleChange}
                       required
                       className={`outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.input}`}
                     />
+                           </Autocomplete>
+                           </LoadScript>
                   </div>
                 </div>
           
@@ -628,17 +867,7 @@ export default function Register() {
                     />
                   </div>
 
-                  <div style={{display: 'flex', gap: "1em", marginTop: "1em"}}>
-                    <input type="checkbox"  name="" id=""
-                      onChange={handleChange}
-                      className={styles.input}
-                    required
-                    />
-                    <label htmlFor="">
-
-                    Aceptar terminos y condiciones
-                    </label>
-                  </div>
+        
                 </div>
               </>
             ) : null}

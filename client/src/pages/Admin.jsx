@@ -1,10 +1,10 @@
-import AdminComplete from "../components/AdminComplete/AdminComplete";
+import AdminComponentComplete from "../components/AdminComplete/AdminComplete";
 
 export default function Admin() {
     return (
         <div>
             <div>
-                <AdminComplete/>
+              <AdminComponentComplete/>
             </div>
         </div>
     )

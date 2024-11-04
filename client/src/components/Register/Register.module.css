@@ -20,7 +20,10 @@
     border-radius: 0;
   
 }
-
+.term_register{
+    color: blue;
+    text-decoration: underline;
+}
 .textTitle {
     color: #500075
 }

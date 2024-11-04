@@ -44,7 +44,6 @@ export default function Login() {
     try {
       if (email && password) {
         const authResult = await dispatch(login(email, password));
-        console.log("AuthResult:", authResult); // Verifica la estructura de authResult
   
         if (authResult && authResult.userId) {
           // Almacena el userId en localStorage

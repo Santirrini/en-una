@@ -2,11 +2,19 @@
     background-color: white;
     max-width: 90%;
     width: 800px;
-    margin: 15em auto;
+    margin:  auto;
     border-radius: 10px;
     position: relative;
+    height: 100vh;
+}
+.btn {
+    background-color: #500075 !important;
+    width: 100%;
 }
 
+.btn:hover {
+    background-color: #500075 !important;
+}
 @media screen and (max-width: 768px) {
     .confirm_send_email {
         background-color: white;

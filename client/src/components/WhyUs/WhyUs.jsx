@@ -1,11 +1,19 @@
+import React, { useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./WhyUs.module.css";
 
 export default function WhyUs() {
+  const { pathname } = useLocation();
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <div className={styles.contact_container}>
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Acerca de Enuna
+          ¿Quienes somos?
           </h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
           Enuna es una plataforma tecnológica que fue creada para mejorar la experiencia en restaurantes, desde la reserva hasta el día que visitas el local.

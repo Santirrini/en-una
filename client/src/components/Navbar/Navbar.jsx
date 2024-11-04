@@ -21,7 +21,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Avatar from "@mui/material/Avatar";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import styles from "./Navbar.module.css";
@@ -41,7 +41,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import LoginIcon from "@mui/icons-material/Login";
 import Notification from "./Notification";
+import PropTypes from 'prop-types';
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import { useSpring, animated } from '@react-spring/web';
+import FormModal from './FormModal';
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 const drawerWidth = 240;
 
 const Search = styled("div")(({ theme }) => ({
@@ -80,6 +87,62 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   color: "orange",
 }));
 
+
+
+const Fade = React.forwardRef(function Fade(props, ref) {
+  const {
+    children,
+    in: open,
+    onClick,
+    onEnter,
+    onExited,
+    ownerState,
+    ...other
+  } = props;
+  const style = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: open ? 1 : 0 },
+    onStart: () => {
+      if (open && onEnter) {
+        onEnter(null, true);
+      }
+    },
+    onRest: () => {
+      if (!open && onExited) {
+        onExited(null, true);
+      }
+    },
+  });
+
+  return (
+    <animated.div ref={ref} style={style} {...other}>
+      {React.cloneElement(children, { onClick })}
+    </animated.div>
+  );
+});
+
+Fade.propTypes = {
+  children: PropTypes.element.isRequired,
+  in: PropTypes.bool,
+  onClick: PropTypes.any,
+  onEnter: PropTypes.func,
+  onExited: PropTypes.func,
+  ownerState: PropTypes.any,
+};
+
+const style = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 1,
+};
+
+
 export default function PrimarySearchAppBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,13 +156,25 @@ export default function PrimarySearchAppBar() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const open = Boolean(anchorEl);
   const inputRef = React.useRef(null);
-
+  const [openForm, setOpenForm] = React.useState(false);
+  const handleOpenForm = () => setOpenForm(true);
+  const handleCloseForm = () => setOpenForm(false);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [openAlert, setOpenAlert] = React.useState(false);
 
+ 
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -203,6 +278,14 @@ export default function PrimarySearchAppBar() {
         {!token ? (
           <>
             <br />
+            <ListItem disablePadding onClick={handleOpenForm} >
+                <ListItemButton>
+                  <ListItemIcon>
+                    <LoginIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"¿Eres un Restaurante?"} />
+                </ListItemButton>
+              </ListItem>
             <Link to="/iniciar-sesión">
               <ListItem disablePadding className={styles.btn_login}>
                 <ListItemButton>
@@ -437,6 +520,7 @@ export default function PrimarySearchAppBar() {
                           className="title-search-name"
                         >
                           <MenuItem>
+                          
                             <ListItemIcon>
                               <Avatar
                                 src={row.imageFile[0]}
@@ -511,6 +595,8 @@ export default function PrimarySearchAppBar() {
                     <Tooltip>
                       <div style={{ display: "flex", placeItems: "center" }}>
                         <div>
+
+                        
                           <strong style={{ color: "#fff" }}>
                             ¡Hola {datapersonal.name}!
                           </strong>
@@ -617,12 +703,19 @@ export default function PrimarySearchAppBar() {
                   </Menu>
                 </div>
               ) : (
-                <>
+                <div style={{ display: "flex", placeItems: "center" }}>
+                <div>
+
+                
+                  <span onClick={handleOpenForm} className={styles.modal_form} >
+                    ¿Eres un Restaurante?
+                  </span>
                   <IconButton
                     size="large"
                     aria-label="show 17 new notifications"
                     color="inherit"
                   >
+                    
                     <Avatar
                       sx={{
                         width: 50,
@@ -634,6 +727,8 @@ export default function PrimarySearchAppBar() {
                       }}
                     ></Avatar>
                   </IconButton>
+                </div>
+
                   <Box sx={{ display: { xs: "none", sm: "block" } }}>
                     <Link to="/iniciar-sesión">
                       <Button className={styles.btn_login}>
@@ -641,7 +736,8 @@ export default function PrimarySearchAppBar() {
                       </Button>
                     </Link>
                   </Box>
-                </>
+
+                </div>
               )}
             </div>
           </div>
@@ -667,6 +763,35 @@ export default function PrimarySearchAppBar() {
           </Drawer>
         </nav>
       </Box>
+      <Modal
+        aria-labelledby="spring-modal-title"
+        aria-describedby="spring-modal-description"
+        open={openForm}
+        onClose={handleCloseForm}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            TransitionComponent: Fade,
+          },
+        }}
+      >
+        <Fade in={openForm}>
+          <Box className={styles.box_modal}>
+        <FormModal setOpenForm={setOpenForm} setOpenAlert={setOpenAlert}/>
+          </Box>
+        </Fade>
+      </Modal>
+      <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleCloseAlert}>
+        <Alert
+          onClose={handleCloseAlert}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Formulario completado exitosamente.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
