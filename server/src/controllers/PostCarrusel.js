@@ -1,4 +1,4 @@
-const { Gallery } = require('../db');
+const { Carousel } = require('../db');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 
@@ -12,28 +12,28 @@ cloudinary.config({
     PostCarrusel: async (req, res) => {
   
       try {
-        let imageGallery = null;
+        let imageCarousel = null;
         
         // Asegurarse de que haya archivos subidos
         if (req.file) {
-          const imageGalleryFile = req.file;  // Obtenemos el archivo
+          const imageCarouselFile = req.file;  // Obtenemos el archivo
           // Subir el archivo a Cloudinary
-          const cloudinaryUploadResultLogo = await cloudinary.uploader.upload(imageGalleryFile.path, {
+          const cloudinaryUploadResultLogo = await cloudinary.uploader.upload(imageCarouselFile.path, {
             resource_type: 'image',
             quality: 'auto:best',
             fetch_format: 'auto',
           });
-          imageGallery = cloudinaryUploadResultLogo.secure_url;
-          console.log('Imagen de galeria subido a Cloudinary:', imageGallery);
+          imageCarousel = cloudinaryUploadResultLogo.secure_url;
+          console.log('Imagen de galeria subido a Cloudinary:', imageCarousel);
         }
   
         // Crear la escuela en la base de datos
-        const school = await Gallery.create({ 
-          imageGallery: imageGallery
+        const carousel = await Carousel.create({ 
+          imageCarousel: imageCarousel
         });
   
-        res.status(200).send({ success: true, data: school });
-    console.log("Foto subido a galeria correctamente")
+        res.status(200).send({ success: true, data: carousel });
+    console.log("Carrusel subido correctamente correctamente")
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error en el servidor' });
