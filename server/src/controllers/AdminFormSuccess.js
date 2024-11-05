@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { User, Code, Restaurant } = require('../db');
+const nodemailer = require('nodemailer');
 
 
 const transporter = nodemailer.createTransport({
