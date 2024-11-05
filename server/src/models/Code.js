@@ -1,0 +1,19 @@
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+    const Code = sequelize.define('Code', {
+        id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            allowNull: false,
+            primaryKey: true,
+        },
+        code: {
+            type: DataTypes.INTEGER,
+            unique: true,
+          },
+        }, {
+          timestamps: false, // Desactiva los campos createdAt y updatedAt
+        });
+    return Code
+};

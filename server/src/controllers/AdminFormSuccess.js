@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { User } = require('../db');
+const { User, Code, Restaurant } = require('../db');
 
 module.exports = {
   AdminFormSuccess: async (req, res) => {
@@ -10,18 +10,30 @@ module.exports = {
 
       while (!isUnique) {
         code = Math.floor(1000 + Math.random() * 9000); // Genera un número entre 1000 y 9999
-        const existingUser = await User.findOne({ where: { code } });
-        if (!existingUser) {
+        const existingCode = await Code.findOne({ where: { code } });
+        if (!existingCode) {
           isUnique = true; // Si el código es único, salir del bucle
         }
       }
 
-      // Crear el nuevo usuario en la base de datos
-      const newUser = await User.create({
+      // Crear el nuevo código en la base de datos
+      const newCode = await Code.create({
         code, // Almacena el código único generado
       });
-  console.log('Formulario de registro confirmado con éxito')
-      res.status(201).json({ message: 'Formulario de registro confirmado con éxito', user: newUser });
+
+      // Relacionar restaurantes (supongamos que tienes un array de IDs de restaurantes)
+      const restaurantIds = req.body.restaurantIds; // Los IDs deben venir del cuerpo de la solicitud
+      if (restaurantIds && restaurantIds.length) {
+        await Promise.all(restaurantIds.map(async (restaurantId) => {
+          const restaurant = await Restaurant.findByPk(restaurantId);
+          if (restaurant) {
+            await restaurant.update({ codeId: newCode.id });
+          }
+        }));
+      }
+
+      console.log('Formulario de registro confirmado con éxito');
+      res.status(201).json({ message: 'Formulario de registro confirmado con éxito', code: newCode });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error en el servidor' });

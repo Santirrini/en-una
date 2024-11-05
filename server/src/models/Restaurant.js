@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
 
         },
 
-    
+
 
         phone: {
             type: DataTypes.STRING,
@@ -44,7 +44,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
-        
+
         maximum_person_per_table: {
             type: DataTypes.STRING,
 
@@ -54,7 +54,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
-        
+
         type_of_meals: {
             type: DataTypes.STRING,
 
@@ -68,24 +68,24 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
 
         },
-        
+
 
         horarios: {
             type: DataTypes.ARRAY(DataTypes.JSON),
             defaultValue: []
-          },
+        },
 
-          area: {
+        area: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             defaultValue: []
 
-          },
+        },
 
-          additional_services: {
+        additional_services: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             defaultValue: []
 
-          },
+        },
 
         details: {
             type: DataTypes.STRING(3000),
@@ -106,9 +106,9 @@ module.exports = (sequelize) => {
         youtube: {
             type: DataTypes.STRING,
         },
-
-    },{
+   
+    }, {
         timestamps: false, // Desactiva los campos createdAt y updatedAt
-      });
+    });
     return Restaurant
 };

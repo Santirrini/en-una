@@ -1,8 +1,8 @@
-require('dotenv').config();
-const { User, Restaurant } = require('../db');
+const { User, Restaurant, Code } = require('../db'); // Asegúrate de incluir tu modelo Code
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 function getRandomColor() {
   const letters = '0123456789ABCDEF';
@@ -12,6 +12,7 @@ function getRandomColor() {
   }
   return color;
 }
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -25,13 +26,17 @@ const transporter = nodemailer.createTransport({
 
 module.exports = {
   Register: async (req, res) => {
-    const { name, razon_social, ruc, contact_person, position,departament, address, lastName, genre, email_additional, date, country, province, district, password, email, phone, role,  restaurantId } = req.body;
+    const { name, razon_social, ruc, contact_person, position,departament, address, lastName, genre, email_additional, date, country, province, district, password, email, phone, role,  restaurantId,  code } = req.body;
 
     try {
-      const existingUser = await User.findOne({ where: { email } });
+      // Verificar si el código es válido
+      const validCode = await Code.findOne({ where: { code } });
+      if (!validCode) {
+        return res.status(400).json({ message: 'Código de registro inválido' });
+      }
 
+      const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
-        console.log('El usuario ya existe');
         return res.status(400).json({ message: 'El usuario ya existe' });
       }
 
@@ -39,8 +44,9 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+
       const emailContent = `
-         <html>
+          <html>
          <body    style="
          background-color: #f3f3f3;
          display: grid;
@@ -82,15 +88,13 @@ module.exports = {
            </div>
          </body>
        </html>
-         `;
-
-      await transporter.sendMail({
+      `;
+  await transporter.sendMail({
         from: process.env.EMAIL,
         to: email,
         subject: '¡Bienvenido a nuestra plataforma!',
         html: emailContent,
       });
-
       const newUser = await User.create({
         name: capitalizedName,
         lastName,
@@ -108,29 +112,24 @@ module.exports = {
         email,
         email_additional,
         password: hashedPassword,
+        backgroundColor,
         phone,
         role,
-        status: "activo",
-        backgroundColor,
+        codeId: validCode.id, // Asigna el código al usuario
         restaurantId, // Asigna el restaurante al usuario
       });
 
-      // Obtener los detalles del restaurante relacionado
       const userWithRestaurant = await User.findByPk(newUser.id, {
         include: [Restaurant],
       });
 
-      const tokenPayload = { id: newUser.id, role: newUser.role };
+      const tokenPayload = { id: newUser.id, role: 'restaurante' }; // Asegúrate de asignar el rol correcto
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
-      console.log('Usuario creado correctamente');
-
-      return res.json({ token, user: userWithRestaurant }); // Devuelve el usuario con los detalles del restaurante
+      return res.json({ token, user: userWithRestaurant });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Error en el servidor' });
+      return res.status(500).json({ message: 'Error en el servidor' });
     }
   },
 };
-
-

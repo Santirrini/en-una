@@ -8,10 +8,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
-code: {
-  type: DataTypes.INTEGER,
-  unique: true
-},
+
 
     name: {
       type: DataTypes.STRING,
@@ -97,7 +94,13 @@ code: {
         key: 'id',
       },
     },
-
+    codeId: {
+      type: DataTypes.UUID, // Cambiar a UUID para que coincida con el tipo de Codes.id
+      references: {
+        model: 'Codes', // Nombre de la tabla en la base de datos
+        key: 'id',
+      },
+  },
     successPayment: {
       type: DataTypes.UUID,
       references: {
