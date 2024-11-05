@@ -30,7 +30,7 @@ module.exports = {
         }
       }
       const emailContent = `
- <html>
+<html>
   <body
     style="
       background-color: #f3f3f3;
@@ -67,8 +67,8 @@ module.exports = {
       </p>
 
       <h1 style="color: black; text-align: center">45651321</h1>
-        <a href="https://www.enunaapp.com/registrarse" target="_blank" style="  display: flex; justify-content: center; text-decoration: none;">
-          <button
+          <a
+          href="https://www.enunaapp.com/registrarse" target="_blank"
             style="
               color: white;
               text-align: center;
@@ -78,11 +78,14 @@ module.exports = {
               border-radius: 3px;
               font-size: 20px;
               cursor: pointer;
+              text-decoration: none;
+              display: flex;
+              justify-content: center;
             
             "
           >
             Abrir en una
-          </button>
+          </a>
         </a>
       <p style="color: black">
         Una vez completado, seleccione el tipo de cuenta en
@@ -91,6 +94,7 @@ module.exports = {
     </div>
   </body>
 </html>
+
   `;
 await transporter.sendMail({
     from: process.env.EMAIL,
