@@ -67,26 +67,24 @@ module.exports = {
       </p>
 
       <h1 style="color: black; text-align: center">45651321</h1>
-          <a
-          href="https://www.enunaapp.com/registrarse" target="_blank"
-            style="
-              color: white;
-              text-align: center;
-              background-color: #bd24bd;
-              border: none;
-              padding: 15px;
-              border-radius: 3px;
-              font-size: 20px;
-              cursor: pointer;
-              text-decoration: none;
-              display: flex;
-              justify-content: center;
-            
-            "
-          >
-            Abrir en una
-          </a>
+      <div style="margin: 0 auto; text-align: center; margin-bottom: 2em">
+        <a
+          style="
+            color: white;
+            text-align: center;
+            background-color: #bd24bd;
+            border: none;
+            padding: 15px;
+            border-radius: 3px;
+            font-size: 20px;
+            cursor: pointer;
+            text-decoration: none;
+          "
+        >
+          Abrir en una
         </a>
+      </div>
+
       <p style="color: black">
         Una vez completado, seleccione el tipo de cuenta en
         <strong>Restaurante</strong> y complete el formulario.
