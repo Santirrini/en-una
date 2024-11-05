@@ -69,6 +69,8 @@ module.exports = {
       <h1 style="color: black; text-align: center">45651321</h1>
       <div style="margin: 0 auto; text-align: center; margin-bottom: 2em">
         <a
+        href="https://www.enunaapp.com/registrarse"
+        target= "_blank"
           style="
             color: white;
             text-align: center;
