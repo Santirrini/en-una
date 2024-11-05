@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { User, Code, Restaurant } = require('../db');
+const { Code, Restaurant } = require('../db');
 const nodemailer = require('nodemailer');
 
 
@@ -30,12 +30,13 @@ module.exports = {
         }
       }
       const emailContent = `
-  <html>
+ <html>
   <body
     style="
       background-color: #f3f3f3;
       display: grid;
       justify-content: center;
+      align-items: center;
       max-width: 100%;
     "
   >
@@ -66,8 +67,7 @@ module.exports = {
       </p>
 
       <h1 style="color: black; text-align: center">45651321</h1>
-      <div style="margin: auto; display: flex; justify-content: center">
-        <a href="https://www.enunaapp.com/registrarse" target="_blank">
+        <a href="https://www.enunaapp.com/registrarse" target="_blank" style="  display: flex; justify-content: center; text-decoration: none;">
           <button
             style="
               color: white;
@@ -78,12 +78,12 @@ module.exports = {
               border-radius: 3px;
               font-size: 20px;
               cursor: pointer;
+            
             "
           >
             Abrir en una
           </button>
         </a>
-      </div>
       <p style="color: black">
         Una vez completado, seleccione el tipo de cuenta en
         <strong>Restaurante</strong> y complete el formulario.
