@@ -79,6 +79,7 @@ module.exports = {
             font-size: 20px;
             cursor: pointer;
             text-decoration: none;
+            cursor: pointer;
           "
         >
           Abrir en una
