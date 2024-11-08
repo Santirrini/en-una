@@ -35,6 +35,9 @@ module.exports = (sequelize) => {
     observation: {
       type: DataTypes.STRING,
     },
+    status: {
+      type: DataTypes.STRING,
+    },
     restaurantId: {
       type: DataTypes.UUID,
     },

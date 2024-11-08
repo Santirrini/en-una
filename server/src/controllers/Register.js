@@ -123,7 +123,7 @@ module.exports = {
         include: [Restaurant],
       });
 
-      const tokenPayload = { id: newUser.id, role: 'restaurante' }; // Asegúrate de asignar el rol correcto
+      const tokenPayload = { id: newUser.id, role }; // Asegúrate de asignar el rol correcto
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
       return res.json({ token, user: userWithRestaurant });
