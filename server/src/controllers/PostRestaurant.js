@@ -22,7 +22,7 @@ module.exports = {
       try {
         const {
           name, address, phone, email, details, district, horarios, local, area, additional_services,
-          maximum_per_table, maximum_person_per_table, minimum_consumption, type_of_meals, average_price, facebook, instagram, tiktok, youtube
+          maximum_per_table, maximum_person_per_table, minimum_consumption, type_of_meals, average_price, facebook, instagram, tiktok, youtube, status
         } = req.body;
 
         const userId = decoded.id; // ID del usuario extraído del token
@@ -99,6 +99,7 @@ module.exports = {
             additional_services: additional_services ? JSON.parse(additional_services) : restaurant.additional_services || "",
             horarios: horarios ? parsedHorarios : restaurant.horarios || "",
             details: details !== undefined ? details : "",
+            status: "-"
           }, { where: { userId } });
 
           console.log('Restaurante actualizado correctamente');
@@ -127,6 +128,8 @@ module.exports = {
             additional_services: additional_services ? JSON.parse(additional_services) : [],
             horarios: parsedHorarios,
             details: details !== undefined ? details : "",
+            status: "-",
+
             userId // Asignar el ID del usuario al restaurante
           });
 

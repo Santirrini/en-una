@@ -106,6 +106,9 @@ module.exports = (sequelize) => {
         youtube: {
             type: DataTypes.STRING,
         },
+        status: {
+            type: DataTypes.STRING,
+        },
    
     }, {
         timestamps: false, // Desactiva los campos createdAt y updatedAt
