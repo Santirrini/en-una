@@ -1,13 +1,19 @@
-const { User, Restaurant } = require('../db');
+const { User, Restaurant, Order } = require('../db');
 
 module.exports = {
   AllUsers: async (req, res) => {
     try {
   
         const users = await User.findAll({
-          include:{
+          include:[{
             model: Restaurant
-          }
+          },
+        {
+          model: Order
+
+          
+        }
+        ]
         });
 
         console.log('Todos los usuarios');
