@@ -1,4 +1,4 @@
-const { Restaurant, User, Menu } = require('../db');
+const { Restaurant, User, Menu, Order } = require('../db');
 
 module.exports = {
   DetailsRestaurant: async (req, res) => {
@@ -7,7 +7,9 @@ module.exports = {
       const restaurant = await Restaurant.findByPk(restaurantId, {
         include: [
           { model: User },
-          { model: Menu }
+          { model: Menu },
+          { model: Order }
+
         ]
       });
       if (!restaurant) {
