@@ -12,6 +12,7 @@ const {LoginGoogle} = require('../controllers/LoginGoogle');
 const {GoogleCallback} = require('../controllers/LoginGoogle');
 const {Claim} = require('../controllers/Claim');
 const {DetailsUser} = require('../controllers/DetailsUser');
+const {UpdateStatus} = require('../controllers/UpdateStatus');
 
 
 
@@ -35,6 +36,7 @@ router.get('/auth/google/callback', GoogleCallback);
 
 router.post('/claim', Claim);
 
+router.put('/user/:userId', UpdateStatus);
 
 
 
