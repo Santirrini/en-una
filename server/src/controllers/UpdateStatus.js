@@ -7,6 +7,7 @@ module.exports = {
         const { status } = req.body;
 
         try {
+            console.log('Valor del status:', status);
             if (!['pendiente', 'activo'].includes(status)) {
                 return res.status(400).json({ message: 'Estado no válido' });
             }
