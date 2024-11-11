@@ -30,10 +30,13 @@ module.exports = {
 
     try {
       // Verificar si el código es válido
-     const validCode = await Code.findOne({ where: { code } });
-      if (!validCode) {
-        return res.status(400).json({ message: 'Código de registro inválido' });
-      }  
+      let validCode = null;
+      if (role === 'restaurante') {
+        validCode = await Code.findOne({ where: { code } });
+        if (!validCode) {
+          return res.status(400).json({ message: 'Código de registro inválido' });
+        }
+      }
 
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
