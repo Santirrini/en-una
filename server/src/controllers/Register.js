@@ -34,13 +34,13 @@ module.exports = {
       if (role === 'restaurante') {
         validCode = await Code.findOne({ where: { code } });
         if (!validCode) {
-          return res.status(400).json({ message: 'Código de registro inválido' });
+          return res.status(400).json({status: 400, message: 'Código de registro inválido' });
         }
       }
 
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
-        return res.status(400).json({ message: 'El usuario ya existe' });
+        return res.status(404).json({status: 404, message: 'El usuario ya existe' });
       }
 
       const saltRounds = 10;
