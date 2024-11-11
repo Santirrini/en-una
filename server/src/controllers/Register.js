@@ -115,7 +115,8 @@ module.exports = {
         backgroundColor,
         phone,
         role,
-        codeId: validCode.id, // Asigna el código al usuario
+        codeId: validCode ? validCode.id : null, // Asigna el código al usuario si existe
+
         restaurantId, // Asigna el restaurante al usuario
       });
 
