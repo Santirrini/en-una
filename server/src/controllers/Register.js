@@ -31,12 +31,23 @@ module.exports = {
     try {
       // Verificar si el código es válido
       let validCode = null;
+      
       if (role === 'restaurante') {
         validCode = await Code.findOne({ where: { code } });
         if (!validCode) {
           return res.status(400).json({status: 400, message: 'Código de registro inválido' });
         }
       }
+
+      let userStatus;
+      if (role === 'restaurante') {
+       userStatus = "pendiente"
+            
+           } else {
+       userStatus = "activo"
+
+           }
+
 
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
@@ -118,6 +129,7 @@ module.exports = {
         backgroundColor,
         phone,
         role,
+        status: userStatus,
         codeId: validCode ? validCode.id : null, // Asigna el código al usuario si existe
 
         restaurantId, // Asigna el restaurante al usuario
