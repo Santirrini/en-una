@@ -30,10 +30,10 @@ module.exports = {
 
     try {
       // Verificar si el código es válido
-      const validCode = await Code.findOne({ where: { code } });
+   /*    const validCode = await Code.findOne({ where: { code } });
       if (!validCode) {
         return res.status(400).json({ message: 'Código de registro inválido' });
-      }
+      } */
 
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
@@ -123,7 +123,7 @@ module.exports = {
         include: [Restaurant],
       });
 
-      const tokenPayload = { id: newUser.id, role: 'restaurante' }; // Asegúrate de asignar el rol correcto
+      const tokenPayload = { userId: newUser.id, role }; // Asegúrate de asignar el rol correcto
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
       return res.json({ token, user: userWithRestaurant });
