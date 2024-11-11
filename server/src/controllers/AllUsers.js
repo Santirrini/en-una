@@ -3,22 +3,18 @@ const { User, Restaurant, Order } = require('../db');
 module.exports = {
   AllUsers: async (req, res) => {
     try {
-  
-        const users = await User.findAll({
-          include:[{
-            model: Restaurant
-          },
-        {
-          model: Order
 
-          
+      const users = await User.findAll({
+        include: {
+          model: Restaurant
         }
-        ]
-        });
+    
+        
+      });
 
-        console.log('Todos los usuarios');
+      console.log('Todos los usuarios');
 
-        res.status(200).send(users)
+      res.status(200).send(users)
 
 
     } catch (error) {
