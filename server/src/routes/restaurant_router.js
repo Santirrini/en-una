@@ -24,6 +24,7 @@ const { AllCarousel } = require('../controllers/AllCarousel');
 const { DeleteCarousel } = require('../controllers/DeleteCarousel');
 const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
 const { AllOrdersRestaurants } = require('../controllers/AllOrdersRestaurants');
+const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
 
 
 
@@ -85,6 +86,7 @@ router.delete('/carousels/:id', DeleteCarousel);
 router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
+router.put('/restaurant-destac/:restaurantId', RestaurantDetacs);
 
 
 
