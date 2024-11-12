@@ -99,7 +99,8 @@ module.exports = {
             additional_services: additional_services ? JSON.parse(additional_services) : restaurant.additional_services || "",
             horarios: horarios ? parsedHorarios : restaurant.horarios || "",
             details: details !== undefined ? details : "",
-            status: "-"
+            status: "-",
+            category: "-",
           }, { where: { userId } });
 
           console.log('Restaurante actualizado correctamente');

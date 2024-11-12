@@ -109,6 +109,10 @@ module.exports = (sequelize) => {
         status: {
             type: DataTypes.STRING,
         },
+
+        category: {
+            type: DataTypes.STRING,
+        },
    
     }, {
         timestamps: false, // Desactiva los campos createdAt y updatedAt
