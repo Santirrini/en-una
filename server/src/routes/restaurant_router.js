@@ -86,7 +86,7 @@ router.delete('/carousels/:id', DeleteCarousel);
 router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
-router.put('/restaurant-destac/:restaurantId', RestaurantDetacs);
+router.put('/restaurant-destac', RestaurantDetacs);
 
 
 
