@@ -28,6 +28,7 @@ module.exports = {
         return res.status(404).json({ message: 'Formulario no encontrado' });
       }
       await form.update({ status: 'activo' });
+      
       // Buscar si ya existe un usuario con el mismo nombre de negocio
       const existingUser = await User.findOne({
         where: { name: { [Op.iLike]: business_name } },
