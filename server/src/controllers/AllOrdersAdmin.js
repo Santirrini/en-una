@@ -9,16 +9,16 @@ module.exports = {
         include: [
           {
             model: Order,
-            as: 'orders', // Alias configurado en la relación
+            as: 'orders', // Alias de la asociación en SuccessPayment
             include: [
               {
-                model: Restaurant,
-                as: 'restaurant', // Alias configurado en la relación
+                model: Restaurant, // Sin alias explícito
               },
             ],
           },
         ],
       });
+      
       
 
       console.log(`Todas las órdenes para de los restaurantes restaurante`);
