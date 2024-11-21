@@ -97,9 +97,9 @@ module.exports = {
         role: user.role,
       };
 
-      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
+      const jwtToken = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
-      return res.json({ token, role: user.role, userId: user.id });
+      return res.json({ token: jwtToken, user: user.role, userId: user.id });
     } catch (error) {
       return res.status(500).json({ message: 'Error al verificar el token de Google', error });
     }
