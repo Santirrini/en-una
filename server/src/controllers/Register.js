@@ -33,11 +33,20 @@ module.exports = {
       let validCode = null;
       
       if (role === 'restaurante') {
-        validCode = await Code.findOne({ where: { code } });
-        if (!validCode) {
-          return res.status(400).json({status: 400, message: 'Código de registro inválido' });
+        // Si los nombres coinciden, usar el mismo código
+        if (razon_social === name) {
+          validCode = await Code.findOne({ where: { code } });
+          if (!validCode) {
+            return res.status(400).json({ status: 400, message: 'Código de registro inválido' });
+          }
+        } else {
+          // Si no coinciden, generar un nuevo código
+          validCode = await Code.create({
+            code: Math.random().toString(36).substring(2, 15), // Crear un código aleatorio
+          });
         }
       }
+
 
       let userStatus;
       if (role === 'restaurante') {

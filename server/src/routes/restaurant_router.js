@@ -25,6 +25,8 @@ const { DeleteCarousel } = require('../controllers/DeleteCarousel');
 const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
 const { AllOrdersRestaurants } = require('../controllers/AllOrdersRestaurants');
 const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
+const { AllOrdersAdmin } = require('../controllers/AllOrdersAdmin');
+
 
 
 
@@ -69,6 +71,8 @@ router.post('/webhooks', WebHooksEvent)
 router.get('/details-reservations/:reservationtId', DetailsReservation)
 
 router.get('/orders/:restaurantId', AllOrder);
+router.get('/orders/', AllOrdersAdmin);
+
 router.get('/order/:orderId', OrderDetails);
 router.delete('/delete/:productId', DeletePost);
 router.delete('/order/delete/:orderId', DeleteOrder);
