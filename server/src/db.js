@@ -54,6 +54,11 @@ SuccessPayment.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 Order.hasOne(SuccessPayment, { foreignKey: 'orderId', as: 'successPayment' });
 SuccessPayment.belongsTo(Order, { foreignKey: 'orderId', as: 'orders' });
+
+
+
+
+
 Code.hasMany(User, { foreignKey: 'codeId' });
 User.belongsTo(Code, { foreignKey: 'codeId' });
 

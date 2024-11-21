@@ -1,16 +1,25 @@
-const { SuccessPayment, Order } = require('../db');
+const { SuccessPayment, Order, Restaurant } = require('../db');
 
 module.exports = {
     AllOrdersAdmin: async (req, res) => {
    
     
     try {
-      const orders = await SuccessPayment.findAll({
-        include: {
-          model: Order,
-          as: 'orders',
-        }
+      const successPayments = await SuccessPayment.findAll({
+        include: [
+          {
+            model: Order,
+            as: 'order', // Alias configurado en la relación
+            include: [
+              {
+                model: Restaurant,
+                as: 'restaurant', // Alias configurado en la relación
+              },
+            ],
+          },
+        ],
       });
+      
 
       console.log(`Todas las órdenes para de los restaurantes restaurante`);
 
