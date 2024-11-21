@@ -9,7 +9,9 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
 
-
+    avatar: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
     },

@@ -90,6 +90,8 @@ module.exports = {
           name: payload.name,
           lastName: payload.family_name,
           email: payload.email,
+          avatar: payload.picture,
+
         backgroundColor,
  
           password: null,
