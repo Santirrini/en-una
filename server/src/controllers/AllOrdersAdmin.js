@@ -23,7 +23,7 @@ module.exports = {
 
       console.log(`Todas las órdenes para de los restaurantes restaurante`);
 
-      res.status(200).json(orders);
+      res.status(200).json(successPayments);
     } catch (error) {
       console.error('Error al obtener todas las órdenes:', error);
       res.status(500).json({ error: 'Error al obtener todas las órdenes' });
