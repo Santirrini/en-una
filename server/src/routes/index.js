@@ -6,7 +6,6 @@ const postUserRouter = require('./Users_router');
 const postMenuRouter = require('./menu_router'); 
 const passwordRouter = require('./password'); 
 
-console.log('Todos los módulos se cargaron correctamente.');
 
 router.use('/api', postRestaurantRouter, postUserRouter, postMenuRouter, passwordRouter  ) 
 

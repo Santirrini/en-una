@@ -8,8 +8,8 @@ const {Login} = require('../controllers/Login');
 const {DetailsPersonal} = require('../controllers/DetailsPersonal');
 const {ContactUs} = require('../controllers/ContactUs');
 const {UpdatePersonal} = require('../controllers/UpdatePersonal');
-const {LoginGoogle} = require('../controllers/LoginGoogle');
-const {GoogleCallback} = require('../controllers/LoginGoogle');
+const {LoginGoogle, GoogleAuth, GoogleCallback} = require('../controllers/LoginGoogle');
+
 const {Claim} = require('../controllers/Claim');
 const {DetailsUser} = require('../controllers/DetailsUser');
 const {UpdateStatus} = require('../controllers/UpdateStatus');
@@ -30,10 +30,11 @@ router.get('/datapersonal', DetailsPersonal );
 router.post('/contact-us', ContactUs );
 router.put('/update-datapersonal', UpdatePersonal );
 
-router.get('/auth/google', LoginGoogle);
+// Rutas para la autenticación con Google
 
-router.get('/auth/google/callback', GoogleCallback);
-
+router.get('/auth/google', LoginGoogle);  // Redirige al flujo de autenticación de Google
+router.get('/auth/google/callback', GoogleCallback);  // Callback de Google
+router.post('/auth/google', GoogleAuth); 
 router.post('/claim', Claim);
 
 router.put('/user/:userId', UpdateStatus);

@@ -2,56 +2,46 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const { User } = require('../db');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 require('dotenv').config();
 
-
-// Configura la estrategia de Google OAuth con Passport
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,     // Obtén esto desde tu archivo .env
+    clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3001/api/auth/google/callback',      // Asegúrate de que esta URL esté registrada en las credenciales de Google
-  },
-  async (accessToken, refreshToken, profile, done) => {
+    callbackURL: 'https://en-una-production.up.railway.app/api/auth/google/callback',
+},
+async (accessToken, refreshToken, profile, done) => {
     try {
         console.log(profile)
-      // Busca al usuario en la base de datos por su email (proporcionado por Google)
-      let user = await User.findOne({ where: { email: profile.emails[0].value } });
+        let user = await User.findOne({ where: { email: profile.emails[0].value } });
 
-      // Si el usuario no existe, lo crea en la base de datos
-      if (!user) {
-        user = await User.create({
-          
-          name: profile.displayName,
-          lastName: profile.family_name,
+        if (!user) {
+            user = await User.create({
+                name: profile.displayName,
+                lastName: profile.family_name,
+                email: profile.emails[0].value,
+                password: null,
+                role: 'user',
+            });
+        }
 
-          email: profile.emails[0].value,
-          password: null,  // No necesitamos contraseña si usan Google OAuth
-          role: 'user',    // Puedes cambiar el rol por defecto según tu lógica
-        });
-      }
+        const tokenPayload = {
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        };
 
-      // Prepara el payload del token JWT
-      const tokenPayload = {
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      };
-
-      // Genera el token
-      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
-
-      // Devuelve el token y la información del usuario
-      return done(null, { token, user });
+        const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
+        return done(null, { token, user });
     } catch (err) {
-      return done(err, false);
+        return done(err, false);
     }
-  }
-));
+}));
 
 module.exports = {
   // Función para iniciar sesión con Google
   LoginGoogle: (req, res, next) => {
-    // Inicia el proceso de autenticación con Google
     passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
   },
 
@@ -59,7 +49,7 @@ module.exports = {
   GoogleCallback: (req, res, next) => {
     passport.authenticate('google', (err, data) => {
         if (err) {
-          console.error("Error de autenticación:", err); // Imprime el error
+          console.error("Error de autenticación:", err);
           return res.status(500).json({ message: 'Error de autenticación con Google', error: err });
         }
       
@@ -70,6 +60,44 @@ module.exports = {
         const { token, user } = data;
         res.json({ token, role: user.role, userId: user.id });
       })(req, res, next);
-      
+  },
+
+  // Ruta para recibir el token de Google en el servidor
+  GoogleAuth: async (req, res) => {
+    const { token } = req.body;
+
+    try {
+      // Verificar el token de Google usando la librería google-auth-library
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+
+      // Ahora puedes usar el payload para buscar o crear al usuario
+      let user = await User.findOne({ where: { email: payload.email } });
+
+      if (!user) {
+        user = await User.create({
+          name: payload.name,
+          lastName: payload.family_name,
+          email: payload.email,
+          password: null,
+          role: 'user',
+        });
+      }
+
+      const tokenPayload = {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+
+      const jwtToken = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
+
+      return res.json({ token: jwtToken, user: user });
+    } catch (error) {
+      return res.status(500).json({ message: 'Error al verificar el token de Google', error });
+    }
   },
 };
