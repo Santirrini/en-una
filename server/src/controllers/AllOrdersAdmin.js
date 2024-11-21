@@ -9,7 +9,7 @@ module.exports = {
         include: [
           {
             model: Order,
-            as: 'order', // Alias configurado en la relación
+            as: 'orders', // Alias configurado en la relación
             include: [
               {
                 model: Restaurant,

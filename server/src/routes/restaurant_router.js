@@ -71,7 +71,7 @@ router.post('/webhooks', WebHooksEvent)
 router.get('/details-reservations/:reservationtId', DetailsReservation)
 
 router.get('/orders/:restaurantId', AllOrder);
-router.get('/orders/', AllOrdersAdmin);
+router.get('/orders', AllOrdersAdmin);
 
 router.get('/order/:orderId', OrderDetails);
 router.delete('/delete/:productId', DeletePost);
