@@ -81,7 +81,7 @@ module.exports = {
       });
       const payload = ticket.getPayload();
       const backgroundColor = getRandomColor();
-
+      console.log(payload)
       // Ahora puedes usar el payload para buscar o crear al usuario
       let user = await User.findOne({ where: { email: payload.email } });
 
