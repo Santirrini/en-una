@@ -3,8 +3,8 @@ const { Router  }= require('express');
 const router = Router();
 const postRestaurantRouter = require('./restaurant_router');
 const postUserRouter = require('./users_router'); 
-const postMenuRouter = require('../routes/menu_router'); 
-const passwordRouter = require('../routes/password'); 
+const postMenuRouter = require('./menu_router'); 
+const passwordRouter = require('./password'); 
 
 
 
