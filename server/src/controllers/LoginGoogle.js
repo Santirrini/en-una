@@ -88,14 +88,18 @@ module.exports = {
       }
 
       const tokenPayload = {
+        id: user.id,
         name: user.name,
+        lastName: user.lastName,
         email: user.email,
+        password: user.password,
+        phone: user.phone,
         role: user.role,
       };
 
-      const jwtToken = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
+      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
-      return res.json({ token: jwtToken, user: user });
+      return res.json({ token, role: user.role, userId: user.id });
     } catch (error) {
       return res.status(500).json({ message: 'Error al verificar el token de Google', error });
     }
