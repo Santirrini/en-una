@@ -38,7 +38,14 @@ async (accessToken, refreshToken, profile, done) => {
         return done(err, false);
     }
 }));
-
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 module.exports = {
   // Función para iniciar sesión con Google
   LoginGoogle: (req, res, next) => {
@@ -73,6 +80,7 @@ module.exports = {
         audience: process.env.GOOGLE_CLIENT_ID,
       });
       const payload = ticket.getPayload();
+      const backgroundColor = getRandomColor();
 
       // Ahora puedes usar el payload para buscar o crear al usuario
       let user = await User.findOne({ where: { email: payload.email } });
@@ -82,8 +90,10 @@ module.exports = {
           name: payload.name,
           lastName: payload.family_name,
           email: payload.email,
+        backgroundColor,
+ 
           password: null,
-          role: 'user',
+          role: 'personal',
         });
       }
 
@@ -92,13 +102,12 @@ module.exports = {
         name: user.name,
         lastName: user.lastName,
         email: user.email,
-        password: user.password,
         phone: user.phone,
         role: user.role,
       };
 
       const jwtToken = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
-
+ console.log("Inicio de sesion con google exitosa")
       return res.json({ token: jwtToken, user: user.role, userId: user.id });
     } catch (error) {
       return res.status(500).json({ message: 'Error al verificar el token de Google', error });
