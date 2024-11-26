@@ -26,7 +26,12 @@ module.exports = {
         if (!order) {
           return res.status(404).send('Order not found');
         }
-
+        const formatDate = (date) => {
+          const day = String(date.getDate()).padStart(2, '0'); // Asegura dos dígitos
+          const month = String(date.getMonth() + 1).padStart(2, '0'); // Mes comienza en 0
+          const year = date.getFullYear();
+          return `${day}/${month}/${year}`;
+        };
         const successPayment = await SuccessPayment.create({
           order_id,
           name,
@@ -34,6 +39,7 @@ module.exports = {
           email,
           phone: phone_number,
           observation: custom_field,
+          date_payment: formatDate(new Date()), // Formateamos la fecha
           status: 'Pendiente',
           orderId: order.id,
           userId: additional_info_1

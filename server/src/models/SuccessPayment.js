@@ -26,7 +26,10 @@ module.exports = (sequelize) => {
     observation: {
       type: DataTypes.STRING,
     },
-
+    date_payment: {
+      type: DataTypes.DATE,
+    },
+    
     status: {
       type: DataTypes.STRING,
     },
