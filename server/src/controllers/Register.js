@@ -1,4 +1,4 @@
-const { User, Restaurant, Code } = require('../db'); // Asegúrate de incluir tu modelo Code
+const { User, Restaurant, Code } = require('../db'); // Incluye tu modelo Code
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -26,41 +26,50 @@ const transporter = nodemailer.createTransport({
 
 module.exports = {
   Register: async (req, res) => {
-    const { name, razon_social, ruc, contact_person, position,departament, address, lastName, genre, email_additional, date, country, province, district, password, email, phone, role,  restaurantId,  code } = req.body;
+    const {
+      name,
+      razon_social,
+      ruc,
+      contact_person,
+      position,
+      departament,
+      address,
+      lastName,
+      genre,
+      email_additional,
+      date,
+      country,
+      province,
+      district,
+      password,
+      email,
+      phone,
+      role,
+      restaurantId,
+      code,
+    } = req.body;
 
     try {
       // Verificar si el código es válido
       let validCode = null;
-      
       if (role === 'restaurante') {
-        // Si los nombres coinciden, usar el mismo código
         if (razon_social === name) {
           validCode = await Code.findOne({ where: { code } });
           if (!validCode) {
             return res.status(400).json({ status: 400, message: 'Código de registro inválido' });
           }
         } else {
-          // Si no coinciden, generar un nuevo código
           validCode = await Code.create({
-            code: Math.random().toString(36).substring(2, 15), // Crear un código aleatorio
+            code: Math.random().toString(36).substring(2, 15),
           });
         }
       }
 
-
-      let userStatus;
-      if (role === 'restaurante') {
-       userStatus = "pendiente"
-            
-           } else {
-       userStatus = "activo"
-
-           }
-
+      const userStatus = role === 'restaurante' ? 'pendiente' : 'activo';
 
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
-        return res.status(404).json({status: 404, message: 'El usuario ya existe' });
+        return res.status(404).json({ status: 404, message: 'El usuario ya existe' });
       }
 
       const saltRounds = 10;
@@ -68,56 +77,42 @@ module.exports = {
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
 
+      // Generar token para verificación de correo
+      const verificationToken = jwt.sign({ email }, process.env.FIRMA_TOKEN, { expiresIn: '1h' });
+      const verificationUrl = `${process.env.BASE_URL}/verificar?token=${verificationToken}`;
+
+      // Contenido del correo
       const emailContent = `
-          <html>
-         <body    style="
-         background-color: #f3f3f3;
-         display: grid;
-         justify-content: center;
-         max-width: 100%;
-       ">
-           <div     style="
-           background-color: #fff;
-           border: 8px solid #bd24bd;
-           padding: 2em;
-           width: 600px;
-           max-width: 100%;
-           margin: 0 auto;
-           font-family: Arial, Helvetica, sans-serif;
-         " >
-             <div style="margin: 0 auto; text-align: center;">
-               <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
-             </div>
-       
-             <p style="color: black;">¡Hola [Nombre]!</p>
-             <p style="color: black;">¡Bienvenido a [Nombre de tu empresa o sitio web]! Nos complace que te hayas registrado y formes parte de nuestra comunidad.</p>
-             <p style="color: black;">Aquí tienes algunos detalles importantes:</p>
-             <p style="color: black;"> <strong>Tu cuenta ha sido creada exitosamente.</strong> </p>
-             <p style="color: black;">Para comenzar, solo necesitas verificar tu dirección de correo electrónico haciendo clic en el siguiente enlace:</p>
-             
-             <p style="color: black;">[Verificar mi correo electrónico]</p>
-             <p style="color: black;">Si el enlace anterior no funciona, copia y pega la siguiente URL en tu navegador:</p>
-             <p style="color: black;">[URL de verificación]</p>
-             <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
-       
-             <p style="color: black;">Gracias por unirte a nosotros. ¡Esperamos que disfrutes de nuestra plataforma!</p>
-             <p style="color: black;">Saludos cordiales,</p>
-             <p style="color: black;">El equipo de [Nombre de tu empresa o sitio web]</p>
-       
-             
-             
-       
-          
-           </div>
-         </body>
-       </html>
+        <html>
+        <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
+          <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
+            <div style="margin: 0 auto; text-align: center;">
+              <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+            </div>
+            <p style="color: black;">¡Hola ${capitalizedName}!</p>
+            <p style="color: black;"><strong>Tu cuenta ha sido creada exitosamente.</strong></p>
+            <p style="color: black;">Bienvenido a EN UNA! Nos complace que te hayas registrado y formes parte de nuestra comunidad.</p>
+            <p style="color: black;">Para comenzar, solo necesitas verificar tu dirección de correo electrónico haciendo clic en el siguiente enlace:</p>
+            <p style="text-align: center;">
+              <a href="${verificationUrl}" style="display: inline-block; padding: 10px 20px; background-color: #bd24bd; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Verificar mi correo electrónico</a>
+            </p>
+            <p style="color: black;">Si el enlace anterior no funciona, copia y pega la siguiente URL en tu navegador:</p>
+            <p style="word-break: break-word; color: black;"><a href="${verificationUrl}" style="color: #bd24bd;">${verificationUrl}</a></p>
+            <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
+            <p style="color: black;">Gracias por unirte a EN UNA. ¡Esperamos que disfrutes de nuestra plataforma!</p>
+            <p style="color: black;">¡Buen provecho!</p>
+          </div>
+        </body>
+        </html>
       `;
-  await transporter.sendMail({
+
+      await transporter.sendMail({
         from: process.env.EMAIL,
         to: email,
         subject: '¡Bienvenido a nuestra plataforma!',
         html: emailContent,
       });
+
       const newUser = await User.create({
         name: capitalizedName,
         lastName,
@@ -139,16 +134,15 @@ module.exports = {
         phone,
         role,
         status: userStatus,
-        codeId: validCode ? validCode.id : null, // Asigna el código al usuario si existe
-
-        restaurantId, // Asigna el restaurante al usuario
+        codeId: validCode ? validCode.id : null,
+        restaurantId,
       });
 
       const userWithRestaurant = await User.findByPk(newUser.id, {
         include: [Restaurant],
       });
 
-      const tokenPayload = { userId: newUser.id, role }; // Asegúrate de asignar el rol correcto
+      const tokenPayload = { userId: newUser.id, role };
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
       return res.json({ token, user: userWithRestaurant });
