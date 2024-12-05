@@ -71,11 +71,26 @@ module.exports = {
             <div style="margin: 0 auto; text-align: center">
               <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto" />
             </div>
+            <h2 style="color: black; text-align: center">FELICITACIONES</h2>
+
             <h3 style="color: black; text-align: center">¡Tu formulario fue aprobado por el equipo de EN UNA!</h3>
-            <p style="color: black; text-align: center">Continúe registrándose en GitHub ingresando el código a continuación:</p>
+
+            
+            <p style="color: black;">Cuando regreses a EN UNA realiza los siguientes pasos:</p>
+            <p style="color: black;">1. Da click en el botón INICIAR SESIÓN.</p>
+            <p style="color: black;">2. Da click en "aquí" en esta sección: Si no tiene una cuenta, haga <a href="https://www.enunaapp.com/registrarse" target="_blank">click </a> </p>
+            <p style="color: black;">3. Selecciona en Tipo de Cuenta la opción "Restaurante":</p>
+            <p style="color: black; ">4.Ingresa el siguiente código en esta sección: Código asignado</p>
+          
+          
             <h1 style="color: black; text-align: center">${code}</h1>
+
+
+            <p style="color: black; "> ¡Listo! Con estos primeros pasos, puedes terminar de llenar tu formulario de Creación de Usuario y ser un socio más dentro de nuestra plataforma.</p>
+
+           
             <div style="margin: 0 auto; text-align: center; margin-bottom: 2em">
-              <a href="https://www.enunaapp.com/registrarse" target="_blank" style="color: white; text-align: center; background-color: #bd24bd; border: none; padding: 15px; border-radius: 3px; font-size: 20px; text-decoration: none;">Abrir en una</a>
+              <a href="https://www.enunaapp.com/registrarse" target="_blank" style="color: white; text-align: center; background-color: #bd24bd; border: none; padding: 15px; border-radius: 3px; font-size: 20px; text-decoration: none;"> Regresar a En Una</a>
             </div>
             <p style="color: black">Una vez completado, seleccione el tipo de cuenta en <strong>Restaurante</strong> y complete el formulario.</p>
           </div>
