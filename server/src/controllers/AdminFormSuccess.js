@@ -49,7 +49,7 @@ module.exports = {
       if (!code) {
         let isUnique = false;
         while (!isUnique) {
-          code = Math.floor(1000 + Math.random() * 9000); // Generar código entre 1000 y 9999
+          code = String(Math.floor(1000 + Math.random() * 9000)); // Generar código como string
           const existingCode = await Code.findOne({ where: { code } });
           isUnique = !existingCode;
         }
