@@ -78,7 +78,7 @@ module.exports = {
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
 
       // Generar token para verificación de correo
-      const verificationToken = jwt.sign({ email }, process.env.FIRMA_TOKEN, { expiresIn: '1h' });
+      const verificationToken = jwt.sign({ email }, process.env.FIRMA_TOKEN,);
       const verificationUrl = `${process.env.BASE_URL}/verificar?token=${verificationToken}`;
 
       // Contenido del correo
