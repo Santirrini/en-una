@@ -28,21 +28,26 @@ module.exports = {
 
 
         const emailContent = `
-    <html>
-  <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
-    <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
-      <div style="margin: 0 auto; text-align: center;">
-        <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
-      </div>
-      <p style="color: black; text-align: center; font-size: 18px; margin-top: 20px;"><strong>Formulario enviado exitosamente.</strong></p>
+      <html>
+        <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
+          <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
+            <div style="margin: 0 auto; text-align: center;">
+              <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+            </div>
+           <p style="color: black; text-align: center; font-size: 18px; margin-top: 20px;"><strong>Formulario enviado exitosamente.</strong></p>
       <p style="color: black; text-align: center; font-size: 16px;">Espere mientras verificamos sus datos. Una vez validados, podrá completar su registro.</p>
       <p style="color: black; text-align: center; font-size: 16px;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
       <p style="color: black; text-align: center; font-size: 16px;">Gracias por unirte a EN UNA. ¡Esperamos que disfrutes de nuestra plataforma!</p>
       <p style="color: black; text-align: center; font-size: 16px;">¡Buen provecho!</p>
-    </div>
-  </body>
-</html>
+            <p style="color: black;">Si el enlace anterior no funciona, copia y pega la siguiente URL en tu navegador:</p>
+            <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
+            <p style="color: black;">Gracias por unirte a EN UNA. ¡Esperamos que disfrutes de nuestra plataforma!</p>
+            <p style="color: black;">¡Buen provecho!</p>
+          </div>
+        </body>
+        </html>
       `;
+    
 
       await transporter.sendMail({
         from: process.env.EMAIL,
