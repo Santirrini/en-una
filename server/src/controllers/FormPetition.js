@@ -46,7 +46,7 @@ module.exports = {
 
       await transporter.sendMail({
         from: process.env.EMAIL,
-        to: email,
+        to: email_contract,
         subject: '¡Bienvenido a nuestra plataforma!',
         html: emailContent,
       });
