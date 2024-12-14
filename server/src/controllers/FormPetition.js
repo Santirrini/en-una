@@ -1,5 +1,7 @@
 const { Form } = require('../db'); // Asegúrate de que tu modelo Menu tenga un campo para las categorías
 require('dotenv').config();
+const nodemailer = require('nodemailer');
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
