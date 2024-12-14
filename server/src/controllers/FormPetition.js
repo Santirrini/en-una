@@ -14,9 +14,9 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-    FormPetition: async (req, res) => {
- const {ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract, status } = req.body
-      try {
+  FormPetition: async (req, res) => {
+    const { ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract, status } = req.body
+    try {
 
 
 
@@ -27,7 +27,7 @@ module.exports = {
 
 
 
-        const emailContent = `
+      const emailContent = `
       <html>
         <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
           <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
@@ -47,26 +47,22 @@ module.exports = {
         </body>
         </html>
       `;
-    
-
       await transporter.sendMail({
         from: process.env.EMAIL,
         to: email_contract,
-        subject: '¡Bienvenido a nuestra plataforma!',
+        subject: '¡Formulario enviado exitosamente!',
         html: emailContent,
       });
 
+      const formRegister = await Form.create({
+        ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract, status: "pendiente"
+      })
+      console.log("Formulario enviado correctamente")
+      res.status(200).send({ success: true, data: formRegister });
 
-
-        const formRegister = await Form.create({
-            ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract, status: "pendiente"
-        })
-            console.log("Formulario enviado correctamente")
-            res.status(200).send({ success: true, data: formRegister });
-      
-      } catch (error) {
-        console.error('Error al enviar formulario de petición de registro:', error);
-        res.status(500).send({ success: false, error: 'Error al enviar formulario de petición de registro' });
-      }
+    } catch (error) {
+      console.error('Error al enviar formulario de petición de registro:', error);
+      res.status(500).send({ success: false, error: 'Error al enviar formulario de petición de registro' });
+    }
   }
 };
