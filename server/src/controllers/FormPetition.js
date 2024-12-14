@@ -39,9 +39,7 @@ module.exports = {
       <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
       <p style="color: black;  ">Gracias por unirte a EN UNA. ¡Esperamos que disfrutes de nuestra plataforma!</p>
       <p style="color: black;  ">¡Buen provecho!</p>
-            <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
-            <p style="color: black;">Gracias por unirte a EN UNA. ¡Esperamos que disfrutes de nuestra plataforma!</p>
-            <p style="color: black;">¡Buen provecho!</p>
+        
           </div>
         </body>
         </html>
