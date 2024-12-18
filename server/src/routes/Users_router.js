@@ -14,6 +14,7 @@ const {Claim} = require('../controllers/Claim');
 const {DetailsUser} = require('../controllers/DetailsUser');
 const {UpdateStatus} = require('../controllers/UpdateStatus');
 
+const {VerifyEmail} = require('../controllers/VerifyEmail');
 
 
 
@@ -38,7 +39,7 @@ router.post('/auth/google', GoogleAuth);
 router.post('/claim', Claim);
 
 router.put('/user/:userId', UpdateStatus);
-
+router.get('/verificar', VerifyEmail);
 
 
 
