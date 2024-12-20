@@ -16,6 +16,7 @@ module.exports = {
                 { status },
                 { 
                     where: { id: userId },
+                    returning: true  // Este campo depende de tu base de datos; por ejemplo, PostgreSQL lo soporta.
                 }
             );
 
