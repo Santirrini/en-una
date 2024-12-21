@@ -17,6 +17,11 @@ module.exports = {
         console.log('Usuario no encontrado');
         return res.status(404).json({ message: 'Usuario no encontrado' });
       }
+   // Verificar estado
+   if (user.status === 'pendiente') {
+    console.log('El usuario está en pendiente');
+    return res.status(403).send({ success: false, message: 'El usuario está en pendiente' });
+  }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
