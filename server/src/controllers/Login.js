@@ -10,7 +10,7 @@ module.exports = {
     try {
       const user = await User.findOne({
         where: { email },
-        attributes: ['id', 'name', 'lastName','email', 'password', 'phone', 'role'],
+        attributes: ['id', 'name', 'lastName','email', 'password', 'phone','status', 'role'],
       });
 
       if (!user) {
