@@ -81,10 +81,7 @@ module.exports = (sequelize) => {
 
     status: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isIn: [['pendiente', 'activo']], // Solo permite estos valores
-      },
+      
     },
     restaurantId: {
       type: DataTypes.UUID,
