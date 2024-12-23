@@ -38,7 +38,7 @@ router.get('/auth/google/callback', GoogleCallback);  // Callback de Google
 router.post('/auth/google', GoogleAuth); 
 router.post('/claim', Claim);
 
-router.put('/user/:userId', UpdateStatus);
+router.put('/user/:id', UpdateStatus);
 router.get('/verificar', VerifyEmail);
 
 

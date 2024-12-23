@@ -1,9 +1,8 @@
-// controllers/YourControllerFile.js
 const { User } = require('../db');
 
 module.exports = {
     UpdateStatus: async (req, res) => {
-        const { userId } = req.params;
+        const { id } = req.params;
         const { status } = req.body;
 
         try {
@@ -15,7 +14,7 @@ module.exports = {
             const [updatedCount, updatedRows] = await User.update(
                 { status }, 
                 { 
-                    where: { id: userId },
+                    where: { id },
                     returning: true  // Este campo depende de tu base de datos; por ejemplo, PostgreSQL lo soporta.
                 }
             );
