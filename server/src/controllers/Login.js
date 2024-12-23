@@ -43,7 +43,7 @@ module.exports = {
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
       console.log('Inicio de sesión exitoso');
-      return res.json({ token, role: user.role, userId: user.id });
+      return res.json({ token, role: user.role, userId: user.id, status: user.status });
       
     } catch (error) {
       console.error(error);
