@@ -53,16 +53,24 @@ module.exports = {
       // Verificar si el código es válido
       let validCode = null;
       if (role === 'restaurante') {
-        if (razon_social === name) {
-          validCode = await Code.findOne({ where: { code } });
-          if (!validCode) {
-            return res.status(400).json({ status: 400, message: 'Código de registro inválido' });
+        validCode = await Code.findOne({ where: { code } });
+        if (validCode) {
+          // Verificar si el código ya está asociado a un usuario
+          const userWithCode = await User.findOne({ where: { codeId: validCode.id } });
+          if (userWithCode) {
+            return res.status(200).json({
+              status: 200,
+              message: 'El código ya está registrado.',
+              userName: `${userWithCode.name} ${userWithCode.lastName}`,
+            });
           }
         } else {
-          validCode = await Code.create({
-            code: Math.random().toString(36).substring(2, 15),
-          });
+          return res.status(400).json({ status: 400, message: 'Código de registro inválido' });
         }
+      } else {
+        validCode = await Code.create({
+          code: Math.random().toString(36).substring(2, 15),
+        });
       }
 
       const userStatus = role === 'restaurante' ? 'pendiente' : 'activo';
@@ -78,7 +86,7 @@ module.exports = {
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
 
       // Generar token para verificación de correo
-      const verificationToken = jwt.sign({ email }, process.env.FIRMA_TOKEN,);
+      const verificationToken = jwt.sign({ email }, process.env.FIRMA_TOKEN);
       const verificationUrl = `${process.env.BASE_URL}/verificar?token=${verificationToken}`;
 
       // Contenido del correo
