@@ -26,6 +26,7 @@ const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
 const { AllOrdersRestaurants } = require('../controllers/AllOrdersRestaurants');
 const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
 const { AllOrdersAdmin } = require('../controllers/AllOrdersAdmin');
+const {  User } = require('../db'); // Incluye tu modelo Code
 
 
 
@@ -91,6 +92,25 @@ router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
 router.put('/restaurant-destac', RestaurantDetacs);
+router.get('/code/:codeId', async (req, res) => {
+  const { codeId } = req.params;
+
+  try {
+    // Buscar el usuario con el código proporcionado
+    const user = await User.findOne({ where: { codeId } });
+
+    if (user) {
+      // Si el usuario existe, devolver el nombre
+      res.json({ name: user.name });
+    } else {
+      // Si no existe, devolver un mensaje de error
+      res.status(404).json({ message: 'Código no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al buscar el nombre:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+});
 
 
 
