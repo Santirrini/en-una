@@ -26,7 +26,7 @@ const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
 const { AllOrdersRestaurants } = require('../controllers/AllOrdersRestaurants');
 const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
 const { AllOrdersAdmin } = require('../controllers/AllOrdersAdmin');
-const {  User } = require('../db'); // Incluye tu modelo Code
+const {  User, Code } = require('../db'); // Incluye tu modelo Code
 
 
 
@@ -92,22 +92,27 @@ router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
 router.put('/restaurant-destac', RestaurantDetacs);
-router.get('/code/:codeId', async (req, res) => {
-  const { codeId } = req.params;
+router.get('/code/:code', async (req, res) => {
+  const { code } = req.params;
 
   try {
-    // Buscar el usuario con el código proporcionado
-    const user = await User.findOne({ where: { codeId } });
+    // Buscar el código en la tabla `Code`
+    const foundCode = await Code.findOne({
+      where: { code },
+      include: { model: User, as: 'users' }, // Relación con `User`
+    });
 
-    if (user) {
-      // Si el usuario existe, devolver el nombre
-      res.json({ name: user.name });
+ 
+    // Si hay usuarios relacionados, devolver el primero o todos
+    const users = foundCode.users;
+
+    if (users.length > 0) {
+      res.json({ name: users[0].name }); // Devolver el nombre del primer usuario relacionado
     } else {
-      // Si no existe, devolver un mensaje de error
-      res.status(404).json({ message: 'Código no encontrado' });
+      res.status(404).json({ message: 'No hay usuarios relacionados con este código' });
     }
   } catch (error) {
-    console.error('Error al buscar el nombre:', error);
+    console.error('Error al buscar el usuario:', error);
     res.status(500).json({ message: 'Error del servidor' });
   }
 });
