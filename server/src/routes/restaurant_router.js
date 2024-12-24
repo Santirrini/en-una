@@ -99,12 +99,15 @@ router.get('/code/:code', async (req, res) => {
     // Buscar el código en la tabla `Code`
     const foundCode = await Code.findOne({
       where: { code },
-      include: { model: User, }, // Relación con `User`
+      include: { model: User }, // Asegúrate de que la asociación esté correctamente definida
     });
 
- 
+    if (!foundCode) {
+      return res.status(404).json({ message: 'Código no encontrado' });
+    }
+
     // Si hay usuarios relacionados, devolver el primero o todos
-    const users = foundCode.users;
+    const users = foundCode.users || [];  // Asegura que 'users' sea un array
 
     if (users.length > 0) {
       res.json({ name: users[0].name }); // Devolver el nombre del primer usuario relacionado
@@ -116,6 +119,7 @@ router.get('/code/:code', async (req, res) => {
     res.status(500).json({ message: 'Error del servidor' });
   }
 });
+
 
 
 
