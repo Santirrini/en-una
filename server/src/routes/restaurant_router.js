@@ -99,7 +99,7 @@ router.get('/code/:code', async (req, res) => {
     // Buscar el código en la tabla `Code`
     const foundCode = await Code.findOne({
       where: { code },
-      include: { model: User, as: 'users' }, // Relación con `User`
+      include: { model: User, }, // Relación con `User`
     });
 
  
