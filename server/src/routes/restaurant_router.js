@@ -92,33 +92,26 @@ router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
 router.put('/restaurant-destac', RestaurantDetacs);
-router.get('/code/:code', async (req, res) => {
-  const { code } = req.params;
+router.get('/api/code/:codeId', async (req, res) => {
+  const { codeId } = req.params;
 
   try {
-    // Buscar el código en la tabla `Code`
-    const foundCode = await Code.findOne({
-      where: { code },
-      include: { model: User }, // Asegúrate de que la asociación esté correctamente definida
-    });
+    // Buscar el usuario con el código proporcionado
+    const user = await User.findOne({ where: { codeId } });
 
-    if (!foundCode) {
-      return res.status(404).json({ message: 'Código no encontrado' });
-    }
-
-    // Si hay usuarios relacionados, devolver el primero o todos
-    const users = foundCode.users || [];  // Asegura que 'users' sea un array
-
-    if (users.length > 0) {
-      res.json({ name: users[0].name }); // Devolver el nombre del primer usuario relacionado
+    if (user) {
+      // Si el usuario existe, devolver el nombre
+      res.json({ name: user.name });
     } else {
-      res.status(404).json({ message: 'No hay usuarios relacionados con este código' });
+      // Si no existe, devolver un mensaje de error
+      res.status(404).json({ message: 'Código no encontrado' });
     }
   } catch (error) {
-    console.error('Error al buscar el usuario:', error);
+    console.error('Error al buscar el nombre:', error);
     res.status(500).json({ message: 'Error del servidor' });
   }
 });
+
 
 
 
