@@ -92,7 +92,7 @@ router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
 router.put('/restaurant-destac', RestaurantDetacs);
-router.get('/api/code/:codeId', async (req, res) => {
+router.get('/code/:codeId', async (req, res) => {
   const { codeId } = req.params;
 
   try {
