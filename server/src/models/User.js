@@ -98,7 +98,7 @@ module.exports = (sequelize) => {
       },
     },
     codeId: {
-      type: DataTypes.UUID, // Cambiar a UUID para que coincida con el tipo de Codes.id
+      type: DataTypes.STRING, // Cambiar a UUID para que coincida con el tipo de Codes.id
       references: {
         model: 'Codes', // Nombre de la tabla en la base de datos
         key: 'id',
