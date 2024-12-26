@@ -55,7 +55,7 @@ module.exports = {
         }
 
         // Crear un nuevo código
-        const newCode = await Code.create({ code });
+        const newCode = await Code.create({ id: code, code: code });
 
         // Asociar el código al usuario, si ya existe
         if (existingUser) {
