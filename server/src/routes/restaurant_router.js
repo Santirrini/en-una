@@ -95,15 +95,16 @@ router.put('/restaurant-destac', RestaurantDetacs);
 router.get('/code/:codeId', async (req, res) => {
   const { codeId } = req.params;
 
+  if (!codeId || typeof codeId !== 'string') {
+    return res.status(400).json({ message: 'Código inválido' });
+  }
+
   try {
-    // Buscar el usuario con el código proporcionado
     const user = await User.findOne({ where: { codeId } });
 
     if (user) {
-      // Si el usuario existe, devolver el nombre
       res.json({ name: user.name });
     } else {
-      // Si no existe, devolver un mensaje de error
       res.status(404).json({ message: 'Código no encontrado' });
     }
   } catch (error) {
