@@ -29,7 +29,6 @@ module.exports = {
         console.log('Contraseña incorrecta');
         return res.status(400).json({ message: 'Contraseña incorrecta' });
       }
-
       const tokenPayload = {
         id: user.id,
         name: user.name,
