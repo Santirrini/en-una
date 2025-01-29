@@ -124,21 +124,7 @@ export default function MenuFood() {
     localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
   };
 
-  const handleIncreaseQuantity = (index) => {
-    const newCartItems = [...cartItems];
-    newCartItems[index].quantity += 1;
-    setCartItems(newCartItems);
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
-  };
 
-  const handleDecreaseQuantity = (index) => {
-    const newCartItems = [...cartItems];
-    if (newCartItems[index].quantity > 1) {
-      newCartItems[index].quantity -= 1;
-      setCartItems(newCartItems);
-      localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
-    }
-  };
 
   const getTotal = () => {
     return cartItems.reduce(
