@@ -146,7 +146,6 @@ export default function CarsFood() {
     }
     updateReserve(newItems);
   };
-
   const handleReserve = async () => {
     setLoading(true);
 
