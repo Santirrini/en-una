@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles  from './Navbar.module.css'
+import styles  from './Register.module.css'
 import { petitionForm } from '../../redux/action';
 import { useDispatch } from 'react-redux';
 import CircularProgress from "@mui/material/CircularProgress";
@@ -51,7 +51,7 @@ const Form = ({setOpenForm, setOpenAlert}) => {
   return (
     <div className={styles.form_container}>
       <h2 className={styles.form_title}>Formulario de Registro</h2>
-      <form onSubmit={handleSubmit} className = {styles.responsive_form}>
+      <form onSubmit={handleSubmit} className="responsive-form">
         <div className={styles.form_group}>
           <label className={styles.form_label}>
             N° de RUC:

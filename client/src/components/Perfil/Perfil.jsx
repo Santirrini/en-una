@@ -27,6 +27,7 @@ export default function Perfil() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const datapersonal = useSelector((state) => state.datapersonal);
+  console.log(datapersonal)
   const token = useSelector((state) => state.token);
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);

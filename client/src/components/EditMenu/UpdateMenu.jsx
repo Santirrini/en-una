@@ -290,12 +290,34 @@ export default function UpdateMenu({
               <div>
                 <input
                   type="checkbox"
+                  name="Promociones"
+                  checked={data.category.includes("Promociones")}
+                  onChange={handleCheckboxChange}
+                />
+              </div>
+              <div>Promociones</div>
+            </div>
+            <div className={styles.checkbox}>
+              <div>
+                <input
+                  type="checkbox"
                   name="Piqueos"
                   checked={data.category.includes("Piqueos")}
                   onChange={handleCheckboxChange}
                 />
               </div>
               <div>Piqueos</div>
+            </div>
+            <div className={styles.checkbox}>
+              <div>
+                <input
+                  type="checkbox"
+                  name="Ensaladas"
+                  checked={data.category.includes("Ensaladas")}
+                  onChange={handleCheckboxChange}
+                />
+              </div>
+              <div>Ensaladas</div>
             </div>
             <div className={styles.checkbox}>
               <div>

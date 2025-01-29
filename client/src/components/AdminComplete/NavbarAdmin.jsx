@@ -21,7 +21,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Avatar from "@mui/material/Avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import styles from "./AdminComplete.module.css";
@@ -79,6 +79,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -126,7 +127,8 @@ export default function Navbar() {
     } catch (error) {
       console.log(error);
     } finally {
-      window.location.reload();
+      navigate('/iniciar-sesión')
+
     }
     // Aquí podrías redirigir al usuario a la página de inicio de sesión u otra página que consideres adecuada
   };
@@ -164,104 +166,62 @@ export default function Navbar() {
       </Typography>
       <Divider />
       <List>
-        <Link to="/">
+        <Link to="formularios-de-registros">
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
+           
 
-              <ListItemText primary={"Inicio"} />
+              <ListItemText primary={"Formularios de registros"} />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="usuarios-registrados">
+          <ListItem disablePadding>
+            <ListItemButton>
+             
+
+              <ListItemText primary={"Usuarios registrados"} />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="restaurantes-registrados">
+          <ListItem disablePadding>
+            <ListItemButton>
+             
+
+              <ListItemText primary={"Restaurantes registrados"} />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="pedidos">
+          <ListItem disablePadding>
+            <ListItemButton>
+            
+
+              <ListItemText primary={"Pedidos"} />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="publicar-carrusel">
+          <ListItem disablePadding>
+            <ListItemButton>
+            
+
+              <ListItemText primary={"Publicar carrusel"} />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="destacar-restaurante">
+          <ListItem disablePadding>
+            <ListItemButton>
+         
+
+              <ListItemText primary={"Destacar restaurante"} />
             </ListItemButton>
           </ListItem>
         </Link>
 
-        <Link to="/sobre-nosotros">
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Acerca nosotros"} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-
-        <Link to="/contactanos">
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <ContactsIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Contáctanos"} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-
-        {!token ? (
-          <>
-            <br />
-            <Link to="/iniciar-sesión">
-              <ListItem disablePadding className={styles.btn_login}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <LoginIcon sx={{ color: "white" }} />
-                  </ListItemIcon>
-                  <ListItemText primary={"Iniciar sesión"} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link to="/perfil">
-              <Divider />
-
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Avatar
-                      sx={{
-                        width: 25,
-                        height: 25,
-                        backgroundColor: datapersonal.backgroundColor,
-                      }}
-                    >
-                      {datapersonal.name && datapersonal.name[0]}
-                    </Avatar>
-                  </ListItemIcon>
-                  <ListItemText primary={"Perfil"} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-            {datapersonal.role && datapersonal.role === "restaurante" ? (
-              <Link to="/panel">
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <AdminPanelSettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Administrar"} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            ) : null}
-
-            {datapersonal.role && datapersonal.role === "personal" ? (
-              <>
-                <Link to="/mis-reservaciones">
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <StorefrontIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={"Mis reservaciones"} />
-                    </ListItemButton>
-                  </ListItem>
-                </Link>
-              </>
-            ) : null}
-
+ 
             <ListItem disablePadding onClick={handleLogout}>
               <ListItemButton>
                 <ListItemIcon>
@@ -270,8 +230,6 @@ export default function Navbar() {
                 <ListItemText primary={"Cerrar sesión"} />
               </ListItemButton>
             </ListItem>
-          </>
-        )}
       </List>
     </Box>
   );

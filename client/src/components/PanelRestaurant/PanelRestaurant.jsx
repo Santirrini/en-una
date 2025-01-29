@@ -4,13 +4,21 @@ import Button from "@mui/material/Button";
 import Navbar from "./Navbar";
 import { Link, Outlet } from "react-router-dom";
 import Footer from "../Footer/Footer";
+import {useSelector, useDispatch } from "react-redux";
+import {dataPersonal} from '../../redux/action';
+import { Result } from "antd";
 
 export default function PanelRestaurant() {
+
+  const role = useSelector((state) => state.role);
+
   return (
     <div>
       <div>
         <Navbar />
       </div>
+      {role === "restaurante" ? (
+<>
       <div>
         <Stack
           spacing={2}
@@ -74,9 +82,32 @@ export default function PanelRestaurant() {
           </Link>
         </Stack>
       </div>
-      <div>
+
+        <div>
         <Outlet />
       </div>
+</>
+
+      ): (       <div>
+        <Result
+          status="403"
+          title="403"
+          subTitle="Acceso denegado"
+          extra={
+            <Link to="/">
+              <Button
+                sx={{
+                  background: "#500075",
+                  ":hover": { background: "#500075", border: "none" },
+                }}
+                variant="contained"
+              >
+                Volver 
+              </Button>
+            </Link>
+          }
+        />
+      </div>)}
       <div>
         <Footer />
       </div>

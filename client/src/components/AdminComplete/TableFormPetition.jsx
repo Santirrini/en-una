@@ -2,7 +2,12 @@ import * as React from "react";
 import styles from "./AdminComplete.module.css";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { AllForms, dataPersonal, DetailForm } from "../../redux/action";
+import {
+  AllForms,
+  dataPersonal,
+  DetailForm,
+  ConfirmForm,
+} from "../../redux/action";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -15,9 +20,10 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import zIndex from "@mui/material/styles/zIndex";
-
-// Configura dayjs con los plugins necesarios
-
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
+import axios from "axios";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: "2em",
@@ -108,13 +114,50 @@ const style = {
   pb: 3,
 };
 
-function ChildModal({ handleCloseModal }) {
+function ChildModal({
+  handleCloseModal,
+  formdetails,
+  setOpenAlert,
+  setAllform,
+}) {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleConfirm = async () => {
+    if (!formdetails || !formdetails.email_contract) {
+      console.log("El correo electrónico no está definido.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await dispatch(
+        ConfirmForm(
+          formdetails.email_contract,
+          formdetails.id,
+          formdetails.busines_name
+        )
+      );
+
+      
+      
+      
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      handleCloseModal();
+      setOpen(false);
+      setOpenAlert(true);
+    }
   };
 
   return (
@@ -150,18 +193,27 @@ function ChildModal({ handleCloseModal }) {
         aria-describedby="child-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
-          <h2 id="child-modal-title">¿Quéres dar de alta la cuenta?</h2>
+          <h2 id="child-modal-title">¿Quieres aprobar la cuenta?</h2>
 
           <Stack spacing={2} direction="row" sx={{ marginTop: 5 }}>
             <Button
               variant="contained"
+              onClick={handleConfirm}
               sx={{
                 backgroundColor: "#500075",
                 border: "none",
                 ":hover": { backgroundColor: "#500075" },
               }}
             >
-              Confirmar
+              {loading ? (
+                <CircularProgress
+                  size={25}
+                  thickness={5}
+                  sx={{ color: "#fff" }}
+                />
+              ) : (
+                "Confirmar"
+              )}
             </Button>
             <Button
               onClick={handleClose}
@@ -183,29 +235,79 @@ function ChildModal({ handleCloseModal }) {
 
 export default function TableFormPetition() {
   const dispatch = useDispatch();
-  const allform = useSelector((state) => state.allform.data);
+  const [allform, setAllform] = React.useState();
   const formdetails = useSelector((state) => state.formdetails.data);
-
+  const [sortOption, setSortOption] = React.useState("hour");
   const token = useSelector((state) => state.token);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
 
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
   const handleOpen = (formId) => {
     setOpen(true);
     dispatch(DetailForm(formId));
   };
   const handleCloseModal = () => setOpen(false);
 
+  const AllForm = async () => {
+    try {
+      const res = await axios.get(
+        "https://en-una-production.up.railway.app/api/forms"
+      );
+      setAllform(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   React.useEffect(() => {
-    dispatch(AllForms());
-  }, [dispatch]);
+    AllForm();
+  }, []);
 
   React.useEffect(() => {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
-  const filteredForms = allform?.filter((data) =>
-    data.reason_social.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const user =allform &&  allform?.filter((data) => {
+    return (
+      data.busines_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      data.email_contract?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      data.legal_manager?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      data.legal_representative
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      data.legal_representative_dni
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      data.local_address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      data.local_phone?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      data.phone_contact?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      data.ruc?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
+  
+  const sortedForms = React.useMemo(() => {
+    if (!Array.isArray(user)) return []; // Si `user` no es un arreglo, devuelve un arreglo vacío
+
+    return user.sort((a, b) => {
+      if (sortOption === "busines_name")
+        return (a.busines_name ?? "").localeCompare(b.busines_name ?? "");
+      if (sortOption === "email_contract")
+        return (a.email_contract ?? "").localeCompare(b.email_contract ?? "");
+      if (sortOption === "legal_representative")
+        return (a.legal_representative ?? "").localeCompare(
+          b.legal_representative ?? ""
+        );
+
+      return 0;
+    });
+  }, [user, sortOption]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -222,7 +324,29 @@ export default function TableFormPetition() {
           </SearchIconWrapper>
         </Search>
       </div>
-
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          placeItems: "center",
+          gap: "1em",
+        }}
+      >
+        <h4>Ordenar pedido por:</h4>
+        <div>
+          <select
+            name="area"
+            className={styles.order}
+            required
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="busines_name">Nombre</option>
+            <option value="email_contract">Correo electrónico</option>
+            <option value="legal_representative">Representante legal</option>
+          </select>
+        </div>
+      </div>
       <div className={styles.order_for_container}></div>
       <div className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8">
         <div className={styles.boletin_container}>
@@ -235,14 +359,13 @@ export default function TableFormPetition() {
                 <th>Nombre de representante legal</th>
                 <th>Número de DNI Representante Legal</th>
                 <th>Gerente(a) del local</th>
-                <th>Estado</th>
 
                 <th>Ver todo los detalles</th>
               </tr>
             </thead>
             <tbody>
-              {filteredForms &&
-                filteredForms.map((data, index) => (
+              {sortedForms &&
+                sortedForms.map((data, index) => (
                   <tr key={index}>
                     <td>{data.ruc}</td>
                     <td>{data.reason_social}</td>
@@ -251,7 +374,6 @@ export default function TableFormPetition() {
                     <td>{data.legal_representative_dni}</td>
 
                     <td>{data.legal_manager}</td>
-                    <td>{data.status}</td>
 
                     <td
                       className={styles.view_details}
@@ -272,9 +394,9 @@ export default function TableFormPetition() {
           >
             <Fade in={open}>
               <Box className={styles.modal_detail}>
-              <Typography id="spring-modal-title" variant="h6" component="h2">
-             Formulario completo 
-            </Typography>
+                <Typography id="spring-modal-title" variant="h6" component="h2">
+                  Formulario completo
+                </Typography>
                 <ul>
                   <li>
                     <strong>N° de RUC:</strong> {formdetails && formdetails.ruc}
@@ -321,7 +443,10 @@ export default function TableFormPetition() {
                     <strong>Estado:</strong>{" "}
                     <span
                       style={{
-                        backgroundColor: "#ffae00",
+                        backgroundColor:
+                          formdetails && formdetails.status === "pendiente"
+                            ? "#ffae00"
+                            : "#0F9200FF",
                         color: "white",
                         padding: "5px",
                         borderRadius: "10px",
@@ -331,12 +456,31 @@ export default function TableFormPetition() {
                     </span>
                   </li>
                 </ul>
-                <ChildModal handleCloseModal={handleCloseModal} />
+                <ChildModal
+                  handleCloseModal={handleCloseModal}
+                  formdetails={formdetails}
+                  setOpenAlert={setOpenAlert}
+                  setAllform={setAllform}
+                />
               </Box>
             </Fade>
           </Modal>
         </div>
       </div>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={4000}
+        onClose={handleCloseAlert}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          Formulario aprobado.
+        </Alert>
+      </Snackbar>
     </LocalizationProvider>
   );
 }

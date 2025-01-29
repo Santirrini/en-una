@@ -70,6 +70,8 @@ export default function DetailsRestaurant() {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
+
+  console.log(restaurantdetails)
   const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
   const autocompleteRef = useRef(null); // Referencia para el Autocomplete
   const [center, setCenter] = useState(defaultCenter); // Coordenadas del mapa
@@ -130,18 +132,31 @@ export default function DetailsRestaurant() {
   // Obtener todos los horarios de todos los días
   const obtenerTodosHorarios = () => {
     if (!restaurantdetails || !restaurantdetails.horarios) return [];
-
+  
     let todosHorarios = [];
-
+  
     restaurantdetails.horarios.forEach((horario) => {
       if (!horario.cerrado) {
+        // Generar horarios normales
         const horarios = generarHorarios(horario.inicio, horario.fin, 30); // Cambiado a 30 minutos
-        todosHorarios = todosHorarios.concat(horarios);
+  
+        // Filtrar horarios si las personas alcanzan el máximo por mesa
+        const horariosFiltrados = horarios.filter((hora) => {
+          const ordenesEnHora = restaurantdetails.Orders.filter((order) => order.hours === hora);
+          const totalPeople = ordenesEnHora.reduce((sum, order) => sum + order.people, 0);
+  
+          // Eliminar horario si la cantidad total de personas alcanza el máximo por mesa
+          return totalPeople < restaurantdetails.maximum_per_table;
+        });
+  
+        // Agregar horarios filtrados al resultado final
+        todosHorarios = todosHorarios.concat(horariosFiltrados);
       }
     });
-
+  
     return todosHorarios;
   };
+  
 
   const generarHorarios = (inicio, fin, intervaloMinutos) => {
     let horarios = [];

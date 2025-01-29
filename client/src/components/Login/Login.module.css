@@ -22,7 +22,12 @@
     width: 150px;
     margin: auto;
 }
-
+.btnGoogle {
+    width: 100%;
+    padding-top: 1em;
+    display: flex;
+    justify-content: center;
+}
 
 @media (max-width: 768px) {
     .login_container {

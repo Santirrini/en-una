@@ -29,7 +29,6 @@ position: relative;
 
 .fullscreenImage {
   width: 100%; /* Ocupa el ancho completo de la pantalla */
-  height: 50vh; /* Ocupa la altura completa de la pantalla */
   object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsión */
 
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Test from "./pages/Test"
 import Login from "./pages/Login";
@@ -40,6 +40,15 @@ import AdminComplete from './pages/Admin'
 import TableUsers from "./components/AdminComplete/TableUsers";
 import TableRestaurant from "./components/AdminComplete/TableRestaurant";
 import TableFormPetition from "./components/AdminComplete/TableFormPetition";
+import PostCarousel from "./components/AdminComplete/PostCarousel";
+import OrderAdmin from "./components/AdminComplete/OrderAdmin";
+import AllOrders from "./components/AdminComplete/AllOrders";
+
+import SelectedRestaurant from "./components/AdminComplete/SelectDestac";
+import EmailVerification from "./pages/EmailVerification";
+import MessageRegister from "./pages/MessageRegister";
+
+
 
 
 
@@ -56,16 +65,17 @@ function App() {
     <div >
       <BrowserRouter>
         <Routes>
-          <Route path='/administrar' element={<Admin />}>
-            <Route index element={<PostProducts />} />
-            <Route path='publicar-mi-restaurante' element={<PostProducts />} />
+  <Route path="/administrar" element={<Admin />}>
+    <Route index element={<PostProducts />} />
+    <Route path="publicar-mi-restaurante" element={<PostProducts />} />
+    <Route path="publicar-mi-menu" element={<PostMenus />} />
+    <Route path="pedidos" element={<Order />} />
+    <Route path="publicaciones" element={<DeletePostPage />} />
+    <Route path="mi-restaurante" element={<Myrestaurant />} />
+  </Route>
 
-            <Route path='publicar-mi-menu' element={<PostMenus />} />
-            <Route path='pedidos' element={<Order />} />
-            <Route path='publicaciones' element={<DeletePostPage />} />
-            <Route path='mi-restaurante' element={<Myrestaurant />} />
 
-          </Route>
+
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<Test />} />
           <Route path="/iniciar-sesión" element={<Login />} />
@@ -95,6 +105,8 @@ function App() {
           <Route path="/libro-de-quejas" element={<ComplaintBook />} />
           <Route path="/reclamación" element={<ReclamoForm />} />
           <Route path="/reclamo-enviado" element={<ReclaimSend />} />
+          <Route path="/verificar" element={<EmailVerification />} />
+          <Route path="/registro-completado" element={<MessageRegister />} />
 
 
 
@@ -112,12 +124,7 @@ function App() {
             <Route path='pedidos' element={<Order />} />
 
 
-
-
-
-
           </Route>
-
 
 
 
@@ -133,9 +140,14 @@ function App() {
             <Route path='usuarios-registrados' element={<TableUsers />} />
 
             <Route path='restaurantes-registrados' element={<TableRestaurant />} />
+            <Route path='publicar-carrusel' element={<PostCarousel />} />
 
+            <Route path='destacar-restaurante' element={<SelectedRestaurant />} />
 
-           
+            <Route path='pedidos' element={<OrderAdmin />} />
+            <Route path='detalles/:restaurantId' element={<AllOrders />} />
+
+            
 
 
 

@@ -157,7 +157,6 @@ export default function CarsFood() {
       console.error("Error al realizar la reserva:", error);
     } finally {
       setLoading(false);
-      localStorage.removeItem(`cart_${userId}`);
       localStorage.removeItem(`form_${userId}`);
     }
   };

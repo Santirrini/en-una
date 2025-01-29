@@ -95,7 +95,11 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
       };
-
+      case 'FORM_CONFIRM':
+        return {
+          ...state,
+        };
+      
     case 'POST_MENU':
       return {
         ...state,

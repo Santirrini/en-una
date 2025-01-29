@@ -14,7 +14,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import zIndex from "@mui/material/styles/zIndex";
+import axios from "axios";
 
 // Configura dayjs con los plugins necesarios
 
@@ -119,7 +119,7 @@ function ChildModal({ handleCloseModal }) {
 
   return (
     <React.Fragment>
-     {/*  <Stack spacing={2} direction="row" sx={{ marginTop: 5 }}>
+      {/*  <Stack spacing={2} direction="row" sx={{ marginTop: 5 }}>
         <Button
           variant="contained"
           sx={{
@@ -183,32 +183,103 @@ function ChildModal({ handleCloseModal }) {
 
 export default function TableFormPetition() {
   const dispatch = useDispatch();
-  const allUsers = useSelector((state) => state.allUsers);
+  const [allUsers, setAllUser] = React.useState([]);
   const detailuser = useSelector((state) => state.detailuser.data);
-
-  console.log(detailuser);
-
+  const [sortOption, setSortOption] = React.useState("name");
+  const [selectedRestaurant, setSelectedRestaurant] = React.useState(null);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
+
+  console.log(selectedRestaurant?.status)
+  const handleOpenUpdate = (restaurant) => {
+    setOpenUpdate(true);
+    setSelectedRestaurant(restaurant)
+  };
+  const handleCloseUpdate = () => {
+
+    setOpenUpdate(false);
+  }
 
   const handleOpen = (userId) => {
     setOpen(true);
     dispatch(DetailUser(userId));
   };
   const handleCloseModal = () => setOpen(false);
-
+  const AllRestaurant = async () => {
+    try {
+      const res = await axios.get("https://en-una-production.up.railway.app/api/users");
+      setAllUser(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   React.useEffect(() => {
-    dispatch(AllUsers());
-  }, [dispatch]);
-  const userRestaurant = allUsers?.filter((data) =>
-    data.role === "restaurante" && data.name.toLowerCase().includes(searchTerm.toLowerCase())
+    AllRestaurant();
+  }, [selectedRestaurant]);
+  const userRestaurant = allUsers?.filter(
+    (data) =>
+      data.role === "restaurante" &&
+      (
+        data.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.razon_social?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.province?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.district?.toLowerCase().includes(searchTerm.toLowerCase()) 
+      )
   );
+  
   
 
-  
-  const filteredForms = userRestaurant?.filter((data) =>
-    data.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const updateAccount = async () => {
+    console.log(selectedRestaurant);
+    if (!selectedRestaurant) return;
+
+    // Cambiar el estado al valor opuesto: si está activo, pasa a pendiente y viceversa
+    const newStatus = selectedRestaurant.status === "pendiente" ? "activo" : "pendiente";
+    console.log(selectedRestaurant.status, newStatus);
+    
+    try {
+      const res = await axios.put(`https://en-una-production.up.railway.app/api/user/${selectedRestaurant.id}`, {
+        status: newStatus,
+      });
+      console.log("Respuesta de la API:", res.data); // Para verificar la respuesta
+      setAllUser((prev) =>
+        prev.map((restaurant) =>
+          restaurant.id === selectedRestaurant.id ? { ...restaurant, status: newStatus } : restaurant
+        )
+      );
+      setOpenUpdate(false);
+    } catch (error) {
+      console.error("Error al actualizar el estado de la cuenta:", error);
+      if (error.response) {
+        console.error("Detalles del error:", error.response.data);
+      }
+    }
+  };
+
+ 
+  const sortedForms = React.useMemo(() => {
+    return userRestaurant.sort((a, b) => {
+      if (sortOption === "name")
+        return (a.name ?? "").localeCompare(b.name ?? "");
+      if (sortOption === "razon_social")
+        return (a.razon_social ?? "").localeCompare(b.razon_social ?? "");
+      if (sortOption === "email")
+        return (a.email ?? "").localeCompare(b.email ?? "");
+      if (sortOption === "country")
+        return (a.country ?? "").localeCompare(b.country ?? "");
+      if (sortOption === "department")
+        return (a.department ?? "").localeCompare(b.department ?? "");
+      if (sortOption === "province")
+        return (a.province ?? "").localeCompare(b.province ?? "");
+      if (sortOption === "district")
+        return (a.district ?? "").localeCompare(b.district ?? "");
+      return 0;
+    });
+  }, [userRestaurant, sortOption]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -225,51 +296,89 @@ export default function TableFormPetition() {
           </SearchIconWrapper>
         </Search>
       </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          placeItems: "center",
+          gap: "1em",
+        }}
+      >
+        <h4>Ordenar pedido por:</h4>
+        <div>
+          <select
+            name="area"
+            className={styles.order}
+            required
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="name">Nombre</option>
+            <option value="razon_social">Razón social</option>
+            <option value="email">Correo electrónico</option>
+            <option value="Country">País</option>
 
+            <option value="departament">Departamento</option>
+            <option value="province">Porvincia</option>
+            <option value="district">Districto</option>
+          </select>
+        </div>
+      </div>
       <div className={styles.order_for_container}></div>
       <div className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8">
         <div className={styles.boletin_container}>
           <table className={styles.boletin_table}>
             <thead>
-            <tr>
-<th>Nombre</th>
-<th>Razón social</th>
-<th>Ruc</th>
-<th>Correo</th>
-<th>Teléfono</th>
-<th>Persona de contacto</th>
+              <tr>
+                <th>Nombre</th>
+                <th>Razón social</th>
+                <th>Codigo</th>
 
+                <th>Ruc</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Persona de contacto</th>
 
-<th>Estado</th>
-<th>Ver todo los detalles</th>
+                <th>Ver todo los detalles</th>
+                <th>Estado</th>
+            <th>Cambiar estado de la cuenta</th>
 
-</tr>
+              </tr>
             </thead>
             <tbody>
-              {filteredForms &&
-                filteredForms.map((data, index) => (
+              {sortedForms &&
+                sortedForms.map((data, index) => (
                   <tr key={index}>
                     <td>{data.name}</td>
                     <td>{data.razon_social}</td>
+                    <td>{data.code}</td>
+
                     <td>{data.ruc}</td>
                     <td>{data.email}</td>
                     <td>{data.phone}</td>
 
                     <td>{data.contact_person}</td>
-                    <td>{data.status}</td>
 
                     <td
                       className={styles.view_details}
                       onClick={() => handleOpen(data.id)}
-                    >
+                      >
                       Ver detalles
                     </td>
+                      <td>{data.status}</td>
+
+                      <td>
+                      <button className={data.status=== "pendiente" ? styles.buttonActive: styles.buttonUpdateAccount} onClick={() => handleOpenUpdate(data)}>
+                  {data.status === "pendiente" ? "Activar la cuenta" : "Poner en pendiente"}
+                  
+                </button>
+                      </td>
                   </tr>
                 ))}
             </tbody>
           </table>
 
-    <Modal
+          <Modal
             open={open}
             onClose={handleCloseModal}
             aria-labelledby="parent-modal-title"
@@ -277,38 +386,37 @@ export default function TableFormPetition() {
           >
             <Fade in={open}>
               <Box className={styles.modal_detail}>
-              <Typography id="spring-modal-title" variant="h6" component="h2">
-             Datos del restaurante
-            </Typography>
+                <Typography id="spring-modal-title" variant="h6" component="h2">
+                  Datos del restaurante
+                </Typography>
                 <ul>
-                <li>
-                    <strong>Tipo de cuenta:</strong> {detailuser && detailuser.role}
+                  <li>
+                    <strong>Tipo de cuenta:</strong>{" "}
+                    {detailuser && detailuser.role}
                   </li>
                   <li>
-                    <strong>Codigo:</strong>   {detailuser && detailuser.code} 
+                    <strong>Codigo:</strong> {detailuser && detailuser.code}
                   </li>
                   <li>
-                    <strong>Razón Social:</strong> {detailuser && detailuser.razon_social}
+                    <strong>Razón Social:</strong>{" "}
+                    {detailuser && detailuser.razon_social}
                   </li>
                   <li>
                     <strong>Nombre comercial:</strong>{" "}
                     {detailuser && detailuser.name}
                   </li>
                   <li>
-                    <strong>Correo:</strong>{" "}
-                    {detailuser && detailuser.email}
+                    <strong>Correo:</strong> {detailuser && detailuser.email}
                   </li>
                   <li>
                     <strong>Persona de contacto:</strong>{" "}
                     {detailuser && detailuser.contact_person}
                   </li>
                   <li>
-                    <strong>Cargo:</strong>{" "}
-                    {detailuser && detailuser.position}
+                    <strong>Cargo:</strong> {detailuser && detailuser.position}
                   </li>
                   <li>
-                    <strong>País:</strong>{" "}
-                    {detailuser && detailuser.country}
+                    <strong>País:</strong> {detailuser && detailuser.country}
                   </li>
 
                   <li>
@@ -323,16 +431,12 @@ export default function TableFormPetition() {
                     <strong>Distrito:</strong>{" "}
                     {detailuser && detailuser.district}
                   </li>
-                 
 
-                  
-                  
-                
                   <li>
                     <strong>Estado:</strong>{" "}
                     <span
                       style={{
-                        backgroundColor: "#01AF2FFF",
+                        backgroundColor: detailuser?.status === "pendiente" ? "#AFA901FF" : "#01AF2FFF",
                         color: "white",
                         padding: "5px",
                         borderRadius: "10px",
@@ -345,7 +449,36 @@ export default function TableFormPetition() {
                 <ChildModal handleCloseModal={handleCloseModal} />
               </Box>
             </Fade>
-          </Modal> 
+          </Modal>
+
+          <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openUpdate}
+        onClose={handleCloseUpdate}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openUpdate}>
+          <Box sx={style}>
+            <Typography id="transition-modal-title" variant="h6" component="h2">
+              ¿Estás seguro de que deseas {selectedRestaurant?.status === "pendiente" ? "activar" : "poner en pendiente"} la cuenta?
+           
+            </Typography>
+            <Typography id="transition-modal-description" sx={{ mt: 2, display: "flex", gap: "2em" }}>
+              <Button variant="contained" onClick={updateAccount} sx={{backgroundColor: "#500075", ":hover": {backgroundColor: "#6d009f"}}}>
+                Sí
+              </Button>
+              <Button variant="contained" onClick={handleCloseUpdate} sx={{backgroundColor: "#ff4d4d", ":hover": {backgroundColor: "#ff3333"}}}>
+                No
+              </Button>
+            </Typography>
+          </Box>
+        </Fade>
+      </Modal>
         </div>
       </div>
     </LocalizationProvider>

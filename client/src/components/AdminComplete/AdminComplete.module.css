@@ -2,11 +2,7 @@
 .OrderProducts_container {
     background-color: white;
 }
-.order {
-  height: 3.5em;
-  border: 1px solid #cecece;
-  outline: none;
-}
+
 .InputContainer {
     display: grid;
     justify-content: center;
@@ -166,7 +162,7 @@ margin-top:2em;
 }
 .btn_x button {
 color: white;
-background-color: red;
+background-color: #ff0000;
 border-radius: 50%;
 padding: 0.1em;
 
@@ -496,4 +492,300 @@ margin-top: 0.5em;
   }
 }
 
+.carruselData {
+  width: 100%;
+  margin-bottom: 2em;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; 
+  gap: 2em;
+  place-items: center;
+  place-content: center;
+  align-items: center;
+  align-content: center;
+}
 
+
+.imgContainer img {
+  width: 250px;
+  border-radius: 5px; /* Opcional, para darle un estilo más visual */
+}
+
+.btnCarousel {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+
+
+}
+
+.btnCarousel:hover {
+  background-color: #ff3333;
+}
+
+.order {
+  border: 1px solid #cecece;
+  outline: none;
+}
+.ordersContainer {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.title {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.ordersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.orderCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.orderHeader h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #555;
+}
+
+.orderDetails p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.detailsButton {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #500075;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.detailsButton:hover {
+  background-color: #6d009f;
+}
+.buttonUpdateAccount {
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.buttonUpdateAccount:hover {
+  background-color: darkred;
+}
+
+.buttonActive {
+  padding: 5px 10px;
+  background-color: #328f00;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.buttonActive:hover {
+  background-color: #328f00;
+
+}
+
+
+.OrderProducts_container {
+  background-color: white;
+}
+.order {
+height: 3.5em;
+border: 1px solid #cecece;
+outline: none;
+}
+.InputContainer {
+  display: grid;
+  justify-content: center;
+  gap: 2em;
+
+}
+.postInput {
+  display: grid;
+}
+.GridInputs {
+display: flex;
+gap: 4em;
+
+}
+.boletin_container {
+  margin: 20px;
+  overflow: scroll;
+  max-height: 60vh;
+  margin-top: 5em;
+
+}
+.boletin_container_pdf{
+  margin: 20px;
+
+}
+
+.boletin_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.boletin_table th, .boletin_table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.boletin_table th {
+  background-color: #500075;
+  color: white;
+}
+
+.boletin_table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.boletin_table tbody tr:hover {
+  background-color: #e6e6e6;
+}
+.decoration_Link {
+  text-decoration: none;
+  color: black;
+
+}
+
+.search {
+  width: 100%;
+  border: "1px solid #500075";
+  border-radius: 2em;
+  padding-left: 1em;
+  outline: none;
+}
+
+/* OrderProducts.module.css */
+.selectAtendido {
+background-color: green;
+color: white;
+}
+
+.selectPendiente {
+background-color: yellow;
+color: black;
+}
+
+.search_container {
+display: flex;
+justify-content: center;
+margin-bottom: 2em;
+}
+.order_for_container  {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 1em;
+}
+.order_for_container h4 {
+color: #500075;
+font-weight: bold;
+}
+
+.calendar {
+display: flex;
+gap: 1em;
+justify-content: center;
+}
+.container_btnReset {
+margin: 1.7em  ;
+display: flex;
+}
+.view_details:hover {
+text-decoration: underline;
+cursor: pointer;
+
+}
+@media only screen and  (max-width: 768px) {
+.order_for_container  {
+  width: 90%;
+  margin: auto;
+  gap: 2em;
+}
+}
+
+
+
+.cards_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  padding-top: 2em;
+  padding-bottom: 10em;
+  
+}
+
+.text {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 2em;
+  text-align: center;
+}
+.decoretion_text {
+  text-decoration: none;
+
+}
+
+.logo_card {
+  width: 50px;
+}
+
+.logo_title {
+display: flex;
+}
+
+.title_subtitle {
+ text-align: center;
+}
+
+.card {
+  max-width: 345px;
+  width: 345px;
+  height: 320px;
+ margin-bottom: 10px;
+ cursor: pointer;
+ margin: auto; 
+ 
+ }
+ 
+
+
+ .text_logo {
+  display: flex;
+  text-align: center;
+  gap: 2em;
+ }
+@media (max-width: 768px) {
+  .cards_container {
+    padding-top: 5em;
+  }
+}

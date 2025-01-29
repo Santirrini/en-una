@@ -14,18 +14,23 @@
 .modal_form:hover {
     text-decoration: none;
 }
-.box_modal {
+
+ .box_modal {
     position: fixed;
     top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 600px;
-background: #f0f0f0;
-border: 2px solid #000;
-box-shadow: 24;
-padding: 10px;
-}
-
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; 
+    max-width: 600px;
+    height: auto; 
+    max-height: 100vh; 
+    background: #f0f0f0;
+    border: 2px solid #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    padding: 10px;
+    overflow-y: auto; 
+    border-radius: 8px; 
+  } 
 
 .navbar_container {
     position: fixed;
@@ -217,7 +222,7 @@ padding: 10px;
   }
   
   /* Responsivo */
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .form_container {
       padding: 10px;
     }

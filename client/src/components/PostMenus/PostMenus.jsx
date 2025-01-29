@@ -297,6 +297,18 @@ export default function PostMenus() {
                 </div>
                 <div>Destacados</div>
               </div>
+
+              <div className={styles.checkbox}>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="Promociones"
+                    checked={data.category.includes("Promociones")}
+                    onChange={handleCheckboxChange}
+                  />
+                </div>
+                <div>Promociones</div>
+              </div>
               <div className={styles.checkbox}>
                 <div>
                   <input
@@ -307,6 +319,17 @@ export default function PostMenus() {
                   />
                 </div>
                 <div>Piqueos</div>
+              </div>
+              <div className={styles.checkbox}>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="Ensaladas"
+                    checked={data.category.includes("Ensaladas")}
+                    onChange={handleCheckboxChange}
+                  />
+                </div>
+                <div>Ensaladas</div>
               </div>
               <div className={styles.checkbox}>
                 <div>

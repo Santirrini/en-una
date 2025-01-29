@@ -28,6 +28,31 @@ export const RegisterUser = (payload) => {
   };
 };
 
+export const ConfirmForm = (email, restaurantIds, business_name) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        'https://en-una-production.up.railway.app/api/confirm-form',
+        { email, restaurantIds, business_name } // Enviar el email como un objeto
+      );
+
+      // Aquí podrías despachar una acción indicando que el registro fue exitoso
+      dispatch({ type: 'FORM_CONFIRM', payload: response.data });
+
+      return response; // Devolver la respuesta para su procesamiento en el componente
+    } catch (error) {
+      // Manejar errores aquí si es necesario
+      console.error(error);
+
+      // Aquí podrías despachar una acción indicando que el registro falló
+      dispatch({ type: 'FORM_ERROR', payload: error });
+
+      throw error; // Puedes lanzar el error para que el componente también lo maneje si es necesario
+    }
+  };
+};
+
+
 // action.js
 // action.js
 export const login = (email, password) => async (dispatch) => {
@@ -56,6 +81,41 @@ export const login = (email, password) => async (dispatch) => {
         userId: response.data.userId,
         role: response.data.role,
       };
+    }
+  } catch (error) {
+ 
+    dispatch({ type: "LOGIN_ERROR",});
+     throw error ;
+  }
+};
+
+
+
+export const loginGoogle = (response) => async (dispatch) => {
+  try {
+    const res = await axios.post('https://en-una-production.up.railway.app/api/auth/google', {
+      token: response.credential, // Token JWT de Google
+    });
+
+    if (res.status === 200 && res.data.token) {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.userId);
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          token: res.data.token,
+          role: res.data.role,
+          userId: res.data.userId,
+        },
+      });
+
+      // Devuelve un objeto con los datos necesarios
+      return {
+        token: res.data.token,
+        userId: res.data.userId,
+        role: res.data.role,
+      };
     } else {
       dispatch({ type: "LOGIN_ERROR" });
       return null;
@@ -67,16 +127,7 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 
-export const loginGoogle = () => async () => {
-  try {
 
-    window.location.href = "https://en-una-production.up.railway.app/api/auth/google";
-   
-  } catch (error) {
-    console.error("Error en loginGoogle:", error); // Agrega este log
-    return null;
-  }
-};
 
 export const dataGoogle = () => async (dispatch) => {
   try {
@@ -469,6 +520,9 @@ export const DeleteAccount = (token) => async (dispatch) => {
     dispatch({ type: 'DELETE_ACCOUNT_ERROR', payload: error.message });
   }
 };
+
+
+
 
 
 export const AllOrder = (restaurantId) => {

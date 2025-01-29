@@ -11,6 +11,9 @@ import Entradas from "./Entradas";
 import Segundos from "./Segundos";
 import Bebidas from "./Bebidas";
 import Postres from "./Postres";
+import Promociones from "./Promociones";
+
+
 import styles from "./MenuFood.module.css";
 import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
@@ -22,6 +25,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Ensaladas from "./Ensaladas";
 
 export default function MenuFood() {
   const { restaurantId } = useParams();
@@ -181,8 +185,27 @@ export default function MenuFood() {
               
             />
           </div>
+
+          <div>
+            <Promociones
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
+              
+            />
+          </div>
           <div>
             <Piqueos
+              setCartItems={setCartItems}
+              setShowSummary={setShowSummary}
+              setQuantities={setQuantities}
+              quantities={quantities}
+            />
+          </div>
+
+          <div>
+            <Ensaladas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}

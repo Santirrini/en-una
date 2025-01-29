@@ -123,7 +123,7 @@ const total = getTotal();
   return (
     <div>
       {!token ? (
-        <div>
+        <div >
           <Result
             title="Iniciar Sesión"
             subTitle="Por favor inicie sesión para ver los menús guardados en el carrito."
@@ -145,7 +145,7 @@ const total = getTotal();
       ) : (
         <>
           {datapersonal.length < 1 ? (
-            <div>
+            <div style={{marginTop: "5em"}}>
               <Result
                 title="No hay menús guardados en el carrito"
                 subTitle="Por favor, ingrese a los restaurantes para ver los menús y hacer las reservaciones."

@@ -230,15 +230,18 @@ export default function NavbarDetails() {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Avatar
-                      sx={{
-                        width: 25,
-                        height: 25,
-                        backgroundColor: datapersonal.backgroundColor,
-                      }}
-                    >
-                      {datapersonal.name && datapersonal.name[0]}
-                    </Avatar>
+                  <Avatar
+                              src={datapersonal.avatar || undefined}
+                              sx={{
+                                width: 40,
+                                height: 40,
+                                backgroundColor: datapersonal.avatar
+                                  ? undefined
+                                  : datapersonal.backgroundColor,
+                              }}
+                            >
+                              {!datapersonal.avatar && datapersonal.name?.[0]}
+                            </Avatar>
                   </ListItemIcon>
                   <ListItemText primary={"Perfil"} />
                 </ListItemButton>
@@ -422,15 +425,18 @@ export default function NavbarDetails() {
   aria-haspopup="true"
   aria-expanded={open ? "true" : undefined}
 >
-  <Avatar
-    sx={{
-      width: 50,
-      height: 50,
-      backgroundColor: datapersonal.backgroundColor,
-    }}
-  >
-    {datapersonal.name && datapersonal.name[0]}
-  </Avatar>
+<Avatar
+                              src={datapersonal.avatar || undefined}
+                              sx={{
+                                width: 50,
+                                height: 50,
+                                backgroundColor: datapersonal.avatar
+                                  ? undefined
+                                  : datapersonal.backgroundColor,
+                              }}
+                            >
+                              {!datapersonal.avatar && datapersonal.name?.[0]}
+                            </Avatar>
 </IconButton>
 </div>
 
@@ -477,14 +483,22 @@ export default function NavbarDetails() {
                   transformOrigin={{ horizontal: "right", vertical: "top" }}
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                  <Link to="/perfil">
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <AccountCircleIcon fontSize="small" />
-                      </ListItemIcon>
-                      Perfil
-                    </MenuItem>
-                  </Link>
+                  {datapersonal.role &&
+                    datapersonal.role === "administrador" ? (
+<div>
+  
+</div>
+                   
+                    ): (
+                      <Link to="/perfil">
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <AccountCircleIcon fontSize="small" />
+                        </ListItemIcon>
+                        Perfil
+                      </MenuItem>
+                    </Link>
+                    )}
 
                   {datapersonal.role && datapersonal.role === "restaurante" ? (
                     <Link to="/panel" target="_blank">
@@ -496,7 +510,20 @@ export default function NavbarDetails() {
                       </MenuItem>
                     </Link>
                   ) : null}
-
+     {datapersonal.role &&
+                    datapersonal.role === "administrador" ? (
+                      <Link
+                        to="/panel/administrativo/formularios-de-registros"
+                        target="_blank"
+                      >
+                        <MenuItem onClick={handleClose}>
+                          <ListItemIcon>
+                            <AdminPanelSettingsIcon fontSize="small" />
+                          </ListItemIcon>
+                          Panel administrativo
+                        </MenuItem>
+                      </Link>
+                    ) : null}
                   {datapersonal.role && datapersonal.role === "personal" ? (
                     <Link to="/mis-reservaciones">
                       <MenuItem onClick={handleClose}>

@@ -185,8 +185,8 @@ export default function TableFormPetition() {
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.allUsers);
   const detailuser = useSelector((state) => state.detailuser.data);
+  const [sortOption, setSortOption] = React.useState("name");
 
-  console.log(detailuser);
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -200,15 +200,41 @@ export default function TableFormPetition() {
   React.useEffect(() => {
     dispatch(AllUsers());
   }, [dispatch]);
-  const userRestaurant = allUsers?.filter(
+  const user = allUsers?.filter(
     (data) =>
       data.role === "personal" &&
-      data.name.toLowerCase().includes(searchTerm.toLowerCase())
+      (
+        data.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.country?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        data.district?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.province?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.department?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        data.phone?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        data.email_additional?.toLowerCase().includes(searchTerm.toLowerCase()) 
+  
+      )
   );
 
-  const filteredForms = userRestaurant?.filter((data) =>
-    data.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const sortedForms = React.useMemo(() => {
+    return user.sort((a, b) => {
+      if (sortOption === "name")
+        return (a.name ?? "").localeCompare(b.name ?? "");
+      if (sortOption === "genre")
+        return (a.genre ?? "").localeCompare(b.genre ?? "");
+  
+      if (sortOption === "country")
+        return (a.country ?? "").localeCompare(b.country ?? "");
+      if (sortOption === "department")
+        return (a.department ?? "").localeCompare(b.department ?? "");
+      if (sortOption === "province")
+        return (a.province ?? "").localeCompare(b.province ?? "");
+      if (sortOption === "district")
+        return (a.district ?? "").localeCompare(b.district ?? "");
+      return 0;
+    });
+  }, [user, sortOption]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -225,7 +251,33 @@ export default function TableFormPetition() {
           </SearchIconWrapper>
         </Search>
       </div>
-
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          placeItems: "center",
+          gap: "1em",
+        }}
+      >
+        <h4>Ordenar pedido por:</h4>
+        <div>
+          <select
+            name="area"
+            className={styles.order}
+            required
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="name">Nombre</option>
+            <option value="genre">Género</option>
+            <option value="country">País</option>
+            <option value="province">Provincia</option>
+            <option value="district">Distrito</option>
+            <option value="department">Departemento</option>
+         
+          </select>
+        </div>
+      </div>
       <div className={styles.order_for_container}></div>
       <div className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8">
         <div className={styles.boletin_container}>
@@ -242,10 +294,10 @@ export default function TableFormPetition() {
               <th>Estado</th>
             </thead>
             <tbody>
-              {filteredForms &&
-                filteredForms.map((data, index) => (
+              {sortedForms &&
+                sortedForms.map((data, index) => (
                   <tr key={index}>
-                    <td>{data.name}</td>
+                    <td>{data.name} {data.lastName}</td>
                     <td>{data.genre}</td>
                     <td>{data.date}</td>
                     <td>{data.email}</td>
