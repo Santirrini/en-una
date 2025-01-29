@@ -26,6 +26,7 @@
     "leaflet": "^1.9.4",
     "print-js": "^1.6.0",
     "react": "^18.2.0",
+    "react-datepicker": "^7.6.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^5.1.0",
