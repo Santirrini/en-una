@@ -1,4 +1,4 @@
-const { SuccessPayment, Order } = require('../db');
+const { SuccessPayment, Order, Restaurant } = require('../db');
 
 module.exports = {
   DetailsReservation: async (req, res) => {
@@ -8,10 +8,17 @@ module.exports = {
         include: [
           {
             model: Order,
-            as: 'orders', // Usa el alias correcto definido en la asociación
+            as: 'orders', // Alias correcto para la asociación entre SuccessPayment y Order
+            include: [
+              {
+                model: Restaurant,  // Incluir el modelo Restaurant
+                as: 'restaurant',  // Asegúrate de usar el alias correcto si lo has definido
+              },
+            ],
           },
         ],
       });
+      
 
       if (!orderReservation) {
         console.log('No se encontraron reservaciones para este restaurante');
