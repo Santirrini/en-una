@@ -103,7 +103,7 @@ router.get('/code/:codeId', async (req, res) => {
     const user = await User.findOne({ where: { codeId } });
 
     if (user) {
-      res.status(200).send({ message: 'Código encontrado', user });
+      res.status(200).send({ message: 'Código encontrado', data: user });
     } else {
       res.status(404).json({ message: 'Código no encontrado' });
     }
