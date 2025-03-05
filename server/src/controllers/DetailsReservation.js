@@ -12,7 +12,6 @@ module.exports = {
             include: [
               {
                 model: Restaurant,  // Incluir el modelo Restaurant
-                as: 'restaurant',  // Asegúrate de usar el alias correcto si lo has definido
               },
             ],
           },
