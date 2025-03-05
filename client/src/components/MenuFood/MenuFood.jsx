@@ -236,9 +236,9 @@ export default function MenuFood() {
                 onClick={toggleSummary}
                 sx={{
                   display: "flex",
-                  backgroundColor: "#500075",
-                  color: "white",
-                  ":hover": { backgroundColor: "#500075" },
+                  backgroundColor: "#FFFF89",
+                  color: "#500075",
+                  ":hover": { backgroundColor: "#FEFE5DFF"},
                 }}
               >
                 {showSummary ? "Ocultar Resumen" : "Mostrar Resumen"}

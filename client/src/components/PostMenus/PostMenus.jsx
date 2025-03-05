@@ -380,7 +380,7 @@ export default function PostMenus() {
                 {data.category
                   .filter(
                     (category) =>
-                      !["Bebidas", "Comida", "Postres"].includes(category)
+                      !["Promociones","Piqueos","Ensaladas","Entradas/Sopas","Segundos","Bebidas", "Destacados", "Postres"].includes(category)
                   ) // Excluir predefinidas
                   .map((category, index) => (
                     <div key={index} className={styles.checkbox}>

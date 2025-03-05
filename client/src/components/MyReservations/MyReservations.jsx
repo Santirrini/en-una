@@ -28,6 +28,7 @@ export default function MyReservations() {
   const detailsReservation = useSelector(
     (state) => state.detailsReservation.data
   );
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -121,6 +122,12 @@ export default function MyReservations() {
             <div className={styles.carsfood_container}>
               <h1 className={styles.text}>Detalle de la reserva</h1>
               <div className={styles.form_container}>
+
+              
+
+                  <div>
+                    <strong>Restaurante:</strong> {detailsReservation?.orders?.Restaurant?.name}
+                  </div>
                 {detailsReservation?.orders?.location ? (
                   <div>
                     <strong>Local:</strong> {detailsReservation?.orders?.location}

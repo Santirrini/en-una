@@ -41,14 +41,17 @@ export default function PostRestaurant() {
   ]);
   const [center, setCenter] = useState(defaultCenter); // Coordenadas del mapa
   const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
-  const [direccion, setDireccion] = useState(""); // Estado para la dirección
-  const [distritos, setDistritos] = useState([]); // Estado para la lista de distritos
-  const [distritoSeleccionado, setDistritoSeleccionado] = useState(""); // Estado para el distrito seleccionado
   const autocompleteRef = useRef(null); // Referencia para el Autocomplete
   const [area, setArea] = useState([]);
   const [additional_services, setAdditional_services] = useState([]);
+  const [messages, setMessages] = useState(""); // Mensaje que se muestra cuando se hace clic
+
+  // Maneja el clic en el botón, desactiva el botón por un tiempo y cambia el mensaje
   const handleDisabled = () => {
-    setDisabled(true);
+    setDisabled(true); // Deshabilita el botón
+    setMessages("La información se puede editar ahora"); // Muestra el mensaje
+
+
   };
   // Maneja los cambios en los checkboxes
   const handleCheckboxChange = (event) => {
@@ -346,14 +349,32 @@ export default function PostRestaurant() {
   return (
     <>
       <div className={styles.bg_btn_disabled_container}>
-        <button
-          className={`block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${styles.bg_btn_disabled}`}
-          onClick={handleDisabled}
-        >
-          Editar información
-        </button>
+
+      <button
+
+  className={`block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm 
+    ${disabled ? `bg-[#c501e2] cursor-not-allowed ${styles.bg_btn_disabled} ` : `bg-[#500075] hover:bg-[#c501e2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${styles.bg_btn_disabled} `}
+  `}
+  onClick={handleDisabled}
+  disabled={disabled}
+>
+  Editar información
+</button>
+
+    
+
+    
       </div>
       <form onSubmit={handleSubmit} className={styles.container_form}>
+      <div>
+
+
+{messages && (
+  <div className={styles.message}>
+    {messages}
+  </div>
+)}
+</div>
         <div className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8">
           <div className={styles.title}>
             <h1>Mi restaurante</h1>

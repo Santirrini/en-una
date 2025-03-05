@@ -69,7 +69,7 @@
 }
 .description_aditional {
   display: flex;
-  gap: 10em;
+  gap: 3em;
   justify-content: center;
 }
 .day_atention {

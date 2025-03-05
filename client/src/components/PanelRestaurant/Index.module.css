@@ -182,21 +182,24 @@ background-color: #666;
 
 }
 .bg_btn_disabled_container {
-display: flex;
-justify-content: flex-end;
-margin-right: 5em;
-margin-top: -8em;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1em;
+  margin-top: -8em;
+}
+
+
+.message {
+  margin-top: 1em; /* Espacio entre el botón y el mensaje */
+  text-align: center; /* Alineación del mensaje al centro */
+  color: #38a169; /* Color verde para el mensaje de éxito */
 }
 .bg_btn_disabled{
-background-color: #500075;
 width: 250px;
 max-width: 90%;
 cursor: pointer;
 }
-.bg_btn_disabled:hover {
-background-color: #500075;
 
-}
 .disabled_class {
 background-color:grey;
 

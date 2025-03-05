@@ -40,6 +40,9 @@ import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import es from "date-fns/locale/es"; // Importa la configuración en español
 import "react-datepicker/dist/react-datepicker.css";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 registerLocale("es", es);
 setDefaultLocale("es");
@@ -51,7 +54,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 const containerStyle = {
-  width: "345px",
+  width: "450px",
   height: "345px",
   maxWidth: "100%",
 };
@@ -61,12 +64,27 @@ const defaultCenter = {
   lat: -12.0464,
   lng: -77.0428,
 };
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 export default function DetailsRestaurant() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const { pathname } = useLocation();
+  const [open, setOpen] = React.useState(false);
 
+  const handleClose = () => setOpen(false);
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
@@ -90,6 +108,20 @@ export default function DetailsRestaurant() {
   const [error, setError] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [cart, setCart] = useState(null);
+  const [userCart, setUserCart] = useState(null);
+  
+ console.log(cart)
+ console.log(userCart)
+
+
+    React.useEffect(() => {
+      const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+      const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
+  
+      setCart(cartData);
+      setUserCart(form)
+    }, []);
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [dispatch, restaurantId]);
@@ -108,8 +140,37 @@ export default function DetailsRestaurant() {
     }));
   };
 
+/*   const handleContinue = () => {
+    // Si cart o userCart tienen datos, abre el modal y detiene la ejecución
+    if ((cart && cart.length > 0) || (userCart && Object.keys(userCart).length > 0)) {
+      setOpen(true);
+      return;
+    }
+  
+    // Verificar si todos los campos del formulario están llenos
+ 
+  
+    if (    formData.date &&
+      formData.hours &&
+      formData.peoples &&
+      formData.location &&
+      formData.area) {
+        const updatedCart = [...items, { formData }];
+        localStorage.setItem(`form_${userId}`, JSON.stringify(updatedCart));
+        navigate(`/menu/restaurante/${restaurantId}`);
+    } else {
+      // Mostrar error si el formulario no está completo
+      setError(true);
+    }
+  }; */
+  
   const handleContinue = () => {
     // Verificar si todos los campos tienen un valor
+    if ((cart && cart.length > 0)) {
+      setOpen(true);
+      return;
+    }
+  
     if (
       formData.date &&
       formData.hours &&
@@ -123,6 +184,13 @@ export default function DetailsRestaurant() {
     } else {
       setError(true);
     }
+  }; 
+  
+  const handleRemoveAll = () => {
+    localStorage.removeItem(`cart_${userId}`);
+    localStorage.removeItem(`form_${userId}`);
+
+    window.location.reload()
   };
 
   useEffect(() => {
@@ -157,7 +225,9 @@ export default function DetailsRestaurant() {
     return todosHorarios;
   };
   
-
+const handleViewReservation = () => {
+  navigate("/carrito")
+}
   const generarHorarios = (inicio, fin, intervaloMinutos) => {
     let horarios = [];
     let [horaInicio, minutoInicio] = inicio.split(":").map(Number);
@@ -688,6 +758,38 @@ export default function DetailsRestaurant() {
           Continuar
         </Button>
       </div>
+
+      <Modal
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <Box sx={style}>
+    <Typography id="modal-modal-title" variant="h6" component="h2">
+      Tienes una reserva pendiente
+    </Typography>
+
+    <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+      <Button 
+        variant="contained" 
+        color="error" 
+        onClick={handleRemoveAll}
+      >
+        Eliminar reserva
+      </Button>
+
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={handleViewReservation}
+      >
+        Ver reserva
+      </Button>
+    </Box>
+  </Box>
+</Modal>
+
     </div>
   );
 }

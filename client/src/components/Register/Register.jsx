@@ -92,6 +92,7 @@ export default function Register() {
    
 
   const [data, setData] = useState({
+    avatar: "",
     name: "",
     code: "",
 
@@ -114,6 +115,8 @@ export default function Register() {
     phone: "",
     role: "",
   });
+
+  console.log(data)
   const [openAlert, setOpenAlert] = React.useState(false);
 
   const [loadingSuccess, setLoadingSuccess] = useState(false);
@@ -150,7 +153,8 @@ export default function Register() {
         );
         setData((prevData) => ({
           ...prevData, // Mantén otros valores del estado
-          name: res.data.name, // Actualiza el nombre recibido del backend
+          name: res.data.data?.name, // Actualiza el nombre recibido del backend
+          avatar:res.data.data?.Restaurant.logo
         }));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -260,7 +264,8 @@ export default function Register() {
       <div className={styles.register_container}>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <Avatar alt="Remy Sharp" className={styles.logo} />
+            <Avatar src={data.avatar || undefined} alt="Remy Sharp" className={styles.logo} />
+
             <h2
               className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 ${styles.textTitle}`}
             >

@@ -280,7 +280,7 @@ export default function TableFormPetition() {
       return 0;
     });
   }, [userRestaurant, sortOption]);
-
+ console.log(sortedForms)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className={styles.search_container}>
@@ -351,7 +351,7 @@ export default function TableFormPetition() {
                   <tr key={index}>
                     <td>{data.name}</td>
                     <td>{data.razon_social}</td>
-                    <td>{data.code}</td>
+                    <td>{data.codeId}</td>
 
                     <td>{data.ruc}</td>
                     <td>{data.email}</td>
