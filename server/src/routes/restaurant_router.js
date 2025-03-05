@@ -26,7 +26,7 @@ const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
 const { AllOrdersRestaurants } = require('../controllers/AllOrdersRestaurants');
 const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
 const { AllOrdersAdmin } = require('../controllers/AllOrdersAdmin');
-const {  User, Code } = require('../db'); // Incluye tu modelo Code
+const {  User, Code, Restaurant} = require('../db'); // Incluye tu modelo Code
 
 
 
@@ -100,7 +100,7 @@ router.get('/code/:codeId', async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ where: { codeId } });
+    const user = await User.findOne({ where: { codeId }, include: {model:Restaurant} });
 
     if (user) {
       res.status(200).send({ message: 'Código encontrado', data: user });
