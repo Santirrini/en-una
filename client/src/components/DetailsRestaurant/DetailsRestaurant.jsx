@@ -480,19 +480,20 @@ const handleViewReservation = () => {
             </label>
 
             <select
-              name="hours"
-              value={formData.hours}
-              onChange={handleChange}
-              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-              required
-            >
-              <option value="">Seleccionar hora</option>
-              {horarios.map((horario, index) => (
-                <option key={index} value={horario}>
-                  {horario}
-                </option>
-              ))}
-            </select>
+  name="hours"
+  value={formData.hours}
+  onChange={handleChange}
+  className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all appearance-none"
+  required
+>
+  <option value="">Seleccionar hora</option>
+  {horarios.map((horario, index) => (
+    <option key={index} value={horario}>
+      {horario}
+    </option>
+  ))}
+</select>
+
           </div>
 
           <div>

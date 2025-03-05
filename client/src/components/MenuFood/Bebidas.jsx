@@ -11,7 +11,8 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { Result } from "antd";
-
+import CloseIcon from '@mui/icons-material/Close'; // Asegúrate de importar el ícono de cierre
+import IconButton from '@mui/material/IconButton'; // Asegúrate de importar el IconButton
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import styles from "./MenuFood.module.css";
 
@@ -307,48 +308,93 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
             </Splide>
           </div>
           <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-          >
-            <Box sx={modalStyle}>
-              <Splide
-                options={{
-                  type: "loop",
-                  perPage: 1,
-                  pagination: false,
-                  arrows: true,
-                  height: "500px",
-                  cover: true,
-                }}
-              >
-                {selectedImages.map((image, index) => (
-                  <SplideSlide key={index}>
-                    <img
-                      src={image}
-                      alt={selectedName}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  </SplideSlide>
-                ))}
-              </Splide>
-              <Typography
-                id="modal-title"
-                variant="h6"
-                component="h2"
-                sx={{ p: 2, textAlign: "center" }}
-              >
-                {selectedName}
-              </Typography>
-              <Typography
-                id="modal-description"
-                sx={{ p: 2, textAlign: "center" }}
-              >
-                {selectedDetails}
-              </Typography>
-            </Box>
-          </Modal>
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="modal-title"
+  aria-describedby="modal-description"
+>
+  <Box sx={modalStyle}>
+    {/* Botón de cierre */}
+    <IconButton
+      onClick={handleClose}
+      sx={{
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        color: 'text.primary',
+        zIndex: 1,  // Asegura que el ícono esté por encima de otros elementos
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+
+    <Splide
+ options={{
+  type: "loop",
+  perPage: 1,
+  pagination: false,
+  arrows: true,
+  height: "400px",  // Ajusta la altura del contenedor
+  cover: true,      // Asegura que la imagen cubra todo el contenedor
+}}
+
+    >
+      {selectedImages.map((image, index) => (
+        <SplideSlide key={index}>
+          <img
+            src={image}
+            alt={selectedName}
+            style={{
+              width: "100%",   // Hace que la imagen ocupe todo el ancho
+              height: "100%",  // Hace que la imagen ocupe toda la altura
+              objectFit: "cover",  // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
+            }}
+          />
+        </SplideSlide>
+      ))}
+    </Splide>
+    
+    <Typography
+      id="modal-title"
+      variant="h6"
+      component="h2"
+      sx={{
+        p: 2,
+        textAlign: "center",
+        fontSize: {
+          xs: "1.2rem",  // Pantallas pequeñas
+          sm: "1.5rem",  // Pantallas medianas
+          md: "1.8rem",  // Pantallas grandes
+        },
+        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
+        overflow: "visible",    // Hace que el texto se muestre completamente
+        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
+        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+      }}
+    >
+      {selectedName}
+    </Typography>
+    
+    <Typography
+      id="modal-description"
+      sx={{
+        p: 2,
+        textAlign: "center",
+        fontSize: {
+          xs: "0.9rem",  // Pantallas pequeñas
+          sm: "1rem",    // Pantallas medianas
+          md: "1.2rem",  // Pantallas grandes
+        },
+        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
+        overflow: "visible",    // Hace que el texto se muestre completamente
+        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
+        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+      }}
+    >
+      {selectedDetails}
+    </Typography>
+  </Box>
+</Modal>
         </div>
       ) : null}
     </div>
