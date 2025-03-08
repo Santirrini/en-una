@@ -261,7 +261,8 @@ export default function PostProducts() {
                   onChange={(e) => setData({ ...data, local: e.target.value })}
                   value={data.local}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                  required
+              />
               </div>
             </div>
             <div className="sm:col-span-2">
@@ -300,7 +301,8 @@ export default function PostProducts() {
                   }
                   value={data.address_optional}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                  
+              />
               </div>
             </div>
             <div>
@@ -367,7 +369,8 @@ export default function PostProducts() {
                     handleInputChange(index, "fin", e.target.value)
                   }
                   className={styles.inputTime}
-                />
+               
+               />
               </>
             )}
             <input
@@ -394,6 +397,7 @@ export default function PostProducts() {
                   rows="4"
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
+                  
                 ></textarea>
               </div>
             </div>

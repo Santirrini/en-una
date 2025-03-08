@@ -49,6 +49,31 @@ module.exports = {
 
       });
 
+      const emailUser = `
+      <html>
+      <body style="background-color: #f3f3f3; display: grid; justify-content: center; max-width: 100%;">
+        <div style="background-color: #fff; border: 8px solid #bd24bd; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif;">
+          <div style="margin: 0 auto; text-align: center;">
+            <img src="https://www.enunaapp.com/static/media/Logo.b202fc3baefbdd16a4ec.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
+          </div>
+          <p style="color: black;">¡Hola ${name}!</p>
+          <p style="color: black;"><strong>Hemos recibido tu mensaje.</strong></p>
+          <p style="color: black;">Gracias por ponerte en contacto con nosotros. Nuestro equipo ha recibido tu mensaje y te responderemos lo antes posible.</p>
+          <p style="color: black;">Si tu consulta es urgente, puedes comunicarte con nuestro soporte a través de nuestro correo oficial.</p>
+          <p style="color: black;">Mientras tanto, te invitamos a seguir explorando nuestra plataforma.</p>
+          <p style="color: black;">Si no enviaste este mensaje, puedes ignorar este correo.</p>
+          <p style="color: black;">¡Gracias por confiar en EN UNA!</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+await transporter.sendMail({
+  from: process.env.EMAIL,
+  to: email,
+  subject: 'Hemos recibido tu mensaje',
+  html: emailUser,
+});
 
 
       console.log('Correo enviado correctamente');

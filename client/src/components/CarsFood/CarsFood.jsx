@@ -178,7 +178,7 @@ export default function CarsFood() {
         ? 18
         : window.innerWidth <= 1440
         ? 13
-        : 30; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+        : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
       return texto.slice(0, limite) + "...";
     }
@@ -187,12 +187,12 @@ export default function CarsFood() {
   const limitarTexto = (texto) => {
     const limite =
       window.innerWidth <= 768
-        ? 18
+        ? 60
         : window.innerWidth <= 1024
         ? 18
         : window.innerWidth <= 1440
         ? 30
-        : 60; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+        : 70; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
       return texto.slice(0, limite) + "...";
     }
@@ -266,6 +266,7 @@ export default function CarsFood() {
                     </div>
                   ) : null}
                 </div>
+<div className={styles.container_complete}>
 
                 <div className={styles.menufood_container}>
                   {items.map((item, index) => (
@@ -278,6 +279,7 @@ export default function CarsFood() {
                             image={item.imageFile[0]}
                             alt="Menu"
                           />
+
                         )}
 
                         <CardContent sx={{ width: "100%" }}>
@@ -300,12 +302,8 @@ export default function CarsFood() {
                           </Typography>
 
                           <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "0.2em",
-                              marginTop: "1em",
-                            }}
+                         
+                            className={styles.button}
                           >
                             <div
                               onClick={() => handleDecreaseQuantity(index)}
@@ -334,6 +332,7 @@ export default function CarsFood() {
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
+                            className= {styles.text_Cantidad}
                           >
                             Cantidad: {item.quantity}
                           </Typography>
@@ -358,7 +357,7 @@ export default function CarsFood() {
                   ))}
                 </div>
 
-                <div className={styles.label_textarea}>
+                <div  className={styles.label_textarea}>
                   <strong>
                     <label htmlFor="">Observaciones (opcional)</label>
                   </strong>
@@ -376,6 +375,8 @@ export default function CarsFood() {
                     
                   ></textarea>
                 </div>
+                </div>
+
                 <div className={styles.btn_container}>
                   <div>
                     <strong>Total: </strong>S/{getTotal()}

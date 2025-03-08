@@ -268,7 +268,7 @@ export default function NavbarDetails() {
                       <ListItemIcon>
                         <StorefrontIcon />
                       </ListItemIcon>
-                      <ListItemText primary={"Mis reservaciones"} />
+                      <ListItemText primary={"Mis reservas"} />
                     </ListItemButton>
                   </ListItem>
                 </Link>
@@ -530,7 +530,7 @@ export default function NavbarDetails() {
                         <ListItemIcon>
                           <AdminPanelSettingsIcon fontSize="small" />
                         </ListItemIcon>
-                        Mis reservaciones
+                        Mis reservas
                       </MenuItem>
                     </Link>
                   ) : null}

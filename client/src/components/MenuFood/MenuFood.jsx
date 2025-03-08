@@ -41,7 +41,7 @@ export default function MenuFood() {
   const userId = useSelector((state) => state.userId);
   const [cartItems, setCartItems] = useState([]);
   const [reservation, setReservation] = useState({});
-  const [showSummary, setShowSummary] = useState(false);
+  const [showSummary, setShowSummary] = useState(true);
   const toggleSummary = () => {
     setShowSummary(!showSummary);
   };
@@ -234,12 +234,8 @@ export default function MenuFood() {
             <div className={styles.btn_reservation}>
               <Button
                 onClick={toggleSummary}
-                sx={{
-                  display: "flex",
-                  backgroundColor: "#FFFF89",
-                  color: "#500075",
-                  ":hover": { backgroundColor: "#FEFE5DFF"},
-                }}
+                className={styles.carddesplegable}
+             
               >
                 {showSummary ? "Ocultar Resumen" : "Mostrar Resumen"}
               </Button>

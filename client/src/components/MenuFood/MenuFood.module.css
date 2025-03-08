@@ -1,7 +1,18 @@
 .menufood_container {
   margin-top: 2em;
 }
+.carddesplegable {
+  display: flex  !important;
+  background-color: #FFFF89!important;
+  color: #500075 !important;
+  margin-right: 150px !important;
+ 
+}
 
+.carddesplegable:hover {
+  background-color: #FEFE5DFF !important;
+
+}
 .menufood_container2 {
   display: flex;
   flex-wrap: wrap;
@@ -320,6 +331,11 @@ border: 1px solid #500075;
   font-size: 15px;
 }
 @media (max-width: 768px) {
+  .carddesplegable {
+
+    margin-right: 0 !important;
+   
+  }
   .form_container {
     position: fixed;
     height: 100%;

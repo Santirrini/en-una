@@ -17,6 +17,31 @@
   background-position: center ;
   background-repeat: no-repeat;
 }
+.hoursdetails {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Espacio entre los elementos */
+}
+
+.texthours {
+  display: flex;
+  justify-content: space-between; /* Alinea los días a la izquierda y las horas a la derecha */
+  width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+  text-align: left; /* Asegura que el texto del día se alinee a la izquierda */
+}
+
+.texthours span:first-child {
+  flex-basis: 10%; /* Ajusta este valor si quieres que los días ocupen más o menos espacio */
+}
+
+.texthours span:last-child {
+  flex-basis: 80%; /* Ajusta este valor si quieres que las horas ocupen más o menos espacio */
+  text-align: left; /* Alinea las horas a la derecha */
+}
+
+
+
+
 
 .date{
   width: 100%;
@@ -186,6 +211,7 @@
   object-fit: cover !important;
 }
 @media (max-width: 768px) {
+
   .img_container{
     margin: auto;
 
@@ -223,8 +249,10 @@
     gap: 1em;
   }
   .day_atention {
+    justify-content: center;
    text-align: center;
    font-size: 13px;
+   margin: auto;
   }
   .form_container {
     margin: auto;
@@ -291,7 +319,30 @@
   .none_desktop {
     display: block;
   }
- 
+  .hoursdetails {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espacio entre los elementos */
+    margin: auto;
+  }
+  
+  .texthours {
+    display: flex;
+    justify-content: space-between; /* Alinea los días a la izquierda y las horas a la derecha */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+    text-align: left; /* Asegura que el texto del día se alinee a la izquierda */
+    gap: 1em;
+  }
+  
+  .texthours span:first-child {
+    flex-basis: 0; /* Ajusta este valor si quieres que los días ocupen más o menos espacio */
+  }
+  
+  .texthours span:last-child {
+    flex-basis: 80%; /* Ajusta este valor si quieres que las horas ocupen más o menos espacio */
+    text-align: left; /* Alinea las horas a la derecha */
+  }
+  
 }
 
 

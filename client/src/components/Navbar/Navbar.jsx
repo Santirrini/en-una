@@ -755,7 +755,7 @@ export default function PrimarySearchAppBar() {
                           <ListItemIcon>
                             <AdminPanelSettingsIcon fontSize="small" />
                           </ListItemIcon>
-                          Mis reservaciones
+                          Mis reservas
                         </MenuItem>
                       </Link>
                     ) : null}

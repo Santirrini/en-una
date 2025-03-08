@@ -3,7 +3,7 @@ import styles from "./DetailsRestaurant.module.css";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { DetailRestaurant } from "../../redux/action";
+import { DetailRestaurant, dataPersonal } from "../../redux/action";
 import { Image } from "antd";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
@@ -88,7 +88,10 @@ export default function DetailsRestaurant() {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
-
+    const token = useSelector((state) => state.token);
+  
+  const datapersonal = useSelector((state) => state.datapersonal);
+  console.log(datapersonal.role)
   console.log(restaurantdetails)
   const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
   const autocompleteRef = useRef(null); // Referencia para el Autocomplete
@@ -114,7 +117,9 @@ export default function DetailsRestaurant() {
  console.log(cart)
  console.log(userCart)
 
-
+  useEffect(() => {
+    dispatch(dataPersonal(token));
+  }, [token, dispatch]);
     React.useEffect(() => {
       const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
       const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
@@ -358,15 +363,21 @@ const handleViewReservation = () => {
               <span>
                 <h1 className={styles.text_container}> Horario de atención</h1>
                 <div className={styles.day_atention}>
-                  {restaurantdetails &&
-                    restaurantdetails.horarios.map((data, index) => (
-                      <div key={index}>
-                        {data.cerrado
-                          ? ""
-                          : `${data.dia}: ${data.inicio} - ${data.fin}`}
-                      </div>
-                    ))}
-                </div>
+  {restaurantdetails &&
+    restaurantdetails.horarios.map((data, index) => (
+      <div key={index} className={styles.hoursdetails}>
+        {data.cerrado ? (
+          ""
+        ) : (
+          <div className={styles.texthours}>
+            <span>{data.dia}:</span>
+            <span>{`${data.inicio} - ${data.fin}`}</span>
+          </div>
+        )}
+      </div>
+    ))}
+</div>
+
               </span>
 
               <br />
@@ -711,6 +722,9 @@ const handleViewReservation = () => {
           </Marker>
         </MapContainer> */}
       </div>
+{datapersonal.role === "personal" ? (
+  <>
+
 
       <div className={styles.form_container}>
         <h2>Detalle de la reserva:</h2>
@@ -759,7 +773,8 @@ const handleViewReservation = () => {
           Continuar
         </Button>
       </div>
-
+      </>
+):null}
       <Modal
   open={open}
   onClose={handleClose}

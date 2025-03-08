@@ -1,7 +1,7 @@
 
 const { Router }= require('express');
 const router = Router();
-
+const https = require('https')
 const {Register} = require('../controllers/Register');
 const {AllUsers} = require('../controllers/AllUsers');
 const {Login} = require('../controllers/Login');
@@ -15,7 +15,7 @@ const {DetailsUser} = require('../controllers/DetailsUser');
 const {UpdateStatus} = require('../controllers/UpdateStatus');
 
 const {VerifyEmail} = require('../controllers/VerifyEmail');
-
+const {PaymentIziPay} = require('../controllers/js/PaymentIziPay');
 
 
 
@@ -28,7 +28,7 @@ router.get('/user/:userId', DetailsUser);
 
 router.post('/login', Login );
 router.get('/datapersonal', DetailsPersonal );
-router.post('/contact-us', ContactUs );
+router.post('/contact', ContactUs );
 router.put('/update-datapersonal', UpdatePersonal );
 
 // Rutas para la autenticación con Google
@@ -44,7 +44,37 @@ router.get('/verificar', VerifyEmail);
 
 
 
+router.post('/izipay', PaymentIziPay);
+router.post('/token', async (req, res) => {
 
+    const { body, headers: { transactionid } } = req;
+
+    const options = {
+        host: 'testapi-pw.izipay.pe',
+        port: 443,
+        path: '/security/v1/Token/Generate',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'transactionId': transactionid,
+        },
+        body: body,
+    };
+
+    const request = https.request(options, callback => {
+        callback.on('data', data => {
+            res.send(JSON.parse(data));
+        });
+    });
+
+    request.on('error', error => {
+        console.error(error);
+    });
+
+    if (req.body) request.write(JSON.stringify(req.body));
+    request.end();
+
+});
 
 module.exports = router
 
