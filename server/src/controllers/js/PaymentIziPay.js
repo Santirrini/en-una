@@ -1,117 +1,89 @@
+require('dotenv').config();
 const { GetTokenSession } = require('./getTokenSession');
 const { getDataOrderDynamic } = require('./util');
 
-/************** Función de apoyo para simular el order y transactionId de manera dinámica **************/
-const { transactionId, orderNumber } = getDataOrderDynamic();
-
-/* Inicio datos del comercio */
-const MERCHANT_CODE = '4001834';
-const PUBLIC_KEY = 'VErethUtraQuxas57wuMuquprADrAHAb';
-/* Fin datos del comercio */
-
-/************* Inicio datos de la transacción **************/
-const TRANSACTION_ID = transactionId;
-const ORDER_NUMBER = orderNumber;
-const ORDER_AMOUNT = '1.99';
-const ORDER_CURRENCY = 'PEN';
-/************* Fin datos de la transacción **************/
-
-/********************************************************
- - Obteniendo el código de /autorización o token de sesión/ para inicializar el formulario de pago
- - El comercio debe llamar a su backend con sus datos para poder generar el token
- *********************************************************/
+// Configuración de los datos del comercio
+const MERCHANT_CODE = process.env.MERCHANT_CODE || '4001834'; // Utiliza dotenv para el merchant code
+const PUBLIC_KEY = process.env.PUBLIC_KEY || 'VErethUtraQuxas57wuMuquprADrAHAb'; // Utiliza dotenv para la public key
 
 module.exports = {
-    PaymentIziPay: async () => {
-        try {
-            // Obteniendo el token de autorización desde el backend
-            const authorization = await GetTokenSession(TRANSACTION_ID, {
-                requestSource: 'ECOMMERCE',
-                merchantCode: MERCHANT_CODE,
-                orderNumber: ORDER_NUMBER,
-                publicKey: PUBLIC_KEY,
-                amount: ORDER_AMOUNT,
-            });
+  Pay: async (req, res) => {
+    try {
+      // Generación de datos dinámicos de la transacción
+      const { transactionId, orderNumber } = getDataOrderDynamic();
+      const ORDER_AMOUNT = req.body.amount || '1.99'; // Cantidad del pedido, recibida del cuerpo de la solicitud
+      const ORDER_CURRENCY = 'PEN'; // Moneda del pedido
 
-            /********* Obteniendo el token de la respuesta  **********/
-            const { response: { token = undefined } } = authorization;
+      // Obtener el token de sesión utilizando GetTokenSession
+      const authorization = await GetTokenSession(transactionId, {
+        requestSource: 'ECOMMERCE',
+        merchantCode: MERCHANT_CODE,
+        orderNumber: orderNumber,
+        publicKey: PUBLIC_KEY,
+        amount: ORDER_AMOUNT,
+      });
 
-            if (!!token) {
-                // Datos de configuración para cargar el Checkout(form) de IziPay
-                const iziConfig = {
-                    publicKey: PUBLIC_KEY,
-                    config: {
-                        transactionId: TRANSACTION_ID,
-                        action: 'pay',
-                        merchantCode: MERCHANT_CODE,
-                        order: {
-                            orderNumber: ORDER_NUMBER,
-                            currency: ORDER_CURRENCY,
-                            amount: ORDER_AMOUNT,
-                            processType: 'AT',
-                            merchantBuyerId: 'mc1768',
-                            dateTimeTransaction: '1670258741603000', // currentTimeUnix
-                        },
-                        card: {
-                            brand: '',
-                            pan: '',
-                        },
-                        billing: {
-                            firstName: 'Darwin',
-                            lastName: 'Paniagua',
-                            email: 'demo@izipay.pe',
-                            phoneNumber: '989339999',
-                            street: 'calle el demo',
-                            city: 'lima',
-                            state: 'lima',
-                            country: 'PE',
-                            postalCode: '00001',
-                            document: '12345678',
-                            documentType: 'DNI',
-                        },
-                        render: {
-                            typeForm: 'pop-up',
-                            container: '#your-iframe-payment',
-                        },
-                        urlRedirect: 'https://server.punto-web.com/comercio/creceivedemo.asp?p=h1',
-                        appearance: {
-                            logo: 'https://demo-izipay.azureedge.net/test/img/millasb.svg',
-                        },
-                    },
-                };
+      const { response: { token = undefined } } = authorization;
 
-                // Callback para manejar la respuesta del pago
-                const callbackResponsePayment = (response) => {
-                    console.log(response); // Muestra la respuesta del pago
-                };
+      if (token) {
+        // Configuración del pago con los datos obtenidos
+        const iziConfig = {
+          publicKey: PUBLIC_KEY,
+          config: {
+            transactionId: transactionId,
+            action: 'pay',
+            merchantCode: MERCHANT_CODE,
+            order: {
+              orderNumber: orderNumber,
+              currency: ORDER_CURRENCY,
+              amount: ORDER_AMOUNT,
+              processType: 'AT',
+              merchantBuyerId: 'mc1768',
+              dateTimeTransaction: Date.now().toString(), // Tiempo actual en Unix
+            },
+            card: {
+              brand: '',
+              pan: '',
+            },
+            billing: {
+              firstName: 'Darwin',
+              lastName: 'Paniagua',
+              email: 'demo@izipay.pe',
+              phoneNumber: '989339999',
+              street: 'calle el demo',
+              city: 'lima',
+              state: 'lima',
+              country: 'PE',
+              postalCode: '00001',
+              document: '12345678',
+              documentType: 'DNI',
+            },
+            render: {
+              typeForm: 'pop-up',
+              container: '#your-iframe-payment', // Asegúrate de que este ID sea el correcto en tu HTML
+            },
+            urlRedirect: 'https://server.punto-web.com/comercio/creceivedemo.asp?p=h1',
+            appearance: {
+              logo: 'https://demo-izipay.azureedge.net/test/img/millasb.svg',
+            },
+          },
+        };
 
-                const handleLoadForm = () => {
-                    try {
-                        const izi = new Izipay({
-                            publicKey: iziConfig?.publicKey,
-                            config: iziConfig?.config,
-                        });
-
-                        izi &&
-                        izi.LoadForm({
-                            authorization: token,
-                            keyRSA: 'RSA',
-                            callbackResponse: callbackResponsePayment,
-                        });
-
-                    } catch (error) {
-                        console.log(error.message, error.Errors, error.date);
-                    }
-                };
-
-                // Cargar el formulario de pago cuando sea necesario
-                handleLoadForm();
-
-            } else {
-                console.error('Token de autorización no recibido');
-            }
-        } catch (error) {
-            console.error('Error al crear la sesión:', error);
-        }
-    },
+        // Aquí puedes enviar la respuesta con los datos de pago
+        res.status(200).json({
+          message: 'Pago preparado correctamente',
+          iziConfig,
+        });
+      } else {
+        // Si no se obtiene el token, manejar el error
+        res.status(400).json({
+          error: 'No se pudo obtener el token de sesión',
+        });
+      }
+    } catch (error) {
+      // Manejo de errores
+      console.error('Error en el pago:', error.response?.data || error.message);
+      res.status(500).json({ error: 'Error al procesar el pago' });
+    }
+  },
 };

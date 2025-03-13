@@ -1,16 +1,20 @@
-// Cambia export async function por module.exports
-async function GetTokenSession(transactionId, {
+require('dotenv').config();
+
+module.exports.GetTokenSession = async function (transactionId, {
     requestSource = 'ECOMMERCE',
-    merchantCode = '4004353',
+    merchantCode = process.env.MERCHANT_CODE || '4004353',
     orderNumber = '21',
-    publicKey = 'VErethUtraQuxas57wuMuquprADrAHAb',
+    publicKey = process.env.PUBLIC_KEY || 'VErethUtraQuxas57wuMuquprADrAHAb',
     amount = '30',
 }) {
 
     // Llamado al backend interno de esta app
-    const response = await fetch('http://localhost:3001/api/token', {
+    const response = await fetch(process.env.BACKEND_URL || 'http://localhost:3001/api/token', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json', 'transactionId': transactionId},
+        headers: {
+            'Content-Type': 'application/json',
+            'transactionId': transactionId,
+        },
         body: JSON.stringify({
             requestSource,
             merchantCode,
@@ -19,10 +23,10 @@ async function GetTokenSession(transactionId, {
             amount,
         }),
     });
-    return await response.json();
-}
 
-// Usar module.exports para exportar la función
-module.exports = {
-    GetTokenSession,
+    if (!response.ok) {
+        throw new Error(`Error al obtener el token: ${response.statusText}`);
+    }
+
+    return await response.json();
 };

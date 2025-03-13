@@ -1,7 +1,9 @@
 
 const { Router }= require('express');
 const router = Router();
-const https = require('https')
+const https = require('https');
+const cors = require('cors');
+
 const {Register} = require('../controllers/Register');
 const {AllUsers} = require('../controllers/AllUsers');
 const {Login} = require('../controllers/Login');
@@ -15,10 +17,9 @@ const {DetailsUser} = require('../controllers/DetailsUser');
 const {UpdateStatus} = require('../controllers/UpdateStatus');
 
 const {VerifyEmail} = require('../controllers/VerifyEmail');
-const {PaymentIziPay} = require('../controllers/js/PaymentIziPay');
 
 
-
+router.use(cors())
 
 
 
@@ -44,7 +45,6 @@ router.get('/verificar', VerifyEmail);
 
 
 
-router.post('/izipay', PaymentIziPay);
 router.post('/token', async (req, res) => {
 
     const { body, headers: { transactionid } } = req;
