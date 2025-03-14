@@ -17,6 +17,7 @@ const {DetailsUser} = require('../controllers/DetailsUser');
 const {UpdateStatus} = require('../controllers/UpdateStatus');
 
 const {VerifyEmail} = require('../controllers/VerifyEmail');
+const {OrderSuccess} = require('../controllers/OrderSuccess');
 
 
 router.use(cors())
@@ -42,13 +43,13 @@ router.post('/claim', Claim);
 router.put('/user/:id', UpdateStatus);
 router.get('/verificar', VerifyEmail);
 
+router.post('/order-success', OrderSuccess );
 
 
 
 router.post('/token', async (req, res) => {
 
     const { body, headers: { transactionid } } = req;
-
     const options = {
         host: 'testapi-pw.izipay.pe',
         port: 443,
@@ -75,6 +76,8 @@ router.post('/token', async (req, res) => {
     request.end();
 
 });
+
+
 
 module.exports = router
 
