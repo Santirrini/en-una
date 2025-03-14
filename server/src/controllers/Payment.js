@@ -25,8 +25,8 @@ module.exports = {
 
         // Crear la orden en la base de datos y obtener el UUID generado
         const orders = await Order.create({ location, date, hours, area, peoples, observation, order, restaurantId, userId: decoded.id });
-        
-            res.status(200).send({ success: true, message:  "orden guardado en la base de datos de Order" });
+        console.log(orders.id)
+            res.status(200).send({ success: true, data:  orders.id });
 
       } catch (error) {
         console.error('Error al guardar la orden en el modelo Order:', error);
