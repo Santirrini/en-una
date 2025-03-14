@@ -209,27 +209,34 @@ export default function DetailsRestaurant() {
   
     let todosHorarios = [];
   
+    // Recorremos todos los horarios
     restaurantdetails.horarios.forEach((horario) => {
       if (!horario.cerrado) {
-        // Generar horarios normales
-        const horarios = generarHorarios(horario.inicio, horario.fin, 30); // Cambiado a 30 minutos
+        // Generar horarios en intervalos de 30 minutos
+        const horarios = generarHorarios(horario.inicio, horario.fin, 30);
   
-        // Filtrar horarios si las personas alcanzan el máximo por mesa
+        // Filtrar los horarios según las reservas
         const horariosFiltrados = horarios.filter((hora) => {
+          // Filtrar las órdenes que coinciden con la hora actual
           const ordenesEnHora = restaurantdetails.Orders.filter((order) => order.hours === hora);
-          const totalPeople = ordenesEnHora.reduce((sum, order) => sum + order.people, 0);
+          
+          // Calcular el total de personas en esa hora
+          const totalPeople = ordenesEnHora.reduce((sum, order) => {
+            return sum + (order.people || 0); // Asegúrate de que "people" sea un número válido
+          }, 0);
   
-          // Eliminar horario si la cantidad total de personas alcanza el máximo por mesa
+          // Compara el total de personas con el máximo por mesa
           return totalPeople < restaurantdetails.maximum_per_table;
         });
   
-        // Agregar horarios filtrados al resultado final
-        todosHorarios = todosHorarios.concat(horariosFiltrados);
+        // Agregar los horarios filtrados al resultado final
+        todosHorarios.push(...horariosFiltrados);
       }
     });
   
     return todosHorarios;
   };
+  
   
 const handleViewReservation = () => {
   navigate("/carrito")
@@ -251,7 +258,7 @@ const handleViewReservation = () => {
 
     return horarios;
   };
-  const horarios = obtenerTodosHorarios();
+  const horarios = obtenerTodosHorarios(); console.log(horarios)
   const today = new Date().toISOString().split("T")[0];
   const formatDate = (date) => {
     // Verifica si la fecha es válida antes de formatear

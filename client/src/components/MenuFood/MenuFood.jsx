@@ -377,7 +377,7 @@ export default function MenuFood() {
                   ))}
                 </div>
               </div>
-              <div className={styles.prices_btn}>
+              <div >
                 <div>
                   <strong>Total: </strong>S/{getTotal().toFixed(2)}
                 </div>
