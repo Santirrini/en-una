@@ -14,11 +14,9 @@ module.exports = {
         userId,
         orderId,
        } = req.body;
-       const { authorization } = req.headers;
 
 
   
-    jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
 
       // Verifica y guarda la orden en la base de datos
       try {
@@ -56,7 +54,6 @@ module.exports = {
       } catch (error) {
         console.error('Error al guardar la orden en la base de datos:', error);
       }
-    });
 
 
   }
