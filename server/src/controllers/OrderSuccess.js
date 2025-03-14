@@ -11,7 +11,7 @@ module.exports = {
         email,
         phone,
         observation,
-  
+        userId,
         orderId,
        } = req.body;
        const { authorization } = req.headers;
@@ -49,7 +49,7 @@ module.exports = {
 
           status: 'Pendiente',
           orderId,
-          userId: decoded.id
+          userId
         });
 
         console.log('Orden guardada en la base de datos:', successPayment);
