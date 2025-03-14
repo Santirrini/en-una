@@ -1,10 +1,11 @@
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 const { SuccessPayment, Order } = require('../db');
 
 module.exports = {
     OrderSuccess: async (req, res) => {
-    const { order_id,
+    const { 
         name,
         lastName,
         email,
@@ -12,10 +13,11 @@ module.exports = {
         observation,
   
         orderId,
-        userId} = req.body;
+       } = req.body;
 
 
   
+    jwt.verify(authorization, process.env.FIRMA_TOKEN, async (err, decoded) => {
 
       // Verifica y guarda la orden en la base de datos
       try {
@@ -37,7 +39,6 @@ module.exports = {
           throw new Error("Fecha no válida");
         }
         const successPayment = await SuccessPayment.create({
-          order_id,
           name,
           lastName,
           email,
@@ -47,15 +48,15 @@ module.exports = {
 
           status: 'Pendiente',
           orderId,
-          userId
+          userId: decoded.id
         });
 
         console.log('Orden guardada en la base de datos:', successPayment);
       } catch (error) {
         console.error('Error al guardar la orden en la base de datos:', error);
       }
+    });
 
-    res.status(200).send('Evento recibido');
 
   }
 };

@@ -25,52 +25,12 @@ module.exports = {
 
         // Crear la orden en la base de datos y obtener el UUID generado
         const orders = await Order.create({ location, date, hours, area, peoples, observation, order, restaurantId, userId: decoded.id });
-        const orderId = orders.id;  // UUID generado por la base de datos
-
-
-        const name = decoded.name;
-        const lastName = decoded.lastName;
-        const email = decoded.email;
-        const phone = decoded.phone;
-
-        const totalAmount = order.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
-
-        const newCharge = {
-          method: 'card',
-          amount: totalAmount,
-          currency: 'PEN',
-          description: `Reservar`,
-          order_id: orderId,  // Utilizar el UUID generado por la base de datos
-          customer: {
-            name: name,
-            last_name: lastName,
-            email: email,
-            phone_number: phone,
-          },
-          send_email: false,
-          confirm: false,
-          redirect_url: 'https://www.enunaapp.com/reserva-exitosa',
-          metadata: {
-            additional_info_1: decoded.id,
-
-            custom_field: observation
-          }
-        };
-
-
-        openpay.charges.create(newCharge, function (error, body) {
-          if (error) {
-            console.error("Error:", error);
-            res.status(500).send({ success: false, message: 'Error al procesar el pago' });
-          } else {
-            console.log("Respuesta:", body);
-            res.status(200).send({ success: true, data: body.payment_method.url });
-          }
-        });
+        
+            res.status(200).send({ success: true, message:  "orden guardado en la base de datos de Order" });
 
       } catch (error) {
-        console.error('Error al procesar el pago:', error);
-        return res.status(500).send('Error al procesar el pago');
+        console.error('Error al guardar la orden en el modelo Order:', error);
+        return res.status(500).send('Error al guardar la orden en el modelo Order');
       }
     });
   }
