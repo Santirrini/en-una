@@ -379,7 +379,6 @@ export default function CarsFood() {
                   ></textarea>
                 </div>
                 </div>
-
                 <div className={styles.btn_container}>
                   <div>
                     <strong>Total: </strong>S/{getTotal()}

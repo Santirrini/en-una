@@ -83,9 +83,9 @@ export const login = (email, password) => async (dispatch) => {
       };
     }
   } catch (error) {
- 
-    dispatch({ type: "LOGIN_ERROR",});
-     throw error ;
+
+    dispatch({ type: "LOGIN_ERROR", });
+    throw error;
   }
 };
 
@@ -218,7 +218,7 @@ export const ClaimSend = (payload) => {
       return response; // Devolver la respuesta para su procesamiento en el componente
     } catch (error) {
       // Manejar errores aquí si es necesario
-      console.error("No se pudo enviar el reclamo:",error);
+      console.error("No se pudo enviar el reclamo:", error);
 
     }
   };
@@ -235,7 +235,7 @@ export const petitionForm = (payload) => {
       return response; // Devolver la respuesta para su procesamiento en el componente
     } catch (error) {
       // Manejar errores aquí si es necesario
-      console.error("No se pudo enviar el la petición de registro:",error);
+      console.error("No se pudo enviar el la petición de registro:", error);
 
     }
   };
@@ -315,7 +315,7 @@ export const DetailForm = (formId) => {
   };
 };
 
-export const DetailUser= (userId) => {
+export const DetailUser = (userId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`https://en-una-production.up.railway.app/api/user/${userId}`);
@@ -475,8 +475,8 @@ export const PaymentReserve = (token, cart) => {
         },
       });
       const response = res.data;
-    localStorage.setItem('orderId', response.data); 
-      
+      localStorage.setItem('orderId', response.data);
+
       // Despachar la acción para guardar el 'orderId' en el estado de Redux
       dispatch({
         type: "PAYMENT_RESERVE",
@@ -622,7 +622,7 @@ export const deleteProduct = (productId) => {
 export const AllUsers = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('https://en-una-production.up.railway.app/api/users', );
+      const res = await axios.get('https://en-una-production.up.railway.app/api/users',);
       const data = res.data;
 
       dispatch({
