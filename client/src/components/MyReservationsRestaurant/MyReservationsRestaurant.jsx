@@ -61,6 +61,7 @@ export default function MyReservationsRestaurant() {
   const datapersonal = useSelector(
     (state) => state.datapersonal?.successPayments || []
   );
+  console.log(datapersonal)
   const [searchTerm, setSearchTerm] = React.useState("");
   const { pathname } = useLocation();
   React.useEffect(() => {

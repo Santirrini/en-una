@@ -5,9 +5,9 @@ export async function GetTokenSession(transactionId, {
     publicKey = 'VErethUtraQuxas57wuMuquprADrAHAb',
     amount = '30',
 }) {
-
+    
     //llamado al backend interno de esta app
-    const response = await fetch('http://localhost:3001/api/token', {
+    const response = await fetch('https://en-una-production.up.railway.app/api/token', {
         method: 'POST',
         headers: {'Content-Type': 'application/json', 'transactionId': transactionId},
         body: JSON.stringify({

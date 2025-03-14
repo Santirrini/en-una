@@ -474,12 +474,15 @@ export const PaymentReserve = (token, cart) => {
           Authorization: `${token}`,
         },
       });
-      const data = res.data;
-      window.location.href= res.data.data
+      const response = res.data;
+    localStorage.setItem('orderId', response.data); 
+      
+      // Despachar la acción para guardar el 'orderId' en el estado de Redux
       dispatch({
         type: "PAYMENT_RESERVE",
-        payload: data
+        payload: response,
       });
+      return response
     } catch (error) {
       console.error('Error al procesar el pago:', error);
       dispatch({

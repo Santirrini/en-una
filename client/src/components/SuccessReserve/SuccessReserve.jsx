@@ -12,7 +12,7 @@ console.log(userId)
   const handleRemoveAll = () => {
     localStorage.removeItem(`cart_${userId}`);
     localStorage.removeItem(`form_${userId}`);
-
+    localStorage.removeItem('orderId');
     navigate("/"); // Regresa a la página anterior
   };
 return (

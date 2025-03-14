@@ -96,6 +96,7 @@ export default function DetailsRestaurant() {
   const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
   const autocompleteRef = useRef(null); // Referencia para el Autocomplete
   const [center, setCenter] = useState(defaultCenter); // Coordenadas del mapa
+    const orderId = useSelector((state) => state.orderId);
 
   const userId = useSelector((state) => state.userId);
   const position = [51.505, -0.09];
@@ -114,8 +115,7 @@ export default function DetailsRestaurant() {
   const [cart, setCart] = useState(null);
   const [userCart, setUserCart] = useState(null);
   
- console.log(cart)
- console.log(userCart)
+
 
   useEffect(() => {
     dispatch(dataPersonal(token));
@@ -194,6 +194,7 @@ export default function DetailsRestaurant() {
   const handleRemoveAll = () => {
     localStorage.removeItem(`cart_${userId}`);
     localStorage.removeItem(`form_${userId}`);
+    localStorage.removeItem('orderId', orderId);
 
     window.location.reload()
   };

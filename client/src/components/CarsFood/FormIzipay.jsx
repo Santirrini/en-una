@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { GetTokenSession } from '../js/getTokenSession';
-import { getDataOrderDynamic } from '../js/util';
+import { GetTokenSession } from '../../js/getTokenSession';
+import { getDataOrderDynamic } from '../../js/util';
 import { useDispatch, useSelector } from "react-redux";
-import { dataPersonal } from "../redux/action";
+import { dataPersonal } from "../../redux/action";
+import styles from "./CarsFood.module.css";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const {transactionId, orderNumber} = getDataOrderDynamic();
@@ -13,17 +18,22 @@ const ORDER_AMOUNT = '1.99';
 const ORDER_CURRENCY = 'PEN';
 const ORDER_NUMBER = orderNumber;
 
-const PaymentPage = () => {
+const FormIzipay = ({handleReserve, loading}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const datapersonal = useSelector((state) => state.datapersonal);
   const [isReadyToPay, setIsReadyToPay] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState('');
   const [token, setToken] = useState(null);
   const tokenUser = useSelector((state) => state.token);  
   const userId = useSelector((state) => state.userId);
-    const orderId = useSelector((state) => state.orderId);
+  const orderId = useSelector((state) => state.orderId);
+
   
-  console.log(datapersonal)
+
+
+
+
 
   React.useEffect(() => {
     dispatch(dataPersonal(tokenUser));
@@ -37,9 +47,12 @@ const PaymentPage = () => {
     }, 100);
 
     return () => clearInterval(checkIzipayAvailability);
-  }, []);
+  }, [token]);
+
 
   const initializePayment = () => {
+    handleReserve();
+
     GetTokenSession(TRANSACTION_ID, {
       requestSource: 'ECOMMERCE',
       merchantCode: MERCHANT_CODE,
@@ -57,6 +70,7 @@ const PaymentPage = () => {
   };
 
   const handleLoadForm = () => {
+  
     if (!token) return;
 
     const iziConfig = {
@@ -104,34 +118,33 @@ const PaymentPage = () => {
     const callbackResponsePayment = (response) => {
       setPaymentMessage(JSON.stringify(response, null, 2));
       // Realizar la consulta al backend después del pago
+
       if (response.message === 'OK') {
-        fetch('https://en-una-production.up.railway.app/api/order-success', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': tokenUser 
-          },   
-          body: JSON.stringify({
-            name: datapersonal.name,
-            lastName: datapersonal.lastName,
-            email: datapersonal.email,
-            phone: datapersonal.lastName,
-            observation: "asdasdwadasdasdasdasd",
-            orderId: orderId,
-            userId: userId
-          }),
-   
+
+    
+        axios.post('https://en-una-production.up.railway.app/api/order-success', {
+          name: datapersonal.name,
+          lastName: datapersonal.lastName,
+          email: datapersonal.email,
+          phone: datapersonal.lastName,
+          observation: "asdasdwadasdasdasdasd",
+          orderId: orderId.data,
+          userId: userId
         })
-          .then((res) => res.json())
           .then((data) => {
             console.log('Respuesta del backend:', data);
           })
           .catch((error) => {
             console.error('Error al consultar el pago en el backend:', error);
           });
+        
+        
+          navigate("/reserva-exitosa")
       }
-    };
 
+
+    };
+    
     try {
       const izi = new window.Izipay({
         publicKey: iziConfig?.publicKey,
@@ -151,22 +164,23 @@ const PaymentPage = () => {
 
   return (
     <div>
-      <h1>Realizar Pago</h1>
-      <button
-        id="btnPayNow"
-        className="buttonPay"
-        type="button"
-        disabled={!isReadyToPay}
-        onClick={handleLoadForm}
-      >
-        {isReadyToPay ? 'Pay Now PEN 1.99' : 'Cargando...'}
-      </button>
-
-      <pre id="payment-message">{paymentMessage}</pre>
+      <Button id="btnPayNow" className={styles.btn_login} disabled={!isReadyToPay} onClick={handleLoadForm}>
+                    {loading ? (
+                      <CircularProgress
+                        size={25}
+                        thickness={5}
+                        sx={{ color: "#fff" }}
+                      />
+                    ) : (
+                      isReadyToPay ?  "Reservar" : 'Cargando...'
+                     
+                    )}
+                  </Button>
+    {/*   <pre id="payment-message">{paymentMessage}</pre> */}
 
       <div id="your-iframe-payment"></div> {/* Contenedor donde se cargará el formulario de pago */}
     </div>
   );
 };
 
-export default PaymentPage;
+export default FormIzipay;

@@ -11,7 +11,8 @@ import styles from "./CarsFood.module.css";
 import { Result } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
+import FormIzipay from "./FormIzipay";
+
 export default function CarsFood() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,9 +22,8 @@ export default function CarsFood() {
   const [loading, setLoading] = React.useState(false);
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
-  const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
-  );
+    const orderId = useSelector((state) => state.orderId);
+  
 
 
   const [reserve, setReserve] = React.useState({
@@ -148,11 +148,14 @@ export default function CarsFood() {
     }
     updateReserve(newItems);
   };
+
+
+  
   const handleReserve = async () => {
     setLoading(true);
 
     try {
-      await dispatch(PaymentReserve(token, reserve));
+    await dispatch(PaymentReserve(token, reserve));
     } catch (error) {
       alert("error en el sistema");
       console.error("Error al realizar la reserva:", error);
@@ -202,7 +205,7 @@ export default function CarsFood() {
   const handleRemoveAll = () => {
     localStorage.removeItem(`cart_${userId}`);
     localStorage.removeItem(`form_${userId}`);
-
+    localStorage.removeItem('orderId', orderId);
     navigate("/"); // Regresa a la página anterior
   };
 
@@ -381,17 +384,8 @@ export default function CarsFood() {
                   <div>
                     <strong>Total: </strong>S/{getTotal()}
                   </div>
-                  <Button className={styles.btn_login} onClick={handleReserve}>
-                    {loading ? (
-                      <CircularProgress
-                        size={25}
-                        thickness={5}
-                        sx={{ color: "#fff" }}
-                      />
-                    ) : (
-                      "Reservar"
-                    )}
-                  </Button>
+              
+                  <FormIzipay handleReserve={handleReserve} loading={loading} orderId={orderId} />
 
                   <Button
                     className={styles.btn_clean}
