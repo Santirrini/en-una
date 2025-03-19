@@ -51,7 +51,7 @@ router.post('/token', async (req, res) => {
 
     const { body, headers: { transactionid } } = req;
     const options = {
-        host: 'testapi-pw.izipay.pe',
+        host: 'sandbox-api-pw.izipay.pe',
         port: 443,
         path: '/security/v1/Token/Generate',
         method: 'POST',
