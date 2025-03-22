@@ -29,7 +29,9 @@ module.exports = (sequelize) => {
     date_payment: {
       type: DataTypes.STRING,
     },
-    
+    ticketIzipay: {
+      type: DataTypes.JSONB,
+    },
     status: {
       type: DataTypes.STRING,
     },
