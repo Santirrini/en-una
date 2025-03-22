@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const { Order } = require("../db");
 
 module.exports = {
-  Payment: async (req, res) => {
+    Payment: async (req, res) => {
     const { location, date, hours, area, peoples, order, observation, restaurantId } = req.body;
     const { authorization } = req.headers;
 

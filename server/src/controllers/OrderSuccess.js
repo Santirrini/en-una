@@ -12,6 +12,7 @@ module.exports = {
         phone,
         observation,
         userId,
+        ticketIzipay,
         orderId,
        } = req.body;
 
@@ -44,7 +45,7 @@ module.exports = {
           phone,
           observation,
           date_payment: formatDate(today), // Usar formato DD/MM/YYYY
-
+          ticketIzipay,
           status: 'Pendiente',
           orderId,
           userId
