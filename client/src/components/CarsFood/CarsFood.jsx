@@ -12,6 +12,7 @@ import { Result } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import FormIzipay from "./FormIzipay";
+import SuccessReserve from "../SuccessReserve/SuccessReserve";
 
 export default function CarsFood() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function CarsFood() {
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
     const orderId = useSelector((state) => state.orderId);
+  
   
 
 
@@ -384,7 +386,7 @@ export default function CarsFood() {
                     <strong>Total: </strong>S/{getTotal()}
                   </div>
               
-                  <FormIzipay handleReserve={handleReserve} loading={loading} orderId={orderId} />
+                  <FormIzipay getTotal={getTotal} handleReserve={handleReserve} loading={loading} orderId={orderId} />
 
                   <Button
                     className={styles.btn_clean}
@@ -418,6 +420,7 @@ export default function CarsFood() {
           </>
         )}
       </>
+ 
     </div>
   );
 }

@@ -58,6 +58,7 @@ import MessageRegister from "./pages/MessageRegister";
 
 
 function App() {
+  const [transaction, setTransaction] = useState({});
 
   const [disabled, setDisabled] = useState(false);
 
@@ -82,7 +83,7 @@ function App() {
           <Route path="/registrarse" element={<Register />} />
           <Route path="/restaurantes" element={<Restaurant />} />
           <Route path="/detalles/restaurante/:restaurantId" element={<DetailsRestaurant />} />
-          <Route path="/carrito" element={<CarsFood />} />
+          <Route path="/carrito" element={<CarsFood   transaction={transaction} setTransaction={setTransaction}/>} />
           <Route path="/menu/restaurante/:restaurantId" element={<MenuFood />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/contactanos" element={<Contact />} />
@@ -101,7 +102,7 @@ function App() {
 
           <Route path="/preguntas-frecuentes" element={<FrequentQuestions />} />
           <Route path="/menús-reservados" element={<CarsFood />} />
-          <Route path="/reserva-exitosa" element={<SuccessReserve />} />
+          <Route path="/reserva-exitosa" element={<SuccessReserve  transaction={transaction} setTransaction={setTransaction}/>} />
           <Route path="/libro-de-quejas" element={<ComplaintBook />} />
           <Route path="/reclamación" element={<ReclamoForm />} />
           <Route path="/reclamo-enviado" element={<ReclaimSend />} />
