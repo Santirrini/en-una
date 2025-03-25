@@ -176,8 +176,7 @@
   position: fixed;
   height: 80%;
   bottom: 10px;
-  max-width: 100%;
-  width: 45%;
+  max-width: 450px;
 
   right: 10px;
 border: 1px solid #500075;
@@ -304,7 +303,7 @@ border: 1px solid #500075;
 .btn_reservation {
   position: fixed;
   bottom: 0;
-  right: 0 ;
+  right: 120px ;
   z-index: 9000;
 }
 .btn_decrease_increment {

@@ -162,7 +162,7 @@ export default function MenuFood() {
         <div>
           <h1 className={styles.text}>NUESTRA CARTA</h1>
 
-          <div>
+          <div onClick={toggleSummary}>
             <MenuDestacad
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -172,7 +172,7 @@ export default function MenuFood() {
             />
           </div>
 
-          <div>
+          <div onClick={toggleSummary}>
             <Promociones
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -181,7 +181,7 @@ export default function MenuFood() {
               
             />
           </div>
-          <div>
+          <div onClick={toggleSummary}>
             <Piqueos
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -190,7 +190,7 @@ export default function MenuFood() {
             />
           </div>
 
-          <div>
+          <div onClick={toggleSummary}>
             <Ensaladas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -198,7 +198,7 @@ export default function MenuFood() {
               quantities={quantities}
             />
           </div>
-          <div>
+          <div onClick={toggleSummary}>
             <Entradas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -206,7 +206,7 @@ export default function MenuFood() {
               quantities={quantities}
             />
           </div>
-          <div>
+          <div onClick={toggleSummary}>
             <Segundos
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -214,7 +214,7 @@ export default function MenuFood() {
               quantities={quantities}
             />
           </div>
-          <div>
+          <div onClick={toggleSummary}>
             <Bebidas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -222,7 +222,7 @@ export default function MenuFood() {
               quantities={quantities}
             />
           </div>
-          <div>
+          <div onClick={toggleSummary}>
             <Postres
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}

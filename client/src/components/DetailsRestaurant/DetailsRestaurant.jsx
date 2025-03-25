@@ -54,9 +54,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 const containerStyle = {
-  width: "450px",
+  maxWidth: "500px",
   height: "345px",
-  maxWidth: "100%",
 };
 
 // Coordenadas iniciales centradas en Perú
