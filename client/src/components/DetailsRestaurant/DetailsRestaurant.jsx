@@ -54,7 +54,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 const containerStyle = {
-  maxWidth: "400px",
+  maxWidth: "345px",
   height: "345px",
 };
 
