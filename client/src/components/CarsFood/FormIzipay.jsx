@@ -128,7 +128,7 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
         localStorage.setItem('paymentResponse', JSON.stringify(response)); // ✅ Convertir a JSON
 
           if ( response && response.code === '00') {
-            axios.post('https://en-una-production.up.railway.app/api/order-success', {
+            axios.post('http://localhost:3001/api/order-success', {
               name: datapersonal.name,
               lastName: datapersonal.lastName,
               email: datapersonal.email,

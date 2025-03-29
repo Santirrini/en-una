@@ -22,7 +22,7 @@ module.exports = {
       try {
         const {
           name, address, phone, email, details, district, horarios, local, area, additional_services,
-          maximum_per_table, maximum_person_per_table, minimum_consumption, type_of_meals, average_price, facebook, instagram, tiktok, youtube, status
+          maximum_per_table, maximum_person_per_table, minimum_consumption, type_of_meals, average_price, facebook, instagram, tiktok, youtube, status, codeId
         } = req.body;
 
         const userId = decoded.id; // ID del usuario extraído del token
@@ -130,7 +130,7 @@ module.exports = {
             horarios: parsedHorarios,
             details: details !== undefined ? details : "",
             status: "-",
-
+            codeId,
             userId // Asignar el ID del usuario al restaurante
           });
 

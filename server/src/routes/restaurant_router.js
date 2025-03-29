@@ -26,6 +26,10 @@ const { AdminFormSuccess } = require('../controllers/AdminFormSuccess');
 const { AllOrdersRestaurants } = require('../controllers/AllOrdersRestaurants');
 const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
 const { AllOrdersAdmin } = require('../controllers/AllOrdersAdmin');
+const { AllCodes } = require('../controllers/AllCodes');
+const { DetailsCodes } = require('../controllers/DetailsCodes');
+
+
 const {  User, Code, Restaurant} = require('../db'); // Incluye tu modelo Code
 
 
@@ -62,7 +66,9 @@ router.post('/post-restaurant', upload.fields([
   { name: 'logoUrl', maxCount: 1 }
 ]), PostRestaurant);
 
-router.get('/restaurants', AllRestaurant);
+router.get('/restaurants', AllCodes);
+router.get('/code/:codeId', DetailsCodes);
+
 router.get('/restaurant/:restaurantId', DetailsRestaurant);
 router.get('/products', AllProducts);
 router.post('/register', Register);
@@ -92,6 +98,9 @@ router.post('/confirm-form', AdminFormSuccess);
 router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
 router.put('/restaurant-destac', RestaurantDetacs);
+router.get('/codes-restaurants', AllCodes);
+
+
 router.get('/code/:codeId', async (req, res) => {
   const { codeId } = req.params;
 

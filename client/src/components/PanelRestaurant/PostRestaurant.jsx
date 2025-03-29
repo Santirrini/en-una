@@ -26,7 +26,7 @@ const defaultCenter = {
 export default function PostRestaurant() {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
-  const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
+  const datapersonal = useSelector((state) => state.datapersonal);
   const [disabled, setDisabled] = useState(false);
   const token = useSelector((state) => state.token);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ export default function PostRestaurant() {
   const [area, setArea] = useState([]);
   const [additional_services, setAdditional_services] = useState([]);
   const [messages, setMessages] = useState(""); // Mensaje que se muestra cuando se hace clic
-
+console.log(datapersonal)
   // Maneja el clic en el botón, desactiva el botón por un tiempo y cambia el mensaje
   const handleDisabled = () => {
     setDisabled(true); // Deshabilita el botón
@@ -154,6 +154,7 @@ export default function PostRestaurant() {
     minimum_consumption: "",
     type_of_meals: "",
     average_price: "",
+    codeId: datapersonal?.codeId || ""
   });
   console.log(data.local);
   const handleInputChange = (index, campo, valor) => {
@@ -206,6 +207,8 @@ export default function PostRestaurant() {
       formData.append("tiktok", data.tiktok);
       formData.append("youtube", data.youtube);
       formData.append("district", data.district);
+      formData.append("codeId", data.codeId);
+
 
       // Convertir el array de horarios a una cadena JSON
       formData.append("horarios", JSON.stringify(horarios));
@@ -305,28 +308,30 @@ export default function PostRestaurant() {
   useEffect(() => {
     setData({
       ...data,
-      imageFile: datapersonal?.imageFile || [],
-      logo: datapersonal?.logo || "",
-      name: datapersonal?.name || "",
-      address: datapersonal?.address || "",
-      phone: datapersonal?.phone || "",
-      email: datapersonal?.email || "",
-      details: datapersonal?.details || "",
-      local: datapersonal?.local || "",
-      facebook: datapersonal?.facebook || "",
-      instagram: datapersonal?.instagram || "",
-      tiktok: datapersonal?.tiktok || "",
-      youtube: datapersonal?.youtube || "",
-      district: datapersonal?.district || "",
+      imageFile: datapersonal?.Restaurant?.imageFile || [],
+      logo: datapersonal?.Restaurant?.logo || "",
+      name: datapersonal?.Restaurant?.name || "",
+      address: datapersonal?.Restaurant?.address || "",
+      phone: datapersonal?.Restaurant?.phone || "",
+      email: datapersonal?.Restaurant?.email || "",
+      details: datapersonal?.Restaurant?.details || "",
+      local: datapersonal?.Restaurant?.local || "",
+      facebook: datapersonal?.Restaurant?.facebook || "",
+      instagram: datapersonal?.Restaurant?.instagram || "",
+      tiktok: datapersonal?.Restaurant?.tiktok || "",
+      youtube: datapersonal?.Restaurant?.youtube || "",
+      district: datapersonal?.Restaurant?.district || "",
 
-      maximum_per_table: datapersonal?.maximum_per_table || "",
-      maximum_person_per_table: datapersonal?.maximum_person_per_table || "",
-      minimum_consumption: datapersonal?.minimum_consumption || "",
-      type_of_meals: datapersonal?.type_of_meals || "",
-      average_price: datapersonal?.average_price || "",
+      maximum_per_table: datapersonal?.Restaurant?.maximum_per_table || "",
+      maximum_person_per_table: datapersonal?.Restaurant?.maximum_person_per_table || "",
+      minimum_consumption: datapersonal?.Restaurant?.minimum_consumption || "",
+      type_of_meals: datapersonal?.Restaurant?.type_of_meals || "",
+      average_price: datapersonal?.Restaurant?.average_price || "",
+      codeId: datapersonal?.codeId || ""
+
     });
     setHorarios(
-      datapersonal?.horarios || [
+      datapersonal?.Restaurant?.horarios || [
         { dia: "Lunes", inicio: "", fin: "", cerrado: false },
         { dia: "Martes", inicio: "", fin: "", cerrado: false },
         { dia: "Miércoles", inicio: "", fin: "", cerrado: false },
@@ -336,8 +341,8 @@ export default function PostRestaurant() {
         { dia: "Domingo", inicio: "", fin: "", cerrado: false },
       ]
     );
-    setAdditional_services(datapersonal?.additional_services || "");
-    setArea(datapersonal?.area || "");
+    setAdditional_services(datapersonal?.Restaurant?.additional_services || "");
+    setArea(datapersonal?.Restaurant?.area || "");
   }, [datapersonal]);
   const createObjectURL = (file) => {
     if (file instanceof Blob) {
@@ -382,21 +387,21 @@ export default function PostRestaurant() {
           <div className={styles.dropzone} {...getLogoRootProps()}>
             <input
               {...getLogoInputProps()}
-              disabled={datapersonal?.name ? !disabled : disabled}
+              disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
             />
             {isLogoDragActive ? (
-              <p disabled={datapersonal?.name ? !disabled : disabled}>
+              <p disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}>
                 Suelta el logo aquí...
               </p>
             ) : (
-              <div disabled={datapersonal?.name ? !disabled : disabled}>
+              <div disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}>
                 <CollectionsIcon className={styles.icons} />
               </div>
             )}
           </div>
           <div
             className={styles.text}
-            disabled={datapersonal?.name ? !disabled : disabled}
+            disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
           >
             <p>Arrastra y suelta el logo aquí o haz clic para seleccionar.</p>
             <span>Puedes subir un logo.</span>
@@ -404,7 +409,7 @@ export default function PostRestaurant() {
           {data.logo && (
             <div
               className={styles.prev_mini}
-              disabled={datapersonal?.name ? !disabled : disabled}
+              disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
             >
               <img
                 src={createObjectURL(data.logo) || data.logo}
@@ -415,7 +420,7 @@ export default function PostRestaurant() {
                 <button
                   type="button"
                   onClick={handleRemoveLogo}
-                  disabled={datapersonal?.name ? !disabled : disabled}
+                  disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                 >
                   <strong>X</strong>
                 </button>
@@ -426,7 +431,7 @@ export default function PostRestaurant() {
           <div className={styles.dropzone} {...getRootProps()}>
             <input
               {...getInputProps()}
-              disabled={datapersonal?.name ? !disabled : disabled}
+              disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
             />
             {isDragActive ? (
               <p>Suelta las imágenes aquí...</p>
@@ -457,7 +462,7 @@ export default function PostRestaurant() {
                       <button
                         type="button"
                         onClick={() => handleRemove(index)}
-                        disabled={datapersonal?.name ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                       >
                         <strong>X</strong>
                       </button>
@@ -495,7 +500,7 @@ export default function PostRestaurant() {
                     value={data.name}
                     className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
-                    disabled={datapersonal?.name ? !disabled : disabled}
+                    disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                   />
                 </div>
               </div>
@@ -519,7 +524,7 @@ export default function PostRestaurant() {
                 
                   className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
-                  disabled={datapersonal?.local ? !disabled : disabled}
+                  disabled={datapersonal?.Restaurant?.local ? !disabled : disabled}
                    />
                  
                
@@ -561,7 +566,7 @@ export default function PostRestaurant() {
                           padding: "10px",
                           marginBottom: "10px",
                         }}
-                        disabled={datapersonal?.address ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.address ? !disabled : disabled}
                       />
                     </Autocomplete>
                   </LoadScript>
@@ -586,7 +591,7 @@ export default function PostRestaurant() {
                     value={data.district}
                     className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
-                    disabled={datapersonal?.name ? !disabled : disabled}
+                    disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                   />
                 </div>
               </div>
@@ -608,7 +613,7 @@ export default function PostRestaurant() {
                     value={data.phone}
                     className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
-                    disabled={datapersonal?.phone ? !disabled : disabled}
+                    disabled={datapersonal?.Restaurant?.phone ? !disabled : disabled}
                   />
                 </div>
               </div>
@@ -629,7 +634,7 @@ export default function PostRestaurant() {
                     }
                     value={data.email}
                     className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    disabled={datapersonal?.email ? !disabled : disabled}
+                    disabled={datapersonal?.Restaurant?.email ? !disabled : disabled}
                   />
                 </div>
               </div>
@@ -650,7 +655,7 @@ export default function PostRestaurant() {
                       }
                       value={data.facebook}
                       className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      disabled={datapersonal?.name ? !disabled : disabled}
+                      disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                     />
                   </div>
                 </div>
@@ -672,7 +677,7 @@ export default function PostRestaurant() {
                       }
                       value={data.instagram}
                       className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      disabled={datapersonal?.name ? !disabled : disabled}
+                      disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                     />
                   </div>
                 </div>
@@ -693,7 +698,7 @@ export default function PostRestaurant() {
                       }
                       value={data.tiktok}
                       className="block outline-none w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      disabled={datapersonal?.name ? !disabled : disabled}
+                      disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                     />
                   </div>
                 </div>
@@ -714,7 +719,7 @@ export default function PostRestaurant() {
                       }
                       value={data.youtube}
                       className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      disabled={datapersonal?.name ? !disabled : disabled}
+                      disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
                     />
                   </div>
                 </div>
@@ -736,7 +741,7 @@ export default function PostRestaurant() {
                     value={data.details}
                     rows="4"
                     className="block w-full outline-none rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    disabled={datapersonal?.details ? !disabled : disabled}
+                    disabled={datapersonal?.Restaurant?.details ? !disabled : disabled}
                     required
                   ></textarea>
                 </div>
@@ -762,7 +767,7 @@ export default function PostRestaurant() {
                             }
                             className={styles.inputTime}
                             disabled={
-                              datapersonal?.horarios ? !disabled : disabled
+                              datapersonal?.Restaurant?.horarios ? !disabled : disabled
                             }
                           />
                           <span>-</span>
@@ -774,7 +779,7 @@ export default function PostRestaurant() {
                             }
                             className={styles.inputTime}
                             disabled={
-                              datapersonal?.horarios ? !disabled : disabled
+                              datapersonal?.Restaurant?.horarios ? !disabled : disabled
                             }
                           />
                         </>
@@ -783,7 +788,7 @@ export default function PostRestaurant() {
                         type="checkbox"
                         checked={!horario.cerrado}
                         onChange={() => toggleCerrado(index)}
-                        disabled={datapersonal?.horarios ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.horarios ? !disabled : disabled}
                       />
                     </div>
                   ))}
@@ -799,7 +804,7 @@ export default function PostRestaurant() {
                         name="Salón"
                         checked={area.includes("Salón")}
                         onChange={handleCheckboxChange}
-                        disabled={datapersonal?.area ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.area ? !disabled : disabled}
                       />
                     </div>
 
@@ -810,7 +815,7 @@ export default function PostRestaurant() {
                         name="Exteriores"
                         checked={area.includes("Exteriores")}
                         onChange={handleCheckboxChange}
-                        disabled={datapersonal?.area ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.area ? !disabled : disabled}
                       />
                     </div>
 
@@ -821,7 +826,7 @@ export default function PostRestaurant() {
                         name="Privado"
                         checked={area.includes("Privado")}
                         onChange={handleCheckboxChange}
-                        disabled={datapersonal?.area ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.area ? !disabled : disabled}
                       />
                     </div>
 
@@ -832,7 +837,7 @@ export default function PostRestaurant() {
                         name="Barra"
                         checked={area.includes("Barra")}
                         onChange={handleCheckboxChange}
-                        disabled={datapersonal?.area ? !disabled : disabled}
+                        disabled={datapersonal?.Restaurant?.area ? !disabled : disabled}
                       />
                     </div>
                   </div>
@@ -848,7 +853,7 @@ export default function PostRestaurant() {
                         checked={additional_services.includes("Wifi")}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -862,7 +867,7 @@ export default function PostRestaurant() {
                         checked={additional_services.includes("Pet friendly")}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -881,7 +886,7 @@ export default function PostRestaurant() {
                         )}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -901,7 +906,7 @@ export default function PostRestaurant() {
                         )}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -920,7 +925,7 @@ export default function PostRestaurant() {
                         )}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -939,7 +944,7 @@ export default function PostRestaurant() {
                         )}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -959,7 +964,7 @@ export default function PostRestaurant() {
                         )}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -978,7 +983,7 @@ export default function PostRestaurant() {
                         )}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -995,7 +1000,7 @@ export default function PostRestaurant() {
                         checked={additional_services.includes("Valet Parking")}
                         onChange={handleCheckboxChangeAditional}
                         disabled={
-                          datapersonal?.additional_services
+                          datapersonal?.Restaurant?.additional_services
                             ? !disabled
                             : disabled
                         }
@@ -1025,7 +1030,7 @@ export default function PostRestaurant() {
                   min={1}
                   required
                   disabled={
-                    datapersonal?.maximum_per_table ? !disabled : disabled
+                    datapersonal?.Restaurant?.maximum_per_table ? !disabled : disabled
                   }
                 />
               </div>
@@ -1053,7 +1058,7 @@ export default function PostRestaurant() {
                   min={1}
                   required
                   disabled={
-                    datapersonal?.maximum_person_per_table
+                    datapersonal?.Restaurant?.maximum_person_per_table
                       ? !disabled
                       : disabled
                   }
@@ -1085,7 +1090,7 @@ export default function PostRestaurant() {
                   placeholder="0.00"
                   className="block w-full outline-none rounded-md border-0 py-1.5 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   disabled={
-                    datapersonal?.minimum_consumption ? !disabled : disabled
+                    datapersonal?.Restaurant?.minimum_consumption ? !disabled : disabled
                   }
                 />
               </div>
@@ -1109,7 +1114,7 @@ export default function PostRestaurant() {
                   }
                   className={`h-[2.5rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.type_food}`}
                   required
-                  disabled={datapersonal?.type_of_meals ? !disabled : disabled}
+                  disabled={datapersonal?.Restaurant?.type_of_meals ? !disabled : disabled}
                 >
                   <option value="">Seleccionar tipo de comida</option>
                   <option value="Pollo a la brasa">Pollo a la brasa</option>
@@ -1166,7 +1171,7 @@ export default function PostRestaurant() {
                     placeholder="0.00"
                     className="block w-full outline-none rounded-md border-0 py-1.5 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     disabled={
-                      datapersonal?.name ? !disabled : disabled
+                      datapersonal?.Restaurant?.name ? !disabled : disabled
                     }
                   />
                 </div>
@@ -1176,7 +1181,7 @@ export default function PostRestaurant() {
               <button
                 type="submit"
                 className={`block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm  ${styles.bg_btn}`}
-                disabled={datapersonal?.name ? !disabled : disabled}
+                disabled={datapersonal?.Restaurant?.name ? !disabled : disabled}
               >
                 {loading ? (
                   <CircularProgress

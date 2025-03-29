@@ -1,41 +1,23 @@
-const { Restaurant, Order, Menu, Code } = require("../db");
-
+const { Restaurant, Order, Menu } = require('../db');
 module.exports = {
   AllRestaurant: async (req, res) => {
     try {
-      // Obtener todos los restaurantes con la relación con Code
-      const restaurants = await Restaurant.findAll({
-        include: [
-          { model: Menu },
-          { model: Order },
-          { model: Code, as: "code" } // Agregamos la relación con Code
-        ]
-      });
+  
+        const restaurants = await Restaurant.findAll({
+          include: [
+            { model: Menu },
+            { model: Order }
+          ]
+        });
 
-      // Agrupar restaurantes por CodeId
-      const groupedRestaurants = {};
-      restaurants.forEach((restaurant) => {
-        const codeId = restaurant.codeId;
+        console.log('Todos los restaurantes');
 
-        if (!groupedRestaurants[codeId]) {
-          groupedRestaurants[codeId] = {
-            mainRestaurant: restaurant, // Mostrar solo un restaurante principal
-            locations: []
-          };
-        } else {
-          groupedRestaurants[codeId].locations.push(restaurant); // Agregar restaurantes con la misma CodeId
-        }
-      });
+        res.status(200).send({success: true, data: restaurants})
 
-      console.log("Restaurantes agrupados por CodeId");
 
-      res.status(200).json({
-        success: true,
-        data: Object.values(groupedRestaurants)
-      });
     } catch (error) {
-      console.error("Error al obtener los restaurantes:", error);
-      res.status(500).json({ error: "Error al obtener los restaurantes" });
+      console.error('error al obtener Todas las ordenes:', error);
+      res.status(500).json({ error: 'error al obtener Todas las ordenes' });
     }
   }
 };

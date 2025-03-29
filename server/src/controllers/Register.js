@@ -106,12 +106,12 @@ module.exports = {
         </html>
       `;
 
-      await transporter.sendMail({
+  /*     await transporter.sendMail({
         from: process.env.EMAIL,
         to: email,
         subject: '¡Bienvenido a nuestra plataforma!',
         html: emailContent,
-      });
+      }); */
 
       const newUser = await User.create({
         name: capitalizedName,

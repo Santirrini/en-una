@@ -63,7 +63,6 @@ Restaurant.belongsTo(Code, { foreignKey: "codeId", as: "code" }); // Un restaura
 
 
 
-
 Code.hasMany(User, { foreignKey: 'codeId' });
 User.belongsTo(Code, { foreignKey: 'codeId' });
 

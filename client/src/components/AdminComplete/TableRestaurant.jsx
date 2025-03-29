@@ -208,7 +208,7 @@ export default function TableFormPetition() {
   const handleCloseModal = () => setOpen(false);
   const AllRestaurant = async () => {
     try {
-      const res = await axios.get("https://en-una-production.up.railway.app/api/users");
+      const res = await axios.get("http://localhost:3001/api/users");
       setAllUser(res.data);
     } catch (error) {
       console.log(error);
@@ -242,7 +242,7 @@ export default function TableFormPetition() {
     console.log(selectedRestaurant.status, newStatus);
     
     try {
-      const res = await axios.put(`https://en-una-production.up.railway.app/api/user/${selectedRestaurant.id}`, {
+      const res = await axios.put(`http://localhost:3001/api/user/${selectedRestaurant.id}`, {
         status: newStatus,
       });
       console.log("Respuesta de la API:", res.data); // Para verificar la respuesta

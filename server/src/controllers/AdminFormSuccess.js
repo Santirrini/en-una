@@ -100,12 +100,12 @@ module.exports = {
 
 
       // Enviar el correo
-      await transporter.sendMail({
+   /*    await transporter.sendMail({
         from: process.env.EMAIL,
         to: email,
         subject: '¡Solicitud aprobada!',
         html: emailContent,
-      });
+      }); */
 
       console.log('Formulario de registro confirmado con éxito');
       res.status(201).json({

@@ -259,7 +259,7 @@ export default function TableFormPetition() {
   const AllForm = async () => {
     try {
       const res = await axios.get(
-        "https://en-una-production.up.railway.app/api/forms"
+        "http://localhost:3001/api/forms"
       );
       setAllform(res.data.data);
     } catch (error) {

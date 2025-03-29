@@ -113,9 +113,16 @@ module.exports = (sequelize) => {
         category: {
             type: DataTypes.STRING,
         },
+        codeId: {
+            type: DataTypes.STRING, // Cambiar a UUID para que coincida con el tipo de Codes.id
+            references: {
+              model: 'Codes', // Nombre de la tabla en la base de datos
+              key: 'id',
+            },
+        },
+
    
-    }, {
-        timestamps: false, // Desactiva los campos createdAt y updatedAt
-    });
+   
+    }, );
     return Restaurant
 };

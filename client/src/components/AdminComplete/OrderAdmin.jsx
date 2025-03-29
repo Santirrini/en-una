@@ -99,7 +99,7 @@ export default function OrderProducts() {
   const AllOrder = async () => {
     try {
       const response = await axios.get(
-        "https://en-una-production.up.railway.app/api/orders"
+        "http://localhost:3001/api/orders"
       );
 
       setAllOrders(response.data);

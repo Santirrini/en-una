@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "./DetailsRestaurant.module.css";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DetailRestaurant, dataPersonal } from "../../redux/action";
 import { Image } from "antd";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
@@ -43,6 +43,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import axios from "axios"
 
 registerLocale("es", es);
 setDefaultLocale("es");
@@ -90,8 +91,7 @@ export default function DetailsRestaurant() {
     const token = useSelector((state) => state.token);
   
   const datapersonal = useSelector((state) => state.datapersonal);
-  console.log(datapersonal.role)
-  console.log(restaurantdetails)
+
   const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
   const autocompleteRef = useRef(null); // Referencia para el Autocomplete
   const [center, setCenter] = useState(defaultCenter); // Coordenadas del mapa
@@ -113,9 +113,18 @@ export default function DetailsRestaurant() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [cart, setCart] = useState(null);
   const [userCart, setUserCart] = useState(null);
-  
+  const [location, setLocations] = useState(null);
 
+  console.log(location)
 
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get(`http://localhost:3001/api/code/1031`);
+      setLocations(res.data.data)
+    }
+    fetch()
+
+  }, []);
   useEffect(() => {
     dispatch(dataPersonal(token));
   }, [token, dispatch]);
@@ -142,6 +151,9 @@ export default function DetailsRestaurant() {
       ...prevState,
       [name]: value,
     }));
+    if (name === "location" && value) {
+      navigate(`/detalles/restaurante/${value}`);
+    }
   };
 
 /*   const handleContinue = () => {
@@ -317,6 +329,7 @@ const handleViewReservation = () => {
       geocodeAddress(restaurantdetails.address);
     }
   }, [restaurantdetails]);
+
   return (
     <div className={styles.food_container}>
       <div className={styles.food_box}>
@@ -469,10 +482,15 @@ const handleViewReservation = () => {
               required
             >
               <option value="">Seleccionar</option>
-              <option value={restaurantdetails && restaurantdetails.local}>
-                {restaurantdetails && restaurantdetails.local}
-              </option>
+              {location?.restaurants?.map((data) => (
+                <Link to={`/detalles/restaurante/${data.id}`}>
+    <option key={data.id} value={data.id}>
+      {data.local} {/* Muestra el nombre del local pero el value es el ID */}
+    </option>
+                </Link>
+  ))}
             </select>
+            
           </div>
 
           <div>

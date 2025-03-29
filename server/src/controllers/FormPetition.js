@@ -44,13 +44,13 @@ module.exports = {
         </body>
         </html>
       `;
-      await transporter.sendMail({
+/*       await transporter.sendMail({
         from: process.env.EMAIL,
         to: email_contract,
         subject: '¡Formulario enviado exitosamente!',
         html: emailContent,
       });
-
+ */
       const formRegister = await Form.create({
         ruc, reason_social, busines_name, legal_representative, legal_representative_dni, legal_manager, local_address, phone_contact, local_phone, email_contract, status: "pendiente"
       })
