@@ -55,6 +55,10 @@ SuccessPayment.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 Order.hasOne(SuccessPayment, { foreignKey: 'orderId', as: 'successPayment' });
 SuccessPayment.belongsTo(Order, { foreignKey: 'orderId', as: 'orders' });
 
+// Relación entre Restaurant y Code
+Code.hasMany(Restaurant, { foreignKey: "codeId", as: "restaurants" }); // Un código puede tener varios restaurantes
+Restaurant.belongsTo(Code, { foreignKey: "codeId", as: "code" }); // Un restaurante pertenece a un código
+
 
 
 
