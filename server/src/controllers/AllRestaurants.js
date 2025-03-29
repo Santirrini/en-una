@@ -7,29 +7,31 @@ module.exports = {
       const restaurants = await Restaurant.findAll({
         include: [
           { model: Menu },
-          { model: Order }
+          { model: Order },
+          { model: Code } // Para traer información del código asociado
         ]
       });
 
-      // Agrupar restaurantes por Code
+      // Agrupar restaurantes por CodeId
       const groupedRestaurants = {};
       restaurants.forEach(restaurant => {
-        const code = restaurant.Code; // Suponiendo que `Code` es un atributo del modelo `Restaurant`
-        if (!groupedRestaurants[code]) {
-          groupedRestaurants[code] = {
+        const codeId = restaurant.CodeId; // Suponiendo que `CodeId` es la FK en `Restaurant`
+        
+        if (!groupedRestaurants[codeId]) {
+          groupedRestaurants[codeId] = {
             mainRestaurant: restaurant, // Guardamos solo uno como principal
-            relatedRestaurants: [] // Lista de restaurantes con el mismo Code
+            locations: [] // Lista de otras localidades
           };
         } else {
-          groupedRestaurants[code].relatedRestaurants.push(restaurant);
+          groupedRestaurants[codeId].locations.push(restaurant);
         }
       });
 
-      console.log('Restaurantes agrupados por Code');
+      console.log('Restaurantes agrupados por CodeId');
 
       res.status(200).json({
         success: true,
-        data: Object.values(groupedRestaurants) // Convertir en un array para la respuesta
+        data: Object.values(groupedRestaurants) // Convertimos en array para la respuesta
       });
 
     } catch (error) {
