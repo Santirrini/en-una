@@ -54,10 +54,8 @@ L.Icon.Default.mergeOptions({
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
-const containerStyle = {
-  maxWidth: "400px",
-  height: "345px",
-};
+
+
 
 // Coordenadas iniciales centradas en Perú
 const defaultCenter = {
@@ -732,7 +730,7 @@ const handleViewReservation = () => {
           libraries={["places"]} // Necesario para usar Autocomplete
         >
           <GoogleMap
-            mapContainerStyle={containerStyle}
+            mapContainerClassName={styles.maps}
             center={center}
             zoom={12}
           >
