@@ -10,6 +10,8 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             unique: true,
           },
-        }, );
+        },{
+            timestamps: false, // Desactiva los campos createdAt y updatedAt
+          } );
     return Code
 };
