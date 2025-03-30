@@ -21,7 +21,7 @@ console.log(restaurants)
   const handleToggleCategory = async (restaurantId, currentCategory) => {
     try {
       const newCategory = currentCategory === "destacado" ? "-" : "destacado";
-      await axios.put("http://localhost:3001/api/restaurant-destac", {
+      await axios.put("https://en-una-production.up.railway.app/api/restaurant-destac", {
         restaurantId,
         newCategory
       });

@@ -119,7 +119,7 @@ export default function DetailsRestaurant() {
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await axios.get(`http://localhost:3001/api/code/1031`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/code/1031`);
       setLocations(res.data.data)
     }
     fetch()

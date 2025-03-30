@@ -6,11 +6,11 @@ import axios from 'axios'
 
 
 /* http://localhost:30021/// */
-/* http://localhost:3001// */
+/* https://en-una-production.up.railway.app// */
 export const RegisterUser = (payload) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/register', payload);
+      const response = await axios.post('https://en-una-production.up.railway.app/api/register', payload);
 
       // Aquí podrías despachar una acción indicando que el registro fue exitoso
       dispatch({ type: 'REGISTER_SUCCESS', payload: response.data });
@@ -32,7 +32,7 @@ export const ConfirmForm = (email, restaurantIds, business_name) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/confirm-form',
+        'https://en-una-production.up.railway.app/api/confirm-form',
         { email, restaurantIds, business_name } // Enviar el email como un objeto
       );
 
@@ -57,7 +57,7 @@ export const ConfirmForm = (email, restaurantIds, business_name) => {
 // action.js
 export const login = (email, password) => async (dispatch) => {
   try {
-    const response = await axios.post("http://localhost:3001/api/login", {
+    const response = await axios.post("https://en-una-production.up.railway.app/api/login", {
       email,
       password,
     });
@@ -93,7 +93,7 @@ export const login = (email, password) => async (dispatch) => {
 
 export const loginGoogle = (response) => async (dispatch) => {
   try {
-    const res = await axios.post('http://localhost:3001/api/auth/google', {
+    const res = await axios.post('https://en-una-production.up.railway.app/api/auth/google', {
       token: response.credential, // Token JWT de Google
     });
 
@@ -131,7 +131,7 @@ export const loginGoogle = (response) => async (dispatch) => {
 
 export const dataGoogle = () => async (dispatch) => {
   try {
-    const response = await axios.get("http://localhost:3001/auth/google/callback");
+    const response = await axios.get("https://en-una-production.up.railway.app/auth/google/callback");
 
     if (response.status === 200 && response.data.token) {
       localStorage.setItem("token", response.data.token);
@@ -169,7 +169,7 @@ export const dataGoogle = () => async (dispatch) => {
 export const SendEmailPassword = (email) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('http://localhost:3001/api/email-reset', { email });
+      const res = await axios.post('https://en-una-production.up.railway.app/api/email-reset', { email });
       const data = res.data;
       dispatch({
         type: "SEND_EMAIL_SUCCESS",
@@ -190,7 +190,7 @@ export const SendEmailPassword = (email) => {
 export const ResetPassword = (token, newPassword) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/api/password-reset/${token}`, { newPassword });
+      const res = await axios.post(`https://en-una-production.up.railway.app/api/password-reset/${token}`, { newPassword });
       const data = res.data;
       dispatch({
         type: "RESET_SUCCESS",
@@ -210,7 +210,7 @@ export const ResetPassword = (token, newPassword) => {
 export const ClaimSend = (payload) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/claim', payload);
+      const response = await axios.post('https://en-una-production.up.railway.app/api/claim', payload);
 
       // Aquí podrías despachar una acción indicando que el registro fue exitoso
       dispatch({ type: 'CLAIM_SUCCESS', payload: response.data });
@@ -227,7 +227,7 @@ export const ClaimSend = (payload) => {
 export const petitionForm = (payload) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/form-petition', payload);
+      const response = await axios.post('https://en-una-production.up.railway.app/api/form-petition', payload);
 
       // Aquí podrías despachar una acción indicando que el registro fue exitoso
       dispatch({ type: 'FORM_SUCCESS', payload: response.data });
@@ -251,7 +251,7 @@ export const logout = () => {
 export const AllRestaurant = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/api/restaurants',);
+      const res = await axios.get('https://en-una-production.up.railway.app/api/restaurants',);
       const data = res.data;
 
       dispatch({
@@ -268,7 +268,7 @@ export const AllRestaurant = () => {
 export const AllForms = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/api/forms',);
+      const res = await axios.get('https://en-una-production.up.railway.app/api/forms',);
       const data = res.data;
 
       dispatch({
@@ -284,7 +284,7 @@ export const AllForms = () => {
 export const DetailRestaurant = (restaurantId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/restaurant/${restaurantId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/restaurant/${restaurantId}`);
       const data = res.data;
 
       dispatch({
@@ -301,7 +301,7 @@ export const DetailRestaurant = (restaurantId) => {
 export const DetailForm = (formId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/forms/${formId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/forms/${formId}`);
       const data = res.data;
 
       dispatch({
@@ -318,7 +318,7 @@ export const DetailForm = (formId) => {
 export const DetailUser = (userId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/user/${userId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/user/${userId}`);
       const data = res.data;
 
       dispatch({
@@ -334,7 +334,7 @@ export const DetailUser = (userId) => {
 export const DetailsReservation = (reservationId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/details-reservations/${reservationId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/details-reservations/${reservationId}`);
       const data = res.data;
 
       dispatch({
@@ -351,7 +351,7 @@ export const DetailsReservation = (reservationId) => {
 export const OrderDetails = (orderId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/order/${orderId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/order/${orderId}`);
       const data = res.data;
 
       dispatch({
@@ -371,7 +371,7 @@ export const dataPersonal = (token) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(
-        "http://localhost:3001/api/datapersonal",
+        "https://en-una-production.up.railway.app/api/datapersonal",
         {
           method: "GET",
           headers: {
@@ -393,7 +393,7 @@ export const dataPersonal = (token) => {
 export const UpdatePersonal = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put(`http://localhost:3001/api/update-datapersonal`, payload);
+      const res = await axios.put(`https://en-una-production.up.railway.app/api/update-datapersonal`, payload);
 
       const data = res.data;
 
@@ -410,7 +410,7 @@ export const UpdatePersonal = (payload) => {
 export const postRestaurant = (token, payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('http://localhost:3001/api/post-restaurant', payload, {
+      const res = await axios.post('https://en-una-production.up.railway.app/api/post-restaurant', payload, {
         headers: {
           Authorization: `${token}`,
         },
@@ -430,7 +430,7 @@ export const postRestaurant = (token, payload) => {
 export const PostMenu = (token, payload, restaurantId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/api/post-menu/${restaurantId}`, payload, {
+      const res = await axios.post(`https://en-una-production.up.railway.app/api/post-menu/${restaurantId}`, payload, {
         headers: {
           Authorization: `${token}`,
         },
@@ -450,7 +450,7 @@ export const PostMenu = (token, payload, restaurantId) => {
 export const PutMenu = (token, payload, menuId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put(`http://localhost:3001/api/update-menu/${menuId}`, payload, {
+      const res = await axios.put(`https://en-una-production.up.railway.app/api/update-menu/${menuId}`, payload, {
         headers: {
           Authorization: `${token}`,
         },
@@ -469,7 +469,7 @@ export const PutMenu = (token, payload, menuId) => {
 export const PaymentReserve = (token, cart) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('http://localhost:3001/api/payment', cart, {
+      const res = await axios.post('https://en-una-production.up.railway.app/api/payment', cart, {
         headers: {
           Authorization: `${token}`,
         },
@@ -496,7 +496,7 @@ export const PaymentReserve = (token, cart) => {
 
 export const DeleteAccount = (token) => async (dispatch) => {
   try {
-    const response = await fetch('http://localhost:3001/api/deleteaccount', {
+    const response = await fetch('https://en-una-production.up.railway.app/api/deleteaccount', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -531,7 +531,7 @@ export const DeleteAccount = (token) => async (dispatch) => {
 export const AllOrder = (restaurantId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/orders/${restaurantId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/orders/${restaurantId}`);
       const data = res.data;
       dispatch({
         type: "ALL_ORDER",
@@ -546,7 +546,7 @@ export const AllOrder = (restaurantId) => {
 export const OneOrder = (orderId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/order/${orderId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/order/${orderId}`);
       const data = res.data;
       dispatch({
         type: "DETAILS_ORDER",
@@ -560,7 +560,7 @@ export const OneOrder = (orderId) => {
 export const deleteOrder = (orderId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.delete(`http://localhost:3001/api/order/delete/${orderId}`);
+      const res = await axios.delete(`https://en-una-production.up.railway.app/api/order/delete/${orderId}`);
       const data = res.data;
       dispatch({
         type: "DELETE_ORDER",
@@ -577,7 +577,7 @@ export const deleteOrder = (orderId) => {
 export const ProductDetail = (productId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/product/${productId}`);
+      const res = await axios.get(`https://en-una-production.up.railway.app/api/product/${productId}`);
       const data = res.data;
 
       dispatch({
@@ -606,7 +606,7 @@ export const ProductDetail = (productId) => {
 export const deleteProduct = (productId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.delete(`http://localhost:3001/api/delete/${productId}`);
+      const res = await axios.delete(`https://en-una-production.up.railway.app/api/delete/${productId}`);
       const data = res.data;
       dispatch({
         type: "DELETE_PRODUCT",
@@ -622,7 +622,7 @@ export const deleteProduct = (productId) => {
 export const AllUsers = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/api/users',);
+      const res = await axios.get('https://en-una-production.up.railway.app/api/users',);
       const data = res.data;
 
       dispatch({
@@ -641,7 +641,7 @@ export const AllUsers = () => {
 export const PaymentPaypal = (productId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/api/create-payment/${productId}`);
+      const res = await axios.post(`https://en-una-production.up.railway.app/api/create-payment/${productId}`);
       const data = res.data;
       window.location.href = data.links[1].href
       dispatch({
@@ -657,7 +657,7 @@ export const PaymentPaypal = (productId) => {
 export const Order = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:3001/api/order`, payload);
+      const res = await axios.post(`https://en-una-production.up.railway.app/api/order`, payload);
       const data = res.data;
       dispatch({
         type: "ORDER",
@@ -675,7 +675,7 @@ export const Order = (payload) => {
 export const updateProduct = (productId, payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put(`http://localhost:3001/api/productupdate/${productId}`, payload);
+      const res = await axios.put(`https://en-una-production.up.railway.app/api/productupdate/${productId}`, payload);
       const data = res.data;
       dispatch({
         type: "UPDATE_PRODUCT",
@@ -690,7 +690,7 @@ export const updateProduct = (productId, payload) => {
 export const AllProducts = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/api/products', payload);
+      const res = await axios.get('https://en-una-production.up.railway.app/api/products', payload);
       const data = res.data;
 
       dispatch({

@@ -19,7 +19,7 @@ const EmailVerification = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/verificar`,
+          `https://en-una-production.up.railway.app/api/verificar`,
           { params: { token } }
         );
         setStatus(response.data.message || 'Correo verificado exitosamente.');

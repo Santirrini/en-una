@@ -149,7 +149,7 @@ export default function Register() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3001/api/code/${data.code}`
+          `https://en-una-production.up.railway.app/api/code/${data.code}`
         );
         setData((prevData) => ({
           ...prevData, // Mantén otros valores del estado

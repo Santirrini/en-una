@@ -91,7 +91,7 @@ const PostCarousel = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/post-carrusel",
+        "https://en-una-production.up.railway.app/api/post-carrusel",
         formData,
         {
           headers: {
@@ -117,7 +117,7 @@ const PostCarousel = () => {
   const allCarrusel = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/api/carousels"
+        "https://en-una-production.up.railway.app/api/carousels"
       );
       setCarrusels(response.data.data);
     } catch (error) {
@@ -128,7 +128,7 @@ const PostCarousel = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/carousels/${id}`
+        `https://en-una-production.up.railway.app/api/carousels/${id}`
       );
       setCarrusels(Carrusels.filter((carousel) => carousel.id !== id));
     } catch (error) {

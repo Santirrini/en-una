@@ -31,7 +31,7 @@ export default function ContactUs() {
     setLoading(true); // Activar el spinner al iniciar la consulta
 
     try {
-      const response = await fetch("http://localhost:3001/api/contact", {
+      const response = await fetch("https://en-una-production.up.railway.app/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
