@@ -129,7 +129,7 @@ export default function DetailsRestaurant() {
   
     fetchData();
   }, [restaurantdetails?.codeId]);
-  
+
   useEffect(() => {
     dispatch(dataPersonal(token));
   }, [token, dispatch]);
@@ -147,6 +147,8 @@ export default function DetailsRestaurant() {
   useEffect(() => {
     setFormData({
       name: restaurantdetails?.name,
+      location: restaurantdetails?.local,
+
     });
   }, [restaurantdetails]);
 
