@@ -55,7 +55,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 const containerStyle = {
-  maxWidth: "345px",
+  maxWidth: "400px",
   height: "345px",
 };
 
@@ -118,13 +118,20 @@ export default function DetailsRestaurant() {
   console.log(location)
 
   useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.get(`https://en-una-production.up.railway.app/api/code/1031`);
-      setLocations(res.data.data)
-    }
-    fetch()
-
-  }, []);
+    if (!restaurantdetails?.codeId) return; // Evita ejecutar si `codeId` no está definido
+  
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`https://en-una-production.up.railway.app/api/code/${restaurantdetails.codeId}`);
+        setLocations(res.data.data);
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+  
+    fetchData();
+  }, [restaurantdetails?.codeId]);
+  
   useEffect(() => {
     dispatch(dataPersonal(token));
   }, [token, dispatch]);
