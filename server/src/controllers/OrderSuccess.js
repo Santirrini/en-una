@@ -69,7 +69,7 @@ module.exports = {
             <p style="color: black;">Muchas gracias por utilizar nuestra plataforma, ${name}.</p>
             <p style="color: black;">Puedes ver tus reservas haciendo clic en el siguiente botón:</p>
             <div style="text-align: center; margin: 2em 0;">
-              <a href="https://www.enunaapp.com/mis-reservaciones/${orderId}" target="_blank" style="background-color: #bd24bd; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">Ver Reservas</a>
+              <a href="https://www.enunaapp.com/mis-reservaciones" target="_blank" style="background-color: #bd24bd; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">Ver Reservas</a>
             </div>
             <p style="color: black;">¡Gracias por confiar en <strong>EN UNA</strong>!</p>
           </div>
