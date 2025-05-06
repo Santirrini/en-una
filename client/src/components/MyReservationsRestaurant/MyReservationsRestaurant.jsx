@@ -143,29 +143,9 @@ const total = getTotal();
             }
           />
         </div>
-      ) : (
-        <>
-          {datapersonal.length < 1 ? (
-            <div style={{marginTop: "5em"}}>
-              <Result
-                title="No hay menús guardados en el carrito"
-                subTitle="Por favor, ingrese a los restaurantes para ver los menús y hacer las reservaciones."
-                extra={
-                  <Link to="/">
-                    <Button
-                      sx={{
-                        background: "#500075",
-                        ":hover": { background: "#500075" },
-                      }}
-                      variant="contained"
-                    >
-                      Ver restaurantes
-                    </Button>
-                  </Link>
-                }
-              />
-            </div>
-          ) : (
+      ) 
+       
+           : (
             <div className={styles.carsfood_container}>
               <h1 className={styles.text}>Mis Reservas</h1>
 
@@ -247,8 +227,7 @@ const total = getTotal();
               )}
             </div>
           )}
-        </>
-      )}
+      
     </div>
   );
 }

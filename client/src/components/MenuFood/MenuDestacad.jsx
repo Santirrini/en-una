@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,  } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { DetailRestaurant, dataPersonal } from "../../redux/action";
@@ -31,6 +31,10 @@ export default function MenuDestacad({
   setCartItems,
   setShowSummary,
   setQuantities,
+  toggleSummaryTrue,
+  toggleSummaryFalse,
+  buttonRef,
+  contentRef,
   quantities,
 }) {
   const { restaurantId } = useParams();
@@ -56,6 +60,7 @@ export default function MenuDestacad({
   useEffect(() => {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
+ 
 
   useEffect(() => {
     // Leer el carrito de localStorage usando el userId y sincronizar las cantidades en el menú
@@ -79,7 +84,7 @@ export default function MenuDestacad({
         (menu) => menu.id === id
       );
       updateCart(productInMenu, newQuantity);
-
+      toggleSummaryTrue()
       return { ...prevQuantities, [id]: newQuantity };
     });
   };
@@ -121,61 +126,15 @@ export default function MenuDestacad({
     }
   };
 
-  const addToCart = (product) => {
-    // Obtener carrito de localStorage o inicializarlo si está vacío
-    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
-    // Validar si el carrito ya tiene productos de otro restaurante
-    if (cart.length > 0 && cart[0].restaurantId !== product.restaurantId) {
-      alert("Solo puedes agregar menús del mismo restaurante al carrito.");
-      return;
-    }
-
-    // Obtener la cantidad de productos seleccionada (asegurarse que sea al menos 1)
-    const quantity = quantities[product.id] || 0;
-    if (quantity <= 0) {
-      alert("Por favor, selecciona una cantidad válida.");
-      return;
-    }
-
-    // Copiar el carrito para actualizarlo
-    let updatedCart = [...cart];
-    let found = false;
-
-    // Buscar si el producto ya está en el carrito
-    updatedCart.forEach((item) => {
-      if (item.id === product.id) {
-        item.quantity += quantity; // Incrementar la cantidad
-        found = true;
-      }
-    });
-
-    // Si el producto no estaba en el carrito, agregarlo
-    if (!found) {
-      updatedCart.push({
-        id: product.id, // Identificador único
-        name: product.name,
-        price: product.price,
-        details: product.details,
-        quantity: quantity, // Cantidad seleccionada
-        imageFile: product.imageFile,
-        restaurantId: product.restaurantId,
-      });
-    }
-
-    // Actualizar el estado del carrito y guardarlo en localStorage
-    setCartItems([...updatedCart]);
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
-
-    // Mostrar resumen de compra
-    setShowSummary(true);
-  };
 
   const handleOpen = (images, name, details) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
+  
     setOpen(true);
+    toggleSummaryFalse()
   };
   const limitarName = (texto) => {
     const limite = window.innerWidth <= 768 ? 20 : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
@@ -202,9 +161,9 @@ export default function MenuDestacad({
   return (
     <div>
       {destacados?.length > 0 ? (
-        <div className={styles.menufood_container}>
+        <div className={styles.menufood_container} >
           <div className={styles.container_bg}>
-            <h1 className={styles.title_Carrusel}>Destacados</h1>
+            <h1 className={styles.title_Carrusel} onClick={() => toggleSummaryFalse()}>Destacados</h1>
             <Splide
               options={{
                 perPage: 4,
@@ -239,12 +198,13 @@ export default function MenuDestacad({
                         />
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
                           <CardContent sx={{ flex: "1 0 auto" }}>
-                            <Typography component="div" variant="h5">
+                            <Typography component="div" variant="h5"  onClick={() => toggleSummaryFalse()}> 
                               {limitarName(data.name)}
                             </Typography>
                             <Typography
                               variant="subtitle1"
                               color="text.secondary"
+                              onClick={() => toggleSummaryFalse()}
                             >
                               {limitarTexto(data.details)}
                             </Typography>
@@ -253,6 +213,7 @@ export default function MenuDestacad({
                                 component="div"
                                 variant="h6"
                                 sx={{ fontWeight: "bold" }}
+                                onClick={() => toggleSummaryFalse()}
                               >
                                 S/{data.price}
                               </Typography>
@@ -296,26 +257,7 @@ export default function MenuDestacad({
                               </Box>
                             </div>
                           </CardContent>
-                          {/*    <Box
-                        sx={{
-                          display: "flex",
-                          marginLeft: "1em",
-                          marginRight: "1em",
-                          paddingBottom: "1em",
-                        }}
-                      >
-                        <Button
-                          sx={{
-                            flex: 2,
-                            backgroundColor: "orange",
-                            color: "white",
-                            ":hover": { backgroundColor: "orange" },
-                          }}
-                          onClick={() => addToCart(data)}
-                        >
-                          AGREGAR AL CARRITO
-                        </Button>
-                      </Box> */}
+                       
                         </Box>
                       </Card>
                     </SplideSlide>

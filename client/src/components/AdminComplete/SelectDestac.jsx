@@ -9,11 +9,11 @@ import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-export default function Cards() {
+export default function SelectDestac() {
   // Verifica que `allrestaurant` sea un array y proporciona un valor por defecto
   const allrestaurant = useSelector((state) => state.allrestaurant?.data || []);
   const [restaurants, setRestaurants] = React.useState(allrestaurant);
-console.log(restaurants)
+console.log(restaurants?.map(data => data.restaurants.map((row) => row.imageFile[0])))
   React.useEffect(() => {
     setRestaurants(allrestaurant);
   }, [allrestaurant]);
@@ -47,26 +47,28 @@ console.log(restaurants)
         <div>
           <div className={styles.cards_container}>
             {restaurants.map((data) => (
+              data.restaurants.map((info) => (
+
               <div key={data.id} className={styles.card_wrapper}>
                 <Link to={`/detalles/restaurante/${data.id}`}>
                   <Card className={styles.card}>
                     <CardMedia
                       component="img"
-                      image={data.imageFile[0]}
-                      alt={data.imageFile[0]}
+                      image={info.imageFile[0]}
+                      alt={info.imageFile[0]}
                       sx={{ height: 200 }}
                     />
                     <CardContent className={styles.text_logo}>
                       <div>
                         <img
-                          src={data.logo}
+                          src={info.logo}
                           alt="Logo"
                           className={styles.logo_card}
                         />
                       </div>
                       <div>
-                        <strong>{data.name}</strong>
-                        <div>{data.address}</div>
+                        <strong>{info.name}</strong>
+                        <div>{info.address}</div>
                       </div>
                     </CardContent>
                   </Card>
@@ -74,12 +76,14 @@ console.log(restaurants)
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => handleToggleCategory(data.id, data.category)}
-                  sx={{backgroundColor: data.category === "destacado" ? "#AF0000FF": "#500075", ":hover": { backgroundColor: data.category === "destacado" ? "#D20404FF": "#640192FF"}}}
+                  onClick={() => handleToggleCategory(info.id, info.category)}
+                  sx={{backgroundColor: info.category === "destacado" ? "#AF0000FF": "#500075", ":hover": { backgroundColor: info.category === "destacado" ? "#D20404FF": "#640192FF"}}}
                 >
-                  {data.category === "destacado" ? "Remover Destacado" : "Destacar"}
+                  {info.category === "destacado" ? "Remover Destacado" : "Destacar"}
                 </Button>
               </div>
+              ))
+
             ))}
           </div>
         </div>

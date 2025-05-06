@@ -29,8 +29,9 @@ position: relative;
 
 .fullscreenImage {
   width: 100%; /* Ocupa el ancho completo de la pantalla */
-  object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsión */
-
+  aspect-ratio: 16 / 9;
+  object-fit: contain; /* Asegura que la imagen cubra todo el espacio sin distorsión */
+  margin-bottom: -8em;
 }
 
 
@@ -64,10 +65,9 @@ position: relative;
 
     .fullscreenImage {
       width: 100%; /* Ocupa el ancho completo de la pantalla */
-      height: auto;
-
-      object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsión */
-    
+      aspect-ratio: 16 / 9;
+      object-fit: contain; /* Asegura que la imagen cubra todo el espacio sin distorsión */
+      margin-bottom: 0;
     }
   }
   

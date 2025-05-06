@@ -519,115 +519,73 @@ export default function PrimarySearchAppBar() {
               </Link>
             </Typography>
             <Search className="input-container">
-              <input
-                ref={inputRef}
-                placeholder="Buscar..."
-                inputProps={{ "aria-label": "search" }}
-                className={styles.search}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)} // Mantiene el valor tal cual lo introduce el usuario
-              />
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
+  <input
+    ref={inputRef}
+    placeholder="Buscar..."
+    inputProps={{ "aria-label": "search" }}
+    className={styles.search}
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+  <SearchIconWrapper>
+    <SearchIcon />
+  </SearchIconWrapper>
 
-              {searchTerm.trim() && ( // Elimina espacios solo para la búsqueda, pero los mantiene en el input
-                <Paper className={styles.paper}>
-                  {allrestaurant
-                    ?.filter(
-                      (row) =>
-                        row.name
-                          .toLowerCase()
-                          .includes(searchTerm.trim().toLowerCase()) || // Se usa trim() solo para filtrar
-                        row.type_of_meals
-                          .toLowerCase()
-                          .includes(searchTerm.trim().toLowerCase()) ||
-                        row.additional_services.some((service) =>
-                          service
-                            .toLowerCase()
-                            .includes(searchTerm.trim().toLowerCase())
-                        ) ||
-                        row.address
-                          .toLowerCase()
-                          .includes(searchTerm.trim().toLowerCase()) ||
-                        row.area.some((item) =>
-                          item
-                            .toLowerCase()
-                            .includes(searchTerm.trim().toLowerCase())
-                        ) ||
-                        row.Menus.some((item) =>
-                          item.name
-                            .toLowerCase()
-                            .includes(searchTerm.trim().toLowerCase())
-                        )
-                    )
-                    .map((row) => (
-                      <MenuList key={row.id}>
-                        <Link
-                          to={`/detalles/restaurante/${row.id}`}
-                          className="title-search-name"
-                        >
-                          <MenuItem>
-                            <ListItemIcon>
-                              <Avatar
-                                src={row.imageFile[0]}
-                                className={styles.avatar}
-                              ></Avatar>
-                            </ListItemIcon>
-                            <ListItemText>
-                              {row.name}
-                              <ListItemText sx={{ color: "gray" }}>
-                                {row.address}{" "}
-                                {row.address_optional
-                                  ? row.address_optional
-                                  : null}
-                              </ListItemText>
-                            </ListItemText>
-                          </MenuItem>
-                        </Link>
-                      </MenuList>
-                    ))}
+  {searchTerm.trim() && (() => {
+    const filteredRestaurants =
+      allrestaurant?.flatMap((data) =>
+        data.restaurants?.filter((row) =>
+          row.name.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+          row.type_of_meals.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+          row.additional_services?.some((service) =>
+            service.toLowerCase().includes(searchTerm.trim().toLowerCase())
+          ) ||
+          row.address.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+          row.area?.some((item) =>
+            item.toLowerCase().includes(searchTerm.trim().toLowerCase())
+          ) ||
+          row.Menus?.some((item) =>
+            item.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+          )
+        ) || []
+      ) || [];
 
-                  {(!allrestaurant ||
-                    (allrestaurant &&
-                      allrestaurant.filter(
-                        (row) =>
-                          row.name
-                            .toLowerCase()
-                            .includes(searchTerm.trim().toLowerCase()) || // Nuevamente usamos trim() para la búsqueda
-                          row.type_of_meals
-                            .toLowerCase()
-                            .includes(searchTerm.trim().toLowerCase()) ||
-                          row.additional_services.some((service) =>
-                            service
-                              .toLowerCase()
-                              .includes(searchTerm.trim().toLowerCase())
-                          ) ||
-                          row.address
-                            .toLowerCase()
-                            .includes(searchTerm.trim().toLowerCase()) ||
-                          row.area.some((item) =>
-                            item
-                              .toLowerCase()
-                              .includes(searchTerm.trim().toLowerCase())
-                          ) ||
-                          row.Menus.some((item) =>
-                            item.name
-                              .toLowerCase()
-                              .includes(searchTerm.trim().toLowerCase())
-                          )
-                      ).length === 0)) && (
-                    <MenuList sx={{ height: "6em" }}>
-                      <MenuItem>
-                        <ListItemText>
-                          No se encontraron resultados
-                        </ListItemText>
-                      </MenuItem>
-                    </MenuList>
-                  )}
-                </Paper>
-              )}
-            </Search>
+    return (
+      <Paper className={styles.paper}>
+        {filteredRestaurants.length > 0 ? (
+          filteredRestaurants.map((row) => (
+            <MenuList key={row.id}>
+              <Link to={`/detalles/restaurante/${row.id}`} className="title-search-name">
+                <MenuItem>
+                  <ListItemIcon>
+                    <Avatar
+                      src={row.imageFile?.[0]}
+                      className={styles.avatar}
+                    />
+                  </ListItemIcon>
+                  <ListItemText>
+                    {row.name}
+                    <ListItemText sx={{ color: "gray" }}>
+                      {row.address}{" "}
+                      {row.address_optional ? row.address_optional : null}
+                    </ListItemText>
+                  </ListItemText>
+                </MenuItem>
+              </Link>
+            </MenuList>
+          ))
+        ) : (
+          <MenuList sx={{ height: "6em" }}>
+            <MenuItem>
+              <ListItemText>No se encontraron resultados</ListItemText>
+            </MenuItem>
+          </MenuList>
+        )}
+      </Paper>
+    );
+  })()}
+</Search>
+
 
             <div className={styles.bg_navbar}>
               {token ? (

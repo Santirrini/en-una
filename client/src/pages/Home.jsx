@@ -10,9 +10,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CarruselPublicitary from "../components/CarruselPublicitary/CarruselPublicitary";
 import CardDestac from "../components/CardDestac/CardDestac";
 import HeaderMobile from "../components/Header/Header";
+import CategorySelector from "../components/CategorySelector/CategorySelector";
+import { useDispatch, useSelector } from "react-redux";
+import { AllRestaurant, dataPersonal } from "../redux/action";
 
 
 export default function Home() {
+    const dispatch = useDispatch();
+    const allrestaurant = useSelector((state) => state.allrestaurant.data);
+    const token = useSelector((state) => state.token);
+      const [selectedType, setSelectedType] = React.useState(null);
+    
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
@@ -20,6 +28,27 @@ export default function Home() {
       setOpen(false);
     }, 1000);
   }, []);
+
+    React.useEffect(() => {
+      dispatch(AllRestaurant());
+    }, [dispatch]);
+  
+    React.useEffect(() => {
+      dispatch(dataPersonal(token));
+    }, [dispatch, token]);
+    // Obtener todos los "type_of_meals" únicos
+    const mealTypes = [
+      ...new Set(
+        allrestaurant?.map((r) => r.restaurants?.[0]?.type_of_meals).filter(Boolean)
+      ),
+    ];
+  
+    // Aplicar el filtro por tipo de comida
+    const filteredRestaurants = selectedType
+      ? allrestaurant.filter(
+          (r) => r.restaurants?.[0]?.type_of_meals === selectedType
+        )
+      : allrestaurant;
   return (
     <div>
       <Backdrop
@@ -28,27 +57,16 @@ export default function Home() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <div>
         <HeaderMobile/>
-      </div>
-      <div>
         <Navbar />
-      </div>
-         <div>
         <CarruselPublicitary />
-      </div>  
-      <div>
+        <CategorySelector filteredRestaurants={filteredRestaurants} mealTypes={mealTypes} setSelectedType={setSelectedType} selectedType={selectedType}/>
         <CardDestac/>
-      </div>
-      <div>
-        <Cards />
-      </div>
-      <div>
+        <Cards filteredRestaurants={filteredRestaurants} mealTypes={mealTypes} setSelectedType={setSelectedType} selectedType={selectedType} />
+      
         <ButtonWhatsapp />
-      </div>
-      <div>
+     
         <Footer />
-      </div>
     </div>
   );
 }

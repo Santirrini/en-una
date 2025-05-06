@@ -14,9 +14,10 @@ const FeaturedCarousel = () => {
   const dispatch = useDispatch();
   const allrestaurant = useSelector((state) => state.allrestaurant?.data || []);
   
-  const destac = allrestaurant.filter((data) => data.category === "destacado")
-  console.log(destac)
+  const destac = allrestaurant.map((data) => data.restaurants.filter((info) => info.category === "destacado" ) )
 
+  const ids = destac.map((data) => data?.map((info) => info?.id));
+  
   React.useEffect(() => {
     dispatch(AllRestaurant());
   }, []);
@@ -64,14 +65,15 @@ const FeaturedCarousel = () => {
           }}
           >
         {destac && destac.map((data, index) => (
+ data?.map((info) => (
 
           <SplideSlide>
-            <Link to={`/detalles/restaurante/${data.id}`}>
+            <Link to={`/detalles/restaurante/${info.id}`}>
             <Card className={styles.card}>
               <CardMedia
                 component="img"
-                image={data.imageFile[0]}
-                alt={data.name}
+                image={info?.imageFile[0] && info?.imageFile[0]}
+                alt={info?.name}
                 className={styles.img_destac}
                 
 
@@ -81,24 +83,25 @@ const FeaturedCarousel = () => {
                   sx={{ textAlign: "center", textDecoration: "none" }}
                   >
                   <img
-                    src={data.logo}
+                    src={info.logo}
                     alt="Logo"
                     className={styles.logo_card}
                     />
-                 {data.name}
+                 {info.name}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
                   sx={{ textAlign: "center", textDecoration: "none" }}
                   >
-                  {data.type_of_meals}
+                  {info.type_of_meals}
                 </Typography>
               </CardContent>
             </Card>
             </Link>
 
           </SplideSlide>
+ ))
         ))}
 
         </Splide>

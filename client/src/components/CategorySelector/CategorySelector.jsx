@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
 
-const categories = ['Categoría 1', 'Categoría 2', 'Categoría 3', 'Categoría 4', 'Categoría 4'];
-
-const CategorySelector = () => {
-  const [selected, setSelected] = useState(null);
-
+const CategorySelector = ({ mealTypes, selectedType, setSelectedType }) => {
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
@@ -13,20 +9,22 @@ const CategorySelector = () => {
       </Typography>
 
       <Grid container spacing={2}>
-        {categories.map((category, index) => (
+        {mealTypes?.map((category, index) => (
           <Grid item xs={6} sm={4} md={2.4} key={index}>
             <Button
               fullWidth
               variant="contained"
-              onClick={() => setSelected(index)}
+              onClick={() =>
+                setSelectedType(selectedType === category ? null : category)
+              }
               sx={{
-                backgroundColor: selected === index ? '#d300ff' : '#4a0072',
+                backgroundColor: selectedType === category ? '#d300ff' : '#4a0072',
                 color: '#fff',
                 height: 80,
                 textTransform: 'none',
                 fontWeight: 'bold',
                 '&:hover': {
-                  backgroundColor: selected === index ? '#c000e6' : '#360050',
+                  backgroundColor: selectedType === category ? '#c000e6' : '#360050',
                 },
               }}
             >

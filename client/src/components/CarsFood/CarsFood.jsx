@@ -155,9 +155,9 @@ export default function CarsFood() {
   
   const handleReserve = async () => {
     setLoading(true);
-
     try {
-    await dispatch(PaymentReserve(token, reserve));
+      const newOrderId = await dispatch(PaymentReserve(token, reserve));
+      return newOrderId; // 🔥 ahora tienes el ID de la orden
     } catch (error) {
       alert("error en el sistema");
       console.error("Error al realizar la reserva:", error);
@@ -165,7 +165,7 @@ export default function CarsFood() {
       setLoading(false);
     }
   };
-
+  
   const getTotal = () => {
     return items
       .reduce(
@@ -178,12 +178,12 @@ export default function CarsFood() {
   const limitarTitle = (texto) => {
     const limite =
       window.innerWidth <= 768
-        ? 13
+        ? 28
         : window.innerWidth <= 1024
-        ? 18
+        ? 28
         : window.innerWidth <= 1440
-        ? 13
-        : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+        ? 28
+        : 28; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
       return texto.slice(0, limite) + "...";
     }
@@ -197,7 +197,7 @@ export default function CarsFood() {
         ? 18
         : window.innerWidth <= 1440
         ? 30
-        : 70; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
+        : 50; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
     if (texto.length > limite) {
       return texto.slice(0, limite) + "...";
     }
@@ -289,13 +289,15 @@ export default function CarsFood() {
 
                         <CardContent sx={{ width: "100%" }}>
                           <Typography
-                            component="div"
-                            variant="h5"
-                            className={styles.name_product}
+                           variant="subtitle1"
+                           component="h4"
+                           className={styles.name_product}
+
                           >
                             {limitarTitle(item?.name)}
-                          </Typography>
 
+                          </Typography>
+                          
                           {/* Asegura que item.details ocupe todo el ancho */}
                           <Typography
                             variant="subtitle1"

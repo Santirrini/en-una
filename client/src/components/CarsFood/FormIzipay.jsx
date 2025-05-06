@@ -8,22 +8,21 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import SuccessReserve from '../SuccessReserve/SuccessReserve';
-
 
 const FormIzipay = ({ handleReserve, loading, getTotal }) => {
   const [isReadyToPay, setIsReadyToPay] = useState(false);
-  const [paymentMessage, setPaymentMessage] = useState({});
   const [token, setToken] = useState(null);
   const [transactionId, setTransactionId] = useState(null);
   const [orderNumber, setOrderNumber] = useState(null);
+  const [transaction, setTransaction] = useState({});
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const datapersonal = useSelector((state) => state.datapersonal);
-  const tokenUser = useSelector((state) => state.token);  
+  const tokenUser = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
   const orderId = useSelector((state) => state.orderId);
-    const [transaction, setTransaction] = React.useState({});
 
   const updateOrderData = () => {
     const { transactionId, orderNumber } = getDataOrderDynamic();
@@ -36,7 +35,7 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
   }, [dispatch, tokenUser]);
 
   useEffect(() => {
-    updateOrderData(); // Obtén los datos de la orden al montar el componente
+    updateOrderData();
   }, []);
 
   useEffect(() => {
@@ -46,7 +45,6 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
   }, [transactionId, orderNumber]);
 
   const initializePayment = () => {
-    console.log("Inicializando pago con TRANSACTION_ID:", transactionId);
     GetTokenSession(transactionId, {
       requestSource: 'ECOMMERCE',
       merchantCode: '4004353',
@@ -54,13 +52,9 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
       publicKey: 'VErethUtraQuxas57wuMuquprADrAHAb',
       amount: getTotal(),
     }).then((authorization) => {
-      console.log("Respuesta de GetTokenSession:", authorization);
-
       if (authorization?.response?.token) {
         setToken(authorization.response.token);
         setIsReadyToPay(true);
-
-        console.log("Nuevo token generado:", authorization.response.token);
       } else {
         console.error("No se recibió un token válido:", authorization);
       }
@@ -70,8 +64,6 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
   };
 
   const handleLoadForm = async () => {
-    handleReserve();
-
     if (!token) {
       console.error("Token no disponible, esperando...");
       return;
@@ -83,11 +75,11 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
       const iziConfig = {
         publicKey: 'VErethUtraQuxas57wuMuquprADrAHAb',
         config: {
-          transactionId: transactionId,
+          transactionId,
           action: 'pay',
           merchantCode: '4004353',
           order: {
-            orderNumber: orderNumber,
+            orderNumber,
             currency: 'PEN',
             amount: getTotal(),
             processType: 'AT',
@@ -121,35 +113,47 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
           },
         },
       };
-      const callbackResponsePayment = (response) => {
-        console.log(response)
-        setTransaction(response)
 
-        localStorage.setItem('paymentResponse', JSON.stringify(response)); // ✅ Convertir a JSON
+      const callbackResponsePayment =  async (response) => {
+        console.log("Respuesta de pago:", response);
+        setTransaction(response);
+        localStorage.setItem('paymentResponse', JSON.stringify(response));
 
-          if ( response && response.code === '00') {
-            axios.post('http://localhost:3001/api/order-success', {
-              name: datapersonal.name,
-              lastName: datapersonal.lastName,
-              email: datapersonal.email,
-              phone: datapersonal.lastName,
-              observation: "asdasdwadasdasdasdasd",
-              orderId: orderId.data,
-              userId: userId,
-              ticketIzipay: response
-            }).then((data) => {
-              console.log('Respuesta del backend:', data);
-            }).catch((error) => {
-              console.error('Error al consultar el pago en el backend:', error);
-            });
+        if (String(response?.code) === '00') {
+          // Esperamos a que handleReserve termine y nos dé el nuevo orderId
+          const newOrderId = await handleReserve(); // ✅ Asegúrate de que handleReserve sea asíncrona
+
+          if (newOrderId) {
+            // Guardar el nuevo orderId
+            localStorage.setItem('orderId', newOrderId);
+
+            // Enviar los datos al backend
+            try {
+               axios.post('https://en-una-production.up.railway.app/api/order-success', {
+                name: datapersonal.name,
+                lastName: datapersonal.lastName,
+                email: datapersonal.email,
+                phone: datapersonal.phone,
+                observation: "asdasdwadasdasdasdasd",
+                orderId: newOrderId,
+                userId: userId,
+                ticketIzipay: response,
+              });
             navigate("/reserva-exitosa");
+
+            } catch (error) {
+              console.error('Error al consultar el pago en el backend:', error);
+            }
+
+          } else {
+            console.error("No se obtuvo un nuevo orderId.");
           }
-  
+        }
       };
 
       const izi = new window.Izipay({
-        publicKey: iziConfig?.publicKey,
-        config: iziConfig?.config,
+        publicKey: iziConfig.publicKey,
+        config: iziConfig.config,
       });
 
       izi?.LoadForm({
@@ -170,22 +174,18 @@ const FormIzipay = ({ handleReserve, loading, getTotal }) => {
         className={styles.btn_login}
         disabled={!isReadyToPay}
         onClick={() => {
-          updateOrderData(); // Actualiza los datos de la orden al hacer clic
+          updateOrderData();
           handleLoadForm();
         }}
       >
         {loading ? (
-          <CircularProgress
-            size={25}
-            thickness={5}
-            sx={{ color: "#fff" }}
-          />
+          <CircularProgress size={25} thickness={5} sx={{ color: "#fff" }} />
         ) : (
-          isReadyToPay ? "Reservar" : 'Cargando...'
+          isReadyToPay ? "Reservar" : "Cargando..."
         )}
       </Button>
 
-      <div id="your-iframe-payment"></div> {/* Contenedor donde se cargará el formulario de pago */}
+      <div id="your-iframe-payment"></div>
     </div>
   );
 };

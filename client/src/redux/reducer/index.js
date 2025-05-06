@@ -2,7 +2,7 @@
 const initialState = {
   token: localStorage.getItem('token'),
   userId: localStorage.getItem('userId'),  
-  orderId: localStorage.getItem('orderId') || "default_order_id", // Aquí asignamos un valor por defecto
+  orderId: {}, // Aquí asignamos un valor por defecto
   role: [],
   loginUser: {},
   loginError: null,

@@ -101,7 +101,7 @@
 
 .card_media{
   max-width: 100% !important;
-  width: 50% !important;
+  width: 150px  !important;
   height: 150px !important;
   object-fit: cover !important;
   padding: 0.5em !important;

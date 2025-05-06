@@ -13,7 +13,7 @@ export default function DetailsRestaurant() {
   useEffect(() => {
     setTimeout(() => {
       setOpen(false);
-    }, 1000);
+    }, 2000);
   }, []);
   return (
     <div>

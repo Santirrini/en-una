@@ -29,7 +29,6 @@ import {
   GoogleMap,
   LoadScript,
   Marker,
-  Autocomplete,
 } from "@react-google-maps/api";
 
 import { FaSquareFacebook } from "react-icons/fa6";
@@ -44,7 +43,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from "axios"
-
+const libraries = ["places"];
 registerLocale("es", es);
 setDefaultLocale("es");
 
@@ -78,7 +77,7 @@ export default function DetailsRestaurant() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const { pathname } = useLocation();
   const [open, setOpen] = React.useState(false);
 
@@ -86,14 +85,14 @@ export default function DetailsRestaurant() {
   const restaurantdetails = useSelector(
     (state) => state.restaurantdetails.data
   );
-    const token = useSelector((state) => state.token);
-  
+  const token = useSelector((state) => state.token);
+
   const datapersonal = useSelector((state) => state.datapersonal);
 
   const [currentLocation, setCurrentLocation] = useState(null); // Para guardar la ubicación actual del usuario
   const autocompleteRef = useRef(null); // Referencia para el Autocomplete
   const [center, setCenter] = useState(defaultCenter); // Coordenadas del mapa
-    const orderId = useSelector((state) => state.orderId);
+  const orderId = useSelector((state) => state.orderId);
 
   const userId = useSelector((state) => state.userId);
   const position = [51.505, -0.09];
@@ -105,95 +104,103 @@ export default function DetailsRestaurant() {
     location: "",
     area: "",
   });
-  const [items, setItems] = useState([]);
   const [error, setError] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [cart, setCart] = useState(null);
   const [userCart, setUserCart] = useState(null);
-  const [location, setLocations] = useState(null);
 
-  console.log(location)
+  const [loadingLocation, setLoadingLocation] = useState(true);
+
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    if (!restaurantdetails?.codeId) return; // Evita ejecutar si `codeId` no está definido
-  
+    if (!restaurantdetails?.codeId) return;
+
     const fetchData = async () => {
+      setLoadingLocation(true);
+      setLocation(null);
+      setFormData(prev => ({ ...prev, location: '' })); // 🔁 Resetea
+
       try {
         const res = await axios.get(`https://en-una-production.up.railway.app/api/code/${restaurantdetails.codeId}`);
-        setLocations(res.data.data);
+        setLocation(res.data.data);
       } catch (error) {
         console.error("Error al obtener datos:", error);
+      } finally {
+        setLoadingLocation(false);
       }
     };
-  
+
     fetchData();
-  }, [restaurantdetails?.codeId]);
+  }, [restaurantdetails]);
+
+
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Encuentra el restaurante que coincide con el nombre local seleccionado
+    const selectedRestaurant = location?.restaurants?.find((data) => data.local === value);
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value, // Guarda el local en el estado
+    }));
+
+
+    if (name === "location" && value) {
+      window.location.href = `/detalles/restaurante/${selectedRestaurant?.id}`
+
+
+    }
+  };
+
 
   useEffect(() => {
     dispatch(dataPersonal(token));
   }, [token, dispatch]);
-    React.useEffect(() => {
-      const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
-      const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
-  
-      setCart(cartData);
-      setUserCart(form)
-    }, []);
+  React.useEffect(() => {
+    const cartData = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+    const form = JSON.parse(localStorage.getItem(`form_${userId}`)) || {};
+
+    setCart(cartData);
+    setUserCart(form)
+  }, []);
   useEffect(() => {
-    dispatch(DetailRestaurant(restaurantId));
-  }, [dispatch, restaurantId]);
+
+    try {
+      dispatch(DetailRestaurant(restaurantId));
+
+    } catch (error) {
+      console.log("Error al obtener el detalle:", error)
+    }
+  }, [restaurantId]);
 
   useEffect(() => {
     setFormData({
-      name: restaurantdetails?.name,
-      location: restaurantdetails?.local,
+      name: restaurantdetails?.name || '',
+      location: restaurantdetails?.local || '',
 
     });
   }, [restaurantdetails]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    if (name === "location" && value) {
-      navigate(`/detalles/restaurante/${value}`);
-    }
-  };
 
-/*   const handleContinue = () => {
-    // Si cart o userCart tienen datos, abre el modal y detiene la ejecución
-    if ((cart && cart.length > 0) || (userCart && Object.keys(userCart).length > 0)) {
-      setOpen(true);
-      return;
-    }
-  
-    // Verificar si todos los campos del formulario están llenos
- 
-  
-    if (    formData.date &&
-      formData.hours &&
-      formData.peoples &&
-      formData.location &&
-      formData.area) {
-        const updatedCart = [...items, { formData }];
-        localStorage.setItem(`form_${userId}`, JSON.stringify(updatedCart));
-        navigate(`/menu/restaurante/${restaurantId}`);
-    } else {
-      // Mostrar error si el formulario no está completo
-      setError(true);
-    }
-  }; */
-  
   const handleContinue = () => {
-    // Verificar si todos los campos tienen un valor
-    if ((cart && cart.length > 0)) {
+    // Verificar si hay algo en el carrito, y abrir el modal si es necesario
+    if (cart && cart.length > 0) {
       setOpen(true);
+      return; // Si hay algo en el carrito, abrir el modal y detener la ejecución
+    }
+  
+    // Si no es personal o no hay token, redirigir al login
+    if (datapersonal.role !== "personal" || token === undefined) {
+      navigate(`/iniciar-sesión`);
       return;
     }
   
+    // Si todos los campos están completos, guardar en localStorage y navegar
     if (
       formData.date &&
       formData.hours &&
@@ -201,20 +208,28 @@ export default function DetailsRestaurant() {
       formData.location &&
       formData.area
     ) {
-      const updatedCart = [...items, { formData }];
+      const updatedCart = [{ formData }];
       localStorage.setItem(`form_${userId}`, JSON.stringify(updatedCart));
       navigate(`/menu/restaurante/${restaurantId}`);
     } else {
+      // Si los campos no están completos, mostrar error
       setError(true);
     }
-  }; 
+  };
   
+  
+
   const handleRemoveAll = () => {
+    // Elimina los datos del LocalStorage
     localStorage.removeItem(`cart_${userId}`);
     localStorage.removeItem(`form_${userId}`);
-    localStorage.removeItem('orderId', orderId);
+    localStorage.removeItem('orderId'); // Se elimina correctamente sin argumento extra
+    localStorage.removeItem('paymentResponse');
 
-    window.location.reload()
+
+    setCart(null);
+    setUserCart(null)
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -224,41 +239,44 @@ export default function DetailsRestaurant() {
   // Obtener todos los horarios de todos los días
   const obtenerTodosHorarios = () => {
     if (!restaurantdetails || !restaurantdetails.horarios) return [];
-  
+
     let todosHorarios = [];
-  
+
     // Recorremos todos los horarios
     restaurantdetails.horarios.forEach((horario) => {
       if (!horario.cerrado) {
         // Generar horarios en intervalos de 30 minutos
         const horarios = generarHorarios(horario.inicio, horario.fin, 30);
-  
+
         // Filtrar los horarios según las reservas
         const horariosFiltrados = horarios.filter((hora) => {
           // Filtrar las órdenes que coinciden con la hora actual
           const ordenesEnHora = restaurantdetails.Orders.filter((order) => order.hours === hora);
-          
+
           // Calcular el total de personas en esa hora
           const totalPeople = ordenesEnHora.reduce((sum, order) => {
             return sum + (order.people || 0); // Asegúrate de que "people" sea un número válido
           }, 0);
-  
+
           // Compara el total de personas con el máximo por mesa
           return totalPeople < restaurantdetails.maximum_per_table;
         });
-  
+
         // Agregar los horarios filtrados al resultado final
         todosHorarios.push(...horariosFiltrados);
       }
     });
-  
-    return todosHorarios;
+
+    return [...new Set(todosHorarios)].sort((a, b) => {
+      const [ha, ma] = a.split(':').map(Number);
+      const [hb, mb] = b.split(':').map(Number);
+      return ha * 60 + ma - (hb * 60 + mb);
+    });
+
   };
-  
-  
-const handleViewReservation = () => {
-  navigate("/carrito")
-}
+
+
+
   const generarHorarios = (inicio, fin, intervaloMinutos) => {
     let horarios = [];
     let [horaInicio, minutoInicio] = inicio.split(":").map(Number);
@@ -276,7 +294,7 @@ const handleViewReservation = () => {
 
     return horarios;
   };
-  const horarios = obtenerTodosHorarios(); console.log(horarios)
+  const horarios = obtenerTodosHorarios();
   const today = new Date().toISOString().split("T")[0];
   const formatDate = (date) => {
     // Verifica si la fecha es válida antes de formatear
@@ -286,29 +304,47 @@ const handleViewReservation = () => {
     const day = String(date.getDate()).padStart(2, '0'); // Formatea el día
     return `${day}/${month}/${year}`; // Retorna la fecha en el formato dd/mm/yyyy
   };
+
   const isBeforeToday = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Asegúrate de que solo estás comparando las fechas, no las horas.
     return date < today; // Retorna true si la fecha es anterior a hoy.
   };
-  
+
+  const isBeforeTomorrow = (date) => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const selectedDate = new Date(date);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    return selectedDate < tomorrow; // Retorna true si la fecha es hoy o antes
+  };
+
   const isClosedDate = (date) => {
     // Crear una nueva fecha para asegurarte de que está en la zona horaria local
-    const localDate = new Date(date.toLocaleString("en-US", {timeZone: "America/Mexico_City"}));
-    
+    const localDate = new Date(date.toLocaleString("en-US", { timeZone: "America/Mexico_City" }));
+
     const dayOfWeek = localDate.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
     const horario = restaurantdetails.horarios[dayOfWeek]; // Obtener horario del día seleccionado
     return horario?.cerrado === true; // Retorna true si está cerrado
   };
-  
+
+
   const handleDateChange = (date) => {
     setSelectedDate(date); // Actualiza el estado de la fecha seleccionada
     setFormData((prevData) => ({
       ...prevData,
       date: formatDate(date), // Actualiza la fecha en formData en el formato deseado
     }));
+
+
   };
-  
+  const handleViewReservation = () => {
+    navigate("/carrito")
+  }
 
   useEffect(() => {
     if (restaurantdetails && restaurantdetails.address) {
@@ -338,506 +374,517 @@ const handleViewReservation = () => {
   }, [restaurantdetails]);
 
   return (
-    <div className={styles.food_container}>
-      <div className={styles.food_box}>
-        <div className={styles.none_mobile}>
-          <NavbarDetails />
-        </div>
-        <div className={styles.none_desktop}>
-          <Navbar />
-        </div>
+    <>
 
-        <div className={styles.details_box}>
-          <h1 className={styles.text_container}>
-            {restaurantdetails && restaurantdetails.name}
-
-            <img
-              src={restaurantdetails && restaurantdetails.logo}
-              alt=""
-              className={styles.logo}
-            />
-          </h1>
-
-          <h1 className={styles.text_box}>
-            {restaurantdetails && restaurantdetails.address}
-          </h1>
-          <div className={styles.contact}>
-            <div className={styles.img_container}>
-              <Image.PreviewGroup
-                className="custom-preview-group"
-                items={restaurantdetails?.imageFile}
-              >
-                <Image
-                  src={restaurantdetails && restaurantdetails.imageFile[0]}
-                  alt="Foto del restaurante"
-                  className={styles.img_details}
-                />
-              </Image.PreviewGroup>
-            </div>
-            <div>
-              <span>
-                <h1 className={styles.text_container}>
-                  Descripción del restaurante
-                </h1>
-                <div className={styles.text_p}>
-                  {/*        {isExpanded ? details : `${details.substring(0, maxLength)}...`} */}
-
-                  {restaurantdetails && restaurantdetails.details}
-                </div>
-              </span>
-              <br />
-
-              <span>
-                <h1 className={styles.text_container}> Horario de atención</h1>
-                <div className={styles.day_atention}>
-  {restaurantdetails &&
-    restaurantdetails.horarios.map((data, index) => (
-      <div key={index} className={styles.hoursdetails}>
-        {data.cerrado ? (
-          ""
-        ) : (
-          <div className={styles.texthours}>
-            <span>{data.dia}:</span>
-            <span>{`${data.inicio} - ${data.fin}`}</span>
+      <div className={styles.food_container}>
+        <div className={styles.food_box}>
+          <div className={styles.none_mobile}>
+            <NavbarDetails />
           </div>
-        )}
-      </div>
-    ))}
-</div>
+          <div className={styles.none_desktop}>
+            <Navbar />
+          </div>
 
-              </span>
+          <div className={styles.details_box}>
 
-              <br />
 
-              <br />
-              <span>
-                <h1 className={styles.text_container}>Contactos</h1>
+            <div className={styles.contact}>
 
-                <span id={styles.email_phone}>
-                  <strong>Correo electrónico: </strong>
+              <div className={styles.img_container}>
+                <h1 className={styles.text_container_title}>
 
-                  {restaurantdetails && restaurantdetails.email}
-                </span>
-              </span>
-              <br />
-              <span id={styles.email_phone}>
-                <strong>Teléfono: </strong>
-                {restaurantdetails && restaurantdetails.phone}
-              </span>
-              {/*    <div>
-                {restaurantdetails &&
-                  restaurantdetails.horarios.map((data) => (
-                    <p className={styles.text_p}>
-                      {data.dia}: {data.inicio}{" "}
-                      {data.cerrado === true ? "Cerrado" : "-"} {data.fin}
-                    </p>
-                  ))}
-              </div> */}
-              <br />
-              <div className={styles.footer_container}>
-                <div className={styles.footer_social}>
-                  <a
-                    href={restaurantdetails && restaurantdetails.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaSquareFacebook className={styles.footer_icon} />
-                  </a>
-                  <a
-                    href={restaurantdetails && restaurantdetails.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram className={styles.footer_icon} />
-                  </a>
+                  {restaurantdetails && restaurantdetails.name}
 
-                  <a
-                    href={restaurantdetails && restaurantdetails.tiktok}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaTiktok className={styles.footer_icon} />
-                  </a>
+                  <img
+                    src={restaurantdetails && restaurantdetails.logo}
+                    alt=""
+                    className={styles.logo}
+                  />
+                </h1>
 
-                  <a
-                    href={restaurantdetails && restaurantdetails.youtube}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <IoLogoYoutube className={styles.footer_icon} />
-                  </a>
+                <h1 className={styles.text_box}>
+                  {restaurantdetails && restaurantdetails.address}
+                </h1>
+                <div className={styles.containerInfo}>
+                  <div >
+
+                    <Image.PreviewGroup
+                      className={styles.custom_preview_group}
+                      items={restaurantdetails?.imageFile}
+                    >
+                      <Image
+                        src={restaurantdetails && restaurantdetails.imageFile[0]}
+                        alt="Foto del restaurante"
+                        className={styles.img_details}
+                        loading="lazy"
+                      />
+                    </Image.PreviewGroup>
+                  </div>
+                  <div>
+                    <span>
+                      <h1 className={styles.text_container}>
+                        Descripción del restaurante
+                      </h1>
+                      <div className={styles.text_p}>
+                        {/*        {isExpanded ? details : `${details.substring(0, maxLength)}...`} */}
+
+                        {restaurantdetails && restaurantdetails.details}
+                      </div>
+                    </span>
+                    <br />
+
+                    <span>
+                      <h1 className={styles.text_container}> Horario de atención</h1>
+                      <div className={styles.day_atention}>
+                        {restaurantdetails &&
+                          restaurantdetails.horarios.map((data) => (
+                            <div key={`${data.dia}-${data.inicio}`} className={styles.hoursdetails}>
+                              {!data.cerrado && (
+                                <div className={styles.texthours}>
+                                  <span>{data.dia}:</span>
+                                  <span>{`${data.inicio} - ${data.fin}`}</span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+
+                      </div>
+
+                    </span>
+
+                    <br />
+
+                    <br />
+                    <span>
+                      <h1 className={styles.text_container}>Contactos</h1>
+
+                      <span id={styles.email_phone}>
+                        <strong>Correo electrónico: </strong>
+
+                        {restaurantdetails && restaurantdetails.email}
+                      </span>
+                    </span>
+                    <br />
+                    <span id={styles.email_phone}>
+                      <strong>Teléfono: </strong>
+                      {restaurantdetails && restaurantdetails.phone}
+                    </span>
+
+                    <br />
+                    <div className={styles.footer_container}>
+                      <div className={styles.footer_social}>
+                        <a
+                          href={restaurantdetails && restaurantdetails.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaSquareFacebook className={styles.footer_icon} />
+                        </a>
+                        <a
+                          href={restaurantdetails && restaurantdetails.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaInstagram className={styles.footer_icon} />
+                        </a>
+
+                        <a
+                          href={restaurantdetails && restaurantdetails.tiktok}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaTiktok className={styles.footer_icon} />
+                        </a>
+
+                        <a
+                          href={restaurantdetails && restaurantdetails.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IoLogoYoutube className={styles.footer_icon} />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+              </div>
+
+            </div>
+          </div>
+          {/*  */}
+        </div>
+        <hr />
+        <br />
+        <div className={styles.description_aditional}>
+          <form className={styles.select_container}>
+            <div >
+              <label htmlFor="location" className={styles.title}>
+                Local
+              </label>
+              <div className={styles.selectContainer}>
+                <select
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className={styles.selectLocation}
+                  required
+                >
+                  <option value="">Seleccionar</option>
+
+                  {loadingLocation ? (
+                    <option disabled>Cargando...</option>
+                  ) : (
+                    location?.restaurants
+                      ?.slice() // crea una copia para no mutar el estado original
+                      .sort((a, b) => a.local.localeCompare(b.local)) // ordena por 'local'
+                      .map((data, index) => (
+                        <option key={`${data.id}-${index}`} value={data.local}>
+                          {data.local}
+                        </option>
+                      ))
+                  )}
+
+
+                </select>
+
+              </div>
+
+            </div>
+
+            <div>
+              <label htmlFor="date" className={styles.title}>
+                Fecha
+              </label>
+              <div>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  value={formData.date}
+
+                  filterDate={(date) => !isClosedDate(date) && !isBeforeTomorrow(date)}
+                  placeholderText="Selecciona una fecha"
+                  className={`h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.date}`}
+                  locale="es" // Establece el idioma en español
+                  dateFormat="dd/MM/yyyy" // Formato correcto: 03/08/2025
+                  minDate={today} // min en lugar de minDate no funciona correctamente
+                />
+
               </div>
             </div>
-          </div>
-        </div>
-        {/*  */}
-      </div>
-      <hr />
-      <br />
-      <div className={styles.description_aditional}>
-        <form className={styles.select_container}>
-          <div>
-            <label htmlFor="location" className={styles.title}>
-              Local
-            </label>
-            <select
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${}"
-              required
-            >
-              <option value="">Seleccionar</option>
-              {location?.restaurants?.map((data) => (
-                <Link to={`/detalles/restaurante/${data.id}`}>
-    <option key={data.id} value={data.id}>
-      {data.local} {/* Muestra el nombre del local pero el value es el ID */}
-    </option>
-                </Link>
-  ))}
-            </select>
-            
-          </div>
 
-          <div>
-            <label htmlFor="date" className={styles.title}>
-              Fecha
-            </label>
+            <div >
+              <label htmlFor="hours" className={styles.title}>
+                Hora
+              </label>
+
+              <select
+                name="hours"
+                value={formData.hours}
+                onChange={handleChange}
+                className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all "
+                required
+              >
+                <option value="">Seleccionar hora</option>
+                {horarios.map((horario) => (
+                  <option key={horario} value={horario}>
+                    {horario}
+                  </option>
+                ))}
+
+              </select>
+
+            </div>
+
             <div>
-              <DatePicker
-                selected={selectedDate}
-                onChange={handleDateChange}
-                filterDate={(date) => !isClosedDate(date) && !isBeforeToday(date)}
-                placeholderText="Selecciona una fecha"
-                className={`h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all ${styles.date}`}
-                locale="es" // Establece el idioma en español
-                min={today}
+              <label htmlFor="peoples" className={styles.title}>
+                Personas (Maximo por mesa indicado por restaurante{" "}
+                {restaurantdetails?.maximum_person_per_table})
+              </label>
+              <input
+                type="number"
+                value={formData.peoples || ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Obtén el valor máximo permitido
+                  const max = restaurantdetails?.maximum_person_per_table || 10;
+
+                  // Permitir valores vacíos o números válidos dentro del rango
+                  if (
+                    value === "" ||
+                    (!isNaN(Number(value)) &&
+                      Number(value) >= 1 &&
+                      Number(value) <= max)
+                  ) {
+                    setFormData({
+                      ...formData,
+                      peoples: value === "" ? "" : Number(value),
+                    });
+                  }
+                }}
+                className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+                required
               />
             </div>
-          </div>
-
-          <div>
-            <label htmlFor="hours" className={styles.title}>
-              Hora
-            </label>
-
-            <select
-  name="hours"
-  value={formData.hours}
-  onChange={handleChange}
-  className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all appearance-none"
-  required
->
-  <option value="">Seleccionar hora</option>
-  {horarios.map((horario, index) => (
-    <option key={index} value={horario}>
-      {horario}
-    </option>
-  ))}
-</select>
-
-          </div>
-
-          <div>
-            <label htmlFor="peoples" className={styles.title}>
-              Personas (Maximo por mesa indicado por restaurante{" "}
-              {restaurantdetails?.maximum_person_per_table})
-            </label>
-            <input
-              type="number"
-              value={formData.peoples || ""}
-              onChange={(e) => {
-                const value = e.target.value;
-
-                // Obtén el valor máximo permitido
-                const max = restaurantdetails?.maximum_person_per_table || 10;
-
-                // Permitir valores vacíos o números válidos dentro del rango
-                if (
-                  value === "" ||
-                  (!isNaN(Number(value)) &&
-                    Number(value) >= 1 &&
-                    Number(value) <= max)
-                ) {
-                  setFormData({
-                    ...formData,
-                    peoples: value === "" ? "" : Number(value),
-                  });
-                }
-              }}
-              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="area" className={styles.title}>
-              Zona
-            </label>
-
-            <select
-              name="area"
-              value={formData.area}
-              onChange={handleChange}
-              className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-              required
-            >
-              <option value="">Seleccionar zona</option>
-              {restaurantdetails?.area &&
-                restaurantdetails?.area?.map((zone, index) => (
-                  <>
-                    <option key={index} value={zone}>
-                      {zone}
-                    </option>
-                  </>
-                ))}
-            </select>
-          </div>
-        </form>
-        <div className={styles.additional}>
-          <div className={styles.container_icons}>
-            <RestaurantOutlinedIcon className={styles.icons_restaurant} />
             <div>
-              <label htmlFor="" className={styles.title}>
-                Tipo de comida
+              <label htmlFor="area" className={styles.title}>
+                Zona
               </label>
-              <br />
-              <span className={styles.subtitle}>
-                {restaurantdetails?.type_of_meals}
-              </span>
+
+              <select
+                name="area"
+                value={formData.area}
+                onChange={handleChange}
+                className="h-[2.75rem] outline-none border border-gray-300 rounded-md py-2 px-3 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
+                required
+              >
+                <option value="">Seleccionar zona</option>
+                {restaurantdetails?.area &&
+                  restaurantdetails?.area?.map((zone) => (
+                    <>
+                      <option key={zone} value={zone}>
+                        {zone}
+                      </option>
+                    </>
+                  ))}
+              </select>
             </div>
-          </div>
-          {restaurantdetails?.average_price ? (
+          </form>
+          <div className={styles.additional}>
             <div className={styles.container_icons}>
-              <AccountBalanceWalletOutlinedIcon className={styles.icons} />
+              <RestaurantOutlinedIcon className={styles.icons_restaurant} />
               <div>
                 <label htmlFor="" className={styles.title}>
-                  Precio promedio
+                  Tipo de comida
                 </label>
                 <br />
                 <span className={styles.subtitle}>
-                  S/{restaurantdetails?.average_price}
+                  {restaurantdetails?.type_of_meals}
                 </span>
               </div>
             </div>
-          ) : null}
+            {restaurantdetails?.average_price ? (
+              <div className={styles.container_icons}>
+                <AccountBalanceWalletOutlinedIcon className={styles.icons} />
+                <div>
+                  <label htmlFor="" className={styles.title}>
+                    Precio promedio
+                  </label>
+                  <br />
+                  <span className={styles.subtitle}>
+                    S/{restaurantdetails?.average_price}
+                  </span>
+                </div>
+              </div>
+            ) : null}
 
-          <div className={styles.container_icons}>
-            <LocalAtmOutlinedIcon className={styles.icons} />
-            <div>
-              <label htmlFor="" className={styles.title}>
-                Monto minimo por persona
-              </label>
-              <br />
-              <span className={styles.subtitle}>
-                S/{restaurantdetails?.minimum_consumption}
-              </span>
+            <div className={styles.container_icons}>
+              <LocalAtmOutlinedIcon className={styles.icons} />
+              <div>
+                <label htmlFor="" className={styles.title}>
+                  Monto minimo por persona
+                </label>
+                <br />
+                <span className={styles.subtitle}>
+                  S/{restaurantdetails?.minimum_consumption}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div className={styles.container_icons}>
-            <VolunteerActivismOutlinedIcon className={styles.icons} />
-            <div>
-              <label htmlFor="" className={styles.title}>
-                Servicios adicionales
-              </label>
-              <br />
-              <div className={styles.icons_additional}>
-                {restaurantdetails?.additional_services.map((s, index) => (
-                  <div>
-                    <div key={index}>
-                      {s.includes("Wifi") ? (
-                        <Tooltip title="Wifi" placement="bottom">
-                          <WifiIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
+            <div className={styles.container_icons}>
+              <VolunteerActivismOutlinedIcon className={styles.icons} />
+              <div>
+                <label htmlFor="" className={styles.title}>
+                  Servicios adicionales
+                </label>
+                <br />
+                <div className={styles.icons_additional}>
+                  {restaurantdetails?.additional_services.map((s) => (
+                    <div>
+                      <div >
+                        {s.includes("Wifi") ? (
+                          <Tooltip title="Wifi" placement="bottom">
+                            <WifiIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div >
+                        {s.includes("Pet friendly") ? (
+                          <Tooltip title="Pet friendly" placement="bottom">
+                            <PetsIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div>
+                        {s.includes("Estacionamiento") ? (
+                          <Tooltip title="Estacionamiento" placement="bottom">
+                            {" "}
+                            <LocalParkingIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div >
+                        {s.includes("Rampa discapacitados") ? (
+                          <Tooltip
+                            title="Rampa para discapacitados"
+                            placement="bottom"
+                          >
+                            <WheelchairPickupIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div >
+                        {s.includes("Aire acondicionado") ? (
+                          <Tooltip title="Aire acondicionado" placement="bottom">
+                            <AcUnitIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div >
+                        {s.includes("Silla para bebés") ? (
+                          <Tooltip title="Silla para bebés" placement="bottom">
+                            {" "}
+                            <ChildCareIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div >
+                        {s.includes("Cambiador para bebés") ? (
+                          <Tooltip
+                            title="Cambiador para bebés"
+                            placement="bottom"
+                          >
+                            {" "}
+                            <BabyChangingStationOutlinedIcon
+                              className={styles.icons}
+                            />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div>
+                        {s.includes("Comida vegetariana") ? (
+                          <Tooltip title="Comida vegetariana" placement="bottom">
+                            {" "}
+                            <LuSalad className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                      <div >
+                        {s.includes("Valet Parking") ? (
+                          <Tooltip title="Valet Parking" placement="bottom">
+                            <CarRentalIcon className={styles.icons} />{" "}
+                          </Tooltip>
+                        ) : null}
+                      </div>
                     </div>
-                    <div key={index}>
-                      {s.includes("Pet friendly") ? (
-                        <Tooltip title="Pet friendly" placement="bottom">
-                          <PetsIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Estacionamiento") ? (
-                        <Tooltip title="Estacionamiento" placement="bottom">
-                          {" "}
-                          <LocalParkingIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Rampa discapacitados") ? (
-                        <Tooltip
-                          title="Rampa para discapacitados"
-                          placement="bottom"
-                        >
-                          <WheelchairPickupIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Aire acondicionado") ? (
-                        <Tooltip title="Aire acondicionado" placement="bottom">
-                          <AcUnitIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Silla para bebés") ? (
-                        <Tooltip title="Silla para bebés" placement="bottom">
-                          {" "}
-                          <ChildCareIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Cambiador para bebés") ? (
-                        <Tooltip
-                          title="Cambiador para bebés"
-                          placement="bottom"
-                        >
-                          {" "}
-                          <BabyChangingStationOutlinedIcon
-                            className={styles.icons}
-                          />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Comida vegetariana") ? (
-                        <Tooltip title="Comida vegetariana" placement="bottom">
-                          {" "}
-                          <LuSalad className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                    <div key={index}>
-                      {s.includes("Valet Parking") ? (
-                        <Tooltip title="Valet Parking" placement="bottom">
-                          <CarRentalIcon className={styles.icons} />{" "}
-                        </Tooltip>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <LoadScript
-          googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
-          libraries={["places"]} // Necesario para usar Autocomplete
-        >
-          <GoogleMap
-            mapContainerClassName={styles.maps}
-            center={center}
-            zoom={12}
+          <LoadScript
+            googleMapsApiKey="AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA" // Reemplaza con tu clave API
+            libraries={libraries}// Necesario para usar Autocomplete
           >
-            {/* Marcador en la ubicación seleccionada */}
-            {restaurantdetails && restaurantdetails.address && (
-              <Marker position={center} />
-            )}
-          </GoogleMap>
-        </LoadScript>
-        {/*  <MapContainer center={position} zoom={13} className={styles.maps}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <Marker position={position}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        </MapContainer> */}
-      </div>
-{datapersonal.role === "personal" ? (
-  <>
+            <GoogleMap
+              mapContainerClassName={styles.maps}
+              center={center}
+              zoom={12}
+            >
+              {/* Marcador en la ubicación seleccionada */}
+              {restaurantdetails && restaurantdetails.address && (
+                <Marker position={center} />
+              )}
+            </GoogleMap>
+          </LoadScript>
 
-
-      <div className={styles.form_container}>
-        <h2>Detalle de la reserva:</h2>
-
-        <div>
-          <strong>Restaurante:</strong> {formData.name}
         </div>
-        {formData.location ? (
-          <div>
-            <strong>Local:</strong> {formData.location}
-          </div>
-        ) : null}
+          <>
 
-        {formData.date ? (
-          <div>
-            <strong>Fecha de reserva:</strong> {formData.date}
-          </div>
-        ) : null}
-        {formData.hours ? (
-          <div>
-            <strong>Hora: </strong>
-            {formData.hours}
-          </div>
-        ) : null}
-        {formData.peoples ? (
-          <div>
-            <strong>Personas:</strong> {formData.peoples}
-          </div>
-        ) : null}
-        {formData.area ? (
-          <div>
-            <strong>Zona:</strong> {formData.area}
-          </div>
-        ) : null}
-      </div>
-      {error ? (
-        <p
-          className="text-red-500 text-sm mt-2"
-          style={{ textAlign: "center" }}
+
+            <div className={styles.form_container}>
+              <h2>Detalle de la reserva:</h2>
+
+              <div>
+                <strong>Restaurante:</strong> {formData.name}
+              </div>
+              {formData.location ? (
+                <div>
+                  <strong>Local:</strong> {formData.location}
+                </div>
+              ) : null}
+
+              {formData.date ? (
+                <div>
+                  <strong>Fecha de reserva:</strong> {formData.date}
+                </div>
+              ) : null}
+              {formData.hours ? (
+                <div>
+                  <strong>Hora: </strong>
+                  {formData.hours}
+                </div>
+              ) : null}
+              {formData.peoples ? (
+                <div>
+                  <strong>Personas:</strong> {formData.peoples}
+                </div>
+              ) : null}
+              {formData.area ? (
+                <div>
+                  <strong>Zona:</strong> {formData.area}
+                </div>
+              ) : null}
+            </div>
+            {error ? (
+              <p
+                className="text-red-500 text-sm mt-2"
+                style={{ textAlign: "center" }}
+              >
+                Completar todos los campos
+              </p>
+            ) : null}
+            <div className={styles.btn_container}>
+              <Button className={styles.btn_login} onClick={handleContinue}>
+                Continuar
+              </Button>
+            </div>
+          </>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          Completar todos los campos
-        </p>
-      ) : null}
-      <div className={styles.btn_container}>
-        <Button className={styles.btn_login} onClick={handleContinue}>
-          Continuar
-        </Button>
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Tienes una reserva pendiente
+            </Typography>
+
+            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleRemoveAll}
+              >
+                Eliminar reserva
+              </Button>
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleViewReservation}
+              >
+                Ver reserva
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
+
       </div>
-      </>
-):null}
-      <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box sx={style}>
-    <Typography id="modal-modal-title" variant="h6" component="h2">
-      Tienes una reserva pendiente
-    </Typography>
+    </>
 
-    <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-      <Button 
-        variant="contained" 
-        color="error" 
-        onClick={handleRemoveAll}
-      >
-        Eliminar reserva
-      </Button>
-
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={handleViewReservation}
-      >
-        Ver reserva
-      </Button>
-    </Box>
-  </Box>
-</Modal>
-
-    </div>
   );
 }

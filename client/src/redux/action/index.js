@@ -118,11 +118,9 @@ export const loginGoogle = (response) => async (dispatch) => {
       };
     } else {
       dispatch({ type: "LOGIN_ERROR" });
-      return null;
     }
   } catch (error) {
     dispatch({ type: "LOGIN_ERROR" });
-    return null;
   }
 };
 
@@ -474,24 +472,30 @@ export const PaymentReserve = (token, cart) => {
           Authorization: `${token}`,
         },
       });
-      const response = res.data;
-      localStorage.setItem('orderId', response.data);
 
-      // Despachar la acción para guardar el 'orderId' en el estado de Redux
+      const response = res.data;
+      const data = response.data; // Aquí deberías revisar qué trae realmente res.data
+
+      const orderId = data?.order?.id || data?.id; // ajusta esto si `orderId` está en otra parte
+
+      // Despacha la acción para Redux
       dispatch({
         type: "PAYMENT_RESERVE",
-        payload: response,
+        payload: data,
       });
-      return response
+
+      return orderId; // ✅ devuelve el orderId directamente
     } catch (error) {
       console.error('Error al procesar el pago:', error);
       dispatch({
         type: "PAYMENT_ERROR",
-        payload: error.message
+        payload: error.message,
       });
+      return null;
     }
   };
 };
+
 
 
 export const DeleteAccount = (token) => async (dispatch) => {

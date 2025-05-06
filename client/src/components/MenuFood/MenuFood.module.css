@@ -6,10 +6,23 @@
   background-color: #FFFF89!important;
   color: #500075 !important;
   text-align: center !important;
+  font-weight: bold !important;
  
 }
 
 .carddesplegable:hover {
+  background-color: #FEFE5DFF !important;
+
+}
+
+
+.carddesplegablecard {
+  background-color: #FFFF89!important;
+  color: #500075 !important;
+ 
+}
+
+.carddesplegablecard:hover {
   background-color: #FEFE5DFF !important;
 
 }
@@ -60,9 +73,12 @@
 
 }
 .img_menu {
-  height: 200px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  height: 300px;
   width: 300px;
-  object-fit: cover;
+
+  object-fit: contain;
   cursor: pointer;
 }
 .menucar_container {
@@ -116,9 +132,10 @@
 }
 
 .payment_button {
-  display: flex;
+  display: grid;
   justify-content: center;
   margin-top: 0.5em;
+  gap: 0.2em;
 
 }
 .menufood_box {
@@ -274,6 +291,7 @@ border: 1px solid #500075;
 }
 
 .card {
+  
   max-width: 345px;
   margin-bottom: 10px;
   margin: auto;
@@ -303,7 +321,7 @@ border: 1px solid #500075;
 .btn_reservation {
   position: fixed;
   bottom: 0;
-  right: 120px ;
+  right: 150px ;
   z-index: 9000;
 }
 .btn_decrease_increment {
@@ -328,11 +346,7 @@ border: 1px solid #500075;
   font-size: 15px;
 }
 @media (max-width: 768px) {
-  .carddesplegable {
 
-    margin-right: 0 !important;
-   
-  }
   .form_container {
     position: fixed;
     height: 100%;

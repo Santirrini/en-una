@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailRestaurant } from "../../redux/action";
@@ -42,8 +42,21 @@ export default function MenuFood() {
   const [cartItems, setCartItems] = useState([]);
   const [reservation, setReservation] = useState({});
   const [showSummary, setShowSummary] = useState(true);
+  const buttonRef = useRef(null); // Referencia al botón
+  const contentRef = useRef(null); // Referencia al botón
+
+
+  
   const toggleSummary = () => {
     setShowSummary(!showSummary);
+  };
+
+  const toggleSummaryFalse = () => {
+    setShowSummary(false);
+  };
+
+  const toggleSummaryTrue = () => {
+    setShowSummary(true);
   };
 
   useEffect(() => {
@@ -76,7 +89,23 @@ export default function MenuFood() {
     updateCart(id, amount);
   };
 
-
+  const handleRemove = (index) => {
+    const removedItem = cartItems[index];
+    const newCartItems = cartItems.filter(
+      (_, itemIndex) => itemIndex !== index
+    );
+    setCartItems(newCartItems);
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
+  
+    // Establecer la cantidad en 0 para el producto eliminado
+    if (removedItem?.id) {
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [removedItem.id]: 0,
+      }));
+    }
+  };
+  
   const updateCart = (productId, amount) => {
     // Obtener el carrito actual de localStorage
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
@@ -116,13 +145,7 @@ export default function MenuFood() {
     setReservation(form);
   }, []);
 
-  const handleRemove = (index) => {
-    const newCartItems = cartItems.filter(
-      (_, itemIndex) => itemIndex !== index
-    );
-    setCartItems(newCartItems);
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCartItems));
-  };
+
 
 
 
@@ -140,7 +163,7 @@ export default function MenuFood() {
     );
 
     const consumitionPeoples =  reservation[0]?.formData?.peoples * restaurantdetails.minimum_consumption ;
-    if (test > consumitionPeoples ) {
+    if (test >=  consumitionPeoples ) {
       navigate("/carrito")
     } else{
       alert("Debes consumir al menos S/" + consumitionPeoples)
@@ -162,17 +185,17 @@ export default function MenuFood() {
         <div>
           <h1 className={styles.text}>NUESTRA CARTA</h1>
 
-          <div onClick={toggleSummary}>
             <MenuDestacad
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
-              
+              toggleSummaryFalse={toggleSummaryFalse}
+              toggleSummaryTrue={toggleSummaryTrue}
+              buttonRef={buttonRef}
+              contentRef={contentRef}
             />
-          </div>
 
-          <div onClick={toggleSummary}>
             <Promociones
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
@@ -180,59 +203,47 @@ export default function MenuFood() {
               quantities={quantities}
               
             />
-          </div>
-          <div onClick={toggleSummary}>
             <Piqueos
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
             />
-          </div>
 
-          <div onClick={toggleSummary}>
             <Ensaladas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
             />
-          </div>
-          <div onClick={toggleSummary}>
             <Entradas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
             />
-          </div>
-          <div onClick={toggleSummary}>
             <Segundos
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
             />
-          </div>
-          <div onClick={toggleSummary}>
             <Bebidas
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
             />
-          </div>
-          <div onClick={toggleSummary}>
             <Postres
               setCartItems={setCartItems}
               setShowSummary={setShowSummary}
               setQuantities={setQuantities}
               quantities={quantities}
             />
-          </div>
-          {cartItems.length > 0 && (
+          {cartItems.length > 0 && showSummary === false ? (
             <div className={styles.btn_reservation}>
               <Button
+              ref={buttonRef}
                 onClick={toggleSummary}
                 className={styles.carddesplegable}
              
@@ -240,9 +251,9 @@ export default function MenuFood() {
                 {showSummary ? "Ocultar Resumen" : "Mostrar Resumen"}
               </Button>
             </div>
-          )}
+          ): null}
           {showSummary && cartItems.length > 0 ? (
-            <div className={styles.form_container}>
+            <div className={styles.form_container}  ref={contentRef}>
               <div className={styles.title_cars}>Resumen de la reserva</div>
 
               <div className={styles.form_container_box}>
@@ -251,7 +262,7 @@ export default function MenuFood() {
                   color="black"
                   component="div"
                 >
-                  Restaurante: {reservation[0] && reservation[0].formData.name}
+                  Restaurante: <span style={{fontWeight: "bold"}}> {reservation[0] && reservation[0].formData.name}</span>
                 </Typography>
                 <Typography
                   variant="subtitle1"
@@ -396,6 +407,26 @@ export default function MenuFood() {
                       >
                       Confirmar reserva
                     </Button>
+                    </div>
+
+                    <div>
+
+                    <Button
+                       sx={{
+                        display: "flex",
+                        backgroundColor: "#FFFF89",
+                        width: "100%",
+                        color: "#500075",
+                        fontWeight: "bold",
+                        ":hover": { backgroundColor: "#FFFF89" },
+                      }}
+                                 className={styles.carddesplegablecard}
+
+                      onClick={toggleSummary}
+                      >
+                      Ocultar Resumen
+                    </Button>
+                    
                       </div>
                  
                 </div>
