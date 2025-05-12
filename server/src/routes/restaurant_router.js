@@ -28,6 +28,8 @@ const { RestaurantDetacs } = require('../controllers/RestaurantDetacs');
 const { AllOrdersAdmin } = require('../controllers/AllOrdersAdmin');
 const { AllCodes } = require('../controllers/AllCodes');
 const { DetailsCodes } = require('../controllers/DetailsCodes');
+const { FilterCategory } = require('../controllers/FilterCategory');
+
 
 
 const {  User, Code, Restaurant} = require('../db'); // Incluye tu modelo Code
@@ -99,6 +101,8 @@ router.get('/all-orders-restaurants', AllOrdersRestaurants);
 
 router.put('/restaurant-destac', RestaurantDetacs);
 router.get('/codes-restaurants', AllCodes);
+router.get('/restaurant-filter/:category', FilterCategory);
+
 
 
 router.get('/code/:codeId', async (req, res) => {
