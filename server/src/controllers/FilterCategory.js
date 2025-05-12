@@ -5,7 +5,11 @@ module.exports = {
     const { category } = req.params;
     try {
       const filtercategory = await Restaurant.findAll({
-           where: category
+           where:{
+            type_of_meals: category
+           }
+           
+           
       });
 
       if (!filtercategory) {
