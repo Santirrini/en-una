@@ -12,7 +12,6 @@ function getRandomColor() {
   return color;
 }
 
-// Configuración del transportador de nodemailer
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
