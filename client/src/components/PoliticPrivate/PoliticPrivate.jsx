@@ -1,45 +1,51 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./PoliticPrivate.module.css";
 
 export default function PoliticPrivate() {
   const { pathname } = useLocation();
 
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   return (
-    <div className={styles.policy_container}>
-      <div className="mx-auto max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">
+    <div className={styles.policy_container} data-oid="dcb:w:x">
+      <div className="mx-auto max-w-2xl" data-oid="z4amum_">
+        <h2
+          className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center"
+          data-oid="rwsy23f"
+        >
           Políticas de Privacidad de ENUNA
         </h2>
-        <p className="mt-4 text-lg leading-8 text-gray-600">
+        <p className="mt-4 text-lg leading-8 text-gray-600" data-oid="y6:c5j:">
           La presente Política de Privacidad y de Protección de Datos Personales
           tiene por finalidad informar la forma como recopilamos, utilizamos,
           difundimos y/o divulgamos la información obtenida a través de nuestra
           Plataforma y demás Servicios.
-          <br />
+          <br data-oid="rzay3ah" />
           Al utilizar los Servicios, usted acepta expresamente sujetarse a las
           disposiciones de nuestra Política de Privacidad y de Protección de
           Datos Personales, que rige el uso de cualquier información
           proporcionada cuando llama, escribe, o se comunica a través de los
           Servicios.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="x5eqxhu"
+        >
           A. RECOPILACIÓN DE INFORMACIÓN
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
-          Por "Información Personal" <strong>se entiende</strong> aquel permite
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="4f19qdd">
+          Por "Información Personal" 
+          <strong data-oid="g-79kma">se entiende</strong> aquel permite
           identificación, tales como nombres, apellidos,{" "}
-          <strong>documentos de identidad, domicilio</strong>, número de
-          teléfono, dirección de correo electrónico, información de su
-          localización, número de tarjeta de crédito, detalle de consumos y
-          pedidos, <strong>imagen, voz,</strong> entre otros. En el caso de
-          números de tarjeta de crédito y código CVC, dicha información es
-          encriptada, y es almacenada por la plataforma de pagos.
-          <br />
+          <strong data-oid="7el0mxf">documentos de identidad, domicilio</strong>
+          , número de teléfono, dirección de correo electrónico, información de
+          su localización, número de tarjeta de crédito, detalle de consumos y
+          pedidos, <strong data-oid="wuos69x">imagen, voz,</strong> entre otros.
+          En el caso de números de tarjeta de crédito y código CVC, dicha
+          información es encriptada, y es almacenada por la plataforma de pagos.
+          <br data-oid="p0.yj_e" />
           Con el ingreso a nuestra plataforma y al hacer uso de ella, se presta
           consentimiento, reconoce y se autoriza expresamente, mediante la
           aceptación a la presente Política de Privacidad y de Protección de
@@ -72,7 +78,7 @@ export default function PoliticPrivate() {
           pero solo de forma agregada, con nuestros anunciantes y socios. f)
           Navegar por nuestra Plataforma (cookies, dirección IP,) a fin de
           hacerle seguimiento al uso del contenido.
-          <br />
+          <br data-oid="lqgjo1f" />
           Esta Información Personal estará́ almacenada en nuestros bancos de
           datos personales, salvo el número de su tarjeta de crédito y código
           CVC, que es encriptada, y que es almacenada por la pasarela de pagos,
@@ -85,7 +91,7 @@ export default function PoliticPrivate() {
           de las Reservas en los Restaurantes, y el procesamiento de los pagos
           llevados a cabo a través de la plataforma de pagos, de conformidad con
           lo dispuesto por la legislación aplicable.
-          <br />
+          <br data-oid="9nz6i0q" />
           "Información General" se refiere a la información que, por sí misma,
           no permite identificar (por ejemplo, información demográfica,
           geográfica o de visitas al sitio web). La recopilación de la
@@ -93,10 +99,13 @@ export default function PoliticPrivate() {
           mencionados anteriormente, así́ como de forma automática a través del
           uso de tecnologías estándar de la industria.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="znea-e7"
+        >
           B. USO DE SU INFORMACIÓN
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="sqhii:0">
           Con el ingreso y uso de nuestra plataforma, se declara expresamente,
           reconoce y acepta que el tratamiento de la Información Personal se
           realiza dentro del marco de la relación contractual que nace con su
@@ -111,7 +120,7 @@ export default function PoliticPrivate() {
           mantenimiento de la confidencialidad y el tratamiento seguro de la
           información. La Información Personal o Información General será́
           utilizada, sin ser limitada, para los casos de:
-          <br />
+          <br data-oid="ji7g.me" />
           a) Administración del sistema: Se podrá utilizar su Información
           General para los fines de la administración de nuestros sistemas, la
           asistencia en el diagnóstico de problemas con los servidores, la
@@ -120,7 +129,7 @@ export default function PoliticPrivate() {
           compartirá Información General disociada o anonimizada con terceros,
           es decir, información que no permita al tercero identificarlo o
           contactarlo personalmente.
-          <br />
+          <br data-oid="_.75uz8" />
           b) Comunicación y Publicidad: Se usará la Información Personal para
           enviar periódicamente a la dirección de correo electrónico y/o a
           través de mensajes de texto o cualquier otro medio disponible
@@ -140,7 +149,7 @@ export default function PoliticPrivate() {
           responsabilidad por los correos electrónicos que reciba por parte de
           los Restaurantes, teniendo la posibilidad de requerir que no se le
           remitan, coordinando directamente con ellos.
-          <br />
+          <br data-oid="9r973a-" />
           c) Proveedores de Servicios: Si por los servicios de terceros en los
           que esté involucrada su Información Personal o Información General
           (por ejemplo, servicios de gestión y almacenamiento de datos),
@@ -150,7 +159,7 @@ export default function PoliticPrivate() {
           información nos y los obliga a mantener la confidencialidad sobre la
           Información a la que tenga o pudieran tener acceso, incluyendo sus
           empleados o proveedores.
-          <br />
+          <br data-oid="vyvn71c" />
           d) Otros tipos de divulgación: Sin perjuicio de cualquier disposición
           en contrario, contenida en esta Política de Privacidad y de Protección
           de Datos Personales, nos reservamos el derecho, y por la presente se
@@ -173,19 +182,22 @@ export default function PoliticPrivate() {
           nuestra Política de Privacidad y de Protección de Datos Personales; y
           (5) por ser adquiridos o fusionados con otra entidad, y en los casos
           de reorganizaciones societarias, venta de activos o quiebra.
-          <br />
+          <br data-oid="a_91ywb" />
           e) Encuestas: enviar a su correo electrónico y/o a través de mensajes
           de texto o cualquier otro medio disponible, encuestas sobre los
           Servicios que brindamos o los servicios ofrecidos por los Restaurantes
           y/o sobre cualquier otro tema de interés para garantizar la mejora de
           nuestros Servicios.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="wcewx8k"
+        >
           C. PROTECCIÓN DE INFORMACIÓN
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="c.zaa0n">
           Para este fin se realizan los siguientes actos:
-          <br />
+          <br data-oid="a91hpto" />
           a) Medidas de Seguridad. Para impedir el acceso no autorizado,
           alteración, divulgación, pérdida o destrucción de su Información
           Personal e Información General bajo los parámetros establecidos en la
@@ -204,7 +216,7 @@ export default function PoliticPrivate() {
           de procesos judiciales civiles y/o penales, de ser el caso, por el uso
           o divulgación no autorizada de la Información Personal e Información
           General.
-          <br />
+          <br data-oid="kl-714i" />
           b) Enlaces de terceros. Podemos contener enlaces a terceros que pueden
           recopilar su Información Personal e Información General. Además
           podemos utilizar a terceros para proporcionar componentes a nuestros
@@ -218,10 +230,13 @@ export default function PoliticPrivate() {
           en dichos sitios web o la seguridad de cualquier Información Personal
           o General que usted pueda proporcionarles.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="h9jdw4j"
+        >
           D. PROTECCIÓN DE INFORMACIÓN SOBRE MENORES DE EDAD
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="dueiq0o">
           La protección de la información de los menores de edad, cuyo ejercicio
           esta vinculado a sus representantes y tutores, es una labor conjunta
           con los padres y tutores quienes desempeñan un papel activo de
@@ -232,10 +247,13 @@ export default function PoliticPrivate() {
           menores de 16 años.
         </p>
 
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="xu:em4r"
+        >
           D. PROTECCIÓN DE INFORMACIÓN SOBRE MENORES DE EDAD
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="h54jzdv">
           La protección de la información de los menores de edad, cuyo ejercicio
           esta vinculado a sus representantes y tutores, es una labor conjunta
           con los padres y tutores quienes desempeñan un papel activo de
@@ -245,11 +263,14 @@ export default function PoliticPrivate() {
           Personal de menores de edad, y no comercializamos los Servicios para
           menores de 16 años.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="43wi2_i"
+        >
           E. CAMBIOS EN LA POLÍTICA DE PRIVACIDAD Y DE PROTECCIÓN DE DATOS
           PERSONALES
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="vb5b:ky">
           Por cambios legislativos la Política de Privacidad y de Protección de
           Datos Personales en cualquier momento puede ser modificada, incluso
           por convenir a nuestros derechos; decisión que será comunicada, de
@@ -262,10 +283,13 @@ export default function PoliticPrivate() {
           en que se realizaron
         </p>
 
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="4:0y0a1"
+        >
           F. ACCESO, RECTIFICACION O CANCELACIÓN DE INFORMACIÓN PERSONAL
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid=".19r6w6">
           De desearse que la Información Personal sea actualizada y completa, el
           usuario deberá comunicar tal decisión a través de nuestras
           plataformas. Asimismo, se puede en cualquier momento ejercer los
@@ -277,7 +301,7 @@ export default function PoliticPrivate() {
           contacto@enunaapp.com En caso de dudas o consultas acerca de esta
           Política de Privacidad y de Protección de Datos Personales, puede
           comunicarse con nosotros de la siguiente manera:
-          <br />
+          <br data-oid="tlvbi1:" />
           Enviar correo electrónico a contacto@enunaapp.com
         </p>
       </div>

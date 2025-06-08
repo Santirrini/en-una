@@ -32,7 +32,7 @@ export default function MenuDestacad() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -43,19 +43,26 @@ export default function MenuDestacad() {
   const [selectedMenuId, setSelectedMenuId] = useState("");
   const [selectedStock, setSelecteStock] = useState("");
 
-
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
   }, [restaurantId, dispatch]);
 
-  const handleOpen = (images, name, details, price, category, stock, menuId) => {
+  const handleOpen = (
+    images,
+    name,
+    details,
+    price,
+    category,
+    stock,
+    menuId,
+  ) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
     setSelectedPrices(price);
     setSelectedCategory(category);
     setSelectedMenuId(menuId);
-    setSelecteStock(stock)
+    setSelecteStock(stock);
     setOpen(true);
   };
 
@@ -75,18 +82,19 @@ export default function MenuDestacad() {
     }
     return texto;
   };
-  
 
-  const destacados = restaurantdetails?.Menus.filter(menu =>
-    menu.category.includes("Destacados")
+  const destacados = restaurantdetails?.Menus.filter((menu) =>
+    menu.category.includes("Destacados"),
   );
 
   return (
-    <div>
+    <div data-oid="kp0bczb">
       {destacados?.length > 0 ? (
-        <div className={styles.menufood_container}>
-          <div className={styles.container_bg}>
-            <h1 className={styles.title_Carrusel}>Destacados</h1>
+        <div className={styles.menufood_container} data-oid="n9ogzs.">
+          <div className={styles.container_bg} data-oid="st2v6m8">
+            <h1 className={styles.title_Carrusel} data-oid="oh3s06b">
+              Destacados
+            </h1>
             <Splide
               options={{
                 perPage: 4,
@@ -106,33 +114,51 @@ export default function MenuDestacad() {
                   next: `splide__arrow--next ${styles.customNext}`,
                 },
               }}
+              data-oid="fb-5wah"
             >
-              {restaurantdetails?.Menus.filter(menu =>
-                menu.category.includes("Destacados")
+              {restaurantdetails?.Menus.filter((menu) =>
+                menu.category.includes("Destacados"),
               ).map((data) => (
-                <SplideSlide key={data.id}>
-                  <Card className={styles.card}>
+                <SplideSlide key={data.id} data-oid="yynyfys">
+                  <Card className={styles.card} data-oid="bpgm8e7">
                     <CardMedia
                       component="img"
                       className={styles.img_menu}
                       image={data.imageFile[0]}
                       alt={data.name}
+                      data-oid="fuwtosv"
                     />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography component="div" variant="h5">
+
+                    <Box
+                      sx={{ display: "flex", flexDirection: "column" }}
+                      data-oid=":sih6.z"
+                    >
+                      <CardContent sx={{ flex: "1 0 auto" }} data-oid="xlc85g6">
+                        <Typography
+                          component="div"
+                          variant="h5"
+                          data-oid="l_lxt3h"
+                        >
                           {limitarName(data.name)}
                         </Typography>
-                        <Typography variant="subtitle1" color="text.secondary">
+                        <Typography
+                          variant="subtitle1"
+                          color="text.secondary"
+                          data-oid="7uaxf5x"
+                        >
                           {limitarTexto(data.details)}
                         </Typography>
-                        <div className={styles.price_quantity}>
+                        <div
+                          className={styles.price_quantity}
+                          data-oid="dtpm93c"
+                        >
                           <Typography
                             component="div"
                             variant="h6"
                             sx={{ fontWeight: "bold" }}
+                            data-oid="o4vb7s6"
                           >
-                          S/{data.price}
+                            S/{data.price}
                           </Typography>
                         </div>
                       </CardContent>
@@ -143,6 +169,7 @@ export default function MenuDestacad() {
                           marginRight: "1em",
                           paddingBottom: "1em",
                         }}
+                        data-oid="ak419dg"
                       >
                         <Button
                           sx={{
@@ -162,6 +189,7 @@ export default function MenuDestacad() {
                               data.id,
                             )
                           }
+                          data-oid="xpk2-pa"
                         >
                           EDITAR
                         </Button>
@@ -177,8 +205,9 @@ export default function MenuDestacad() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            data-oid="h5jpi94"
           >
-            <Box sx={modalStyle}>
+            <Box sx={modalStyle} data-oid="ws1xi4h">
               <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
@@ -188,6 +217,7 @@ export default function MenuDestacad() {
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
                 selectedStock={selectedStock}
+                data-oid="jnxngz8"
               />
             </Box>
           </Modal>

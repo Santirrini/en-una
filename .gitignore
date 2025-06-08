@@ -1,2 +1,31 @@
+# Carpetas de dependencias de paquetes (ejemplos comunes)
+node_modules/      # Para proyectos Node.js/JavaScript
+venv/              # Para entornos virtuales de Python
+.env               # Archivos de variables de entorno (pueden contener credenciales)
+target/            # Para proyectos Java/Scala (Maven, Gradle)
+build/             # Carpetas de compilación
+dist/              # Carpetas de distribución
 
-.codegpt
+# Archivos de caché
+.cache/
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Archivos específicos del sistema operativo
+.DS_Store          # macOS
+Thumbs.db          # Windows
+
+# Archivos compilados (ejemplos)
+*.class            # Java
+*.pyc              # Python
+*.exe              # Ejecutables de Windows
+*.dll
+*.o
+*.obj
+
+# Archivos de configuración locales o sensibles
+config.local.js
+settings.local.py
+credentials.json

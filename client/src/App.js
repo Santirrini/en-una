@@ -47,6 +47,8 @@ import AllOrders from "./components/AdminComplete/AllOrders";
 import SelectDestac from "./components/AdminComplete/SelectDestac";
 import EmailVerification from "./pages/EmailVerification";
 import MessageRegister from "./pages/MessageRegister";
+import RestaurantFilter from "./pages/RestaurantFilter";
+
 
 
 
@@ -107,6 +109,8 @@ function App() {
           <Route path="/reclamo-enviado" element={<ReclaimSend />} />
           <Route path="/verificar" element={<EmailVerification />} />
           <Route path="/registro-completado" element={<MessageRegister />} />
+          <Route path="/restaurante/tipo-de-comida/:category" element={<RestaurantFilter />} />
+
 
 
 

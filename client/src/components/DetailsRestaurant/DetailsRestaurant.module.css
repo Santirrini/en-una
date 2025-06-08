@@ -3,21 +3,31 @@
   display: flex;
   flex-direction: column;
 }
+
 .containerInfo {
   display: flex;
   gap: 3em;
+  padding-left: 2em;
+
+  padding-bottom: 2em;
+
+
+  width: 100%;
 }
 .details_box {
-  display: flex;
   width: 100%;
+  margin-top: 8em;
 }
-.food_box {
-  width: 100%;
-  background-image: url("../../Images/Triangulo\ morado\ .png");
-  background-size: cover;
-  background-position: center ;
-  background-repeat: no-repeat;
+.descriptionText {
+  background-color: #500075;
+  padding: 50px;
+  border-radius: 10px;
+  color: white;
+  width: 50%;
+  text-align: justify;
 }
+
+
 .hoursdetails {
   display: flex;
   flex-direction: column;
@@ -86,15 +96,7 @@
 .none_desktop {
   display: none;
 }
-.contact {
-  display: flex;
-  gap: 5em;
-  padding-left: 2em;
-  color: white;
-  padding-bottom: 2em;
-  justify-content: space-between;
-  margin-top: 2em;
-}
+
 .description_aditional {
   display: flex;
   gap: 3em;
@@ -103,6 +105,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.2em;
+  justify-content: center;
 }
 .text_container_title {
   font-weight: bold;
@@ -110,13 +113,13 @@
   display: flex;
   place-items: center;
   gap: 1em;
+  margin-left: 2em;
   color: black;
 }
 .text_container {
   font-weight: bold;
   font-size: 25px;
   display: flex;
-  place-items: center;
   gap: 1em;
 }
 .text_box {
@@ -124,6 +127,7 @@
   font-size: 20px;
   margin-bottom: 1em;
   color: black;
+  margin-left: 2em;
   
 }
 .container_icons {
@@ -185,7 +189,6 @@
   text-align: center;
 }
 .text_p {
-  width: 30em;
 }
 
 .btn_container {
@@ -234,6 +237,15 @@
     margin: auto;
 
   }
+
+.descriptionText {
+ margin: auto;
+  width: 100%;
+}
+  .details_box {
+  width: 100%;
+  margin-top: 0;
+}
   .img_details {
     width:345px!important;
     height: 200px !important;
@@ -376,6 +388,9 @@
     place-content: center;
     place-items: center;
     place-self: center;
+      padding-left: 0;
+
+  padding-bottom: 0;
   }
 }
 

@@ -72,17 +72,7 @@
     outline: none;
 }
 
-.bg_navbar_details {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 1em;
-    place-items: center;
-    height: 100px; /* Ajusta según tus necesidades */
-    width: 60%;
-   background-position: center;
-   background-size: cover;
-   
-}
+
 .bg_navbar {
     display: flex;
     justify-content: flex-end;

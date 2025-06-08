@@ -15,29 +15,30 @@ export default function WhyUs() {
       setOpen(false);
     }, 1000);
   }, []);
-    return (
-        <div>
-            <Backdrop
+  return (
+    <div data-oid="cwox9ac">
+      <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="vhq:og2"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="w73g3pi" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="zxejdq_">
+        <HeaderMobile data-oid="vs5u13o" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="fojpg3y">
+        <Navbar data-oid="feimjhe" />
       </div>
-            <div>
-                <WhyUsComponent/>
-            </div>
-            <div>
-        <ButtonWhatsapp />
+      <div data-oid=".uh73rc">
+        <WhyUsComponent data-oid="tfxne-e" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="dx1ieqe">
+        <ButtonWhatsapp data-oid="q22b4n2" />
       </div>
-        </div>
-    )
+      <div data-oid="4ir-hus">
+        <Footer data-oid="tf_b15p" />
+      </div>
+    </div>
+  );
 }

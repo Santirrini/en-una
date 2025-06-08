@@ -14,12 +14,12 @@ export default function AdminComplete() {
   const theme = useTheme();
 
   return (
-    <div>
-      <div>
-        <Navbar />
+    <div data-oid="-o9nvds">
+      <div data-oid="a497qby">
+        <Navbar data-oid="u_wluor" />
       </div>
       <>
-        <div className={styles.buttonAdmin}>
+        <div className={styles.buttonAdmin} data-oid="c37iwr-">
           <Stack
             spacing={2}
             direction="row"
@@ -28,8 +28,9 @@ export default function AdminComplete() {
               display: "flex",
               justifyContent: "center",
             }}
+            data-oid="7pj359m"
           >
-            <Link to="formularios-de-registros">
+            <Link to="formularios-de-registros" data-oid="_:v:0o.">
               <Button
                 variant="outlined"
                 sx={{
@@ -57,11 +58,12 @@ export default function AdminComplete() {
                     fontSize: "0.875rem", // Tamaño reducido
                   },
                 }}
+                data-oid="ljzwif4"
               >
                 Formularios de registros
               </Button>
             </Link>
-            <Link to="usuarios-registrados">
+            <Link to="usuarios-registrados" data-oid="ugb_ev0">
               <Button
                 variant="outlined"
                 sx={{
@@ -89,11 +91,12 @@ export default function AdminComplete() {
                     fontSize: "10px",
                   },
                 }}
+                data-oid="t__ex6p"
               >
                 Usuarios registrados
               </Button>
             </Link>
-            <Link to="restaurantes-registrados">
+            <Link to="restaurantes-registrados" data-oid="4u9-crl">
               <Button
                 variant="outlined"
                 sx={{
@@ -122,11 +125,12 @@ export default function AdminComplete() {
                     fontSize: "0.875rem",
                   },
                 }}
+                data-oid="98twoqg"
               >
                 Restaurantes registrados
               </Button>
             </Link>
-            <Link to="pedidos">
+            <Link to="pedidos" data-oid="n0izgn_">
               <Button
                 variant="outlined"
                 sx={{
@@ -147,17 +151,18 @@ export default function AdminComplete() {
                   ":focus": { backgroundColor: "#500075", color: "#fff" },
                   padding: "10px 20px",
                   fontSize: "10px",
-                  
+
                   [theme.breakpoints.down("lg")]: {
                     padding: "8px 16px",
                     fontSize: "0.875rem",
                   },
                 }}
+                data-oid="2yzn7_r"
               >
                 Pedidos
               </Button>
             </Link>
-            <Link to="publicar-carrusel">
+            <Link to="publicar-carrusel" data-oid="3_o9z69">
               <Button
                 variant="outlined"
                 sx={{
@@ -186,11 +191,12 @@ export default function AdminComplete() {
                     fontSize: "0.875rem",
                   },
                 }}
+                data-oid="__syppd"
               >
                 Publicar carrusel
               </Button>
             </Link>
-            <Link to="destacar-restaurante">
+            <Link to="destacar-restaurante" data-oid="c8gk.-g">
               <Button
                 variant="outlined"
                 sx={{
@@ -219,18 +225,19 @@ export default function AdminComplete() {
                     fontSize: "0.875rem",
                   },
                 }}
+                data-oid="jjohari"
               >
                 Destacar restaurante
               </Button>
             </Link>
           </Stack>
         </div>
-        <div>
-          <Outlet />
+        <div data-oid="5w45f1.">
+          <Outlet data-oid="v5225ms" />
         </div>
       </>
-      <div>
-        <Footer />
+      <div data-oid="rb2ckcg">
+        <Footer data-oid="dok5qyx" />
       </div>
     </div>
   );

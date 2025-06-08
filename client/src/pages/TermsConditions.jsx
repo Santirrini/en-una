@@ -15,29 +15,30 @@ export default function TermsConditions() {
       setOpen(false);
     }, 1000);
   }, []);
-    return (
-        <div>
-            <Backdrop
+  return (
+    <div data-oid="yv16qh-">
+      <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="cx3hycp"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="sip5usf" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="x3t6ih-">
+        <HeaderMobile data-oid="zujby8o" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="pltdani">
+        <Navbar data-oid="75dft_8" />
       </div>
-            <div>
-                <TermsConditionsComponent/>
-            </div>
-            <div>
-        <ButtonWhatsapp />
+      <div data-oid="4x_9of.">
+        <TermsConditionsComponent data-oid="ngy10be" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="ts.te-:">
+        <ButtonWhatsapp data-oid="svcj4z_" />
       </div>
-        </div>
-    )
+      <div data-oid="k018ir6">
+        <Footer data-oid="wlimm5l" />
+      </div>
+    </div>
+  );
 }

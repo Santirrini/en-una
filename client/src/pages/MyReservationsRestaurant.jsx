@@ -16,27 +16,28 @@ export default function MyReservationsRestaurant() {
     }, 1000);
   }, []);
   return (
-    <div>
+    <div data-oid="d:2mz9u">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="nzltcmz"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="2:1_avj" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="pzyhbhc">
+        <HeaderMobile data-oid="yfjuneq" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="v93btk3">
+        <Navbar data-oid="q21:2bv" />
       </div>
-      <div>
-        <MyReservationsRestaurantComponents />
+      <div data-oid="bxk1cf3">
+        <MyReservationsRestaurantComponents data-oid="6l9-405" />
       </div>
-      <div>
-        <ButtonWhatsapp />
+      <div data-oid="w249jq8">
+        <ButtonWhatsapp data-oid="ecq6f4o" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="m.716mc">
+        <Footer data-oid="thr5rff" />
       </div>
     </div>
   );

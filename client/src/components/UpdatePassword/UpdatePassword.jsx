@@ -38,16 +38,20 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div className={styles.update_container}>
-      <div className="mx-auto max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">
+    <div className={styles.update_container} data-oid="pel-yyr">
+      <div className="mx-auto max-w-2xl" data-oid="3adizfp">
+        <h2
+          className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center"
+          data-oid="78zh81e"
+        >
           Restablecer Contraseña
         </h2>
         <form
           className="mt-4 text-lg leading-8 text-gray-600"
           onSubmit={handleSubmit}
+          data-oid="-u5p8lv"
         >
-          <label>
+          <label data-oid="0tcaihe">
             Nueva Contraseña:
             <input
               type="password"
@@ -55,9 +59,10 @@ const UpdatePassword = () => {
               onChange={(e) => setNewPassword(e.target.value)}
               className={styles.input}
               required
+              data-oid="0_eksf9"
             />
           </label>
-          <label>
+          <label data-oid="5t.cx5v">
             Confirmar Nueva Contraseña:
             <input
               type="password"
@@ -65,12 +70,13 @@ const UpdatePassword = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className={styles.input}
               required
+              data-oid="yr:v0-h"
             />
           </label>
-          {error && <p>{error}</p>}
+          {error && <p data-oid="4xp:6k5">{error}</p>}
 
-          <br />
-          <br />
+          <br data-oid="_qbcfg8" />
+          <br data-oid="jzuep_0" />
           <div
             style={{
               display: "flex",
@@ -78,6 +84,7 @@ const UpdatePassword = () => {
               justifyContent: "center",
               gap: "1em",
             }}
+            data-oid="7b8gi0d"
           >
             <Button
               type="submit"
@@ -86,18 +93,20 @@ const UpdatePassword = () => {
                 color: "#ffff",
                 ":hover": { background: "#500075" },
               }}
+              data-oid="8wu53p9"
             >
               {loading ? (
                 <CircularProgress
                   size={25}
                   thickness={5}
                   sx={{ color: "#fff" }}
+                  data-oid="y-fo8uz"
                 />
               ) : (
                 "Restablecer Contraseña"
               )}
             </Button>
-            <Link to="/iniciar-sesión">
+            <Link to="/iniciar-sesión" data-oid="p78hjai">
               <Button
                 type="submit"
                 sx={{
@@ -105,6 +114,7 @@ const UpdatePassword = () => {
                   color: "#ffff",
                   ":hover": { background: "gray" },
                 }}
+                data-oid="y7bs3pc"
               >
                 Cancelar
               </Button>

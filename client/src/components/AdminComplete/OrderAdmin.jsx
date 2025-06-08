@@ -99,7 +99,7 @@ export default function OrderProducts() {
   const AllOrder = async () => {
     try {
       const response = await axios.get(
-        "https://en-una-production.up.railway.app/api/orders"
+        "https://en-una-production.up.railway.app/api/orders",
       );
 
       setAllOrders(response.data);
@@ -140,24 +140,26 @@ export default function OrderProducts() {
             const [hours, minutes] = time.split(":").map(Number);
             return hours * 60 + minutes;
           };
-          return timeToMinutes(a.orders?.hours) - timeToMinutes(b.orders?.hours);
-  
+          return (
+            timeToMinutes(a.orders?.hours) - timeToMinutes(b.orders?.hours)
+          );
+
         case "peoples":
           return (
             parseInt(a.orders?.peoples || 0, 10) -
             parseInt(b.orders?.peoples || 0, 10)
           );
-  
+
         case "name":
           const nameA = a.name?.toLowerCase() || "";
           const nameB = b.name?.toLowerCase() || "";
           return nameA.localeCompare(nameB);
-  
+
         case "status":
           const statusA = a.status?.toLowerCase() || "";
           const statusB = b.status?.toLowerCase() || "";
           return statusA.localeCompare(statusB);
-  
+
         case "date":
           const parseDate = (date) => {
             if (!date) return dayjs(0); // Fecha mínima si no hay valor
@@ -166,31 +168,35 @@ export default function OrderProducts() {
           const dateA = parseDate(a.orders?.date || null);
           const dateB = parseDate(b.orders?.date || null);
           return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
-  
+
         case "date_payment":
-          const paymentDateA = a.date_payment ? dayjs(a.date_payment) : dayjs(0);
-          const paymentDateB = b.date_payment ? dayjs(b.date_payment) : dayjs(0);
+          const paymentDateA = a.date_payment
+            ? dayjs(a.date_payment)
+            : dayjs(0);
+          const paymentDateB = b.date_payment
+            ? dayjs(b.date_payment)
+            : dayjs(0);
           return paymentDateA.isBefore(paymentDateB)
             ? -1
             : paymentDateA.isAfter(paymentDateB)
-            ? 1
-            : 0;
-  
+              ? 1
+              : 0;
+
         default:
           return 0;
       }
     });
   }, [filteredOrders, sortOption]);
-  
-  
+
   const handlePrint = (orderDetails) => {
     // Calcular el total basado en los elementos de la orden
     const items = orderDetails?.orders.order || [
       { quantity: 1, name: "Producto", price: 0.0 },
     ];
+
     const total = items.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
 
     const ticketData = {
@@ -267,15 +273,15 @@ export default function OrderProducts() {
               .map(
                 (item) => `
               <p>${item.quantity} x ${item.name} - S/ ${parseFloat(
-                  item.price * item.quantity
-                ).toFixed(2)}</p>
-            `
+                item.price * item.quantity,
+              ).toFixed(2)}</p>
+            `,
               )
               .join("")}
             <p><strong>Observación:</strong> ${ticketData.observation}</p>
 
             <p><strong>Total:</strong> S/ ${parseFloat(
-              ticketData.total
+              ticketData.total,
             ).toFixed(2)} </p>
           </div>
         </body>
@@ -324,23 +330,25 @@ export default function OrderProducts() {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className={styles.search_container}>
-        <Search className="input-container">
+    <LocalizationProvider dateAdapter={AdapterDayjs} data-oid="j9n1dv5">
+      <div className={styles.search_container} data-oid="dsjqz6o">
+        <Search className="input-container" data-oid="ze-kxwc">
           <input
             placeholder="Buscar por nombre..."
             className={styles.search}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            data-oid="n8z89wd"
           />
-          <SearchIconWrapper>
-            <SearchIcon />
+
+          <SearchIconWrapper data-oid="f6-g3h_">
+            <SearchIcon data-oid="ew7zf84" />
           </SearchIconWrapper>
         </Search>
       </div>
 
-      <div className={styles.order_for_container}>
-        <div className={styles.container_btnReset}>
+      <div className={styles.order_for_container} data-oid="jeb2hnm">
+        <div className={styles.container_btnReset} data-oid="i2cs7yg">
           <Button
             variant="contained"
             onClick={handleCalendarNull}
@@ -351,95 +359,114 @@ export default function OrderProducts() {
                 backgroundColor: "#500075",
               },
             }}
+            data-oid="r6anigo"
           >
             Ver todo
           </Button>
         </div>
-        <div>
-          <label htmlFor="">
-            <h4>Fecha</h4>
+        <div data-oid="g06f4vk">
+          <label htmlFor="" data-oid="br8zssi">
+            <h4 data-oid=":_fnyb8">Fecha</h4>
           </label>
-          <div className={styles.calendar}>
+          <div className={styles.calendar} data-oid="_u3mayw">
             <DatePicker
               label="Desde"
               value={fromDate}
               onChange={(newValue) => setFromDate(newValue)}
               format="DD-MM-YYYY"
+              data-oid="qiqeo_5"
             />
+
             <DatePicker
               label="Hasta"
               value={toDate}
               onChange={(newValue) => setToDate(newValue)}
               format="DD-MM-YYYY"
+              data-oid="owmvvha"
             />
           </div>
         </div>
-        <div>
-          <h4>Ordenar pedido por:</h4>
-          <div>
+        <div data-oid="9ka8yhd">
+          <h4 data-oid="g20o9mw">Ordenar pedido por:</h4>
+          <div data-oid="g8mhs36">
             <select
               name="area"
               className={styles.order}
               required
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
+              data-oid="yyjgj4l"
             >
-              <option value="name">Nombre</option>
-              <option value="hours">Hora</option>
-              <option value="peoples">Nro de personas</option>
-              <option value="date">Fecha</option>
+              <option value="name" data-oid="j:lpc8_">
+                Nombre
+              </option>
+              <option value="hours" data-oid="a9qg7hu">
+                Hora
+              </option>
+              <option value="peoples" data-oid="16kcn_0">
+                Nro de personas
+              </option>
+              <option value="date" data-oid="9kg:g.a">
+                Fecha
+              </option>
 
-              <option value="status">Estado</option>
+              <option value="status" data-oid="r1eeqvb">
+                Estado
+              </option>
             </select>
           </div>
         </div>
       </div>
-      <div className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8">
-        <div className={styles.boletin_container}>
-          <table className={styles.boletin_table}>
-            <thead>
-              <tr>
-                <th>Fecha </th>
-                <th>Nombre del comercio</th>
-                <th>Local</th>
+      <div
+        className="isolate bg-white px-6 py-1 sm:py-1 lg:px-8"
+        data-oid="ofz.kb-"
+      >
+        <div className={styles.boletin_container} data-oid="zmd-pie">
+          <table className={styles.boletin_table} data-oid="la9s20d">
+            <thead data-oid="hx.kqq3">
+              <tr data-oid=":g6ho2v">
+                <th data-oid="0xylw81">Fecha </th>
+                <th data-oid="p7.fe4f">Nombre del comercio</th>
+                <th data-oid="1e.4ag4">Local</th>
 
-                <th>Fecha de reserva</th>
+                <th data-oid="km.1v-5">Fecha de reserva</th>
 
-                <th>Hora</th>
-                <th>N* Persona</th>
-                <th>Zona</th>
-                <th>Nombre</th>
-                <th>Telefono</th>
-                <th>Correo</th>
-                <th>Pedido</th>
-                <th>Estado</th>
+                <th data-oid="akb6yj6">Hora</th>
+                <th data-oid="hvdze6r">N* Persona</th>
+                <th data-oid="d0h.lu6">Zona</th>
+                <th data-oid="-aywt45">Nombre</th>
+                <th data-oid="tz0mght">Telefono</th>
+                <th data-oid="5ngs:z0">Correo</th>
+                <th data-oid="6xfn:l1">Pedido</th>
+                <th data-oid=":nznb-3">Estado</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody data-oid="9-2dyn9">
               {sortedOrders &&
                 sortedOrders.map((data, index) => (
-                  <tr key={index}>
-                    <td>{data.date_payment}</td>
+                  <tr key={index} data-oid="gjme.zb">
+                    <td data-oid="jih8_r6">{data.date_payment}</td>
 
-                    <td>{data.orders.Restaurant.name}</td>
+                    <td data-oid="17pu63e">{data.orders.Restaurant.name}</td>
 
-                    <td>{data.orders.location}</td>
-                    <td>{data.orders.date}</td>
+                    <td data-oid="_rl3l7p">{data.orders.location}</td>
+                    <td data-oid="4odpi5g">{data.orders.date}</td>
 
-                    <td>{data.orders.hours}</td>
-                    <td>{data.orders.peoples}</td>
-                    <td>{data.orders.area}</td>
+                    <td data-oid="fyboev_">{data.orders.hours}</td>
+                    <td data-oid="wqzp5nl">{data.orders.peoples}</td>
+                    <td data-oid="oe3n4w.">{data.orders.area}</td>
 
-                    <td>{`${data.name} ${data.lastName}`}</td>
-                    <td>{data.phone}</td>
-                    <td>{data.email}</td>
+                    <td data-oid="j0u29my">{`${data.name} ${data.lastName}`}</td>
+                    <td data-oid="8codfmd">{data.phone}</td>
+                    <td data-oid="8aicoe4">{data.email}</td>
                     <td
                       className={styles.view_details}
                       onClick={() => handleOpen(data.id)}
+                      data-oid="4wpoh.q"
                     >
                       Ver detalles
                     </td>
-                    <td>
+                    <td data-oid="yoqqooh">
                       <select
                         value={orderStatus[data.orders.id] || "Pendiente"}
                         onChange={(e) =>
@@ -450,9 +477,14 @@ export default function OrderProducts() {
                             ? styles.selectAtendido
                             : styles.selectPendiente
                         }
+                        data-oid=":apgigt"
                       >
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Atendido">Atendido</option>
+                        <option value="Pendiente" data-oid="d9vnl5.">
+                          Pendiente
+                        </option>
+                        <option value="Atendido" data-oid="ibdaqb7">
+                          Atendido
+                        </option>
                       </select>
                     </td>
                     <Modal
@@ -460,8 +492,9 @@ export default function OrderProducts() {
                       onClose={handleClose}
                       aria-labelledby="modal-modal-title"
                       aria-describedby="modal-modal-description"
+                      data-oid="mszu645"
                     >
-                      <Box sx={style}>
+                      <Box sx={style} data-oid="jsejd03">
                         <Typography
                           id="modal-modal-title"
                           variant="h6"
@@ -472,12 +505,14 @@ export default function OrderProducts() {
                             padding: 1,
                             textAlign: "center",
                           }}
+                          data-oid="y-3fpk9"
                         >
                           Detalle del pedido
                         </Typography>
                         <Typography
                           id="modal-modal-description"
                           sx={{ mt: 2, padding: 1, textAlign: "left" }}
+                          data-oid="8datsp8"
                         >
                           {orderDetails?.orders?.order.map((orderData) => {
                             return (
@@ -491,22 +526,26 @@ export default function OrderProducts() {
                                   margin: 0, // Eliminamos cualquier margen
                                   padding: 0, // Eliminamos cualquier padding adicional
                                 }}
+                                data-oid="jb13svg"
                               >
-                                <p style={{ margin: 0 }}>
+                                <p style={{ margin: 0 }} data-oid="q13ddcz">
                                   {orderData.quantity} {orderData.name}
                                 </p>
-                                <p style={{ margin: 0 }}>
+                                <p style={{ margin: 0 }} data-oid="xffp00z">
                                   S/
                                   {parseFloat(
-                                    orderData.price * orderData.quantity
+                                    orderData.price * orderData.quantity,
                                   ).toFixed(2)}
                                 </p>
                               </div>
                             );
                           })}
                           {orderDetails?.observation ? (
-                            <div style={{ marginTop: "8px" }}>
-                              <strong>Observación: </strong>
+                            <div
+                              style={{ marginTop: "8px" }}
+                              data-oid="s.:upoo"
+                            >
+                              <strong data-oid="_ecklft">Observación: </strong>
                               {orderDetails?.observation}
                             </div>
                           ) : null}
@@ -514,16 +553,17 @@ export default function OrderProducts() {
                         <Typography
                           id="modal-modal-description"
                           sx={{ mt: 2, padding: 1, textAlign: "center" }}
+                          data-oid="vzhd230"
                         >
-                          <div>
-                            <h4 style={{ margin: 0 }}>
+                          <div data-oid="xtsy0mo">
+                            <h4 style={{ margin: 0 }} data-oid="r5r879a">
                               Total: S/
                               {parseFloat(
                                 orderDetails?.orders?.order.reduce(
                                   (total, item) =>
                                     total + item.price * item.quantity,
-                                  0
-                                )
+                                  0,
+                                ),
                               ).toFixed(2)}
                             </h4>
                           </div>
@@ -538,6 +578,7 @@ export default function OrderProducts() {
                             gap: "1em",
                             paddingBottom: "1em",
                           }}
+                          data-oid="jxvpsxy"
                         >
                           <Button
                             variant="outlined"
@@ -551,6 +592,7 @@ export default function OrderProducts() {
                               },
                             }}
                             onClick={handlePrintClick}
+                            data-oid="-f15q66"
                           >
                             Imprimir Ticket
                           </Button>
@@ -567,6 +609,7 @@ export default function OrderProducts() {
                               },
                             }}
                             onClick={handleClose}
+                            data-oid="ij1pvts"
                           >
                             salir
                           </Button>

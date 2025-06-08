@@ -16,27 +16,28 @@ export default function ConfirmUpdatePassword() {
     }, 1000);
   }, []);
   return (
-    <div>
+    <div data-oid="3ssbne.">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="0jcd1as"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="4rpotiu" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="pw:.-9a">
+        <HeaderMobile data-oid="ihls4wg" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="7qq9u4j">
+        <Navbar data-oid="2l:e_99" />
       </div>
-      <div>
-        <ConfirmUpdatePasswordComponent />
+      <div data-oid="i9.8iro">
+        <ConfirmUpdatePasswordComponent data-oid="e2bm:fg" />
       </div>
-      <div>
-        <ButtonWhatsapp />
+      <div data-oid="j.f8yxh">
+        <ButtonWhatsapp data-oid="txa1_no" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="5iy:.4d">
+        <Footer data-oid="7p8_jfn" />
       </div>
     </div>
   );

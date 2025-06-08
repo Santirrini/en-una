@@ -32,11 +32,11 @@ const modalStyle = {
   boxShadow: 24,
   padding: 4, // Agrega algo de padding si es necesario
 };
-export default function MenuDestacad({setCartItems}) {
+export default function MenuDestacad({ setCartItems }) {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -45,28 +45,29 @@ export default function MenuDestacad({setCartItems}) {
   const [selectedDetails, setSelectedDetails] = useState("");
   const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedMenuId, setSelectedMenuId] = useState("");
-  
+
   const [selectedStock, setSelecteStock] = useState("");
 
   useEffect(() => {
-      dispatch(DetailRestaurant(restaurantId));
-
+    dispatch(DetailRestaurant(restaurantId));
   }, [restaurantId, dispatch]);
-    
 
-
-
-
-
-
-  const handleOpen = (images, name, details, price, category, stock, menuId) => {
+  const handleOpen = (
+    images,
+    name,
+    details,
+    price,
+    category,
+    stock,
+    menuId,
+  ) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
     setSelectedPrices(price);
     setSelectedCategory(category);
     setSelectedMenuId(menuId);
-    setSelecteStock(stock)
+    setSelecteStock(stock);
     setOpen(true);
   };
 
@@ -86,17 +87,17 @@ export default function MenuDestacad({setCartItems}) {
     return texto;
   };
 
-  const postres = restaurantdetails?.Menus.filter(menu => menu.category.includes("Postres"))
-
+  const postres = restaurantdetails?.Menus.filter((menu) =>
+    menu.category.includes("Postres"),
+  );
 
   return (
-    <div>
-        {postres?.length > 0 ? (
-   
-        <div >
-          <div className={styles.container_bg2}>
-            <div className={styles.title_Carrusel}>
-              <h1>Postres</h1>
+    <div data-oid="yr2xn:1">
+      {postres?.length > 0 ? (
+        <div data-oid="b6s8_5d">
+          <div className={styles.container_bg2} data-oid="0ck5xp3">
+            <div className={styles.title_Carrusel} data-oid="id:z-ix">
+              <h1 data-oid="4fswd::">Postres</h1>
             </div>
             <Splide
               options={{
@@ -124,46 +125,68 @@ export default function MenuDestacad({setCartItems}) {
                   next: `splide__arrow--next ${styles.customNext}`,
                 },
               }}
+              data-oid="iffaalb"
             >
-                  {restaurantdetails?.Menus.filter(menu =>
-                menu.category.includes("Postres")
+              {restaurantdetails?.Menus.filter((menu) =>
+                menu.category.includes("Postres"),
               ).map((data) => (
                 <>
-                  <SplideSlide key={data.id}>
-                    <Card className={styles.card} key={data.id}>
-                    <CardMedia
-                      component="img"
-                      className={styles.img_menu}
-                      image={data.imageFile[0]}
-                      alt={data.name}
-                      onClick={() =>
-                        handleOpen(data.imageFile, data.name, data.details)
-                      }
-                    />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography component="div" variant="h5">
+                  <SplideSlide key={data.id} data-oid="847.v1w">
+                    <Card
+                      className={styles.card}
+                      key={data.id}
+                      data-oid="kh15m:i"
+                    >
+                      <CardMedia
+                        component="img"
+                        className={styles.img_menu}
+                        image={data.imageFile[0]}
+                        alt={data.name}
+                        onClick={() =>
+                          handleOpen(data.imageFile, data.name, data.details)
+                        }
+                        data-oid="dh0ow:s"
+                      />
+
+                      <Box
+                        sx={{ display: "flex", flexDirection: "column" }}
+                        data-oid=".w-mvin"
+                      >
+                        <CardContent
+                          sx={{ flex: "1 0 auto" }}
+                          data-oid="e-lb2zb"
+                        >
+                          <Typography
+                            component="div"
+                            variant="h5"
+                            data-oid="zsbg:vb"
+                          >
                             {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
+                            data-oid="je2kzzq"
                           >
-                                                      {limitarTexto(data.details)} {/* Limita a 50 caracteres */}
-
+                            {limitarTexto(data.details)}{" "}
+                            {/* Limita a 50 caracteres */}
                           </Typography>
-                          <div className={styles.price_quantity}>
-                          <Typography
-                            component="div"
-                            variant="h6"
-                            sx={{ fontWeight: "bold" }}
+                          <div
+                            className={styles.price_quantity}
+                            data-oid="cu8fs4_"
                           >
-                            S/{data.price}
-                          </Typography>
-                        </div>
+                            <Typography
+                              component="div"
+                              variant="h6"
+                              sx={{ fontWeight: "bold" }}
+                              data-oid="9zfbbkm"
+                            >
+                              S/{data.price}
+                            </Typography>
+                          </div>
                         </CardContent>
-                      
+
                         <Box
                           sx={{
                             display: "flex",
@@ -171,6 +194,7 @@ export default function MenuDestacad({setCartItems}) {
                             marginRight: "1em",
                             paddingBottom: "1em",
                           }}
+                          data-oid="soro4xk"
                         >
                           <Button
                             sx={{
@@ -191,6 +215,7 @@ export default function MenuDestacad({setCartItems}) {
                                 data.id,
                               )
                             }
+                            data-oid="a48826m"
                           >
                             EDITAR
                           </Button>
@@ -201,17 +226,16 @@ export default function MenuDestacad({setCartItems}) {
                 </>
               ))}
             </Splide>
-
-          
           </div>
           <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            data-oid="9q7ucto"
           >
-          <Box sx={modalStyle}>
-          <UpdateMenu
+            <Box sx={modalStyle} data-oid="lx6h68u">
+              <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
                 selectedImages={selectedImages}
@@ -220,12 +244,12 @@ export default function MenuDestacad({setCartItems}) {
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
                 selectedStock={selectedStock}
+                data-oid="v9:s5pc"
               />
             </Box>
           </Modal>
         </div>
-              ):null}
-
+      ) : null}
     </div>
   );
 }

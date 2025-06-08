@@ -15,29 +15,30 @@ export default function Contact() {
       setOpen(false);
     }, 1000);
   }, []);
-    return (
-        <div>
-            <Backdrop
+  return (
+    <div data-oid="w.sn5kj">
+      <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="mui-xab"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="9qqkcrz" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="cf2umoa">
+        <HeaderMobile data-oid="05dh_yx" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="c521qqp">
+        <Navbar data-oid="3ozwovw" />
       </div>
-            <div>
-                <ContactUs/>
-            </div>
-            <div>
-        <ButtonWhatsapp />
+      <div data-oid="shjiexn">
+        <ContactUs data-oid="a-us3mh" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="h6wvsi6">
+        <ButtonWhatsapp data-oid="22q233:" />
       </div>
-        </div>
-    )
+      <div data-oid="c80eer:">
+        <Footer data-oid="evv2tv4" />
+      </div>
+    </div>
+  );
 }

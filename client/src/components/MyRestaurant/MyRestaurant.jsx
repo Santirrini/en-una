@@ -15,7 +15,7 @@ import { dataPersonal } from "../../redux/action";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
-  return <IconButton {...other} />;
+  return <IconButton {...other} data-oid="pf45meg" />;
 })(({ theme, expand }) => ({
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
   marginLeft: "auto",
@@ -29,7 +29,6 @@ export default function Cards() {
   const dispatch = useDispatch();
   const datapersonal = useSelector((state) => state.datapersonal.Restaurant);
 
-
   const token = useSelector((state) => state.token);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -39,38 +38,43 @@ export default function Cards() {
   }, [dispatch]);
 
   return (
-    <div>
-      <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div data-oid="dujumtm">
+      <div
+        className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8"
+        data-oid="j1r3di:"
+      >
+        <h1 className={styles.text} data-oid="10vcuq:">
+          Mi restaurante
+        </h1>
+        <div className={styles.cards_container} data-oid="71y.ot4">
+          <Link to="/restaurantes" data-oid="lni.fng">
+            <Card sx={{ maxWidth: 345 }} data-oid="gxr7ywo">
+              <CardMedia
+                sx={{ position: "relative" }}
+                component="img"
+                height="194"
+                image={datapersonal && datapersonal.imageFile[0]}
+                alt="Paella dish"
+                data-oid="9indwp7"
+              />
 
-      <h1 className={styles.text}>Mi restaurante</h1>
-      <div className={styles.cards_container}>
-        <Link to="/restaurantes">
-          <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-              sx={{ position: "relative" }}
-              component="img"
-              height="194"
-              image={datapersonal && datapersonal.imageFile[0]}
-              alt="Paella dish"
-            />
-            <CardContent>
-              <Typography sx={{ textAlign: "center" }}>
-                {datapersonal && datapersonal.name}
+              <CardContent data-oid=".e42qo4">
+                <Typography sx={{ textAlign: "center" }} data-oid="8:usoq0">
+                  {datapersonal && datapersonal.name}
+                </Typography>
+              </CardContent>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ textAlign: "center", paddingBottom: "2em" }}
+                data-oid="12rfr0p"
+              >
+                {datapersonal && datapersonal.address}
               </Typography>
-            </CardContent>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ textAlign: "center", paddingBottom: "2em" }}
-            >
-              
-              {datapersonal && datapersonal.address}
-            </Typography>
-          </Card>
-        </Link>
+            </Card>
+          </Link>
+        </div>
       </div>
     </div>
-    </div>
-
   );
 }

@@ -1,21 +1,23 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./TermsConditions.module.css";
 
 export default function TermsConditions() {
   const { pathname } = useLocation();
 
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   return (
-    <div className={styles.terms_container}>
-      <div className="mx-auto max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">
+    <div className={styles.terms_container} data-oid="od42uzo">
+      <div className="mx-auto max-w-2xl" data-oid="8nz6soq">
+        <h2
+          className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center"
+          data-oid="jolcun:"
+        >
           TÉRMINOS Y CONDICIONES DE USO DE ENUNA
         </h2>
-        <p className="mt-4 text-lg leading-8 text-gray-600">
+        <p className="mt-4 text-lg leading-8 text-gray-600" data-oid="3wms70q">
           Por el uso de nuestra plataforma de reservas en línea en restaurantes
           afiliados a ENUNA (en adelante, la “Plataforma”), que incluye una
           página web (www.enunaapp.com), aplicaciones móviles para iPhone y
@@ -41,10 +43,13 @@ export default function TermsConditions() {
           de los servicios que ofrecemos se considerará su aceptación
           incondicional de estos términos.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="w5.q7b1"
+        >
           1. REGISTRO, CONTRASEÑA Y RESPONSABILIDAD{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="o.5trmd">
           Usted podrá navegar por la Plataforma sin necesidad de tener una
           cuenta, sin embargo, teniendo una cuenta creada en ENUNA podrá
           utilizar los servicios, tales como reservas y pago de los productos
@@ -146,10 +151,13 @@ export default function TermsConditions() {
           que Enuna tendrá la capacidad adecuada para los servicios en su
           totalidad o en cualquier área geográfica específica.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid=":9:ltnu"
+        >
           2. PROPIEDAD INTELECTUAL{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="we.zomx">
           Todos los derechos de propiedad intelectual referidos al contenido y
           diseño de nuestros Servicios son de propiedad nuestra o de terceros (y
           en aquellos casos en que sea de propiedad de terceros contamos con las
@@ -163,10 +171,13 @@ export default function TermsConditions() {
           ingeniería inversa, modificar o realizar cualquier transacción con el
           software de nuestros Servicios.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="wug7z_e"
+        >
           3. USO DEL CONTENIDO{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="3hnsxu3">
           El contenido que posee esta Plataforma se ha preparado con la
           intención de brindar información sobre los Restaurantes y el servicio
           de reservas en los Restaurantes (en adelante, las “Reservas”) y, pagos
@@ -206,8 +217,13 @@ export default function TermsConditions() {
           contengan material ilegal u otro contenido que pueda dañar o
           deteriorar la red personal o computadora de otro usuario.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">4. PAGOS </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="kz-9gpx"
+        >
+          4. PAGOS{" "}
+        </h3>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="i_0wvcf">
           Si usted desea hacer uso de nuestra plataforma para realizar consumos
           en los Restaurantes, no es necesario registrar los datos de su tarjeta
           de crédito, dado que la plataforma de pago se encarga de dicho
@@ -222,9 +238,8 @@ export default function TermsConditions() {
           emitirle el comprobante de pago por su compra. Finalmente, podrá
           visualizar el historial de sus consumos mediante la sección “Mis
           Reservas”.
-          </p >
-        <p className="mt-2 text-lg leading-8 text-gray-600">
-
+        </p>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="uc.e9kr">
           En caso de encontrar errores en el detalle de su consumo a través de
           nuestra plataforma, o por tratarse de consumos que usted no reconoce
           haber realizado, deberá comunicarse directamente con nosotros a los
@@ -244,18 +259,16 @@ export default function TermsConditions() {
           pago a través de plataforma, mediante un extorno a la tarjeta de
           crédito correspondiente, el cual está sujeto a los términos y
           condiciones de la tarjeta de crédito en cuestión.
-          </p >
-          <p className="mt-2 text-lg leading-8 text-gray-600">
-
+        </p>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="t21qsg6">
           En la plataforma, la cancelación del pedido no podrá realizarse. Una
           vez aceptada la reserva, el pedido no podrá ser cancelado ni se podrá
           solicitar la devolución del dinero. Si un producto o pedido es
           cancelado debido a cualquier causa, incluso las que respondan a caso
           fortuito o fuerza mayor, no existirá derecho alguno a efectuar contra
           ENUNA. reclamos por devoluciones o reintegros.
-          </p >
-          <p className="mt-2 text-lg leading-8 text-gray-600">
-
+        </p>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="awchrk4">
           La Plataforma transferirá al Restaurante los pagos que usted haya
           hecho en nuestra Plataforma a través de las pasarelas de pago
           habilitadas. El Restaurante será el responsable de extenderle y
@@ -265,41 +278,44 @@ export default function TermsConditions() {
           equivocada o error por parte del Restaurante. Su compra no es
           considerada válida hasta que su pago quede registrado y haya sido
           aprobado por la pasarela de pagos.
-          </p >
-          <p className="mt-2 text-lg leading-8 text-gray-600">
-
+        </p>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="bvcm0jg">
           Si realizara más de un pago para una misma solicitud de compra, queda
           a criterio del Restaurante determinar si considera válido dicho
           registro. Ningún cambio, reintegro o devolución se encuentran
           permitidos excepto en las condiciones que establezca el Restaurante.
-          </p >
-          <p className="mt-2 text-lg leading-8 text-gray-600">
-
+        </p>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="v:1g7c-">
           Antes de completar su compra, deberá revisar cuidadosamente su pedido
           y condiciones deseadas, ya que una vez realizado no se permiten
           cambios, reintegros y/o devoluciones salvo las admitidas por el
           Restaurante.
-          </p >
-          <p className="mt-2 text-lg leading-8 text-gray-600">
-
+        </p>
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="8x-707y">
           Usted deberá exigir el comprobante de pago por el pedido solicitado
           directa y exclusivamente al Restaurante. ENUNA. funciona como agente
           recaudador del dinero por los pedidos de productos del Restaurante,
           pero no se responsabiliza por entregar comprobantes de pago por los
           mismos ya que no está realizando una venta directa al usuario.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="mibnkn:"
+        >
           5. POLÍTICA DE PRIVACIDAD Y DE PROTECCIÓN DE DATOS PERSONALES{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="bkbfwln">
           Nosotros nos comprometemos a proteger su privacidad. Por favor revise
           nuestra Política de Privacidad y de Protección de Datos Personales,
           para mayor información.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid=":9n76pv"
+        >
           6. SITIOS WEB DE TERCEROS{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid=":jvjr_f">
           En nuestra Plataforma se proporcionan referencias a otros sitios web,
           pero nosotros no nos responsabilizamos por el contenido de dichos
           sitios. Todas las conexiones que se proveen a otros sitios, tienen
@@ -310,26 +326,32 @@ export default function TermsConditions() {
           sus términos y condiciones, políticas de privacidad, entre otros.
         </p>
 
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="y-lb-4u"
+        >
           7. CESIÓN DE POSICIÓN CONTRACTUAL{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="l7jy7pa">
           Usted reconoce y acepta que nosotros podemos ceder nuestra posición
           contractual o cualquiera de nuestros derechos u obligaciones, o vender
           nuestros activos a cualquier tercero sin necesidad de informarle y
           obtener su consentimiento previo y expreso.
         </p>
 
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="mflvhqi"
+        >
           8. LIMITACIÓN DE RESPONSABILIDAD E INDEMNIDAD{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="gdw2kul">
           Los Servicios que proporcionamos a través de nuestra Plataforma se
           ofrecen sin ninguna clase de garantía. Nosotros no garantizamos que
           los Servicios estén libres de o no sean afectados con virus u otros
           elementos contaminantes o destructivos.
         </p>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="udm1s_o">
           Salvo en los casos de culpa inexcusable y dolo, nosotros (ni ningunos
           de nuestros empleados, proveedores y/o licenciatarios) no seremos
           responsables por el lucro cesante o daño moral que pueda surgir
@@ -337,7 +359,7 @@ export default function TermsConditions() {
           aunque cuando hayamos sido advertidos de la posibilidad de que pueden
           surgir tales daños.
         </p>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="tmql2wq">
           A petición nuestra, usted acepta defender, indemnizar y mantenernos
           indemnes (incluyendo a nuestros empleados, proveedores y
           licenciatarios) de cualquier reclamación y gastos, incluyendo
@@ -345,7 +367,7 @@ export default function TermsConditions() {
           violación suya de estos Términos de Uso o por su uso de cualquiera de
           los Servicios en nuestra Plataforma.
         </p>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="qhw3owf">
           Asimismo, respecto a la supresión o modificación de la información
           consignada para las Reservas, Pedidos y Compra que se ponen a su
           disposición a través de la Plataforma y de cualquier cancelación o
@@ -361,11 +383,14 @@ export default function TermsConditions() {
           relacionado a contenido o material publicitario proporcionado por los
           Restaurantes.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="h_egzlr"
+        >
           10. FUERZA MAYOR{" "}
         </h3>
 
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="ikt1x7t">
           Nosotros no seremos responsables o nos encontraremos en incumplimiento
           de cualquier retraso o falla en el rendimiento o la interrupción en la
           prestación de los Servicios que pueda resultar directa o
@@ -377,11 +402,14 @@ export default function TermsConditions() {
           desastres naturales, huelgas u otros problemas laborales, guerras, o
           restricciones gubernamentales.
         </p>
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="-qsdnj_"
+        >
           11. RECLAMOS Y QUEJAS{" "}
         </h3>
 
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid=":yauq2_">
           Conforme a lo establecido en el Código de Protección y Defensa del
           Consumidor, Ley No. 29571, nuestra Plataforma cuenta con un libro de
           reclamaciones virtual en el que usted podrá formular una queja o
@@ -389,10 +417,13 @@ export default function TermsConditions() {
           mismo que puede ser encontrado en nuestra plataforma
         </p>
 
-        <h3 className="mt-6 text-2xl font-semibold text-gray-900">
+        <h3
+          className="mt-6 text-2xl font-semibold text-gray-900"
+          data-oid="1fob29h"
+        >
           12. LEY APLICABLE Y JURISDICCIÓN{" "}
         </h3>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <p className="mt-2 text-lg leading-8 text-gray-600" data-oid="x.m58b.">
           Cualquier disputa que se produzca con relación a la validez,
           aplicación o interpretación de estos Términos de Uso, incluyendo la
           Política de Privacidad y de Protección de Datos Personales, será

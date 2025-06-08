@@ -3,7 +3,7 @@ import { Box, Typography, Button, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AllRestaurant, dataPersonal } from "../../redux/action";
-const CategorySelector = () => {
+const CategoryModal = ({ setOpen }) => {
   const dispatch = useDispatch();
   const allrestaurant = useSelector((state) => state.allrestaurant.data);
   const token = useSelector((state) => state.token);
@@ -27,34 +27,32 @@ const CategorySelector = () => {
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography
-        variant="h6"
-        sx={{ mb: 2, fontWeight: "bold", textAlign: "center" }}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
       >
-        Hola. ¿Qué quieres comer Hoy?
-      </Typography>
-
-      <Grid container spacing={2} display="flex" justifyContent="center">
         {mealTypes?.map((category, index) => (
           <Grid item xs={6} sm={4} md={2.4} key={index}>
-            <Link to={`/restaurante/tipo-de-comida/${category}`}>
+            <a href={`/restaurante/tipo-de-comida/${category}`}>
               <Button
                 fullWidth
                 variant="contained"
-                onClick={() =>
-                  setSelectedType(selectedType === category ? null : category)
-                }
+                onClick={() => {
+                  setSelectedType(selectedType === category ? null : category);
+                  setOpen(false);
+                }}
                 sx={{
                   backgroundColor:
                     selectedType === category ? "#d300ff" : "#4a0072",
                   color: "#fff",
-                  height: 150,
+                  height: 100,
                   textTransform: "none",
                   fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  justifyContent: "flex-start", // alineación horizontal a la izquierda
-                  alignItems: "flex-start", // alineación vertical arriba
-                  padding: 1.5, // para que no quede pegado al borde
                   "&:hover": {
                     backgroundColor:
                       selectedType === category ? "#c000e6" : "#360050",
@@ -63,7 +61,7 @@ const CategorySelector = () => {
               >
                 {category}
               </Button>
-            </Link>
+            </a>
           </Grid>
         ))}
       </Grid>
@@ -71,4 +69,4 @@ const CategorySelector = () => {
   );
 };
 
-export default CategorySelector;
+export default CategoryModal;

@@ -21,22 +21,25 @@ export default function Restaurant() {
   }, [dispatch]);
 
   return (
-    <div>
-      <h1 className={styles.text}>Restaurantes con esos productos</h1>
-      <div className={styles.cards_container}>
+    <div data-oid="5oy5:6.">
+      <h1 className={styles.text} data-oid="5_puvlq">
+        Restaurantes con esos productos
+      </h1>
+      <div className={styles.cards_container} data-oid="cwe-6ey">
         {allrestaurant &&
           allrestaurant.map((data) => (
-            <Link to={`/detalles/restaurante/${data.id}`}>
-              <Card sx={{ maxWidth: 345,  }}>
+            <Link to={`/detalles/restaurante/${data.id}`} data-oid="faeibm3">
+              <Card sx={{ maxWidth: 345 }} data-oid="4e77cd7">
                 <CardMedia
-                
                   component="img"
                   height="194"
                   image={data.imageFile && data.imageFile[0]}
                   alt="Paella dish"
+                  data-oid="abed8rf"
                 />
-                <CardContent>
-                  <Typography sx={{ textAlign: "center" }}>
+
+                <CardContent data-oid="5w6ujhd">
+                  <Typography sx={{ textAlign: "center" }} data-oid="slpym:5">
                     {data.name}
                   </Typography>
                 </CardContent>
@@ -44,6 +47,7 @@ export default function Restaurant() {
                   variant="body2"
                   color="text.secondary"
                   sx={{ textAlign: "center", paddingBottom: "2em" }}
+                  data-oid="b:oviaa"
                 >
                   {data.address}
                 </Typography>
@@ -51,6 +55,7 @@ export default function Restaurant() {
                   variant="body2"
                   color="text.secondary"
                   sx={{ textAlign: "center", paddingBottom: "2em" }}
+                  data-oid="lrnhuvl"
                 >
                   {data.email}
                 </Typography>
@@ -58,13 +63,13 @@ export default function Restaurant() {
                   variant="body2"
                   color="text.secondary"
                   sx={{ textAlign: "center", paddingBottom: "2em" }}
+                  data-oid="xkgfsdi"
                 >
                   {data.phone}
                 </Typography>
               </Card>
             </Link>
           ))}
-    
       </div>
     </div>
   );

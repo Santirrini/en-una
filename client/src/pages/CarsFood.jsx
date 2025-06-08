@@ -16,27 +16,28 @@ export default function CarsFood() {
     }, 1000);
   }, []);
   return (
-    <div>
+    <div data-oid="p9_dpt1">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="lc76eut"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="bkuo7j5" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="xa8.v5-">
+        <HeaderMobile data-oid="x-debcu" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="w63n9py">
+        <Navbar data-oid="yvykdo0" />
       </div>
-      <div>
-        <CarsFoodComponent />
+      <div data-oid="1s4ar4m">
+        <CarsFoodComponent data-oid="dqnwce2" />
       </div>
-      <div>
-        <ButtonWhatsapp />
+      <div data-oid="sx85n8x">
+        <ButtonWhatsapp data-oid="a1b0.y4" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="_uif_lr">
+        <Footer data-oid="z9xyejt" />
       </div>
     </div>
   );

@@ -57,30 +57,41 @@ const ReclamoForm = () => {
   };
 
   return (
-    <div>
-      <header className={styles.header}>
-        <Link to="/libro-de-quejas" className={styles.backLink}>
+    <div data-oid="7.unlpw">
+      <header className={styles.header} data-oid="cx_-03x">
+        <Link
+          to="/libro-de-quejas"
+          className={styles.backLink}
+          data-oid="idq.u32"
+        >
           ← Libro de reclamaciones
         </Link>
       </header>
-      <div className={styles.formContainer}>
-        <h2 className={styles.title}>Hoja de reclamaciones</h2>
-        <p className={styles.subtitle}>
+      <div className={styles.formContainer} data-oid="5-9yrrc">
+        <h2 className={styles.title} data-oid="t.lb6_9">
+          Hoja de reclamaciones
+        </h2>
+        <p className={styles.subtitle} data-oid="j9mrygq">
           Ingresa los datos y cuéntanos qué pasó para que podamos analizar tu
           caso y enviarte una respuesta en un plazo máximo de 15 días hábiles.
-          Recuerda que ingresando a <a href="#">Ayuda en línea</a> también
-          podrás encontrar soluciones a distintas situaciones que necesites
-          resolver y respuestas a diferentes consultas.
+          Recuerda que ingresando a{" "}
+          <a href="#" data-oid="hulrj:u">
+            Ayuda en línea
+          </a>{" "}
+          también podrás encontrar soluciones a distintas situaciones que
+          necesites resolver y respuestas a diferentes consultas.
         </p>
 
-        <label className={styles.label}>
+        <label className={styles.label} data-oid="na:655u">
           Número correlativo del reclamo/queja: PE-X-2024
         </label>
 
-        <form onSubmit={handleSubmit}>
-          <h3 className={styles.sectionTitle}>Ingresa tus datos</h3>
+        <form onSubmit={handleSubmit} data-oid="d98esqp">
+          <h3 className={styles.sectionTitle} data-oid="5ussdl:">
+            Ingresa tus datos
+          </h3>
 
-          <div className={styles.inputGroup}>
+          <div className={styles.inputGroup} data-oid="x_dczl8">
             <input
               type="text"
               name="name_complete"
@@ -89,8 +100,9 @@ const ReclamoForm = () => {
               onChange={handleChange}
               className={styles.inputField}
               required
-
+              data-oid="9m4efrg"
             />
+
             <input
               type="text"
               name="dni"
@@ -99,11 +111,11 @@ const ReclamoForm = () => {
               onChange={handleChange}
               className={styles.inputField}
               required
-
+              data-oid="2sspymz"
             />
           </div>
 
-          <div className={styles.inputGroup}>
+          <div className={styles.inputGroup} data-oid="p5wnzs8">
             <input
               type="text"
               name="address"
@@ -112,8 +124,9 @@ const ReclamoForm = () => {
               onChange={handleChange}
               className={styles.inputField}
               required
-
+              data-oid="nb__h:l"
             />
+
             <input
               type="text"
               name="phone"
@@ -122,7 +135,7 @@ const ReclamoForm = () => {
               onChange={handleChange}
               className={styles.inputField}
               required
-
+              data-oid="ceo86j1"
             />
           </div>
 
@@ -134,10 +147,10 @@ const ReclamoForm = () => {
             onChange={handleChange}
             className={styles.inputFull}
             required
-
+            data-oid="1r9p5u4"
           />
 
-          <div className={styles.checkboxContainer}>
+          <div className={styles.checkboxContainer} data-oid=":f-z8_f">
             <input
               type="checkbox"
               name="is_minor"
@@ -145,18 +158,21 @@ const ReclamoForm = () => {
               checked={formData.is_minor}
               onChange={handleChange}
               required
-
+              data-oid="buem7xx"
             />
-            <label htmlFor="esMenor">Soy menor de edad</label>
+
+            <label htmlFor="esMenor" data-oid="hytz8e-">
+              Soy menor de edad
+            </label>
           </div>
 
           {formData.is_minor && (
             <>
-              <p className={styles.warningText}>
+              <p className={styles.warningText} data-oid="2jjpv0h">
                 Si tienes menos de 18 años completa los siguientes datos de tu
                 padre, madre o tutor
               </p>
-              <div className={styles.inputGroup}>
+              <div className={styles.inputGroup} data-oid="6w:ywgo">
                 <input
                   type="text"
                   name="name_tutor"
@@ -164,7 +180,9 @@ const ReclamoForm = () => {
                   value={formData.name_tutor}
                   onChange={handleChange}
                   className={styles.inputField}
+                  data-oid="dbeoox0"
                 />
+
                 <input
                   type="text"
                   name="address_tutor"
@@ -172,10 +190,11 @@ const ReclamoForm = () => {
                   value={formData.address_tutor}
                   onChange={handleChange}
                   className={styles.inputField}
+                  data-oid="3pfken2"
                 />
               </div>
 
-              <div className={styles.inputGroup}>
+              <div className={styles.inputGroup} data-oid="ne45vi6">
                 <input
                   type="text"
                   name="phone_tutor"
@@ -183,7 +202,9 @@ const ReclamoForm = () => {
                   value={formData.phone_tutor}
                   onChange={handleChange}
                   className={styles.inputField}
+                  data-oid="ehpt_xj"
                 />
+
                 <input
                   type="email"
                   name="email_tutor"
@@ -191,16 +212,17 @@ const ReclamoForm = () => {
                   value={formData.email_tutor}
                   onChange={handleChange}
                   className={styles.inputField}
+                  data-oid="whhk4hp"
                 />
               </div>
             </>
           )}
 
-          <h3 className={styles.sectionTitle}>
+          <h3 className={styles.sectionTitle} data-oid=":pvjo3z">
             Identificación del Bien Contratado
           </h3>
 
-          <div className={styles.radioGroup}>
+          <div className={styles.radioGroup} data-oid="4s0mogb">
             <input
               type="radio"
               name="identify_contract"
@@ -209,9 +231,12 @@ const ReclamoForm = () => {
               checked={formData.identify_contract === "producto"}
               onChange={handleChange}
               required
-
+              data-oid="lz3vsz8"
             />
-            <label htmlFor="producto">Producto</label>
+
+            <label htmlFor="producto" data-oid="_u.em3t">
+              Producto
+            </label>
 
             <input
               type="radio"
@@ -221,9 +246,12 @@ const ReclamoForm = () => {
               checked={formData.identify_contract === "servicio"}
               onChange={handleChange}
               required
-
+              data-oid="ryo8y5:"
             />
-            <label htmlFor="servicio">Servicio</label>
+
+            <label htmlFor="servicio" data-oid="skoa0oy">
+              Servicio
+            </label>
           </div>
 
           <input
@@ -234,8 +262,9 @@ const ReclamoForm = () => {
             onChange={handleChange}
             className={styles.inputFull}
             required
-
+            data-oid="67pgx5i"
           />
+
           <input
             type="text"
             name="monto_claim"
@@ -244,12 +273,14 @@ const ReclamoForm = () => {
             onChange={handleChange}
             className={styles.inputFull}
             required
-
+            data-oid="q-jjun7"
           />
 
-          <h3 className={styles.sectionTitle}>Ingresa tu solicitud</h3>
+          <h3 className={styles.sectionTitle} data-oid=":831pih">
+            Ingresa tu solicitud
+          </h3>
 
-          <div className={styles.radioGroup}>
+          <div className={styles.radioGroup} data-oid="2uxfh5-">
             <input
               type="radio"
               name="application"
@@ -258,9 +289,12 @@ const ReclamoForm = () => {
               checked={formData.application === "queja"}
               onChange={handleChange}
               required
-
+              data-oid="6006xxq"
             />
-            <label htmlFor="queja">Queja</label>
+
+            <label htmlFor="queja" data-oid="_y7vm1f">
+              Queja
+            </label>
 
             <input
               type="radio"
@@ -270,9 +304,12 @@ const ReclamoForm = () => {
               checked={formData.application === "reclamo"}
               onChange={handleChange}
               required
-
+              data-oid="nla_6pl"
             />
-            <label htmlFor="reclamo">Reclamo</label>
+
+            <label htmlFor="reclamo" data-oid="xui9aku">
+              Reclamo
+            </label>
           </div>
 
           <textarea
@@ -282,7 +319,7 @@ const ReclamoForm = () => {
             onChange={handleChange}
             className={styles.textarea}
             required
-
+            data-oid="2vzqnmw"
           ></textarea>
           <textarea
             name="expected_solution"
@@ -291,18 +328,18 @@ const ReclamoForm = () => {
             onChange={handleChange}
             className={styles.textarea}
             required
-
+            data-oid="5kmlaah"
           ></textarea>
 
-          <h3 className={styles.sectionTitle}>
+          <h3 className={styles.sectionTitle} data-oid="69fskrb">
             Observaciones y acciones adoptadas por el proveedor
           </h3>
-          <p className={styles.observaciones}>
+          <p className={styles.observaciones} data-oid="p8fxss:">
             Estimado Cliente, muchas gracias por registrar su incidencia en el
             Libro de Reclamaciones...
           </p>
 
-          <div className={styles.inputGroup}>
+          <div className={styles.inputGroup} data-oid="knxuzoa">
             <input
               type="date"
               name="date"
@@ -310,8 +347,9 @@ const ReclamoForm = () => {
               onChange={handleChange}
               className={styles.inputField}
               required
-
+              data-oid="usqstvz"
             />
+
             <input
               type="time"
               name="hour"
@@ -319,15 +357,21 @@ const ReclamoForm = () => {
               onChange={handleChange}
               className={styles.inputField}
               required
+              data-oid="g:rp.50"
             />
           </div>
 
-          <button type="submit" className={styles.submitButton}>
+          <button
+            type="submit"
+            className={styles.submitButton}
+            data-oid=":w1qekp"
+          >
             {loading ? (
               <CircularProgress
                 size={25}
                 thickness={5}
                 sx={{ color: "#fff" }}
+                data-oid="0vfb1zt"
               />
             ) : (
               "Enviar"

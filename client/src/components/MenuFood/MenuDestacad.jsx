@@ -1,4 +1,4 @@
-import React, { useEffect, useState,  } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { DetailRestaurant, dataPersonal } from "../../redux/action";
@@ -14,8 +14,8 @@ import { Result } from "antd";
 
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import styles from "./MenuFood.module.css";
-import CloseIcon from '@mui/icons-material/Close'; // Asegúrate de importar el ícono de cierre
-import IconButton from '@mui/material/IconButton'; // Asegúrate de importar el IconButton
+import CloseIcon from "@mui/icons-material/Close"; // Asegúrate de importar el ícono de cierre
+import IconButton from "@mui/material/IconButton"; // Asegúrate de importar el IconButton
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -40,7 +40,7 @@ export default function MenuDestacad({
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
@@ -60,7 +60,6 @@ export default function MenuDestacad({
   useEffect(() => {
     dispatch(dataPersonal(token));
   }, [dispatch, token]);
- 
 
   useEffect(() => {
     // Leer el carrito de localStorage usando el userId y sincronizar las cantidades en el menú
@@ -81,10 +80,10 @@ export default function MenuDestacad({
 
       // Actualizar el carrito al cambiar la cantidad
       const productInMenu = restaurantdetails.Menus.find(
-        (menu) => menu.id === id
+        (menu) => menu.id === id,
       );
       updateCart(productInMenu, newQuantity);
-      toggleSummaryTrue()
+      toggleSummaryTrue();
       return { ...prevQuantities, [id]: newQuantity };
     });
   };
@@ -96,7 +95,7 @@ export default function MenuDestacad({
     if (newQuantity > 0) {
       let updatedCart = [...cart];
       const productIndex = updatedCart.findIndex(
-        (item) => item.id === product.id
+        (item) => item.id === product.id,
       );
 
       if (productIndex >= 0) {
@@ -126,15 +125,13 @@ export default function MenuDestacad({
     }
   };
 
-
-
   const handleOpen = (images, name, details) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
-  
+
     setOpen(true);
-    toggleSummaryFalse()
+    toggleSummaryFalse();
   };
   const limitarName = (texto) => {
     const limite = window.innerWidth <= 768 ? 20 : 20; // 10 caracteres en pantallas pequeñas, 30 en pantallas grandes
@@ -155,15 +152,21 @@ export default function MenuDestacad({
   const handleClose = () => setOpen(false);
 
   // Filtrar los menús destacados según el ID del usuario
-  const destacados = restaurantdetails?.Menus.filter((menu) =>
-    menu.category.includes("Destacados") && menu.stock === true
+  const destacados = restaurantdetails?.Menus.filter(
+    (menu) => menu.category.includes("Destacados") && menu.stock === true,
   ); // Suponiendo que los menús tienen un campo userId
   return (
-    <div>
+    <div data-oid="8b5y:r.">
       {destacados?.length > 0 ? (
-        <div className={styles.menufood_container} >
-          <div className={styles.container_bg}>
-            <h1 className={styles.title_Carrusel} onClick={() => toggleSummaryFalse()}>Destacados</h1>
+        <div className={styles.menufood_container} data-oid=".cci7ed">
+          <div className={styles.container_bg} data-oid="d:dk:x0">
+            <h1
+              className={styles.title_Carrusel}
+              onClick={() => toggleSummaryFalse()}
+              data-oid="b:hu9ll"
+            >
+              Destacados
+            </h1>
             <Splide
               options={{
                 perPage: 4,
@@ -183,175 +186,194 @@ export default function MenuDestacad({
                   next: `splide__arrow--next ${styles.customNext}`,
                 },
               }}
+              data-oid="owg7o3l"
             >
-              {destacados.map((data) =>
-                    <SplideSlide key={data.id}>
-                      <Card className={styles.card}>
-                        <CardMedia
-                          component="img"
-                          className={styles.img_menu}
-                          image={data.imageFile[0]}
-                          alt={data.name}
-                          onClick={() =>
-                            handleOpen(data.imageFile, data.name, data.details)
-                          }
-                        />
-                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                          <CardContent sx={{ flex: "1 0 auto" }}>
-                            <Typography component="div" variant="h5"  onClick={() => toggleSummaryFalse()}> 
-                              {limitarName(data.name)}
-                            </Typography>
-                            <Typography
-                              variant="subtitle1"
-                              color="text.secondary"
-                              onClick={() => toggleSummaryFalse()}
+              {destacados.map((data) => (
+                <SplideSlide key={data.id} data-oid="ajvf1n3">
+                  <Card className={styles.card} data-oid=":uh4m5p">
+                    <CardMedia
+                      component="img"
+                      className={styles.img_menu}
+                      image={data.imageFile[0]}
+                      alt={data.name}
+                      onClick={() =>
+                        handleOpen(data.imageFile, data.name, data.details)
+                      }
+                      data-oid="-082acq"
+                    />
+
+                    <Box
+                      sx={{ display: "flex", flexDirection: "column" }}
+                      data-oid="3:3_b58"
+                    >
+                      <CardContent sx={{ flex: "1 0 auto" }} data-oid="obyg0-5">
+                        <Typography
+                          component="div"
+                          variant="h5"
+                          onClick={() => toggleSummaryFalse()}
+                          data-oid="-rn1i94"
+                        >
+                          {limitarName(data.name)}
+                        </Typography>
+                        <Typography
+                          variant="subtitle1"
+                          color="text.secondary"
+                          onClick={() => toggleSummaryFalse()}
+                          data-oid="od-:b2."
+                        >
+                          {limitarTexto(data.details)}
+                        </Typography>
+                        <div
+                          className={styles.price_quantity}
+                          data-oid="ys70bvz"
+                        >
+                          <Typography
+                            component="div"
+                            variant="h6"
+                            sx={{ fontWeight: "bold" }}
+                            onClick={() => toggleSummaryFalse()}
+                            data-oid="50t:nr8"
+                          >
+                            S/{data.price}
+                          </Typography>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              pl: 1,
+                              pb: 1,
+                              justifyContent: "center",
+                              gap: "1em",
+                            }}
+                            data-oid="by1mi-x"
+                          >
+                            <Button
+                              sx={{
+                                color: "#000",
+                                border: "1px solid orange",
+                                ":hover": { border: "1px solid orange" },
+                              }}
+                              onClick={() => handleQuantityChange(data.id, -1)}
+                              data-oid="-h2nco4"
                             >
-                              {limitarTexto(data.details)}
+                              -
+                            </Button>
+                            <Typography data-oid="s74u95t">
+                              {quantities[data.id] || 0}
                             </Typography>
-                            <div className={styles.price_quantity}>
-                              <Typography
-                                component="div"
-                                variant="h6"
-                                sx={{ fontWeight: "bold" }}
-                                onClick={() => toggleSummaryFalse()}
-                              >
-                                S/{data.price}
-                              </Typography>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  pl: 1,
-                                  pb: 1,
-                                  justifyContent: "center",
-                                  gap: "1em",
-                                }}
-                              >
-                                <Button
-                                  sx={{
-                                    color: "#000",
-                                    border: "1px solid orange",
-                                    ":hover": { border: "1px solid orange" },
-                                  }}
-                                  onClick={() =>
-                                    handleQuantityChange(data.id, -1)
-                                  }
-                                >
-                                  -
-                                </Button>
-                                <Typography>
-                                  {quantities[data.id] || 0}
-                                </Typography>
-                                <Button
-                                  sx={{
-                                    color: "#000",
-                                    border: "1px solid orange",
-                                    ":hover": { border: "1px solid orange" },
-                                  }}
-                                  onClick={() =>
-                                    handleQuantityChange(data.id, 1)
-                                  }
-                                >
-                                  +
-                                </Button>
-                              </Box>
-                            </div>
-                          </CardContent>
-                       
-                        </Box>
-                      </Card>
-                    </SplideSlide>
-              )}
+                            <Button
+                              sx={{
+                                color: "#000",
+                                border: "1px solid orange",
+                                ":hover": { border: "1px solid orange" },
+                              }}
+                              onClick={() => handleQuantityChange(data.id, 1)}
+                              data-oid="1wq61s5"
+                            >
+                              +
+                            </Button>
+                          </Box>
+                        </div>
+                      </CardContent>
+                    </Box>
+                  </Card>
+                </SplideSlide>
+              ))}
             </Splide>
           </div>
           <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-title"
-  aria-describedby="modal-description"
->
-  <Box sx={modalStyle}>
-    {/* Botón de cierre */}
-    <IconButton
-      onClick={handleClose}
-      sx={{
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        color: 'text.primary',
-        zIndex: 1,  // Asegura que el ícono esté por encima de otros elementos
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            data-oid="eeaep0j"
+          >
+            <Box sx={modalStyle} data-oid="tu6x_hu">
+              {/* Botón de cierre */}
+              <IconButton
+                onClick={handleClose}
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  color: "text.primary",
+                  zIndex: 1, // Asegura que el ícono esté por encima de otros elementos
+                }}
+                data-oid="itah9n6"
+              >
+                <CloseIcon data-oid="n9xv-14" />
+              </IconButton>
 
-    <Splide
- options={{
-  type: "loop",
-  perPage: 1,
-  pagination: false,
-  arrows: true,
-  height: "400px",  // Ajusta la altura del contenedor
-  cover: true,      // Asegura que la imagen cubra todo el contenedor
-}}
+              <Splide
+                options={{
+                  type: "loop",
+                  perPage: 1,
+                  pagination: false,
+                  arrows: true,
+                  height: "400px", // Ajusta la altura del contenedor
+                  cover: true, // Asegura que la imagen cubra todo el contenedor
+                }}
+                data-oid="1fgia8-"
+              >
+                {selectedImages.map((image, index) => (
+                  <SplideSlide key={index} data-oid="4cyt_w-">
+                    <img
+                      src={image}
+                      alt={selectedName}
+                      style={{
+                        width: "100%", // Hace que la imagen ocupe todo el ancho
+                        height: "100%", // Hace que la imagen ocupe toda la altura
+                        objectFit: "cover", // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
+                      }}
+                      data-oid="72vhgbg"
+                    />
+                  </SplideSlide>
+                ))}
+              </Splide>
 
-    >
-      {selectedImages.map((image, index) => (
-        <SplideSlide key={index}>
-          <img
-            src={image}
-            alt={selectedName}
-            style={{
-              width: "100%",   // Hace que la imagen ocupe todo el ancho
-              height: "100%",  // Hace que la imagen ocupe toda la altura
-              objectFit: "cover",  // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
-            }}
-          />
-        </SplideSlide>
-      ))}
-    </Splide>
-    
-    <Typography
-      id="modal-title"
-      variant="h6"
-      component="h2"
-      sx={{
-        p: 2,
-        textAlign: "center",
-        fontSize: {
-          xs: "1.2rem",  // Pantallas pequeñas
-          sm: "1.5rem",  // Pantallas medianas
-          md: "1.8rem",  // Pantallas grandes
-        },
-        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
-        overflow: "visible",    // Hace que el texto se muestre completamente
-        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
-        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
-      }}
-    >
-      {selectedName}
-    </Typography>
-    
-    <Typography
-      id="modal-description"
-      sx={{
-        p: 2,
-        textAlign: "center",
-        fontSize: {
-          xs: "0.9rem",  // Pantallas pequeñas
-          sm: "1rem",    // Pantallas medianas
-          md: "1.2rem",  // Pantallas grandes
-        },
-        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
-        overflow: "visible",    // Hace que el texto se muestre completamente
-        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
-        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
-      }}
-    >
-      {selectedDetails}
-    </Typography>
-  </Box>
-</Modal>
+              <Typography
+                id="modal-title"
+                variant="h6"
+                component="h2"
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  fontSize: {
+                    xs: "1.2rem", // Pantallas pequeñas
+                    sm: "1.5rem", // Pantallas medianas
+                    md: "1.8rem", // Pantallas grandes
+                  },
+                  wordWrap: "break-word", // Permite el ajuste de palabra cuando se alcanza el borde
+                  overflow: "visible", // Hace que el texto se muestre completamente
+                  width: "100%", // Asegura que el texto ocupe todo el ancho disponible
+                  boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+                }}
+                data-oid="zjudtl3"
+              >
+                {selectedName}
+              </Typography>
+
+              <Typography
+                id="modal-description"
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  fontSize: {
+                    xs: "0.9rem", // Pantallas pequeñas
+                    sm: "1rem", // Pantallas medianas
+                    md: "1.2rem", // Pantallas grandes
+                  },
+                  wordWrap: "break-word", // Permite el ajuste de palabra cuando se alcanza el borde
+                  overflow: "visible", // Hace que el texto se muestre completamente
+                  width: "100%", // Asegura que el texto ocupe todo el ancho disponible
+                  boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+                }}
+                data-oid="l-d8_ad"
+              >
+                {selectedDetails}
+              </Typography>
+            </Box>
+          </Modal>
         </div>
       ) : null}
     </div>

@@ -1,42 +1,79 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button, Grid } from '@mui/material';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-const categories = ['Categoría 1', 'Categoría 2', 'Categoría 3', 'Categoría 4', 'Categoría 4'];
+export default function ScrollDialog() {
+  const [open, setOpen] = React.useState(false);
+  const [scroll, setScroll] = React.useState("paper");
 
-const CategorySelector = () => {
-  const [selected, setSelected] = useState(null);
+  const handleClickOpen = (scrollType) => () => {
+    setOpen(true);
+    setScroll(scrollType);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-        Hola. ¿Qué quieres comer Hoy?
-      </Typography>
-
-      <Grid container spacing={2}>
-        {categories.map((category, index) => (
-          <Grid item xs={6} sm={4} md={2.4} key={index}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => setSelected(index)}
-              sx={{
-                backgroundColor: selected === index ? '#d300ff' : '#4a0072',
-                color: '#fff',
-                height: 80,
-                textTransform: 'none',
-                fontWeight: 'bold',
-                '&:hover': {
-                  backgroundColor: selected === index ? '#c000e6' : '#360050',
-                },
-              }}
-            >
-              {category}
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+    <React.Fragment>
+      <Button onClick={handleClickOpen("paper")} data-oid="7qfdybt">
+        scroll=paper
+      </Button>
+      <Button onClick={handleClickOpen("body")} data-oid="ou0njic">
+        scroll=body
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll={scroll}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        data-oid="r18i1e:"
+      >
+        <DialogTitle id="scroll-dialog-title" data-oid="z:49--b">
+          Subscribe
+        </DialogTitle>
+        <DialogContent dividers={scroll === "paper"} data-oid="yum1te3">
+          <DialogContentText
+            id="scroll-dialog-description"
+            ref={descriptionElementRef}
+            tabIndex={-1}
+            data-oid="4ni:a7l"
+          >
+            {[...new Array(50)]
+              .map(
+                () => `Cras mattis consectetur purus sit amet fermentum.
+Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
+              )
+              .join("\n")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions data-oid="9:ye35z">
+          <Button onClick={handleClose} data-oid="4ac2y60">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} data-oid="gtrcn04">
+            Subscribe
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
-};
-
-export default CategorySelector;
+}

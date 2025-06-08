@@ -18,7 +18,6 @@ import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import Modal from "@mui/material/Modal";
 import UpdateMenu from "./UpdateMenu";
 
-
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -36,7 +35,7 @@ export default function Piqueos() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -46,27 +45,27 @@ export default function Piqueos() {
   const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedMenuId, setSelectedMenuId] = useState("");
   const [selectedStock, setSelecteStock] = useState("");
-  
 
   useEffect(() => {
-      dispatch(DetailRestaurant(restaurantId));
-
+    dispatch(DetailRestaurant(restaurantId));
   }, [restaurantId, dispatch]);
-    
 
-
-
-
-
-
-  const handleOpen = (images, name, details, price, category, stock, menuId) => {
+  const handleOpen = (
+    images,
+    name,
+    details,
+    price,
+    category,
+    stock,
+    menuId,
+  ) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
     setSelectedPrices(price);
     setSelectedCategory(category);
     setSelectedMenuId(menuId);
-    setSelecteStock(stock)
+    setSelecteStock(stock);
     setOpen(true);
   };
 
@@ -87,16 +86,17 @@ export default function Piqueos() {
     return texto;
   };
 
-  const piqueos = restaurantdetails?.Menus.filter(menu => menu.category.includes("Piqueos"))
+  const piqueos = restaurantdetails?.Menus.filter((menu) =>
+    menu.category.includes("Piqueos"),
+  );
 
   return (
-    <div>
-        {piqueos?.length > 0 ? (
-   
-        <div >
-          <div className={styles.container_bg_none}>
-            <div className={styles.title_Carrusel2}>
-              <h1>Piqueos</h1>
+    <div data-oid="vezen-r">
+      {piqueos?.length > 0 ? (
+        <div data-oid="33s._-y">
+          <div className={styles.container_bg_none} data-oid="5sre9uw">
+            <div className={styles.title_Carrusel2} data-oid="aqdq4qz">
+              <h1 data-oid="qfv.bmw">Piqueos</h1>
             </div>
             <Splide
               options={{
@@ -124,47 +124,69 @@ export default function Piqueos() {
                   next: `splide__arrow--next ${styles.customNext2}`,
                 },
               }}
+              data-oid="a4f1mvk"
             >
-                  {restaurantdetails?.Menus.filter(menu =>
-                menu.category.includes("Piqueos")
+              {restaurantdetails?.Menus.filter((menu) =>
+                menu.category.includes("Piqueos"),
               ).map((data) => (
                 <>
-                  <SplideSlide key={data.id}>
-                    <Card className={styles.card} key={data.id}>
-                    <CardMedia
-                      component="img"
-                      className={styles.img_menu}
-                      image={data.imageFile[0]}
-                      alt={data.name}
-                      onClick={() =>
-                        handleOpen(data.imageFile, data.name, data.details)
-                      }
-                    />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }} >
-                          <Typography component="div" variant="h5">
+                  <SplideSlide key={data.id} data-oid="_4i09qp">
+                    <Card
+                      className={styles.card}
+                      key={data.id}
+                      data-oid="ay75swj"
+                    >
+                      <CardMedia
+                        component="img"
+                        className={styles.img_menu}
+                        image={data.imageFile[0]}
+                        alt={data.name}
+                        onClick={() =>
+                          handleOpen(data.imageFile, data.name, data.details)
+                        }
+                        data-oid="775:oho"
+                      />
+
+                      <Box
+                        sx={{ display: "flex", flexDirection: "column" }}
+                        data-oid="17a9m:w"
+                      >
+                        <CardContent
+                          sx={{ flex: "1 0 auto" }}
+                          data-oid="70syso-"
+                        >
+                          <Typography
+                            component="div"
+                            variant="h5"
+                            data-oid="ziabt4p"
+                          >
                             {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
+                            data-oid="b4dk54k"
                           >
-                                                   {limitarTexto(data.details)} {/* Limita a 50 caracteres */}
+                            {limitarTexto(data.details)}{" "}
+                            {/* Limita a 50 caracteres */}
+                          </Typography>
 
-                          </Typography>
-                      
-                          <div className={styles.price_quantity}>
-                          <Typography
-                            component="div"
-                            variant="h6"
-                            sx={{ fontWeight: "bold" }}
+                          <div
+                            className={styles.price_quantity}
+                            data-oid="wp4t4tt"
                           >
-                            S/{data.price}
-                          </Typography>
-                        </div>
+                            <Typography
+                              component="div"
+                              variant="h6"
+                              sx={{ fontWeight: "bold" }}
+                              data-oid="c8jkvbt"
+                            >
+                              S/{data.price}
+                            </Typography>
+                          </div>
                         </CardContent>
-                      
+
                         <Box
                           sx={{
                             display: "flex",
@@ -172,6 +194,7 @@ export default function Piqueos() {
                             marginRight: "1em",
                             paddingBottom: "1em",
                           }}
+                          data-oid="-1eil8l"
                         >
                           <Button
                             sx={{
@@ -182,19 +205,19 @@ export default function Piqueos() {
                               ":hover": { backgroundColor: "orange" },
                             }}
                             onClick={() =>
-                            handleOpen(
-                              data.imageFile,
-                              data.name,
-                              data.details,
-                              data.price,
-                              data.category,
-                              data.stock,
-                              data.id,
-                            )
-                          }
-
+                              handleOpen(
+                                data.imageFile,
+                                data.name,
+                                data.details,
+                                data.price,
+                                data.category,
+                                data.stock,
+                                data.id,
+                              )
+                            }
+                            data-oid="-f7rx11"
                           >
-                           EDITAR
+                            EDITAR
                           </Button>
                         </Box>
                       </Box>
@@ -203,17 +226,16 @@ export default function Piqueos() {
                 </>
               ))}
             </Splide>
-
-      
           </div>
           <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            data-oid="v75x7:5"
           >
-            <Box sx={modalStyle}>
-            <UpdateMenu
+            <Box sx={modalStyle} data-oid="1nx6yd1">
+              <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
                 selectedImages={selectedImages}
@@ -222,12 +244,12 @@ export default function Piqueos() {
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
                 selectedStock={selectedStock}
+                data-oid="n0fyz47"
               />
             </Box>
           </Modal>
         </div>
-                   ):null}
-
+      ) : null}
     </div>
   );
 }

@@ -14,8 +14,8 @@ import { Result } from "antd";
 
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import styles from "./MenuFood.module.css";
-import CloseIcon from '@mui/icons-material/Close'; // Asegúrate de importar el ícono de cierre
-import IconButton from '@mui/material/IconButton'; // Asegúrate de importar el IconButton
+import CloseIcon from "@mui/icons-material/Close"; // Asegúrate de importar el ícono de cierre
+import IconButton from "@mui/material/IconButton"; // Asegúrate de importar el IconButton
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -27,15 +27,19 @@ const modalStyle = {
   boxShadow: 24,
 };
 
-export default function MenuPostres({ setCartItems, setShowSummary, setQuantities, quantities }) {
+export default function MenuPostres({
+  setCartItems,
+  setShowSummary,
+  setQuantities,
+  quantities,
+}) {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
-
 
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -65,25 +69,27 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
   const handleQuantityChange = (id, amount) => {
     setQuantities((prevQuantities) => {
       const newQuantity = Math.max(0, (prevQuantities[id] || 0) + amount);
-      
+
       // Actualizar el carrito al cambiar la cantidad
       const productInMenu = restaurantdetails.Menus.find(
-        (menu) => menu.id === id
+        (menu) => menu.id === id,
       );
       updateCart(productInMenu, newQuantity);
-      
+
       return { ...prevQuantities, [id]: newQuantity };
     });
   };
-  
+
   const updateCart = (product, newQuantity) => {
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
-    
+
     // Si la cantidad es mayor a 0, agregar o actualizar el producto en el carrito
     if (newQuantity > 0) {
       let updatedCart = [...cart];
-      const productIndex = updatedCart.findIndex((item) => item.id === product.id);
-      
+      const productIndex = updatedCart.findIndex(
+        (item) => item.id === product.id,
+      );
+
       if (productIndex >= 0) {
         // Si el producto ya está en el carrito, actualizar la cantidad
         updatedCart[productIndex].quantity = newQuantity;
@@ -99,7 +105,7 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
           restaurantId: product.restaurantId,
         });
       }
-      
+
       // Guardar el carrito actualizado en localStorage
       localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
       setCartItems(updatedCart);
@@ -110,10 +116,8 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
       setCartItems(updatedCart);
     }
   };
-  
 
   const addToCart = (product) => {
-
     // Obtener carrito de localStorage o inicializarlo si está vacío
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
@@ -187,16 +191,18 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
 
   const handleClose = () => setOpen(false);
 
-
-  const postres = restaurantdetails?.Menus.filter(menu => menu.category.includes("Postres") && menu.stock === true)
-
+  const postres = restaurantdetails?.Menus.filter(
+    (menu) => menu.category.includes("Postres") && menu.stock === true,
+  );
 
   return (
-    <div>
+    <div data-oid="7:azjwt">
       {postres?.length > 0 ? (
-        <div className={styles.menufood_container}>
-          <div className={styles.container_bg2}>
-            <h1 className={styles.title_Carrusel}>Postres</h1>
+        <div className={styles.menufood_container} data-oid="0rwk67-">
+          <div className={styles.container_bg2} data-oid="m50yf-d">
+            <h1 className={styles.title_Carrusel} data-oid="uvxenra">
+              Postres
+            </h1>
             <Splide
               options={{
                 perPage: 4,
@@ -210,16 +216,17 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
                   1024: { perPage: 2 },
                   1440: { perPage: 3 },
                 },
-              classes: {
+                classes: {
                   arrow: `splide__arrow ${styles.customArrow}`,
                   prev: `splide__arrow--prev ${styles.customPrev}`,
                   next: `splide__arrow--next ${styles.customNext}`,
                 },
               }}
+              data-oid="jrnds5o"
             >
               {postres.map((data) => (
-                <SplideSlide key={data.id}>
-                  <Card className={styles.card2}>
+                <SplideSlide key={data.id} data-oid="a-3srb2">
+                  <Card className={styles.card2} data-oid="iley3an">
                     <CardMedia
                       component="img"
                       className={styles.img_menu}
@@ -228,20 +235,37 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
                       onClick={() =>
                         handleOpen(data.imageFile, data.name, data.details)
                       }
+                      data-oid="owb_lm3"
                     />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography component="div" variant="h5">
+
+                    <Box
+                      sx={{ display: "flex", flexDirection: "column" }}
+                      data-oid="v652frl"
+                    >
+                      <CardContent sx={{ flex: "1 0 auto" }} data-oid=".lf25g-">
+                        <Typography
+                          component="div"
+                          variant="h5"
+                          data-oid="pj2e_5q"
+                        >
                           {limitarName(data.name)}
                         </Typography>
-                        <Typography variant="subtitle1" color="text.secondary">
+                        <Typography
+                          variant="subtitle1"
+                          color="text.secondary"
+                          data-oid="6fttq._"
+                        >
                           {limitarTexto(data.details)}
                         </Typography>
-                        <div className={styles.price_quantity}>
+                        <div
+                          className={styles.price_quantity}
+                          data-oid="qnydlcn"
+                        >
                           <Typography
                             component="div"
                             variant="h6"
                             sx={{ fontWeight: "bold" }}
+                            data-oid="3.kjv4y"
                           >
                             S/{data.price}
                           </Typography>
@@ -254,52 +278,57 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
                               justifyContent: "center",
                               gap: "1em",
                             }}
+                            data-oid="gz_m8yw"
                           >
                             <Button
-                                sx={{
-                                  color: "#000",
-                                  border: "1px solid #500075",
-                                  ":hover": { border: "1px solid #500075" },
-                                }}
+                              sx={{
+                                color: "#000",
+                                border: "1px solid #500075",
+                                ":hover": { border: "1px solid #500075" },
+                              }}
                               onClick={() => handleQuantityChange(data.id, -1)}
+                              data-oid="g0p8net"
                             >
                               -
                             </Button>
-                            <Typography>{quantities[data.id] || 0}</Typography>
+                            <Typography data-oid="9io6sf4">
+                              {quantities[data.id] || 0}
+                            </Typography>
                             <Button
-                                sx={{
-                                  color: "#000",
-                                  border: "1px solid #500075",
-                                  ":hover": { border: "1px solid #500075" },
-                                }}
+                              sx={{
+                                color: "#000",
+                                border: "1px solid #500075",
+                                ":hover": { border: "1px solid #500075" },
+                              }}
                               onClick={() => handleQuantityChange(data.id, 1)}
+                              data-oid="curo_59"
                             >
                               +
                             </Button>
                           </Box>
                         </div>
                       </CardContent>
-                  {/*     <Box
-                        sx={{
-                          display: "flex",
-                          marginLeft: "1em",
-                          marginRight: "1em",
-                          paddingBottom: "1em",
-                        }}
-                      >
-                        <Button
-                          sx={{
-                            display: "flex",
-                            flex: 2,
-                            backgroundColor: "#500075",
-                            color: "white",
-                            ":hover": { backgroundColor: "#500075" },
-                          }}
-                          onClick={() => addToCart(data)}
-                        >
-                          AGREGAR AL CARRITO
-                        </Button>
-                      </Box> */}
+                      {/*     <Box
+                    sx={{
+                    display: "flex",
+                    marginLeft: "1em",
+                    marginRight: "1em",
+                    paddingBottom: "1em",
+                    }}
+                    >
+                    <Button
+                    sx={{
+                    display: "flex",
+                    flex: 2,
+                    backgroundColor: "#500075",
+                    color: "white",
+                    ":hover": { backgroundColor: "#500075" },
+                    }}
+                    onClick={() => addToCart(data)}
+                    >
+                    AGREGAR AL CARRITO
+                    </Button>
+                    </Box> */}
                     </Box>
                   </Card>
                 </SplideSlide>
@@ -307,94 +336,98 @@ export default function MenuPostres({ setCartItems, setShowSummary, setQuantitie
             </Splide>
           </div>
           <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-title"
-  aria-describedby="modal-description"
->
-  <Box sx={modalStyle}>
-    {/* Botón de cierre */}
-    <IconButton
-      onClick={handleClose}
-      sx={{
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        color: 'text.primary',
-        zIndex: 1,  // Asegura que el ícono esté por encima de otros elementos
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            data-oid="j4crsxr"
+          >
+            <Box sx={modalStyle} data-oid="2cgks.5">
+              {/* Botón de cierre */}
+              <IconButton
+                onClick={handleClose}
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  color: "text.primary",
+                  zIndex: 1, // Asegura que el ícono esté por encima de otros elementos
+                }}
+                data-oid="7-_0ey5"
+              >
+                <CloseIcon data-oid="k4cpsu-" />
+              </IconButton>
 
-    <Splide
- options={{
-  type: "loop",
-  perPage: 1,
-  pagination: false,
-  arrows: true,
-  height: "400px",  // Ajusta la altura del contenedor
-  cover: true,      // Asegura que la imagen cubra todo el contenedor
-}}
+              <Splide
+                options={{
+                  type: "loop",
+                  perPage: 1,
+                  pagination: false,
+                  arrows: true,
+                  height: "400px", // Ajusta la altura del contenedor
+                  cover: true, // Asegura que la imagen cubra todo el contenedor
+                }}
+                data-oid="jmxe5rl"
+              >
+                {selectedImages.map((image, index) => (
+                  <SplideSlide key={index} data-oid="fh5qaem">
+                    <img
+                      src={image}
+                      alt={selectedName}
+                      style={{
+                        width: "100%", // Hace que la imagen ocupe todo el ancho
+                        height: "100%", // Hace que la imagen ocupe toda la altura
+                        objectFit: "cover", // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
+                      }}
+                      data-oid="69qfkbj"
+                    />
+                  </SplideSlide>
+                ))}
+              </Splide>
 
-    >
-      {selectedImages.map((image, index) => (
-        <SplideSlide key={index}>
-          <img
-            src={image}
-            alt={selectedName}
-            style={{
-              width: "100%",   // Hace que la imagen ocupe todo el ancho
-              height: "100%",  // Hace que la imagen ocupe toda la altura
-              objectFit: "cover",  // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
-            }}
-          />
-        </SplideSlide>
-      ))}
-    </Splide>
-    
-    <Typography
-      id="modal-title"
-      variant="h6"
-      component="h2"
-      sx={{
-        p: 2,
-        textAlign: "center",
-        fontSize: {
-          xs: "1.2rem",  // Pantallas pequeñas
-          sm: "1.5rem",  // Pantallas medianas
-          md: "1.8rem",  // Pantallas grandes
-        },
-        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
-        overflow: "visible",    // Hace que el texto se muestre completamente
-        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
-        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
-      }}
-    >
-      {selectedName}
-    </Typography>
-    
-    <Typography
-      id="modal-description"
-      sx={{
-        p: 2,
-        textAlign: "center",
-        fontSize: {
-          xs: "0.9rem",  // Pantallas pequeñas
-          sm: "1rem",    // Pantallas medianas
-          md: "1.2rem",  // Pantallas grandes
-        },
-        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
-        overflow: "visible",    // Hace que el texto se muestre completamente
-        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
-        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
-      }}
-    >
-      {selectedDetails}
-    </Typography>
-  </Box>
-</Modal>
+              <Typography
+                id="modal-title"
+                variant="h6"
+                component="h2"
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  fontSize: {
+                    xs: "1.2rem", // Pantallas pequeñas
+                    sm: "1.5rem", // Pantallas medianas
+                    md: "1.8rem", // Pantallas grandes
+                  },
+                  wordWrap: "break-word", // Permite el ajuste de palabra cuando se alcanza el borde
+                  overflow: "visible", // Hace que el texto se muestre completamente
+                  width: "100%", // Asegura que el texto ocupe todo el ancho disponible
+                  boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+                }}
+                data-oid="nh:ed3_"
+              >
+                {selectedName}
+              </Typography>
 
+              <Typography
+                id="modal-description"
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  fontSize: {
+                    xs: "0.9rem", // Pantallas pequeñas
+                    sm: "1rem", // Pantallas medianas
+                    md: "1.2rem", // Pantallas grandes
+                  },
+                  wordWrap: "break-word", // Permite el ajuste de palabra cuando se alcanza el borde
+                  overflow: "visible", // Hace que el texto se muestre completamente
+                  width: "100%", // Asegura que el texto ocupe todo el ancho disponible
+                  boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+                }}
+                data-oid="xato-9f"
+              >
+                {selectedDetails}
+              </Typography>
+            </Box>
+          </Modal>
         </div>
       ) : null}
     </div>

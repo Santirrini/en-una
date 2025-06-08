@@ -17,27 +17,28 @@ export default function ResetAccount() {
   }, []);
 
   return (
-    <div>
+    <div data-oid="py3.rwe">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="6cxs1vf"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="npepfwp" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="4b5.sod">
+        <HeaderMobile data-oid="dvw1.l1" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="-8u:eue">
+        <Navbar data-oid=":i9301h" />
       </div>
-      <div>
-        <ResetAccountComponent />
+      <div data-oid="11jui-3">
+        <ResetAccountComponent data-oid="0xxovbv" />
       </div>
-      <div>
-        <ButtonWhatsapp />
+      <div data-oid="48a8::4">
+        <ButtonWhatsapp data-oid="o6o-3mr" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="g8g2-uc">
+        <Footer data-oid="h4hrzgz" />
       </div>
     </div>
   );

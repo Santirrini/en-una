@@ -34,7 +34,7 @@ export default function Segundos({ setCartItems }) {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [quantities, setQuantities] = useState({});
   const [open, setOpen] = useState(false);
@@ -45,7 +45,6 @@ export default function Segundos({ setCartItems }) {
   const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedMenuId, setSelectedMenuId] = useState("");
   const [selectedStock, setSelecteStock] = useState("");
-
 
   useEffect(() => {
     dispatch(DetailRestaurant(restaurantId));
@@ -98,14 +97,22 @@ export default function Segundos({ setCartItems }) {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleOpen = (images, name, details, price, category, stock, menuId) => {
+  const handleOpen = (
+    images,
+    name,
+    details,
+    price,
+    category,
+    stock,
+    menuId,
+  ) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
     setSelectedPrices(price);
     setSelectedCategory(category);
     setSelectedMenuId(menuId);
-    setSelecteStock(stock)
+    setSelecteStock(stock);
     setOpen(true);
   };
 
@@ -126,16 +133,16 @@ export default function Segundos({ setCartItems }) {
     return texto;
   };
   const segundos = restaurantdetails?.Menus.filter((menu) =>
-    menu.category.includes("Segundos")
+    menu.category.includes("Segundos"),
   );
 
   return (
-    <div>
+    <div data-oid="iby0lpy">
       {segundos?.length > 0 ? (
-        <div>
-          <div className={styles.container_bg_none}>
-            <div className={styles.title_Carrusel2}>
-              <h1>Segundos</h1>
+        <div data-oid="ldat4__">
+          <div className={styles.container_bg_none} data-oid="9e7qtzq">
+            <div className={styles.title_Carrusel2} data-oid="v6dvucx">
+              <h1 data-oid="s:554oc">Segundos</h1>
             </div>
             <Splide
               options={{
@@ -163,13 +170,18 @@ export default function Segundos({ setCartItems }) {
                   next: `splide__arrow--next ${styles.customNext3}`,
                 },
               }}
+              data-oid="fmq.h5:"
             >
               {restaurantdetails?.Menus.filter((menu) =>
-                menu.category.includes("Segundos")
+                menu.category.includes("Segundos"),
               ).map((data) => (
                 <>
-                  <SplideSlide key={data.id}>
-                    <Card className={styles.card2} key={data.id}>
+                  <SplideSlide key={data.id} data-oid="v-kht6x">
+                    <Card
+                      className={styles.card2}
+                      key={data.id}
+                      data-oid="5ds0mgc"
+                    >
                       <CardMedia
                         component="img"
                         className={styles.img_menu}
@@ -178,25 +190,42 @@ export default function Segundos({ setCartItems }) {
                         onClick={() =>
                           handleOpen(data.imageFile, data.name, data.details)
                         }
+                        data-oid="qeu9gj6"
                       />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography component="div" variant="h5">
+
+                      <Box
+                        sx={{ display: "flex", flexDirection: "column" }}
+                        data-oid="0b:2_mf"
+                      >
+                        <CardContent
+                          sx={{ flex: "1 0 auto" }}
+                          data-oid="fwpqyw1"
+                        >
+                          <Typography
+                            component="div"
+                            variant="h5"
+                            data-oid="obianz5"
+                          >
                             {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
+                            data-oid="26_d.e1"
                           >
                             {limitarTexto(data.details, 30)}{" "}
                             {/* Limita a 50 caracteres */}
                           </Typography>
-                          <div className={styles.price_quantity}>
+                          <div
+                            className={styles.price_quantity}
+                            data-oid="3nci_62"
+                          >
                             <Typography
                               component="div"
                               variant="h6"
                               sx={{ fontWeight: "bold" }}
+                              data-oid="q880g36"
                             >
                               S/{data.price}
                             </Typography>
@@ -210,6 +239,7 @@ export default function Segundos({ setCartItems }) {
                             marginRight: "1em",
                             paddingBottom: "1em",
                           }}
+                          data-oid="0u29pub"
                         >
                           <Button
                             sx={{
@@ -230,6 +260,7 @@ export default function Segundos({ setCartItems }) {
                                 data.id,
                               )
                             }
+                            data-oid="o:l2l68"
                           >
                             EDITAR
                           </Button>
@@ -246,9 +277,10 @@ export default function Segundos({ setCartItems }) {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            data-oid="xh3u60g"
           >
-            <Box sx={modalStyle}>
-            <UpdateMenu
+            <Box sx={modalStyle} data-oid="-5v8d6z">
+              <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
                 selectedImages={selectedImages}
@@ -257,6 +289,7 @@ export default function Segundos({ setCartItems }) {
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
                 selectedStock={selectedStock}
+                data-oid="s:zx3.0"
               />
             </Box>
           </Modal>

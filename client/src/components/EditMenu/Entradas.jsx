@@ -36,7 +36,7 @@ export default function Entradas() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -58,7 +58,7 @@ export default function Entradas() {
     price,
     category,
     stock,
-    menuId
+    menuId,
   ) => {
     setSelectedImages(images);
     setSelectedName(name);
@@ -87,16 +87,16 @@ export default function Entradas() {
     return texto;
   };
   const entradas = restaurantdetails?.Menus.filter((menu) =>
-    menu.category.includes("Entradas/Sopas")
+    menu.category.includes("Entradas/Sopas"),
   );
 
   return (
-    <div>
+    <div data-oid="28lxwr5">
       {entradas?.length > 0 ? (
-        <div>
-          <div className={styles.container_bg_none}>
-            <div className={styles.title_Carrusel2}>
-              <h1>Entradas</h1>
+        <div data-oid="x8.3:s-">
+          <div className={styles.container_bg_none} data-oid="::x0_5c">
+            <div className={styles.title_Carrusel2} data-oid="7ja6w19">
+              <h1 data-oid="iuw1-x1">Entradas</h1>
             </div>
             <Splide
               options={{
@@ -124,13 +124,18 @@ export default function Entradas() {
                   next: `splide__arrow--next ${styles.customNext2}`,
                 },
               }}
+              data-oid="1p72lzj"
             >
               {restaurantdetails?.Menus.filter((menu) =>
-                menu.category.includes("Entradas/Sopas")
+                menu.category.includes("Entradas/Sopas"),
               ).map((data) => (
                 <>
-                  <SplideSlide key={data.id}>
-                    <Card className={styles.card} key={data.id}>
+                  <SplideSlide key={data.id} data-oid="_a-furb">
+                    <Card
+                      className={styles.card}
+                      key={data.id}
+                      data-oid="s5mknin"
+                    >
                       <CardMedia
                         component="img"
                         className={styles.img_menu}
@@ -139,25 +144,42 @@ export default function Entradas() {
                         onClick={() =>
                           handleOpen(data.imageFile, data.name, data.details)
                         }
+                        data-oid="m5zk_nd"
                       />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography component="div" variant="h5">
+
+                      <Box
+                        sx={{ display: "flex", flexDirection: "column" }}
+                        data-oid="0pfp1o_"
+                      >
+                        <CardContent
+                          sx={{ flex: "1 0 auto" }}
+                          data-oid="ds4l-1j"
+                        >
+                          <Typography
+                            component="div"
+                            variant="h5"
+                            data-oid="s-:ntw2"
+                          >
                             {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
+                            data-oid="97.p0b6"
                           >
                             {limitarTexto(data.details)}{" "}
                             {/* Limita a 50 caracteres */}
                           </Typography>
-                          <div className={styles.price_quantity}>
+                          <div
+                            className={styles.price_quantity}
+                            data-oid="4wqdpui"
+                          >
                             <Typography
                               component="div"
                               variant="h6"
                               sx={{ fontWeight: "bold" }}
+                              data-oid="854mn7t"
                             >
                               S/{data.price}
                             </Typography>
@@ -171,6 +193,7 @@ export default function Entradas() {
                             marginRight: "1em",
                             paddingBottom: "1em",
                           }}
+                          data-oid="4b:c.7e"
                         >
                           <Button
                             sx={{
@@ -188,9 +211,10 @@ export default function Entradas() {
                                 data.price,
                                 data.category,
                                 data.stock,
-                                data.id
+                                data.id,
                               )
                             }
+                            data-oid="x08i:21"
                           >
                             EDITAR
                           </Button>
@@ -207,8 +231,9 @@ export default function Entradas() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            data-oid="um4_:9e"
           >
-            <Box sx={modalStyle}>
+            <Box sx={modalStyle} data-oid="e_p:2j4">
               <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
@@ -218,6 +243,7 @@ export default function Entradas() {
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
                 selectedStock={selectedStock}
+                data-oid="uy60gzx"
               />
             </Box>
           </Modal>

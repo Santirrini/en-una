@@ -1,0 +1,28 @@
+.FilterContainer {
+    width: 80%;
+    margin: 8em auto;
+}
+
+.btnFilter {
+    display: flex;
+    width: 100%;
+    margin-bottom: 1em;
+    gap: 1em;
+}
+@media (max-width: 768px) {
+    .FilterContainer {
+    width: 100%;
+    margin: 2em auto;
+}
+.btnFilter {
+  display: flex;
+  flex-wrap: wrap;        /* Permite que se envuelvan los elementos */
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.btnFilter > * {
+  flex: 1 1 calc(10% - 0.5em); /* Dos columnas con espacio de 1em entre ellas */
+}
+
+}

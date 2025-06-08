@@ -35,7 +35,7 @@ export default function Bebidas() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -50,14 +50,22 @@ export default function Bebidas() {
     dispatch(DetailRestaurant(restaurantId));
   }, [restaurantId, dispatch]);
 
-  const handleOpen = (images, name, details, price, category, stock, menuId) => {
+  const handleOpen = (
+    images,
+    name,
+    details,
+    price,
+    category,
+    stock,
+    menuId,
+  ) => {
     setSelectedImages(images);
     setSelectedName(name);
     setSelectedDetails(details);
     setSelectedPrices(price);
     setSelectedCategory(category);
     setSelectedMenuId(menuId);
-    setSelecteStock(stock)
+    setSelecteStock(stock);
     setOpen(true);
   };
 
@@ -79,16 +87,16 @@ export default function Bebidas() {
     return texto;
   };
   const bebidas = restaurantdetails?.Menus.filter((menu) =>
-    menu.category.includes("Bebidas")
+    menu.category.includes("Bebidas"),
   );
 
   return (
-    <div>
+    <div data-oid="0tc2iun">
       {bebidas?.length > 0 ? (
-        <div>
-          <div className={styles.container_bg_none}>
-            <div className={styles.title_Carrusel3}>
-              <h1>Bebidas</h1>
+        <div data-oid="6vd:uy.">
+          <div className={styles.container_bg_none} data-oid="iot6k98">
+            <div className={styles.title_Carrusel3} data-oid="lq8xhw6">
+              <h1 data-oid="xkc.gbt">Bebidas</h1>
             </div>
             <Splide
               options={{
@@ -116,42 +124,63 @@ export default function Bebidas() {
                   next: `splide__arrow--next ${styles.customNext3}`,
                 },
               }}
+              data-oid="y:rdolm"
             >
               {restaurantdetails?.Menus.filter((menu) =>
-                menu.category.includes("Bebidas")
+                menu.category.includes("Bebidas"),
               ).map((data) => (
                 <>
-                  <SplideSlide key={data.id}>
-                    <Card className={styles.card2} key={data.id}>
+                  <SplideSlide key={data.id} data-oid="6x52j3f">
+                    <Card
+                      className={styles.card2}
+                      key={data.id}
+                      data-oid="4ivk146"
+                    >
                       <CardMedia
                         component="img"
                         className={styles.img_menu}
                         image={data.imageFile[0]}
                         alt={data.name}
+                        data-oid="ymobx:j"
                       />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography component="div" variant="h5">
-                          {limitarName(data.name)}
 
+                      <Box
+                        sx={{ display: "flex", flexDirection: "column" }}
+                        data-oid="5j0c:yy"
+                      >
+                        <CardContent
+                          sx={{ flex: "1 0 auto" }}
+                          data-oid="33nm5h8"
+                        >
+                          <Typography
+                            component="div"
+                            variant="h5"
+                            data-oid="hs:jd:a"
+                          >
+                            {limitarName(data.name)}
                           </Typography>
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
+                            data-oid="8.nxysu"
                           >
                             {limitarTexto(data.details)}{" "}
                             {/* Limita a 50 caracteres */}
                           </Typography>
-                          <div className={styles.price_quantity}>
-                          <Typography
-                            component="div"
-                            variant="h6"
-                            sx={{ fontWeight: "bold" }}
+                          <div
+                            className={styles.price_quantity}
+                            data-oid="2kutubo"
                           >
-                            S/{data.price}
-                          </Typography>
-                        </div>
+                            <Typography
+                              component="div"
+                              variant="h6"
+                              sx={{ fontWeight: "bold" }}
+                              data-oid="gj04pff"
+                            >
+                              S/{data.price}
+                            </Typography>
+                          </div>
                         </CardContent>
 
                         <Box
@@ -161,6 +190,7 @@ export default function Bebidas() {
                             marginRight: "1em",
                             paddingBottom: "1em",
                           }}
+                          data-oid="cgfpgv9"
                         >
                           <Button
                             sx={{
@@ -177,11 +207,12 @@ export default function Bebidas() {
                                 data.details,
                                 data.price,
                                 data.category,
-                              data.stock,
+                                data.stock,
 
-                                data.id
+                                data.id,
                               )
                             }
+                            data-oid="_kddle0"
                           >
                             EDITAR
                           </Button>
@@ -198,8 +229,9 @@ export default function Bebidas() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            data-oid="0cgu3:i"
           >
-            <Box sx={modalStyle}>
+            <Box sx={modalStyle} data-oid="p457zvp">
               <UpdateMenu
                 selectedDetails={selectedDetails}
                 selectedName={selectedName}
@@ -209,7 +241,7 @@ export default function Bebidas() {
                 handleClose={handleClose}
                 selectedMenuId={selectedMenuId}
                 selectedStock={selectedStock}
-
+                data-oid="2y8w7pb"
               />
             </Box>
           </Modal>

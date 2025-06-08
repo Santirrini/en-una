@@ -119,7 +119,6 @@ export default function Navbar() {
     setAnchorEl(event.currentTarget);
   };
 
-
   const handleLogout = async () => {
     try {
       await dispatch(logout());
@@ -154,94 +153,100 @@ export default function Navbar() {
     dispatch(AllRestaurant());
   }, [dispatch]);
   const drawer = (
-    <Box onClick={handleDrawerToggle}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+    <Box onClick={handleDrawerToggle} data-oid="1zzgce5">
+      <Typography variant="h6" sx={{ my: 2 }} data-oid="_0qcrm4">
         <img
           src={require("../../Images/Logo.png")}
           alt="Not found"
           className={styles.logo_mobile}
+          data-oid="vkom54z"
         />
       </Typography>
-      <Divider />
-      <List>
-        <Link to="/">
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <HomeIcon />
+      <Divider data-oid="iajffvb" />
+      <List data-oid="l6whwfe">
+        <Link to="/" data-oid="ypfahde">
+          <ListItem disablePadding data-oid="r0uqiup">
+            <ListItemButton data-oid="j7p8iqg">
+              <ListItemIcon data-oid="fy_:nxd">
+                <HomeIcon data-oid="u_gctis" />
               </ListItemIcon>
 
-              <ListItemText primary={"Inicio"} />
+              <ListItemText primary={"Inicio"} data-oid="hsts40n" />
             </ListItemButton>
           </ListItem>
         </Link>
 
-        <Link to="/sobre-nosotros">
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <InfoIcon />
+        <Link to="/sobre-nosotros" data-oid="u_of0.0">
+          <ListItem disablePadding data-oid=".qknndx">
+            <ListItemButton data-oid="z0us2po">
+              <ListItemIcon data-oid="0c3e267">
+                <InfoIcon data-oid="fno_j1g" />
               </ListItemIcon>
-              <ListItemText primary={"Acerca nosotros"} />
+              <ListItemText primary={"Acerca nosotros"} data-oid="_gu:4-0" />
             </ListItemButton>
           </ListItem>
         </Link>
 
-        <Link to="/contactanos">
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <ContactsIcon />
+        <Link to="/contactanos" data-oid="kv8ejbl">
+          <ListItem disablePadding data-oid="v6bjhg4">
+            <ListItemButton data-oid="ccb-u8n">
+              <ListItemIcon data-oid="71kcwa3">
+                <ContactsIcon data-oid="pf3x_qz" />
               </ListItemIcon>
-              <ListItemText primary={"Contáctanos"} />
+              <ListItemText primary={"Contáctanos"} data-oid="_08ge.9" />
             </ListItemButton>
           </ListItem>
         </Link>
 
         {!token ? (
           <>
-            <br />
-            <Link to="/iniciar-sesión">
-              <ListItem disablePadding className={styles.btn_login}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <LoginIcon sx={{ color: "white" }} />
+            <br data-oid="9.j416x" />
+            <Link to="/iniciar-sesión" data-oid="c2qpyhf">
+              <ListItem
+                disablePadding
+                className={styles.btn_login}
+                data-oid="3hynt:2"
+              >
+                <ListItemButton data-oid="mm3rh1w">
+                  <ListItemIcon data-oid="t:yitqn">
+                    <LoginIcon sx={{ color: "white" }} data-oid=".d544r6" />
                   </ListItemIcon>
-                  <ListItemText primary={"Iniciar sesión"} />
+                  <ListItemText primary={"Iniciar sesión"} data-oid="28u0jpr" />
                 </ListItemButton>
               </ListItem>
             </Link>
           </>
         ) : (
           <>
-            <Link to="/perfil">
-              <Divider />
+            <Link to="/perfil" data-oid="nvfypq.">
+              <Divider data-oid="2vwg7ra" />
 
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
+              <ListItem disablePadding data-oid="6bjzsii">
+                <ListItemButton data-oid="kt9ou5b">
+                  <ListItemIcon data-oid="4r62tbv">
                     <Avatar
                       sx={{
                         width: 25,
                         height: 25,
                         backgroundColor: datapersonal.backgroundColor,
                       }}
+                      data-oid="_f7uuct"
                     >
                       {datapersonal.name && datapersonal.name[0]}
                     </Avatar>
                   </ListItemIcon>
-                  <ListItemText primary={"Perfil"} />
+                  <ListItemText primary={"Perfil"} data-oid="84o0t4l" />
                 </ListItemButton>
               </ListItem>
             </Link>
             {datapersonal.role && datapersonal.role === "restaurante" ? (
-              <Link to="/panel">
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <AdminPanelSettingsIcon />
+              <Link to="/panel" data-oid="cvnms7q">
+                <ListItem disablePadding data-oid="be9.t94">
+                  <ListItemButton data-oid="sbaqi.m">
+                    <ListItemIcon data-oid="yo:ho8c">
+                      <AdminPanelSettingsIcon data-oid="t6i1twk" />
                     </ListItemIcon>
-                    <ListItemText primary={"Administrar"} />
+                    <ListItemText primary={"Administrar"} data-oid="1vskqfz" />
                   </ListItemButton>
                 </ListItem>
               </Link>
@@ -249,25 +254,28 @@ export default function Navbar() {
 
             {datapersonal.role && datapersonal.role === "personal" ? (
               <>
-                <Link to="/mis-reservaciones">
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <StorefrontIcon />
+                <Link to="/mis-reservaciones" data-oid="12c4pk_">
+                  <ListItem disablePadding data-oid="vq8cqsm">
+                    <ListItemButton data-oid="yza_5ob">
+                      <ListItemIcon data-oid="5khsc9l">
+                        <StorefrontIcon data-oid="6eqgd91" />
                       </ListItemIcon>
-                      <ListItemText primary={"Mis reservaciones"} />
+                      <ListItemText
+                        primary={"Mis reservaciones"}
+                        data-oid="-jk6nhl"
+                      />
                     </ListItemButton>
                   </ListItem>
                 </Link>
               </>
             ) : null}
 
-            <ListItem disablePadding onClick={handleLogout}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
+            <ListItem disablePadding onClick={handleLogout} data-oid="upgxbhf">
+              <ListItemButton data-oid="p06xi5j">
+                <ListItemIcon data-oid="12nzbzw">
+                  <Logout fontSize="small" data-oid="cjobcm-" />
                 </ListItemIcon>
-                <ListItemText primary={"Cerrar sesión"} />
+                <ListItemText primary={"Cerrar sesión"} data-oid="pjlbbmn" />
               </ListItemButton>
             </ListItem>
           </>
@@ -275,6 +283,7 @@ export default function Navbar() {
       </List>
     </Box>
   );
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -291,9 +300,14 @@ export default function Navbar() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      data-oid="tb9a__i"
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose} data-oid="g7ldxx1">
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose} data-oid="ths1tu5">
+        My account
+      </MenuItem>
     </Menu>
   );
 
@@ -313,44 +327,52 @@ export default function Navbar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      data-oid="g0xen_h"
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
+      <MenuItem data-oid="tfz7ao:">
+        <IconButton
+          size="large"
+          aria-label="show 4 new mails"
+          color="inherit"
+          data-oid="-n82ttf"
+        >
+          <Badge badgeContent={4} color="error" data-oid="y1g7paj">
+            <MailIcon data-oid="6f8k7z8" />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p data-oid="h..h2mr">Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem data-oid="rcsv.pm">
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
+          data-oid="tvxlsaf"
         >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+          <Badge badgeContent={17} color="error" data-oid="o6po.vm">
+            <NotificationsIcon data-oid="eqa8137" />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p data-oid="1e.-o24">Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={handleProfileMenuOpen} data-oid="8er-mx0">
         <IconButton
           size="large"
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
+          data-oid="quy25o-"
         >
-          <AccountCircle />
+          <AccountCircle data-oid="wsx18tl" />
         </IconButton>
-        <p>Profile</p>
+        <p data-oid="qmt7swi">Profile</p>
       </MenuItem>
     </Menu>
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} data-oid="ygel69:">
       <div
         position="static"
         sx={{
@@ -358,77 +380,80 @@ export default function Navbar() {
           color: "#000",
           boxShadow: "0  0  1px",
         }}
+        data-oid="acl0yhx"
       >
         {/* <div className={styles.toolbar} > */}
-        <div className={styles.toolbar}>
+        <div className={styles.toolbar} data-oid="yec:7-o">
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
+            data-oid="s7l_qfv"
           >
-            <MenuIcon />
+            <MenuIcon data-oid="hh:4cp:" />
           </IconButton>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
+            data-oid="h3qg:76"
           >
-            <Link to="/">
+            <Link to="/" data-oid="8s19lg9">
               <img
                 src={require("../../Images/Logo.png")}
                 alt="Logo"
                 className={styles.logo}
+                data-oid="fzi5g0p"
               />
             </Link>
           </Typography>
-          <Search>
-          
-          </Search>
+          <Search data-oid=".y07ggm"></Search>
 
-          <div className={styles.bg_navbar}>
+          <div className={styles.bg_navbar} data-oid="7l9cv4j">
             {token ? (
-              <div className={styles.nonemobile}>
+              <div className={styles.nonemobile} data-oid="r39tj.i">
                 <Box
                   sx={{
                     display: "flex",
                     alignItems: "center",
                     textAlign: "center",
                   }}
+                  data-oid="rt.cepd"
                 >
-                  <Tooltip>
-                    <div  style={{display: 'flex', placeItems: 'center'}}>
-
-                    <div>
-
-                    <strong style={{ color: "#fff" }}>
-                      ¡Hola {datapersonal.name}!
-                    </strong>
-                    <IconButton
-                      onClick={handleClick}
-                      size="small"
-                      sx={{ ml: 2 }}
-                      aria-controls={open ? "account-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
+                  <Tooltip data-oid="02pn0pt">
+                    <div
+                      style={{ display: "flex", placeItems: "center" }}
+                      data-oid="ojsxz.z"
                     >
-                      <Avatar
-                        sx={{
-                          width: 50,
-                          height: 50,
-                          backgroundColor: datapersonal.backgroundColor,
-                        }}
-                      >
-                        {datapersonal.name && datapersonal.name[0]}
-                      </Avatar>
-                    </IconButton>
+                      <div data-oid="sm7:6y_">
+                        <strong style={{ color: "#fff" }} data-oid="c90j6t-">
+                          ¡Hola {datapersonal.name}!
+                        </strong>
+                        <IconButton
+                          onClick={handleClick}
+                          size="small"
+                          sx={{ ml: 2 }}
+                          aria-controls={open ? "account-menu" : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                          data-oid="wugj4jb"
+                        >
+                          <Avatar
+                            sx={{
+                              width: 50,
+                              height: 50,
+                              backgroundColor: datapersonal.backgroundColor,
+                            }}
+                            data-oid="i7cgo6a"
+                          >
+                            {datapersonal.name && datapersonal.name[0]}
+                          </Avatar>
+                        </IconButton>
+                      </div>
                     </div>
-
-                   
-                    </div>
-
                   </Tooltip>
                 </Box>
                 <Menu
@@ -465,42 +490,49 @@ export default function Navbar() {
                   }}
                   transformOrigin={{ horizontal: "right", vertical: "top" }}
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  data-oid=":pzc3kk"
                 >
-                  <Link to="/perfil">
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <AccountCircleIcon fontSize="small" />
+                  <Link to="/perfil" data-oid="70amz:b">
+                    <MenuItem onClick={handleClose} data-oid="_tw6wr2">
+                      <ListItemIcon data-oid="pm4a3-g">
+                        <AccountCircleIcon
+                          fontSize="small"
+                          data-oid="2jvi4zb"
+                        />
                       </ListItemIcon>
                       Perfil
                     </MenuItem>
                   </Link>
 
-              {/*     {datapersonal.role && datapersonal.role === "restaurante" ? (
-                    <Link to="/administrar" target="_blank">
-                      <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                          <AdminPanelSettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        Administrar
-                      </MenuItem>
-                    </Link>
+                  {/*     {datapersonal.role && datapersonal.role === "restaurante" ? (
+                   <Link to="/administrar" target="_blank">
+                     <MenuItem onClick={handleClose}>
+                       <ListItemIcon>
+                         <AdminPanelSettingsIcon fontSize="small" />
+                       </ListItemIcon>
+                       Administrar
+                     </MenuItem>
+                   </Link>
                   ) : null} */}
 
                   {datapersonal.role && datapersonal.role === "personal" ? (
-                    <Link to="/mis-reservaciones">
-                      <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                          <AdminPanelSettingsIcon fontSize="small" />
+                    <Link to="/mis-reservaciones" data-oid="o1wd7bw">
+                      <MenuItem onClick={handleClose} data-oid="8lrswfq">
+                        <ListItemIcon data-oid="oao0ifa">
+                          <AdminPanelSettingsIcon
+                            fontSize="small"
+                            data-oid="nbc049:"
+                          />
                         </ListItemIcon>
                         Mis reservaciones
                       </MenuItem>
                     </Link>
                   ) : null}
-                  <Divider />
+                  <Divider data-oid="jzpljy_" />
 
-                  <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
+                  <MenuItem onClick={handleLogout} data-oid="28bn-v9">
+                    <ListItemIcon data-oid="va_7_nn">
+                      <Logout fontSize="small" data-oid="x6086hs" />
                     </ListItemIcon>
                     Cerrar sesión
                   </MenuItem>
@@ -512,6 +544,7 @@ export default function Navbar() {
                   size="large"
                   aria-label="show 17 new notifications"
                   color="inherit"
+                  data-oid="ngyaykq"
                 >
                   <Avatar
                     sx={{
@@ -522,11 +555,17 @@ export default function Navbar() {
                       color: "gray",
                       fontSize: 50,
                     }}
+                    data-oid="v-_kj_e"
                   ></Avatar>
                 </IconButton>
-                <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                  <Link to="/iniciar-sesión">
-                    <Button className={styles.btn_login}>Iniciar sesión</Button>
+                <Box
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                  data-oid="ed49924"
+                >
+                  <Link to="/iniciar-sesión" data-oid="oeootcy">
+                    <Button className={styles.btn_login} data-oid="0p.l1gs">
+                      Iniciar sesión
+                    </Button>
                   </Link>
                 </Box>
               </>
@@ -535,7 +574,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav>
+      <nav data-oid="-i19315">
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -550,6 +589,7 @@ export default function Navbar() {
               width: drawerWidth,
             },
           }}
+          data-oid="vinuhdt"
         >
           {drawer}
         </Drawer>

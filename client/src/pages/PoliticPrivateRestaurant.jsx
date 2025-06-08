@@ -15,29 +15,30 @@ export default function PoliticPrivateRestaurant() {
       setOpen(false);
     }, 1000);
   }, []);
-    return (
-        <div>
-            <Backdrop
+  return (
+    <div data-oid="tczs408">
+      <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
+        data-oid="jsqdecy"
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" data-oid="k43oqy6" />
       </Backdrop>
-      <div>
-        <HeaderMobile/>
+      <div data-oid="s69l1xy">
+        <HeaderMobile data-oid=":2z85.n" />
       </div>
-      <div>
-        <Navbar />
+      <div data-oid="07uo467">
+        <Navbar data-oid="_buk_9o" />
       </div>
-            <div>
-                <PoliticPrivateRestaurantComponent/>
-            </div>
-            <div>
-        <ButtonWhatsapp />
+      <div data-oid="-3h3.5l">
+        <PoliticPrivateRestaurantComponent data-oid="-mfnrqw" />
       </div>
-      <div>
-        <Footer />
+      <div data-oid="ir.nq95">
+        <ButtonWhatsapp data-oid="7bh_j::" />
       </div>
-        </div>
-    )
+      <div data-oid="rpm__0i">
+        <Footer data-oid="fk3t_qn" />
+      </div>
+    </div>
+  );
 }

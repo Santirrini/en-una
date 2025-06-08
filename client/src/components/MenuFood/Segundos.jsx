@@ -14,8 +14,8 @@ import { Result } from "antd";
 
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import styles from "./MenuFood.module.css";
-import CloseIcon from '@mui/icons-material/Close'; // Asegúrate de importar el ícono de cierre
-import IconButton from '@mui/material/IconButton'; // Asegúrate de importar el IconButton
+import CloseIcon from "@mui/icons-material/Close"; // Asegúrate de importar el ícono de cierre
+import IconButton from "@mui/material/IconButton"; // Asegúrate de importar el IconButton
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -27,15 +27,19 @@ const modalStyle = {
   boxShadow: 24,
 };
 
-export default function MenuDestacad({ setCartItems, setShowSummary, setQuantities, quantities }) {
+export default function MenuDestacad({
+  setCartItems,
+  setShowSummary,
+  setQuantities,
+  quantities,
+}) {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.userId);
-
 
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -66,25 +70,27 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
   const handleQuantityChange = (id, amount) => {
     setQuantities((prevQuantities) => {
       const newQuantity = Math.max(0, (prevQuantities[id] || 0) + amount);
-      
+
       // Actualizar el carrito al cambiar la cantidad
       const productInMenu = restaurantdetails.Menus.find(
-        (menu) => menu.id === id
+        (menu) => menu.id === id,
       );
       updateCart(productInMenu, newQuantity);
-      
+
       return { ...prevQuantities, [id]: newQuantity };
     });
   };
-  
+
   const updateCart = (product, newQuantity) => {
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
-    
+
     // Si la cantidad es mayor a 0, agregar o actualizar el producto en el carrito
     if (newQuantity > 0) {
       let updatedCart = [...cart];
-      const productIndex = updatedCart.findIndex((item) => item.id === product.id);
-      
+      const productIndex = updatedCart.findIndex(
+        (item) => item.id === product.id,
+      );
+
       if (productIndex >= 0) {
         // Si el producto ya está en el carrito, actualizar la cantidad
         updatedCart[productIndex].quantity = newQuantity;
@@ -100,7 +106,7 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
           restaurantId: product.restaurantId,
         });
       }
-      
+
       // Guardar el carrito actualizado en localStorage
       localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
       setCartItems(updatedCart);
@@ -111,9 +117,8 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
       setCartItems(updatedCart);
     }
   };
-  
-  const addToCart = (product) => {
 
+  const addToCart = (product) => {
     // Obtener carrito de localStorage o inicializarlo si está vacío
     const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
@@ -187,16 +192,18 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
 
   const handleClose = () => setOpen(false);
 
-
-  const segundos = restaurantdetails?.Menus.filter(menu => menu.category.includes("Segundos") && menu.stock === true)
-
+  const segundos = restaurantdetails?.Menus.filter(
+    (menu) => menu.category.includes("Segundos") && menu.stock === true,
+  );
 
   return (
-    <div>
+    <div data-oid=":i77poa">
       {segundos?.length > 0 ? (
-        <div className={styles.menufood_container}>
-          <div className={styles.container_bg_none}>
-            <h1 className={styles.title_Carrusel2}>Segundos</h1>
+        <div className={styles.menufood_container} data-oid="ztk1ag-">
+          <div className={styles.container_bg_none} data-oid=".c8p51_">
+            <h1 className={styles.title_Carrusel2} data-oid="l6qfbuw">
+              Segundos
+            </h1>
             <Splide
               options={{
                 perPage: 4,
@@ -210,16 +217,17 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
                   1024: { perPage: 2 },
                   1440: { perPage: 3 },
                 },
-              classes: {
+                classes: {
                   arrow: `splide__arrow ${styles.customArrow3}`,
                   prev: `splide__arrow--prev ${styles.customPrev3}`,
                   next: `splide__arrow--next ${styles.customNext3}`,
                 },
               }}
+              data-oid="h.ce86e"
             >
               {segundos.map((data) => (
-                <SplideSlide key={data.id}>
-                  <Card className={styles.card2}>
+                <SplideSlide key={data.id} data-oid="wu.qd-g">
+                  <Card className={styles.card2} data-oid="-dcpqdk">
                     <CardMedia
                       component="img"
                       className={styles.img_menu}
@@ -228,20 +236,37 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
                       onClick={() =>
                         handleOpen(data.imageFile, data.name, data.details)
                       }
+                      data-oid="15_8nl9"
                     />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography component="div" variant="h5">
+
+                    <Box
+                      sx={{ display: "flex", flexDirection: "column" }}
+                      data-oid="3jtu.ly"
+                    >
+                      <CardContent sx={{ flex: "1 0 auto" }} data-oid="975iqua">
+                        <Typography
+                          component="div"
+                          variant="h5"
+                          data-oid="w6_.7h9"
+                        >
                           {limitarName(data.name)}
                         </Typography>
-                        <Typography variant="subtitle1" color="text.secondary">
+                        <Typography
+                          variant="subtitle1"
+                          color="text.secondary"
+                          data-oid="-pfaowy"
+                        >
                           {limitarTexto(data.details)}
                         </Typography>
-                        <div className={styles.price_quantity}>
+                        <div
+                          className={styles.price_quantity}
+                          data-oid="60csfrw"
+                        >
                           <Typography
                             component="div"
                             variant="h6"
                             sx={{ fontWeight: "bold" }}
+                            data-oid="aggpg8h"
                           >
                             S/{data.price}
                           </Typography>
@@ -254,52 +279,57 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
                               justifyContent: "center",
                               gap: "1em",
                             }}
+                            data-oid="-:jfzr:"
                           >
                             <Button
-                                sx={{
-                                  color: "#000",
-                                  border: "1px solid #500075",
-                                  ":hover": { border: "1px solid #500075" },
-                                }}
+                              sx={{
+                                color: "#000",
+                                border: "1px solid #500075",
+                                ":hover": { border: "1px solid #500075" },
+                              }}
                               onClick={() => handleQuantityChange(data.id, -1)}
+                              data-oid="d4g:ynd"
                             >
                               -
                             </Button>
-                            <Typography>{quantities[data.id] || 0}</Typography>
+                            <Typography data-oid="sy5tlk5">
+                              {quantities[data.id] || 0}
+                            </Typography>
                             <Button
-                                sx={{
-                                  color: "#000",
-                                  border: "1px solid #500075",
-                                  ":hover": { border: "1px solid #500075" },
-                                }}
+                              sx={{
+                                color: "#000",
+                                border: "1px solid #500075",
+                                ":hover": { border: "1px solid #500075" },
+                              }}
                               onClick={() => handleQuantityChange(data.id, 1)}
+                              data-oid="pmv97:h"
                             >
                               +
                             </Button>
                           </Box>
                         </div>
                       </CardContent>
-                {/*       <Box
-                        sx={{
-                          display: "flex",
-                          marginLeft: "1em",
-                          marginRight: "1em",
-                          paddingBottom: "1em",
-                        }}
-                      >
-                        <Button
-                          sx={{
-                            display: "flex",
-                            flex: 2,
-                            backgroundColor: "#500075",
-                            color: "white",
-                            ":hover": { backgroundColor: "#500075" },
-                          }}
-                          onClick={() => addToCart(data)}
-                        >
-                          AGREGAR AL CARRITO
-                        </Button>
-                      </Box> */}
+                      {/*       <Box
+                    sx={{
+                    display: "flex",
+                    marginLeft: "1em",
+                    marginRight: "1em",
+                    paddingBottom: "1em",
+                    }}
+                    >
+                    <Button
+                    sx={{
+                    display: "flex",
+                    flex: 2,
+                    backgroundColor: "#500075",
+                    color: "white",
+                    ":hover": { backgroundColor: "#500075" },
+                    }}
+                    onClick={() => addToCart(data)}
+                    >
+                    AGREGAR AL CARRITO
+                    </Button>
+                    </Box> */}
                     </Box>
                   </Card>
                 </SplideSlide>
@@ -307,93 +337,98 @@ export default function MenuDestacad({ setCartItems, setShowSummary, setQuantiti
             </Splide>
           </div>
           <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-title"
-  aria-describedby="modal-description"
->
-  <Box sx={modalStyle}>
-    {/* Botón de cierre */}
-    <IconButton
-      onClick={handleClose}
-      sx={{
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        color: 'text.primary',
-        zIndex: 1,  // Asegura que el ícono esté por encima de otros elementos
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            data-oid="z1x1-rk"
+          >
+            <Box sx={modalStyle} data-oid="o9r0884">
+              {/* Botón de cierre */}
+              <IconButton
+                onClick={handleClose}
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  color: "text.primary",
+                  zIndex: 1, // Asegura que el ícono esté por encima de otros elementos
+                }}
+                data-oid="l308tq7"
+              >
+                <CloseIcon data-oid="zyrazvx" />
+              </IconButton>
 
-    <Splide
- options={{
-  type: "loop",
-  perPage: 1,
-  pagination: false,
-  arrows: true,
-  height: "400px",  // Ajusta la altura del contenedor
-  cover: true,      // Asegura que la imagen cubra todo el contenedor
-}}
+              <Splide
+                options={{
+                  type: "loop",
+                  perPage: 1,
+                  pagination: false,
+                  arrows: true,
+                  height: "400px", // Ajusta la altura del contenedor
+                  cover: true, // Asegura que la imagen cubra todo el contenedor
+                }}
+                data-oid=":n7:ree"
+              >
+                {selectedImages.map((image, index) => (
+                  <SplideSlide key={index} data-oid="m.hgmy.">
+                    <img
+                      src={image}
+                      alt={selectedName}
+                      style={{
+                        width: "100%", // Hace que la imagen ocupe todo el ancho
+                        height: "100%", // Hace que la imagen ocupe toda la altura
+                        objectFit: "cover", // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
+                      }}
+                      data-oid="mv8.1n."
+                    />
+                  </SplideSlide>
+                ))}
+              </Splide>
 
-    >
-      {selectedImages.map((image, index) => (
-        <SplideSlide key={index}>
-          <img
-            src={image}
-            alt={selectedName}
-            style={{
-              width: "100%",   // Hace que la imagen ocupe todo el ancho
-              height: "100%",  // Hace que la imagen ocupe toda la altura
-              objectFit: "cover",  // Hace que la imagen se ajuste sin distorsionarse, recortando si es necesario
-            }}
-          />
-        </SplideSlide>
-      ))}
-    </Splide>
-    
-    <Typography
-      id="modal-title"
-      variant="h6"
-      component="h2"
-      sx={{
-        p: 2,
-        textAlign: "center",
-        fontSize: {
-          xs: "1.2rem",  // Pantallas pequeñas
-          sm: "1.5rem",  // Pantallas medianas
-          md: "1.8rem",  // Pantallas grandes
-        },
-        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
-        overflow: "visible",    // Hace que el texto se muestre completamente
-        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
-        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
-      }}
-    >
-      {selectedName}
-    </Typography>
-    
-    <Typography
-      id="modal-description"
-      sx={{
-        p: 2,
-        textAlign: "center",
-        fontSize: {
-          xs: "0.9rem",  // Pantallas pequeñas
-          sm: "1rem",    // Pantallas medianas
-          md: "1.2rem",  // Pantallas grandes
-        },
-        wordWrap: "break-word",  // Permite el ajuste de palabra cuando se alcanza el borde
-        overflow: "visible",    // Hace que el texto se muestre completamente
-        width: "100%",          // Asegura que el texto ocupe todo el ancho disponible
-        boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
-      }}
-    >
-      {selectedDetails}
-    </Typography>
-  </Box>
-</Modal>
+              <Typography
+                id="modal-title"
+                variant="h6"
+                component="h2"
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  fontSize: {
+                    xs: "1.2rem", // Pantallas pequeñas
+                    sm: "1.5rem", // Pantallas medianas
+                    md: "1.8rem", // Pantallas grandes
+                  },
+                  wordWrap: "break-word", // Permite el ajuste de palabra cuando se alcanza el borde
+                  overflow: "visible", // Hace que el texto se muestre completamente
+                  width: "100%", // Asegura que el texto ocupe todo el ancho disponible
+                  boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+                }}
+                data-oid="wa6rd50"
+              >
+                {selectedName}
+              </Typography>
+
+              <Typography
+                id="modal-description"
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  fontSize: {
+                    xs: "0.9rem", // Pantallas pequeñas
+                    sm: "1rem", // Pantallas medianas
+                    md: "1.2rem", // Pantallas grandes
+                  },
+                  wordWrap: "break-word", // Permite el ajuste de palabra cuando se alcanza el borde
+                  overflow: "visible", // Hace que el texto se muestre completamente
+                  width: "100%", // Asegura que el texto ocupe todo el ancho disponible
+                  boxSizing: "border-box", // Asegura que el padding no afecte el tamaño del contenedor
+                }}
+                data-oid="bwvx7bp"
+              >
+                {selectedDetails}
+              </Typography>
+            </Box>
+          </Modal>
         </div>
       ) : null}
     </div>

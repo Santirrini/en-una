@@ -20,12 +20,11 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-
 export default function MenuFood() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const restaurantdetails = useSelector(
-    (state) => state.restaurantdetails.data
+    (state) => state.restaurantdetails.data,
   );
   const [cartItems, setCartItems] = useState([]);
   const [reservation, setReservation] = useState({});
@@ -49,7 +48,7 @@ export default function MenuFood() {
 
   const handleRemove = (index) => {
     const newCartItems = cartItems.filter(
-      (_, itemIndex) => itemIndex !== index
+      (_, itemIndex) => itemIndex !== index,
     );
     setCartItems(newCartItems);
     localStorage.setItem("cart", JSON.stringify(newCartItems));
@@ -74,38 +73,38 @@ export default function MenuFood() {
   const getTotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
-      0
+      0,
     );
   };
 
   return (
-    <div>
+    <div data-oid="mosneds">
       {restaurantdetails?.Menus.length === 0 ? (
-        <Result title="No hay menús publicados" />
+        <Result title="No hay menús publicados" data-oid="1yukl3r" />
       ) : (
-        <div>
-          <h1 className={styles.text}>NUESTRA CARTA</h1>
+        <div data-oid="r:-_stl">
+          <h1 className={styles.text} data-oid="91rwdj5">
+            NUESTRA CARTA
+          </h1>
 
-          <div>
-            <MenuDestacad setCartItems={setCartItems} />
+          <div data-oid="ypw12wd">
+            <MenuDestacad setCartItems={setCartItems} data-oid="1p8gewn" />
           </div>
-          <div>
-            <Piqueos setCartItems={setCartItems} />
+          <div data-oid="s9t-nxt">
+            <Piqueos setCartItems={setCartItems} data-oid="essvzed" />
           </div>
-          <div>
-            <Entradas setCartItems={setCartItems} />
+          <div data-oid="bdu:0em">
+            <Entradas setCartItems={setCartItems} data-oid="7xj1c:g" />
           </div>
-          <div>
-            <Segundos setCartItems={setCartItems} />
+          <div data-oid="mhnra79">
+            <Segundos setCartItems={setCartItems} data-oid="8z.l-v-" />
           </div>
-          <div>
-            <Bebidas setCartItems={setCartItems} />
+          <div data-oid="t2pj2y-">
+            <Bebidas setCartItems={setCartItems} data-oid="ip96-g-" />
           </div>
-          <div>
-            <Postres setCartItems={setCartItems} />
+          <div data-oid="7y2twnw">
+            <Postres setCartItems={setCartItems} data-oid="ypqk3n_" />
           </div>
-      
-        
         </div>
       )}
     </div>
