@@ -1,20 +1,3 @@
-{
-  "env": {
-    "node": true,
-    "es6": true,
-    "mocha": true
-  },
-  "extends": "airbnb/base",
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "moduleDirectory": ["src", "node_modules"]
-      }
-    }
-  },
-  "rules": {
-     "no-underscore-dangle": 0,
-     "no-param-reassign": 0,
-     "import/no-unresolved": 0
-   }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2a16ea9ed6c3c2bee672df69ace8ef588db3caec8abad6ef8526e9892e34783b
+size 358
